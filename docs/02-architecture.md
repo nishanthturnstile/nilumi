@@ -67,7 +67,7 @@ flowchart LR
 
   subgraph External["External services"]
     LLM["LLM providers<br/>direct via AI SDK registry"]
-    STT["STT provider<br/>Sarvam default · Deepgram fallback"]
+    STT["STT provider<br/>Sarvam default"]
     TTS["TTS provider<br/>direct adapter"]
     PUSH["Web Push services<br/>(FCM / APNs web push)"]
     R2[("Cloudflare R2<br/>encrypted backups + forget journal<br/>later Vault originals")]
@@ -1004,7 +1004,7 @@ interface SttAdapter {
                       provider: string; model: string; ms: number }>;
 }
 ```
-Default: **Sarvam Saaras v4** (`mode=transcribe`, keyterms), accepted as the baseline for cost, India hosting, keyterm biasing and future Tanglish `codemix`, subject to provider approval and bake-off validation. The adapter uses direct multipart `fetch` if an SDK lags the REST keyterm API. Fallback / circuit-breaker target: **Deepgram Nova-3** (India endpoint, documented keyterms, official AI SDK provider). S2 bake-off shortlist: Sarvam Saaras v4 · Deepgram Nova-3 · ElevenLabs Scribe v2 · Azure Fast Transcription / MAI-Transcribe-2. REST only for the MVP; streaming is revisited if batch p95 breaks the budget or hands-free mode arrives.
+Default: **Sarvam Saaras v4** (`mode=transcribe`, keyterms), accepted as the baseline for cost, India hosting, keyterm biasing and future Tanglish `codemix`, subject to provider approval and bake-off validation. The adapter uses direct multipart `fetch` if an SDK lags the REST keyterm API. Validated fallback option: ElevenLabs Scribe v2 (only after its S0 verification). S2 bake-off shortlist: Sarvam Saaras v4 · ElevenLabs Scribe v2. REST only for the MVP; streaming is revisited if batch p95 breaks the budget or hands-free mode arrives.
 
 ### 14.3 Keyterm loop
 Keyterms are the top 50 aliases **visible to the speaker**, ranked by `use_count`, recency and type (people and brands first), plus member names. They're cached **per member** (never household-wide, so private entity names can't leak into another member's recognition) and rebuilt when aliases change. This closes the loop: **new entity → alias → keyterm → better recognition next time.**
@@ -1014,7 +1014,7 @@ Keyterms are the top 50 aliases **visible to the speaker**, ranked by `use_count
 - **Lifecycle:** as each validated sentence is ready (§10.1 E), the turn stream emits `speech.ready {turn_id, seq, url}`. The URL is short-lived, signed, member-bound and `Cache-Control: no-store`. The client keeps a **per-sentence playback queue**, fetching `/v1/turns/{id}/speech/{seq}` in order. Sentence audio is synthesized on demand from stored sentence text; no function instance has to keep an in-memory audio buffer. Retries are idempotent (same `seq` → same audio). Cancelling the turn stops the queue and cancels pending synthesis where possible.
 - **Phrase cache:** templated confirmations ("Added to the shopping list.") are cached in R2 by `(voice, text)` hash.
 - **Voice-reply modes:** `auto` (voice input → spoken reply + screen; text input → text only), `always`, `never`. The screen is always updated.
-- Default: **Sarvam Bulbul v3 (en-IN voice your wife picks)**. Alternates: Azure en-IN neural (e.g. Neerja/Aarav), OpenAI TTS (subject to the S4 quality check).
+- Default: **Sarvam Bulbul v3 (en-IN voice your wife picks)**. Alternate/fallback option: ElevenLabs (subject to the S4 quality check and S0 verification).
 
 ---
 
@@ -1027,7 +1027,7 @@ Keyterms are the top 50 aliases **visible to the speaker**, ranked by `use_count
 | Secret capture | "My UPI PIN is…" stored or logged | Shared sensitive-input boundary (§15.3), refuse mode before persistence/LLM, log policy |
 | Lost or stolen phone | Someone opens the installed PWA | Session list + remote revoke, 90-day sliding server-set cookie, optional WebAuthn step-up or fresh email code for sensitive views/actions |
 | Email account compromise | Attacker controls a member's mailbox and requests an email code | Honest limit: mailbox takeover = account takeover; both adults protect email with MFA; session notifications and revoke UI |
-| Provider exposure | OpenAI, Anthropic, Sarvam, Deepgram, Railway, R2, Resend, GitHub or extractors retain data | Provider gate (§15.4), data minimization, direct provider calls, RLS, encrypted backups |
+| Provider exposure | OpenAI, Anthropic, Vercel AI Gateway, Sarvam, ElevenLabs, Railway, R2, Resend, GitHub or extractors retain data | Provider gate (§15.4), data minimization, direct provider calls, RLS, encrypted backups |
 | Prompt injection via stored content | A memory text says "ignore previous instructions…" | Evidence delimited as data; closed command set; no external side-effect tools beyond push, email codes and lists |
 | Account/infra compromise | Leaked API keys, exposed DB | Secrets in Railway/GitHub only, private networking, least-privilege DB roles, no owner credentials in runtime, dependency updates |
 | Backup leakage | R2 bucket exposed | `age`-encrypted dumps; private key only in the OneDrive recovery document (§17.2) |
@@ -1108,13 +1108,13 @@ On a `refuse` hit: `source_events.raw_text = null`, `redaction = 'sensitive'`, c
 
 ### 15.4 Data minimization and provider retention
 - **Sent to LLM providers:** the transcript, member display names and relations, ≤ 20 shortlist entities, ≤ 8 evidence items and ≤ 3 recent turns. OpenAI is the default direct provider and Anthropic is the approved challenger; both are accessed through the AI SDK provider registry with our own keys and per-call `store: false` where supported.
-- **Sent to STT/TTS:** audio goes only to the STT provider (Sarvam default, Deepgram fallback); sentence text goes only to the TTS provider. STT/TTS do not route through an LLM intermediary.
+- **Sent to STT/TTS:** audio goes only to the STT provider (Sarvam default; ElevenLabs only as the validated fallback); sentence text goes only to the TTS provider. STT/TTS do not route through an LLM intermediary.
 - **Sent to Railway:** runtime logs with IDs only, deploy metadata, service health and Postgres volume metadata. Database rows stay behind RLS and private networking.
 - **Sent to R2:** encrypted backup objects, content-free forget journal entries, phrase-cache audio and later Vault originals.
 - **Sent to Resend:** email address and one-time code metadata from `no-reply@nilumi.in`.
 - **Sent to GitHub:** code, CI logs and eval datasets with consent; no family data in ordinary repository history.
 - **Never sent:** the full memory store, other members' private items, secrets, unmasked Vault identifiers after extraction, or audio to the LLM.
-- **Provider eligibility and data terms are a release gate** (Spike S0): OpenAI, Anthropic, Sarvam, Deepgram, Railway, Cloudflare R2, Resend, GitHub and any later extractor must permit this household use, training must be opted out where possible, retention/deletion settings must be recorded, and the provider must be listed in [03 Tech Stack §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate). Local "forget" cannot erase provider-side retained copies; the app says so.
+- **Provider eligibility and data terms are a release gate** (Spike S0): OpenAI, Anthropic, Vercel AI Gateway, Sarvam, Railway, Cloudflare R2, Resend, GitHub and any later extractor must permit this household use, training must be opted out where possible, retention/deletion settings must be recorded, and the provider must be listed in [03 Tech Stack §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate). Local "forget" cannot erase provider-side retained copies; the app says so.
 
 ### 15.5 Authentication, sessions and recovery
 - **Better Auth ≥ 1.7.7** with `emailOTP` and `multiSession`. Magic links and device authorization are not enabled.

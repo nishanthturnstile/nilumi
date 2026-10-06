@@ -3,7 +3,7 @@
 > **Status:** Revision 2 final baseline · Owner decisions applied · **Date:** October 2026
 > **Related:** [ADR catalogue](adr/README.md) · [01 Product Plan](01-product-plan.md) · [02 Architecture](02-architecture.md) · [04 Research](04-research.md) · [05 Implementation Roadmap](05-implementation-roadmap.md)
 
-**How to read this:** each choice lists *why it is optimal for Nilumi*, the alternatives we rejected, and the technical constraints or validation references. [05 Implementation Roadmap](05-implementation-roadmap.md) owns spike sequencing and phase outcomes. Versions are pinned by the lockfile at project start and updated through Renovate. **AI models are pinned to exact IDs in `config/models.ts`** and change only through the eval gate ([ADR-013](adr/adr-013.md)). **Vercel is used only for completely free, open-source libraries**; hosted or metered Vercel platform services are not part of the baseline. This document owns technology selections, dependency details and provider status; the [ADR catalogue](adr/README.md) owns accepted choices and rationale; **[04 Research](04-research.md)** is evidence and comparison history, not the source of required behavior.
+**How to read this:** each choice lists *why it is optimal for Nilumi*, the alternatives we rejected, and the technical constraints or validation references. [05 Implementation Roadmap](05-implementation-roadmap.md) owns spike sequencing and phase outcomes. Versions are pinned by the lockfile at project start and updated through Renovate. **AI models are pinned to exact IDs in `config/models.ts`** and change only through the eval gate ([ADR-013](adr/adr-013.md)). **Vercel is used only for completely free, open-source libraries, plus AI Gateway for LLM/embeddings routing** (the single accepted metered exception, [ADR-038](adr/adr-038.md)); other hosted or metered Vercel platform services are not part of the baseline. This document owns technology selections, dependency details and provider status; the [ADR catalogue](adr/README.md) owns accepted choices and rationale; **[04 Research](04-research.md)** is evidence and comparison history, not the source of required behavior.
 
 ---
 
@@ -11,7 +11,7 @@
 
 | Use | Do not use | Reason |
 |---|---|---|
-| **Next.js**, **Turbopack**, **AI SDK** (`ai`, provider packages, later MCP/agents), and optional **AI Elements** copied into the app | Vercel hosting, **AI Gateway**, **Vercel Workflow** / Workflow DevKit, Vercel Cron, Queues, Blob, Sandbox, Analytics / Speed Insights, v0, Vercel Agent | Owner rule: only completely free OSS libraries; avoid metered/free-tier cliffs and platform-bound services |
+| **Next.js**, **Turbopack**, **AI SDK** (`ai`, provider packages, later MCP/agents), optional **AI Elements** copied into the app, and **AI Gateway** ([ADR-038](adr/adr-038.md)) | Vercel hosting, Workflow / Workflow DevKit, Vercel Cron, Queues, Blob, Sandbox, Analytics / Speed Insights, v0, Vercel Agent | Owner rule: only completely free OSS libraries, plus the single accepted AI Gateway exception; avoid metered/free-tier cliffs and platform-bound services |
 
 ---
 
@@ -33,8 +33,8 @@
 | AI SDK | **AI SDK free OSS** + in-process provider registry with role aliases; **no hosted gateway** |
 | LLM (`nlu`, `answer`) | **OpenAI GPT-6 Luna** (default hypothesis) vs **Claude Haiku 4.5** in the bake-off. Gemini only if its terms permit this use ([ADR-017](adr/adr-017.md)) |
 | Embeddings (`embed`) | **OpenAI `text-embedding-3-small` @ 768 dims** (native `dimensions` parameter), stored per `embedding_configs` row; Cohere embed-v4 (Tamil officially listed, native 1024) as the Tamil fallback config |
-| STT (`stt`) | **Sarvam Saaras v4** default; **Deepgram Nova-3** fallback; bake-off also includes **ElevenLabs Scribe v2** and **Azure Fast Transcription / MAI-Transcribe-2** |
-| TTS (`tts`) | **Sarvam Bulbul v3** (en-IN) vs Azure en-IN neural vs OpenAI TTS. **Your wife picks** |
+| STT (`stt`) | **Sarvam Saaras v4** default; **ElevenLabs Scribe v2** as the validated fallback option |
+| TTS (`tts`) | **Sarvam Bulbul v3** (en-IN) default; **ElevenLabs** as the validated fallback option. **Your wife picks** |
 | Dates | **chrono-node** (`en.GB`, day-first) + **date-fns v4 + @date-fns/tz** + **rrule** |
 | Validation / contracts | **Zod 4** in `packages/contracts` |
 | Logging | **pino** JSON logs (IDs only) |
@@ -102,10 +102,10 @@ Occurrence statuses are `scheduled`, `dispatching`, `sent`, `acknowledged`, `ski
 | `nlu` | **OpenAI GPT-6 Luna** · **Claude Haiku 4.5** · *(Gemini Flash-Lite / Flash only if S0 confirms eligibility; see [ADR-017](adr/adr-017.md))* | 0) provider eligibility and data terms (S0) 1) structural accuracy on `nlu.jsonl` 2) p95 latency with minimal reasoning 3) schema-valid rate 4) cost | All support structured output/tool calling through direct provider SDKs behind the registry. No vendor publishes the exact Tamil/Tanglish benchmark we need, so include household-style Tanglish cases. Measure serialized prompt size against each provider's caching minimum |
 | `answer` | Same as `nlu`, or one tier up if synthesis is weak | Answer correctness, citation compliance, first *validated sentence* latency | Most single-fact answers remain deterministic templates (Arch §10.1 E) |
 | `embed` | **OpenAI `text-embedding-3-small`** (`dimensions=768`, native) · **Cohere embed-v4** (Tamil officially listed; native dims 256/512/**1024**/1536, so not a 768 drop-in) · *(`gemini-embedding-001` if eligible)* | recall@5 on `retrieval.jsonl` including a Tamil/Tanglish slice and negative examples | Chosen independently of the NLU provider. Each option is an `embedding_configs` row (model, dims, task type, preprocessing version); switching = new config + backfill (cents) |
-| `stt` | **Sarvam Saaras v4** (REST/Batch, 50 keyterms, `codemix`) · **Deepgram Nova-3** (India endpoint, keyterms, official AI SDK provider) · **ElevenLabs Scribe v2** · **Azure Fast Transcription / MAI-Transcribe-2** | 1) entity-name accuracy on your clips 2) WER 3) p95 latency 4) native browser format acceptance 5) terms for household data | Saaras is the default hypothesis and only option purpose-built for Tanglish; Deepgram is the fallback/circuit-breaker target. The bake-off uses raw multipart requests where needed so keyterms are proved end to end |
-| `tts` | **Sarvam Bulbul v3** (en-IN, ta-IN, code-mixed text) · **Azure neural** (`en-IN-NeerjaNeural`, `en-IN-AaravNeural`, `ta-IN-PallaviNeural`...) · **OpenAI TTS** | 1) your wife's preference 2) first-audio latency 3) Tamil availability 4) retention terms | Sentences are synthesized on demand from stored text; template phrase cache lives in R2 |
+| `stt` | **Sarvam Saaras v4** (REST/Batch, 50 keyterms, `codemix`) default · **ElevenLabs Scribe v2** as the validated fallback option | 1) entity-name accuracy on your clips 2) WER 3) p95 latency 4) native browser format acceptance 5) terms for household data | Saaras is the default hypothesis and only option purpose-built for Tanglish. The bake-off uses raw multipart requests where needed so keyterms are proved end to end |
+| `tts` | **Sarvam Bulbul v3** (en-IN, ta-IN, code-mixed text) default · **ElevenLabs** as the validated fallback option | 1) your wife's preference 2) first-audio latency 3) Tamil availability 4) retention terms | Sentences are synthesized on demand from stored text; template phrase cache lives in R2 |
 
-**Default hypothesis** (until S0 and the bake-offs say otherwise): `nlu`/`answer` = **GPT-6 Luna**, `embed` = **`text-embedding-3-small`@768**, `stt` = **Sarvam Saaras v4**, `tts` = **Bulbul v3**. **Deepgram Nova-3** is the first STT fallback. One OpenAI key covers language and embeddings, but application code sees only registry role aliases. **Sarvam's training opt-out, retention and written confirmation for a household account in a home with minors must be green before any family clip is uploaded.**
+**Default hypothesis** (until S0 and the bake-offs say otherwise): `nlu`/`answer` = **GPT-6 Luna**, `embed` = **`text-embedding-3-small`@768**, `stt` = **Sarvam Saaras v4**, `tts` = **Bulbul v3**. One OpenAI key covers language and embeddings through AI Gateway ([ADR-038](adr/adr-038.md)), but application code sees only registry role aliases. **Sarvam's training opt-out, retention and written confirmation for a household account in a home with minors are recorded green (October 2026) in §7.** Sarvam is the default for both STT and TTS; ElevenLabs Scribe v2/ElevenLabs remain the validated fallback options, used only after their own S0 verification, and are re-evaluated if S2/S4 measurements justify a switch.
 
 ### 4.2 Rejected alternatives
 
@@ -115,7 +115,7 @@ Occurrence statuses are `scheduled`, `dispatching`, `sent`, `acknowledged`, `ski
 | Local Whisper / Piper | No GPU host; `large-v3-turbo` is not practical on CPU and struggles with Indian proper nouns; Piper has no en-IN or Tamil voices |
 | Agent frameworks for the core pipeline (LangChain, LangGraph, CrewAI, Mastra, OpenAI Agents SDK, AI SDK agents) | Free-form loops add latency and nondeterminism to a system whose MVP promise is correctness. The core remains a fixed, testable sequence of AI SDK calls. Later conversation mode can use a constrained AI SDK agent + MCP over the same executors |
 | Memory frameworks (Mem0, Graphiti, Letta, Cognee, LangMem) | None fits the RLS privacy, controlled vocabulary, span-level provenance, undo/forget and bi-temporal requirements. Borrow ideas, not the dependency ([ADR-005](adr/adr-005.md)) |
-| Vercel components not used under the free-libraries rule (hosting, AI Gateway, Workflow, Cron, Queues, Blob, Sandbox, Chat SDK, v0, Vercel Agent) | They are either metered/free-tier-cliff services or platform-bound components. Nilumi uses only the open-source libraries listed in the Vercel usage rule; jobs, realtime, blobs/backups and routing stay on Railway/Postgres/R2/in-process code |
+| Vercel components not used under the free-libraries rule (hosting, Workflow, Cron, Queues, Blob, Sandbox, Chat SDK, v0, Vercel Agent) | They are either metered/free-tier-cliff services or platform-bound components. Nilumi uses only the open-source libraries listed in the Vercel usage rule plus AI Gateway; jobs, realtime, blobs/backups and in-process routing stay on Railway/Postgres/R2 |
 | n8n / visual workflow builders | Another service with its own auth, UI and operational surface. Household routines start as recurring tasks/reminders; revisit only if non-developer routine building is explicitly wanted and another service becomes acceptable |
 | STT exclusions (Groq, Voxtral, Speechmatics, AWS Transcribe, Web Speech API, Google Chirp 3) | Groq terms forbid consumer use; Voxtral lacks Tamil; Speechmatics lacks webm/opus despite an interesting Tanglish pack; AWS trains by default unless opted out; Web Speech API lacks biasing and breaks in iOS standalone; Chirp 3 has Tamil preview/cost concerns |
 
@@ -126,8 +126,8 @@ Occurrence statuses are `scheduled`, `dispatching`, `sent`, `acknowledged`, `ski
 | Layer / option | Verdict | Reason |
 |---|---|---|
 | **AI SDK provider registry + role aliases** | **Adopt** | Free in-process abstraction; no extra processor; keeps config-driven model swaps, fallback and shadow calls |
-| **Direct provider SDKs** | **Adopt** | OpenAI default and Anthropic challenger use our keys directly behind the registry; fewer processors and fewer billing surprises |
-| **AI Gateway** | **Rejected** | Metered/credit-backed platform service, which violates the owner's Vercel free-libraries-only rule |
+| **Direct provider SDKs** | **Adopt** | OpenAI default and Anthropic challenger sit behind the registry; the AI SDK provider packages are used through AI Gateway endpoints |
+| **AI Gateway** | **Adopt** ([ADR-038](adr/adr-038.md)) | Single enforceable control for ZDR + no-prompt-training + provider allowlist over family transcripts; no separate provider dashboards |
 | **OpenRouter** | **Rejected for family data** | Adds another processor and fees; acceptable only for offline synthetic experiments |
 | **Cloudflare AI Gateway** | **Rejected** | No decisive advantage and another processor for family data |
 | **LiteLLM / Bifrost** | **Revisit only if routing needs grow** | Useful self-hosted gateways, but each is another Railway service to operate before the need exists |
@@ -201,15 +201,17 @@ Railway pricing basis checked October 2026: Hobby $5/month includes $5 usage; us
 
 | Provider | Eligibility for this use | Data policy to apply | Status |
 |---|---|---|---|
-| **OpenAI API** (default LLM + embeddings) | Confirm the API terms permit a personal household app whose household includes minors (adults are the users for the MVP) | API data not used for training; request zero-retention controls where available; India storage residency exists only with sales approval | Data controls verified; **eligibility to confirm in S0** |
-| Anthropic API (challenger) | Confirm household use; minors need extra safeguards per its policies | No training on API data by default; no India residency for Haiku 4.5 | **To confirm in S0** |
-| **Sarvam AI** (default STT + TTS) | Confirm API-account terms for a household account in a home with minors **in writing** | Obtain training opt-out, retention/deletion terms and enterprise/customer terms if needed | **Release gate: S0, before any family clip is uploaded** |
-| Deepgram (STT fallback) | Confirm household use | Opt out of model-improvement programme where needed; use India endpoint | **To verify** |
-| ElevenLabs / Azure Speech (if chosen in S2) | Confirm household use and any age/minor terms | ElevenLabs/Azure retention, training and region settings must be recorded before clips are uploaded | **To verify if shortlisted winner/fallback** |
-| **Railway** | Hosting, worker and Postgres for household data in Singapore | Confirm region, data-at-rest terms, support model, volume backups, private networking and account access controls | **S0/S5 gate** |
-| **Cloudflare R2** | Encrypted backups and later Vault originals | Backups are `age`-encrypted before upload; forget journal contains content-free tombstones; Vault originals use presigned URLs and app-managed access rules | Configure before backup drill |
-| **Resend** | Transactional email for sign-in codes on `nilumi.in` | Receives email address and code only; no raw household content | **S0/S6 gate** |
-| **GitHub** | Code, CI and manual live evals | No family data in the repository; eval datasets require consent and should prefer synthetic data; Actions logs must not print secrets or family content | **S0 gate** |
+| **OpenAI API** (default LLM + embeddings) | Household use permitted via API terms; adults are the MVP users in a home with minors | Data routed through **Vercel AI Gateway** team-wide ZDR + `disallowPromptTraining` + provider allowlist | **Green via S0 (Oct 2026): controls set on AI Gateway** |
+| Anthropic API (challenger) | Household use permitted via API terms | Same AI Gateway ZDR + no-training enforcement | **Green via S0 (Oct 2026)** |
+| Vercel AI Gateway | Processor of family transcript text for LLM/embedding calls | Team-wide Zero Data Retention (prompts/responses deleted after each request); `disallowPromptTraining`; provider allowlist; no family audio | **Green via S0 (Oct 2026); settings re-verified at project init** |
+| **Sarvam AI** (default STT + TTS) | Household API-account terms for a home with minors | Training disabled in account; retention/deletion terms noted; written confirmation obtained | **Green — S0 complete (Oct 2026): written confirmation received, training opt-out disables training data** |
+| ~~Deepgram~~ | Dropped in S0; Sarvam covers STT fallback | — | **Not used** |
+| ElevenLabs (optional TTS/STT candidate, retained for future use cases) | Confirm household use and any age/minor terms before any family clip | Retention/training/region settings must be recorded first | **To verify before use. Pricing (Oct 2026): TTS ~$0.05–0.10 per 1k chars (Flash–Multilingual v3), Scribe v2 STT ~$0.22/hr vs Sarvam TTS ~₹3/1k chars (~$0.035) and STT ~₹30/hr (~$0.34) — Sarvam stays the default; ElevenLabs only if S2/S4 justifies it** |
+| ~~Azure Speech~~ | Dropped in S0 | — | **Not used** |
+| **Railway** | Hosting, worker and Postgres for household data in Singapore | S0-verified; volume backups, private networking and account controls confirmed | **Green (Oct 2026)** |
+| **Cloudflare R2** | Encrypted backups and later Vault originals | Backups are `age`-encrypted before upload; content-free forget tombstones | **Green (Oct 2026)** |
+| **Resend** | Transactional email for sign-in codes on `nilumi.in` | Receives email address and code only | **Green (Oct 2026) — sender verification on `nilumi.in` still pending under S6** |
+| **GitHub** | Code, CI and manual live evals | No family data in repo; eval datasets prefer synthetic; Actions logs don't print secrets | **Green (Oct 2026)** |
 | Google Gemini API | Not eligible under current consumer/under-18 reading unless written eligibility or different contractual terms are obtained | Paid tier does not train on prompts but logs for abuse monitoring | Excluded unless S0 changes the status |
 
 The effective settings (account, opt-outs, retention, date checked) are recorded in `config/providers.md` and re-checked yearly and before kid mode.
