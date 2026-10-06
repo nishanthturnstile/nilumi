@@ -2,7 +2,9 @@
 
 M1/M2 cover installability, email-code sessions, a ten-minute step-up window,
 and microphone capture. Uploads currently return `spike-noop`; they do not
-transcribe or store audio. M3 playback and M4 push delivery are still pending.
+transcribe or store audio. M3 adds a canned SSE turn and two synthetic audio
+clips; M4 adds Web Push subscription and immediate/delayed test notifications.
+Real speech synthesis and durable push storage are outside this spike.
 
 Use Node.js 24 and pnpm 12.9.1 (pinned in `package.json`).
 
@@ -53,6 +55,9 @@ Set service variables:
 | `AUTH_SECRET` | A generated random secret; keep it stable across deployments |
 | `RESEND_API_KEY` | Your Resend key; `CONFIGURE_IN_RAILWAY` is only a placeholder |
 | `RESEND_FROM` | `Nilumi <signin@nilumi.in>` (verify this sender in Resend) |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Public half of a generated Web Push key pair; required at build time |
+| `VAPID_PRIVATE_KEY` | Private half of that pair; server only |
+| `VAPID_SUBJECT` | `mailto:admin@nilumi.in` |
 
 With a missing or placeholder Resend key, production sign-in returns 503.
 Development codes are only exposed locally. Keep credentials in Railway or
@@ -80,3 +85,42 @@ Safari and add it to the Home Screen. Test each in standalone mode:
 
 Desktop fake-microphone checks cannot establish iOS/Android interruption or
 permission behavior. Record real phone results before treating M1/M2 as accepted.
+
+## M3/M4 phone acceptance
+
+Use `https://staging.nilumi.in` in the installed app on both phones. Close and
+reopen, then reload online to pick up the latest deployment. Confirm the page
+contains **Play test turn**, **Enable notifications**, and **Send in 10 seconds**.
+On iPhone, use the Home Screen app (iOS 16.4 or later), rather than a Safari tab,
+for push. Sign in before enabling notifications or sending tests.
+
+| Check | Expected result |
+| --- | --- |
+| Play test turn | Two lines (milk, then “Anything else?”), two distinct beeps, status done |
+| Play another turn | Both lines and beeps play again, with no accumulating duplicates |
+| Switch apps/lock after the first beep finishes | Return and hear only the remaining beep; two lines total |
+| Interrupt during a beep | Return and tap **▶ Play reply** if shown; the interrupted clip resumes, then the remaining clip plays |
+| Briefly disconnect Wi-Fi/mobile data mid-turn, then restore | Reconnect completes the turn without repeating completed clips or lines |
+| Audio permission/interruption blocks playback | A visible **▶ Play reply** appears; tapping recovers, rather than failing silently |
+| Navigate to Sign in during a turn | Audio stops and the old turn does not reconnect |
+| Enable notifications → allow → Send test notification | Notification appears; status counts push-service acceptance, not confirmed device delivery |
+| Send in 10 seconds | Wait for “Scheduled”, immediately swipe away and lock; notification arrives with the app closed |
+| Tap the notification | Installed app opens or the existing app window gains focus |
+| Deny notification permission | Clear denial message; allow in device settings and retry |
+
+A freshly launched iPhone app does not necessarily reject `play()`: the fallback
+is conditional, not an expected failure on every launch. Repeat cold-launch
+playback, and use interruptions to check recovery. Focus mode and notification
+settings can suppress visible alerts; record delays separately with those
+settings noted.
+
+Subscriptions are scoped to the signed-in email and held in process memory.
+After any redeploy/restart, tap **Enable notifications** again on each phone.
+Delayed sends use a ten-second in-process timer: closing the phone app does not
+cancel it, but restarting the server does. This requires one always-on replica.
+The service worker excludes APIs and authenticated pages from its cache.
+
+Record device/OS, scenario, pass/fail, notification delay, whether the fallback
+appeared, and any friction your wife encounters. M3/M4 remain pending real-phone
+acceptance until these results are recorded; M5/M6 and the S1 outcome decision
+follow afterward.
