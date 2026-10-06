@@ -37,8 +37,10 @@ The existing Next.js ESLint rules check React and framework-specific behavior.
 ## Railway staging
 
 Use the existing Website-Thaarei project, an empty Staging environment, and a
-service for this spike. Set the service root directory to `/spikes/s1` and the
-Railway config path to `/spikes/s1/railway.toml`. Run one replica in Singapore
+service for this spike. Set the service root directory to `/spikes/s1`, build
+command to `pnpm build`, start command to `pnpm start --hostname 0.0.0.0`, and
+healthcheck path to `/`. Railway's config-file settings are deprecated; configure
+these directly on the service. Run one replica in Singapore
 (`asia-southeast1-eqsg3a`), with sleeping disabled: sign-in codes are in memory
 and cannot be shared between replicas or survive a restart.
 
