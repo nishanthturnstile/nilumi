@@ -31,18 +31,39 @@ function wavForSeq(seq: number): Buffer {
 }
 
 export async function GET(
-  _req: Request,
+  req: Request,
   { params }: { params: Promise<{ seq: string }> }
 ) {
   const { seq } = await params;
   const n = Number(seq);
-  if (!Number.isInteger(n) || n < 1) {
+  if (!Number.isSafeInteger(n) || n < 1 || n > 2) {
     return new Response("bad seq", { status: 400 });
   }
-  return new Response(new Uint8Array(wavForSeq(n)), {
-    headers: {
-      "Content-Type": "audio/wav",
-      "Cache-Control": "no-store",
-    },
+  const wav = wavForSeq(n);
+  const headers = new Headers({
+    "Content-Type": "audio/wav",
+    "Cache-Control": "no-store, no-transform",
+    "Accept-Ranges": "bytes",
+    "Content-Length": String(wav.length),
   });
+  // iOS probes media with bytes=0-1, then requests the rest of the file.
+  // Support a single closed, open-ended, or suffix range. Unsupported range
+  // units and multipart ranges are ignored, returning the full representation.
+  const range = req.headers.get("Range");
+  const match = range?.match(/^bytes=(\d*)-(\d*)$/);
+  if (!match) return new Response(new Uint8Array(wav), { headers });
+  const suffix = match[1] === "";
+  const first = Number(suffix ? match[2] : match[1]);
+  const last = match[2] === "" ? wav.length - 1 : Number(match[2]);
+  const start = suffix ? Math.max(0, wav.length - first) : first;
+  const end = suffix ? wav.length - 1 : Math.min(last, wav.length - 1);
+  if ((!match[1] && !match[2]) || !Number.isSafeInteger(first) || !Number.isSafeInteger(last) ||
+    start >= wav.length || start > end || (suffix && first === 0)) {
+    headers.set("Content-Range", `bytes */${wav.length}`);
+    headers.set("Content-Length", "0");
+    return new Response(null, { status: 416, headers });
+  }
+  headers.set("Content-Range", `bytes ${start}-${end}/${wav.length}`);
+  headers.set("Content-Length", String(end - start + 1));
+  return new Response(new Uint8Array(wav.subarray(start, end + 1)), { status: 206, headers });
 }

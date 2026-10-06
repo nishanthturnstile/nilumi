@@ -31,6 +31,7 @@ Resend key, both sign-in and step-up show the local development code.
 ```sh
 pnpm lint
 pnpm typecheck
+pnpm test
 pnpm build
 ```
 
@@ -119,8 +120,14 @@ After any redeploy/restart, tap **Enable notifications** again on each phone.
 Delayed sends use a ten-second in-process timer: closing the phone app does not
 cancel it, but restarting the server does. This requires one always-on replica.
 The service worker excludes APIs and authenticated pages from its cache.
+Audio responses support byte ranges (including Safari's two-byte probe), with
+explicit lengths and `no-store, no-transform` to preserve the WAV bytes.
 
 Record device/OS, scenario, pass/fail, notification delay, whether the fallback
 appeared, and any friction your wife encounters. M3/M4 remain pending real-phone
 acceptance until these results are recorded; M5/M6 and the S1 outcome decision
 follow afterward.
+
+2026-10-06 phone results: Android acceptance reported pass. iPhone Safari M3
+reported “audio unavailable” on the first turn. The missing byte-range support
+has been corrected; iPhone acceptance remains pending a retest of that deployment.
