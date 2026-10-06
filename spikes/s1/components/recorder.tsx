@@ -147,8 +147,9 @@ export function Recorder() {
   const suppressClick = useRef(false);
   return (
     <section className="flex flex-col items-center gap-4">
-      <p className="text-sm text-neutral-500">Phase: {phase}</p>
+      <p className="text-sm text-neutral-500" role="status">Phase: {phase}</p>
       <button
+        aria-label={phase === "recording" ? "Stop recording" : "Hold to talk, or tap to start recording"}
         className="rounded-full bg-black px-8 py-4 text-white select-none touch-none"
         onPointerDown={(e) => {
           e.preventDefault();

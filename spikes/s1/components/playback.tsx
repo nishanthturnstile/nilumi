@@ -165,7 +165,9 @@ export function Playback() {
 
   return (
     <section className="flex flex-col items-center gap-3">
-      <button className="rounded bg-black px-6 py-3 text-white" onClick={startTurn}>
+      <button
+        aria-label="Play a test turn audio reply"
+        className="rounded bg-black px-6 py-3 text-white" onClick={startTurn}>
         Play test turn
       </button>
       <p className="text-sm text-neutral-500" role="status">Status: {status}</p>
