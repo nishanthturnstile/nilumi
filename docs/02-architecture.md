@@ -1,15 +1,17 @@
 # 02 — Architecture and Technical Design: Nilumi
 
 > **Status:** Final baseline · Revision 2 after the October 2026 owner decisions · **Date:** October 2026
-> **Related:** [01 Product Plan](01-product-plan.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research & Decisions](04-research-and-decisions.md)
+> **Related:** [ADR catalogue](adr/README.md) · [01 Product Plan](01-product-plan.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research](04-research.md) · [05 Implementation Roadmap](05-implementation-roadmap.md)
 
 ## How to read this document
+
 - §1–§5: drivers, principles, topology and code structure.
 - §6–§7: the **turn pipeline** (the heart of the system) and the NLU contract.
 - §8–§13: memory model, data model, retrieval, identity and entity resolution, dates, lists and reminders.
 - §14–§18: voice, privacy and security, observability and evaluation, operations, latency.
-- §19–§21: API surface, evolution path, and architecture decision records (ADRs).
-- [04 Research & Decisions](04-research-and-decisions.md) is the evidence log. Where this architecture links to 04, the decision itself is still stated here.
+- §19–§21: API surface, evolution path, and a pointer to the ADR catalogue.
+- This document owns technical design and contracts; [03 Tech Stack](03-tech-stack.md) owns technology choices and provider status. [ADR catalogue](adr/README.md) owns accepted decision records; [04 Research](04-research.md) owns evidence and review history; [05 Implementation Roadmap](05-implementation-roadmap.md) owns delivery sequence and spike prerequisites.
+- **Baseline status:** accepted design does not mean implementation or verification is complete. Provider approvals, exact model/voice selections and platform proofs remain [pending validations](05-implementation-roadmap.md#5-pending-validations-and-decisions).
 
 ---
 
@@ -214,7 +216,7 @@ sequenceDiagram
 | **STT** | Voice clips ≤ 30 s (REST limit, suitable for push-to-talk). Keyterms (≤ 50) come from the **speaker's** most-used visible aliases (§14.3). The transcript is shown after the secret guard. |
 | **Secret pre-guard** | The shared sensitive-input boundary (§15.3) runs **before** anything is persisted or sent to the LLM. On a hit: persist a redacted event, reply with a template, stop. |
 | **Context assembly** | Now (household TZ), speaker + member relations, up to the last 3 turns of this conversation (text + referenced memory IDs), any pending clarification, the entity shortlist (≤ 20), and the transcript. |
-| **NLU and routing** | One structured-output call via the AI SDK provider registry (§2, ADR-022), using direct provider SDKs with our own keys. Timeout 5 s; one retry on the approved challenger. |
+| **NLU and routing** | One structured-output call via the AI SDK provider registry (§2, [ADR-022](adr/adr-022.md)), using direct provider SDKs with our own keys. Timeout 5 s; one retry on the approved challenger. |
 | **Speculative retrieval** | Runs in parallel with NLU for every turn and saves one round trip when the turn is a question. |
 | **Execution** | Each command runs in its own short `withMemberTx`, so a multi-command turn can partially succeed. Each command returns a **card** and, where reversible, an **operation** (for undo). Failures and rejected facts produce error or "incomplete" cards; nothing is described as done unless it committed. |
 | **Response stream** | The Next.js route handler returns a streamed response with transcript, cards, validated answer sentences and `speech.ready` events. User-visible success never depends on deferred work outside the request; the ledger commits before `done`. |
@@ -309,7 +311,7 @@ type QueryPlan  = { entities: EntityRef[]; predicates: string[]; time?: DateExpr
 [dynamic]            now · speaker + relations · last ≤3 turns · pending clarification
                      · entity shortlist (id, type, canonical, aliases) · transcript
 ```
-Prompts live in `packages/ai/prompts/*.ts` with a `PROMPT_VERSION`. The version, model ID and registry version are stored on every memory (`extractor`) and every trace. Cache minimums differ by provider; measure the fully serialized static prefix on the pinned model in Spike S3 and never assume cache hits in the latency or cost budget.
+Prompts live in `packages/ai/prompts/*.ts` with a `PROMPT_VERSION`. The version, model ID and registry version are stored on every memory (`extractor`) and every trace. Cache minimums differ by provider; measure the fully serialized static prefix on the pinned model ([roadmap S3](05-implementation-roadmap.md#phase-0--spikes-and-decisions)) and never assume cache hits in the latency or cost budget.
 
 ---
 
@@ -321,7 +323,7 @@ Prompts live in `packages/ai/prompts/*.ts` with a `PROMPT_VERSION`. The version,
 | **Source event** | An immutable record of an input (voice/text/UI/document import): who, when, the raw text, STT or extraction metadata. Changed only by redaction. |
 | **Entity** | A thing the household talks about: person (members *and* external people), appliance, vehicle, place, organization, service provider, document, item, food, activity. Has aliases. |
 | **Member** | A household person who can log in or be targeted (adult/child). Each member *is* an entity, plus a `members` row. |
-| **Memory** | One assertion: **subject → predicate → (object entity | typed value)**, with visibility, provenance, validity time and status. |
+| **Memory** | One assertion: **subject → predicate → (object entity \| typed value)**, with visibility, provenance, validity time and status. |
 | **Predicate** | A registry entry defining meaning, value type, cardinality, allowed subject types and default visibility. |
 | **Operation** | One applied change with its inverse (the undo unit). |
 | **History** | An append-only log of every memory state change, including visibility changes. |
@@ -670,7 +672,7 @@ create table forget_tombstones (
 );
 
 -- Operational state ----------------------------------------------------------
--- Lists and tasks stay household/private in Phase 1. Add shared later only if a real use case needs it.
+-- MVP lists and tasks support household/private visibility. Add shared later only if a real use case needs it.
 create table lists (
   id uuid primary key default uuidv7(),
   household_id uuid not null,
@@ -834,13 +836,13 @@ create table feedback (
   created_at timestamptz not null default now()
 );
 
--- Reserved for H1 Family Records Vault; not created in Phase 1:
+-- Reserved for H1 Family Records Vault; not created in the MVP:
 -- documents, document_pages, document_extractions, document_chunks.
 -- They reuse visibility/owner semantics, R2 keys under households/{household_id}/...,
 -- source_type evidence refs, and the shared sensitive detector in mask mode.
 ```
 
-**Database locale:** create the database with an ICU or `en_US.UTF-8` locale (not `C`). Whether `pg_trgm` and FTS tokenize Tamil (including vowel signs) acceptably is **verified, not assumed**, in Spike S5 (§20.3).
+**Database locale:** create the database with an ICU or `en_US.UTF-8` locale (not `C`). Whether `pg_trgm` and FTS tokenize Tamil (including vowel signs) acceptably is **verified, not assumed**, under the production locale (§20.3); delivery validation is assigned to [roadmap S5](05-implementation-roadmap.md#phase-0--spikes-and-decisions).
 
 ---
 
@@ -931,7 +933,7 @@ Purely deterministic: resolve X → fetch active memories for the entity (+ alia
 2. **NLU-provided `existing_id`** from the shortlist → validated (exists, visible, type-compatible).
 3. **Exact normalized alias** match.
 4. **Fuzzy**: `word_similarity(alias_norm, mention) ≥ 0.6`, **or** phonetic equality (`alias_phonetic`) for person and brand names. This catches STT variants like "Aquagard" or "Ravee".
-5. **Semantic** (Phase 3+): embedding similarity against entity profile text ("water filter" → purifier).
+5. **Semantic**: embedding similarity against entity profile text ("water filter" → purifier).
 6. **No match** → create a new entity (provenance-linked). The card shows "New: *Aquaguard* (appliance) [Change]".
 
 **Ambiguity:** two or more candidates within a 0.1 score margin → clarification ("The Bosch washing machine or the LG one?").
@@ -971,7 +973,7 @@ Before the NLU call, the transcript's n-grams are matched (trigram + phonetic, ~
 - **Edit/cancel:** edits bump the schedule revision and enqueue replacement occurrences in the same transaction. Old jobs no-op because the revision claim fails. A notification already past the claim can't be recalled; the card documents that race.
 - **Recurrence and snooze:** after an occurrence is sent, the next one is computed from `dtstart`/`rrule`/`tzid` and scheduled through the same wrapper. Snooze affects one occurrence (`snoozed_until`). Completing a linked task ends future occurrences.
 - **Reconciliation:** graphile-worker maintenance tasks check for missed or stuck occurrences and repair them from Postgres state. This is a safety net; normal scheduling is transactional with the business write.
-- **Gate:** Spike S5 must run ≥ 200 automated occurrences, including one-off, recurring, snoozed, edited mid-flight, quiet hours, worker restarts and a redeploy, with 100% dispatched within 60 s and zero stale sends.
+- **Validation:** the reminder reliability suite is specified in [§16.2](#162-evaluation-harness-and-gates); its initial proof and feature-release rerun are assigned in the [roadmap](05-implementation-roadmap.md#2-mvp-phases).
 - **Targets:** "remind me" → speaker. "Remind us" → all adult members. "Remind my wife" → the spouse (she sees "from Nishanth").
 - **Time zone:** reminders fire in the schedule's `tzid` (the household timezone by default). Travel and per-member timezones are out of MVP scope and documented.
 
@@ -979,7 +981,7 @@ Before the NLU call, the transcript's n-grams are matched (trigram + phonetic, ~
 - VAPID keys (server). Subscriptions are per device and stored in `push_subscriptions`. A **notification-health screen** per device shows the last accepted and last received push, with a "send test" button.
 - Payloads are end-to-end encrypted to the subscription keys (RFC 8291), so Apple and Google push services can't read them. **Private reminders use a generic lock-screen preview by default** ("You have a private reminder"); household reminders show their text (configurable).
 - **Measured separately** (RFC 8030 distinguishes acceptance from delivery): worker dispatch → push-service acceptance → browser service-worker receipt (the SW posts `POST /v1/push/receipts`, best effort) → user acknowledgement. We don't claim alarm-grade delivery; Focus modes, offline phones and OS policy can delay presentation without any error.
-- **iOS:** push requires the PWA to be **installed to the Home Screen** and permission granted from inside the installed app. Onboarding walks your wife through this once (Spike S1 validates it).
+- **iOS:** push requires the PWA to be **installed to the Home Screen** and permission granted from inside the installed app. Onboarding walks your wife through this once ([roadmap S1](05-implementation-roadmap.md#phase-0--spikes-and-decisions)).
 - Delivery is initiated by the worker. Notification actions (Done/Snooze) are supported on Android. On iOS, tapping opens the reminder in the app.
 
 ---
@@ -991,7 +993,7 @@ Before the NLU call, the transcript's n-grams are matched (trigram + phonetic, ~
 - Minimum 300 ms (filters accidental taps). Auto-stops at 28 s with a hint (the STT REST limit is 30 s).
 - **Interruption handling:** `visibilitychange`, page hide, screen lock, an incoming call or audio-session interruption → stop and discard (or keep, if > 1 s, and ask "Send what I heard?"). Always stop all tracks so the mic indicator turns off.
 - `MediaRecorder` mime negotiation: record native browser formats, `audio/webm;codecs=opus` on Android Chrome and `audio/mp4` (AAC) on iOS Safari. The shortlisted STT vendors accept both; if a vendor rejects iOS fragmented MP4, remux in JavaScript or drop that vendor. There is no server-side transcoding binary.
-- **Playback:** a single reusable `<audio>` element is primed during the user gesture. If a later `play()` is still rejected (iOS resume, silent mode, interruption), the turn shows a visible **▶ Play reply** button. That fallback is a first-class path, not an error. All of this is tested on the installed iPhone app across resume and interruptions (S1).
+- **Playback:** a single reusable `<audio>` element is primed during the user gesture. If a later `play()` is still rejected (iOS resume, silent mode, interruption), the turn shows a visible **▶ Play reply** button. That fallback is a first-class path, not an error. Installed-iPhone resume and interruption behavior is validated in [roadmap S1](05-implementation-roadmap.md#phase-0--spikes-and-decisions).
 
 ### 14.2 STT adapter
 ```ts
@@ -1002,7 +1004,7 @@ interface SttAdapter {
                       provider: string; model: string; ms: number }>;
 }
 ```
-Default: **Sarvam Saaras v4** (`mode=transcribe`, keyterms), confirmed as the best fit for cost, India hosting, keyterm biasing and future Tanglish `codemix`. The adapter uses direct multipart `fetch` if an SDK lags the REST keyterm API. Fallback / circuit-breaker target: **Deepgram Nova-3** (India endpoint, documented keyterms, official AI SDK provider). S2 bake-off shortlist: Sarvam Saaras v4 · Deepgram Nova-3 · ElevenLabs Scribe v2 · Azure Fast Transcription / MAI-Transcribe-2. REST only for the MVP; streaming is revisited if batch p95 breaks the budget or hands-free mode arrives.
+Default: **Sarvam Saaras v4** (`mode=transcribe`, keyterms), accepted as the baseline for cost, India hosting, keyterm biasing and future Tanglish `codemix`, subject to provider approval and bake-off validation. The adapter uses direct multipart `fetch` if an SDK lags the REST keyterm API. Fallback / circuit-breaker target: **Deepgram Nova-3** (India endpoint, documented keyterms, official AI SDK provider). S2 bake-off shortlist: Sarvam Saaras v4 · Deepgram Nova-3 · ElevenLabs Scribe v2 · Azure Fast Transcription / MAI-Transcribe-2. REST only for the MVP; streaming is revisited if batch p95 breaks the budget or hands-free mode arrives.
 
 ### 14.3 Keyterm loop
 Keyterms are the top 50 aliases **visible to the speaker**, ranked by `use_count`, recency and type (people and brands first), plus member names. They're cached **per member** (never household-wide, so private entity names can't leak into another member's recognition) and rebuilt when aliases change. This closes the loop: **new entity → alias → keyterm → better recognition next time.**
@@ -1070,7 +1072,7 @@ Policies are **per command** on purpose: permissive policies are OR-ed, so a rea
 | Table | Read | Write | Notes |
 |---|---|---|---|
 | `memories`, `entities` | household rows + adult-visible shared rows + own private rows | household rows by adults; shared/private by owner only | Shared rows keep immutable owner; private entity aliases never leak |
-| `lists`, `tasks` | household rows + own private rows | same | Phase 1 keeps lists/tasks household/private |
+| `lists`, `tasks` | household rows + own private rows | same | MVP lists/tasks support household/private visibility |
 | `entity_aliases`, `memory_embeddings`, `memory_history`, `list_items` | parent | parent | History of a shared memory is visible to adults only from share time |
 | `reminder_schedules`, `reminder_occurrences` | creator + targets (+ household if visibility household) | creator or worker functions | Targets see "from Nishanth" |
 | `notification_deliveries`, `push_subscriptions`, `inbox_items` | own member | system functions | Un-share/forget scrubs derived inbox content through `content_refs` |
@@ -1082,10 +1084,10 @@ Policies are **per command** on purpose: permissive policies are OR-ed, so a rea
 
 - **Sharing-specific write rules:** only the owner can share, un-share, edit or forget a shared memory. Another adult may request "make this household", but that creates a normal household supersession card and does not mutate the shared row without owner authority.
 - **Existence leaks are leaks too:** counts, autocomplete, duplicate messages, SSE invalidation IDs, keyterms, notification previews, entity shortlists and "already known" cards are computed under the reader's RLS context. Shared safe-projection entities expose only name + type after confirmation.
-- **Privacy test suite** (≥ 40 baseline cases plus share/un-share cases) runs in CI against real Postgres 18 in Testcontainers. It covers mixed-visibility multi-command turns, pool reuse, missing context, rollback mid-request, shared entity existence leaks, forget by a non-owner, un-share scrubbing and every row of the matrix. It must pass at 100%.
+- **Privacy test suite** (≥ 40 baseline cases plus share/un-share cases) runs in CI against real Postgres 18 in Testcontainers. It covers mixed-visibility multi-command turns, pool reuse, missing context, rollback mid-request, connection drop/exhaustion, shared entity existence leaks, forget by a non-owner, un-share scrubbing and every row of the matrix. It must pass at 100%.
 
 ### 15.3 Sensitive-input boundary (before persistence and before the LLM)
-One shared `SensitiveInputBoundary` is applied at **every ingress that carries user text**: turn text, STT output, imports, memory/entity PATCH edits, list item notes, task notes, feedback notes, entity descriptions and later Vault extraction text. It ships in the **walking skeleton (Phase 1)**, before any real family input is stored.
+One shared `SensitiveInputBoundary` is applied at **every ingress that carries user text**: turn text, STT output, imports, memory/entity PATCH edits, list item notes, task notes, feedback notes, entity descriptions and later Vault extraction text. It must protect each ingress before any real family input is stored; delivery is assigned to [roadmap Phase 1](05-implementation-roadmap.md#phase-1--walking-skeleton-with-safety-rails).
 
 The module has two modes:
 - **`refuse`** for live user input: block storage/LLM calls and reply with a template.
@@ -1182,12 +1184,12 @@ evals/
 ├── scorers/               # structural match, recall@k, abstention, entity-name accuracy, latency/cost stats
 └── reports/               # <date>-<suite>-<git-sha>.md + .json (model ids, prompt versions)
 ```
-- **CI (every PR):** typecheck, lint, unit tests (`domain` package: dates, detectors, normalization, scoring), integration tests on real Postgres 18 (Testcontainers: RLS, supersession, sharing, forget, idempotency), and NLU tests against **recorded** LLM responses.
+- **CI (every PR):** typecheck, lint, `/v1` Zod request/response contract tests, unit tests (`domain` package: dates, detectors, normalization, scoring), integration tests on real Postgres 18 (Testcontainers: RLS, supersession, sharing, forget, idempotency), and NLU tests against **recorded** LLM responses.
 - **Live evals (manual workflow plus before any model or prompt change):** the full suites against the real providers, via GitHub Actions.
 - **Promotion gate** for changing any model role or prompt version, with **absolute floors plus regression limits**, so repeated small drops can't accumulate: NLU structural ≥ 90%; retrieval top-5 ≥ 90%; answer correctness ≥ 85%; abstention on unanswerables ≥ 95%; privacy and dates **100%**. No metric drops by more than 2 points; p95 latency up by at most 20%; cost per turn up by at most 50%. A held-out set must also meet the floors.
-- **Classifier experiments:** no classifier runs in the MVP. Two offline experiments are tracked: embedding-kNN intent router versus the NLU golden set, and PII recall with PII-Tracer / Qwen3Guard-0.6B against red-team secrets. Revisit triggers: NLU p95 > 2 s from prompt size, LLM spend > $5/month, intent accuracy < 90% concentrated in simple commands, or secret-detector recall < 100%.
+- **Classifier experiments:** no classifier runs in the MVP. Compare embedding-kNN intent routing (provider embeddings and a free local encoder) with the NLU golden set; pursue only with ≥ 95% agreement on simple intents and near-zero false routing on multi-command utterances. Compare PII-Tracer / Qwen3Guard-0.6B with deterministic detectors on 20–30 red-team secrets; adoption requires clearly higher recall and a separate reviewed decision. Revisit triggers: NLU p95 > 2 s from prompt size, LLM spend > $5/month, intent accuracy < 90% concentrated in simple commands, or secret-detector recall < 100%.
 - **Sharing/privacy additions:** cases cover capture-time share cues, later share/un-share, forget by a non-owner, cached/derived content scrubbing, shared safe-projection entities and cardinality-one household/shared collisions.
-- **Reminder reliability:** S5 runs ≥ 200 graphile-worker occurrences (one-off, recurring, snoozed, edited mid-flight, quiet hours, worker restarts and a redeploy) and requires 100% dispatch within 60 s and zero stale sends.
+- **Reminder reliability:** the suite runs ≥ 200 graphile-worker occurrences (one-off, recurring, snoozed, edited mid-flight, quiet hours, worker restarts and a redeploy) and requires 100% dispatch within 60 s and zero stale sends. It validates wrapper timing and revision claims; the [roadmap](05-implementation-roadmap.md#2-mvp-phases) assigns the S5 proof and Phase 5 rerun.
 - **Pilot feedback loop:** a `wrong` or `should_not_remember` rating → the admin tags a failure type → the case is added to the relevant dataset (with consent).
 
 ---
@@ -1199,7 +1201,7 @@ evals/
 - **Production:** Railway GitHub integration deploys `main` to the `app` and `worker` services from the shared Docker image. The Railway pre-deploy command runs `drizzle-kit migrate` as `fa_owner`; the new deployment must pass `/readyz`, then Railway switches traffic.
 - **GitHub Actions:** CI only (typecheck, lint, unit, integration with Testcontainers, recorded-LLM tests) plus manually triggered live evals. Actions do not deploy, run backups or own restore tests.
 - **Migrations:** follow **expand → migrate → contract**. The app, worker jobs, cached PWA builds and queued offline mutations carry a `v` field, and handlers accept the current and previous version (an N-1 window). Contract migrations wait until no clients, mutations or jobs older than N-1 remain.
-- **Rollback policy:** default is **forward-fix**. A Railway deployment rollback is allowed only when the schema is still compatible (expand phase). Data corruption → restore from backup plus forget-journal replay (§17.2). A deployment rollback and a data restore are both rehearsed in Phase 1.
+- **Rollback policy:** default is **forward-fix**. A Railway deployment rollback is allowed only when the schema is still compatible (expand phase). Data corruption → restore from backup plus forget-journal replay (§17.2). The deployment rollback and data-restore rehearsals are assigned in [roadmap Phase 1](05-implementation-roadmap.md#phase-1--walking-skeleton-with-safety-rails).
 
 ### 17.2 Backups and restore drill
 - **Nightly worker cron at 02:30 IST (`fa_maint`):** (1) drain unjournaled forget tombstones to the R2 journal; (2) `pg_dump -Fc`; (3) restore-test the **plaintext** dump into a scratch database on the same server; (4) verify migration version, roles, RLS policies, row counts vs manifest, canary rows in every visibility class, forget-journal replay and a forgotten canary absent; (5) drop scratch and delete the local plaintext file; (6) `age`-encrypt to the public recipient; (7) upload to R2 and verify object hash; (8) record the result and alert on failure. `fa_maint` needs `CREATEDB` for the scratch database; the plaintext dump exists only on the worker's ephemeral disk for the duration of the job.
@@ -1285,14 +1287,26 @@ The Hono route types are exported to the PWA through a typed client (`hc`). Requ
 ## 20. Evolution path
 
 ### 20.1 Family Records Vault, horizon H1
-The first post-MVP horizon is a family records vault: scan documents in the app, extract content, store originals as historical records, index masked text, and answer questions with document/page citations. It follows [04 §12](04-research-and-decisions.md#12-family-records-vault-first-post-mvp-horizon-h1).
 
-- **Capture:** native file/camera input (`accept="image/*" capture="environment"`) to avoid iOS Home Screen camera bugs; import existing PDFs/photos from the file picker; no iPhone Web Share Target. Large files upload directly to R2 with presigned URLs so the app service does not hold large request bodies in memory.
-- **Extraction:** choose in a Vault spike among hosted extractors (vision LLM, Mistral OCR or Azure Document Intelligence) and **PaddleOCR as an extra Railway service** if local Tamil OCR quality justifies the RAM cost.
-- **Storage:** `documents`, `document_pages`, append-only `document_extractions`, and `document_chunks`; originals in R2 under `households/{household_id}/documents/{document_id}/…`; versions are immutable through `supersedes_document_id`.
-- **Masking:** Aadhaar, PAN, policy, account and card numbers are masked before indexing, embeddings, Q&A LLM calls and display snippets. Originals still go to one approved extraction processor; local OCR is the fallback if no hosted processor passes the gate.
-- **Answering:** deterministic answers from extracted facts first; otherwise sentence-gated synthesis over `document_chunks`, with citations opening the scan at page/region.
-- **Phase-1 hooks already reserved:** `source_events.modality='document'`, evidence refs with `source_type`, nullable document refs, `Provenance` type, shared detector module `refuse`/`mask`, R2 key convention and enum names.
+The Vault extends the same memory/evidence pipeline with historical documents. Its priority and delivery are defined in [Roadmap H1](05-implementation-roadmap.md#3-post-mvp-horizons-and-optional-backlog); extraction/capture comparisons remain in [Research §12](04-research.md#12-family-records-vault-first-post-mvp-horizon-h1). The following are planned extension contracts, not implemented document tables.
+
+- **Capture:** native file/camera input (`accept="image/*" capture="environment"`) and PDF/photo file import; no iPhone Web Share Target. Edge/perspective correction and multi-page PDF tooling remain candidate choices in Research. Large originals upload directly to R2 with presigned URLs.
+- **Extraction:** the extractor is selected in the H1 spike among approved hosted vision/OCR services and PaddleOCR as an isolated Railway service if Tamil quality justifies its RAM/ops cost. Extraction processors must pass the provider gate. Document-type classification is part of H1; no classifier is added to the MVP turn path.
+- **Metadata separate from content:** the proposed table responsibilities are below. They reuse existing visibility/owner semantics; pages, extractions and chunks inherit the parent document's RLS.
+
+| Table | Planned responsibility |
+|---|---|
+| `documents` | Metadata: type (`medical`, `insurance`, `school`, `identity`, `household`, `personal`, `other`), title, subject entity, dates, visibility, owner, status, R2 key, SHA-256, page count, `supersedes_document_id`, `retention_class`, `encryption_scheme` / `key_id` |
+| `document_pages` | Page R2 key and dimensions |
+| `document_extractions` | Append-only extraction runs: extractor/version, raw text/JSON, confidence and `is_current`; changing engines preserves extraction history |
+| `document_chunks` | Retrieval units: masked text, page number, bounding box, FTS vector and embedding |
+
+- **Storage/versioning:** originals are immutable in R2 under `households/{household_id}/documents/{document_id}/…` with default server-side encryption. Rescans create a `supersedes_document_id` version; old versions are archived. Envelope-encryption columns are reserved for later use.
+- **Provenance:** extracted facts become ordinary memories pointing to document/page/region. The MVP reserves `source_events.modality='document'`, extraction metadata, a shared `Provenance` TypeScript type, evidence `source_type` and nullable `document_id` / `chunk_id` / `page`, shared detector `refuse` / `mask` modes, household-scoped R2 keys and `document_type` / `retention_class` enum names. Document tables and capture/extraction features remain H1 work.
+- **Masking:** Aadhaar, PAN, policy, account and card numbers are masked (for example, `XXXX-XXXX-1234`) before indexing, embeddings, Q&A calls and display snippets. One approved extraction processor necessarily sees the original; local/on-device extraction remains the fallback if no hosted processor passes the gate.
+- **Original viewing:** unmasked originals require step-up authentication. Whether this must be biometric is an H1 decision; ordinary masked snippets do not expose full identifiers.
+- **Answering:** deterministic answers from extracted facts first; otherwise sentence-gated synthesis over chunks. Document/page citations open the scan at the cited region.
+- **Forget:** owner/visibility authorization follows §8.6; index/embeddings are scrubbed immediately. R2 originals are purged after a short grace window and deletion is recorded in the forget journal; the window is specified during H1 feature planning.
 
 ### 20.2 Home Assistant channel (room speaker + devices), horizon H2
 - **Local:** HAOS on a small box (HA Green or an N100 mini-PC) + **Home Assistant Voice Preview Edition** (ESP32-S3 + XMOS far-field audio, on-device microWakeWord) using the wake phrase **"Hey Nilumi"**.
@@ -1321,88 +1335,10 @@ Scale is not expected during the pilot. Triggers:
 - Operating Railway Postgres becomes a burden → move only the database to managed Postgres behind the same `pg` adapter and restore from the encrypted backup + forget journal.
 - The Dokploy VM becomes preferable for cost/control → run the same image + `docker-compose.yml` with managed DNS and the same `nilumi.in` origin.
 - > 50k embeddings or slow hybrid search → add per-config HNSW indexes.
-- iOS PWA mic/push friction fails S1 → Capacitor escape hatch (ADR-015).
+- iOS PWA mic/push friction fails S1 → Capacitor escape hatch ([ADR-015](adr/adr-015.md)).
 
 ---
 
 ## 21. Architecture decision records
 
-Format: **Decision** · Alternatives · Consequences. Status: *Accepted* unless noted.
-
-**ADR-001 — Channel-agnostic brain; Next.js PWA first; Home Assistant later.**
-Decision: the PWA and `/v1` API are the first channel, with Home Assistant later as an adapter to the same turn contract. Alternatives: Home Assistant-centric local setup; Telegram/WhatsApp bot; native apps. Consequences: identity is solved per phone, the trust UX (cards, undo, memory browser) stays first-class, and HA arrives without core rewrites.
-
-**ADR-002 — TypeScript end-to-end (pnpm monorepo, shared Zod contracts).**
-Decision: TypeScript covers the Next.js app, Hono API, shared contracts, domain logic, worker and tests. Alternatives: Python FastAPI + TS PWA; NestJS. Consequences: one language and type-safe client/server; Python can be added later only as an isolated sidecar if a future local-ML/Vault need justifies it.
-
-**ADR-003 — "LLM as parser, code as executor"; no agent framework.**
-Decision: the core turn pipeline is a fixed sequence of AI SDK calls plus deterministic executors. Alternatives: free-form tool-calling agent loop; LangChain/LangGraph; Mastra/OpenAI Agents. Consequences: at most two LLM calls per turn, deterministic and testable writes, templated confirmations; open conversation is deferred to §20.6 over the same executors.
-
-**ADR-004 — PostgreSQL is the only stateful service.**
-Decision: Postgres stores data, vectors, FTS, jobs, pub/sub invalidations, access policy, receipts, traces and budgets. Alternatives: Redis/cache/queue, object storage for state, vector DB, graph DB. Consequences: one database to back up, secure and reason about; reminder creation and job enqueue can be transactional; operating Postgres well is a first-class responsibility (§17.2).
-
-**ADR-005 — Custom memory layer instead of a memory framework.**
-Decision: implement memories, history, supersession, retrieval and forget directly. Alternatives: Mem0, Graphiti/Zep, Letta, Cognee, LangMem (why each falls short: [Tech Stack §4.2](03-tech-stack.md#42-rejected-alternatives)). Consequences: we implement well-bounded logic ourselves; we get RLS privacy, predicate registry, span provenance, owner-only sharing and forget semantics that no framework provides on Postgres today.
-
-**ADR-006 — Predicate registry with typed values and cardinality.**
-Decision: predicates define value type, subject types, default visibility and cardinality. Alternatives: free-form predicates; pure-vector memory as text. Consequences: reliable structured lookup and conflict handling enforced by indexes; provisional `new:*` predicates need admin review.
-
-**ADR-007 — Visibility enforced by Postgres row-level security.**
-Decision: RLS is the privacy boundary for household, shared and private data. Alternatives: app-layer filtering only. Consequences: defense-in-depth against leaks between spouses; every request sets its context in a transaction; admin views are designed around RLS.
-
-**ADR-008 — Cascaded STT → LLM → TTS (not realtime speech-to-speech) for the MVP.**
-Decision: push-to-talk sends short clips through STT, structured NLU and optional sentence TTS. Alternatives: Gemini Live, OpenAI Realtime. Consequences: transcripts for provenance, keyterm biasing, deterministic writes, lower cost; slightly higher latency, mitigated by the screen UX and streaming route-handler response.
-
-**ADR-009 — Push-to-talk with REST STT + keyterms for the MVP; streaming is re-evaluated in S2.**
-Decision: REST STT with native browser audio formats is the default; Sarvam Saaras v4 is the default and Deepgram Nova-3 the fallback. Alternatives: streaming WebSocket STT; server-side transcoding. Consequences: simplest robust path for ≤ 30 s clips; S2 measures accuracy and latency on the shortlist; no transcoding binary is required.
-
-**ADR-010 — Undo-first confirmation instead of confidence thresholds.**
-Decision: accept deterministic, visible writes with Undo rather than asking on model confidence. Alternatives: thresholds on LLM self-reported confidence. Consequences: fewer questions, visible and reversible writes; clarification only on deterministic ambiguity.
-
-**ADR-011 — graphile-worker for jobs and reminders.**
-Decision: run graphile-worker in the Railway `worker` service for reminders, maintenance, forget-journal append, embeddings backfill and backup/restore tests. Alternatives: pg-boss, BullMQ, cron-only, hosted durable workflows. Consequences: jobs live in the same Postgres authority as business data, occurrence enqueue is transactional through `schedule_occurrence`, and delivery is at-least-once with idempotent claims. History: this was briefly replaced by Vercel Workflow in revision 1 and restored when hosting moved to Railway.
-
-**ADR-012 — Railway (Singapore) hosting: Next.js app, worker and Postgres; Dokploy VM as exit path.**
-Decision: start on Railway Singapore with `app`, `worker` and Railway Postgres 18 + pgvector, using the owner's existing paid account. Alternatives: existing Dokploy VM first, Fly.io, Render, split app/database providers, managed Postgres only. Consequences: the first deployment is always-on, close to India and operationally simple; we must operate Postgres; the same Docker image and `docker-compose.yml` keep a Dokploy exit path.
-
-**ADR-013 — Model roles pinned in config, changed only through the eval gate.**
-Decision: code names roles (`nlu`, `answer`, `embed`, `stt`, `tts`) and config pins exact model IDs. Alternatives: hard-coded models; "latest" aliases. Consequences: protection from silent provider changes; switching providers is a config change plus an eval report.
-
-**ADR-014 — Forget = redact everywhere (with a documented backup window); undo = retract.**
-Decision: forget scrubs every content copy, writes a transactional tombstone outbox, appends the R2 journal via worker and cannot be undone. Alternatives: soft delete only. Consequences: more complex forget code and audit jobs; real trust that "forget" means forget, subject to documented backup/provider limits.
-
-**ADR-015 — Next.js PWA with a Capacitor escape hatch.**
-Decision: ship a Next.js 16 App Router PWA with Serwist service worker first. Alternatives: native apps (React Native/Expo), PWA only with no escape hatch. Consequences: one codebase and one deployable; if iOS mic or push friction fails S1, wrap the same web app in Capacitor, which requires an Apple Developer account.
-
-**ADR-016 — Same-origin deployment on `nilumi.in`, bought before installing on the phones.**
-Decision: serve app, API and auth routes from `https://nilumi.in`; buy and attach the final domain before installing the PWA because installed origin, push subscriptions, Resend sender and optional WebAuthn step-up bind to it. Alternatives: separate static hosting + CORS; temporary platform domains; subdomain-first launch. Consequences: simple cookies and CSP; no CORS; domain setup is a Phase 0 prerequisite.
-
-**ADR-017 — AI provider eligibility is a release gate; default LLM roles start with OpenAI unless terms force a change.**
-Decision: every provider (LLM, embedding, STT, TTS, extractor, hosting, email and storage) passes S0 eligibility and data-terms checks before family data flows. The default `nlu`/`answer` role starts with OpenAI and `embed` with the approved embedding model, with Anthropic as challenger; Gemini is excluded unless eligibility changes. Alternatives: choose purely by benchmark/cost; use unverified consumer terms. Consequences: provider choice rests on eligibility and data terms first, then accuracy and latency.
-
-**ADR-018 — Turn execution ledger with per-command receipts.**
-Decision: every command has a receipt and result card committed with its effect. Alternatives: a unique turn ID only. Consequences: crash-safe, resumable, replayable multi-command turns; requests bound to the member and a request hash; a little more schema (`turn_commands`, `mutation_receipts`).
-
-**ADR-019 — Deterministic answers first; sentence-gated LLM synthesis.**
-Decision: single-fact questions use templates; synthesis sentences must cite and validate against evidence before display or speech. Alternatives: always stream an LLM answer and flag uncited claims after the fact. Consequences: simple questions are faster and cannot hallucinate; summaries wait for sentence validation.
-
-**ADR-020 — Next.js (latest, Turbopack) PWA with Hono mounted in route handlers and TanStack Query.**
-Decision: use Next.js 16 App Router with Turbopack, Hono mounted at `app/api/[[...route]]/route.ts`, Better Auth routes in the same app, Serwist PWA support and TanStack Query for API state. Alternatives: Vite SPA + Hono server (baseline), SvelteKit, static export. Consequences: one same-origin app/API deployment, React ecosystem fit, typed Hono client, offline-friendly query cache and no separate server package.
-
-**ADR-021 — Vercel: free open-source libraries only (Next.js, Turbopack, AI SDK); no metered Vercel platform services.**
-Decision: use Vercel-authored open-source libraries where useful, but do not use metered or platform-bound services. Alternatives (rejected/history): Vercel Hobby hosting + Workflow + Cron + AI Gateway from revision 1. Consequences: no free-tier cliffs or platform lock-in; jobs, realtime and backups stay in Postgres + worker; Railway owns hosting.
-
-**ADR-022 — LLM routing through the in-process AI SDK provider registry with model-role aliases; no hosted gateway.**
-Decision: `packages/ai` exposes model-role aliases through `createProviderRegistry`/`customProvider`, pins exact model IDs in `config/models.ts`, applies `wrapLanguageModel` middleware for per-call defaults and uses a small fallback wrapper. Alternatives: hard-coded provider SDKs, OpenRouter, Cloudflare gateway products, LiteLLM/Portkey/Helicone/TensorZero. Consequences: switching provider/model is config + eval gate; no extra routing service, processor or fee; STT/TTS stay direct.
-
-**ADR-023 — Email-code sign-in with optional WebAuthn step-up.**
-Decision: Better Auth email OTP + multi-session is the primary sign-in/recovery flow; optional platform WebAuthn is only a step-up for export, private views after inactivity, forget-all and possibly Vault originals. Alternatives: primary WebAuthn, magic links, Google sign-in, invite links/QR, passwords, SMS/WhatsApp OTP. Consequences: one mechanism works inside the installed iPhone app for first sign-in, new devices and recovery; mailbox takeover is account takeover and is stated honestly; Resend becomes a processor.
-
-**ADR-024 — Explicit, owner-only memory sharing (`shared` visibility).**
-Decision: private memories can become `shared` only through an explicit share cue or owner action. Shared rows remain owner-owned, readable by adults, not children, and owner-only for edit/forget/un-share. Alternatives: convert private to household; duplicate into spouse-visible private rows; app-layer ACLs. Consequences: ownership is preserved, un-share is possible, cardinality-one household slots are not silently overwritten, safe entity projections and new privacy evals are required.
-
-**ADR-025 — No classifier model in the MVP; instrumented experiments and revisit triggers.**
-Decision: no classifier is in the production turn path for MVP. Two offline experiments run in `evals/`: embedding-kNN intent routing vs the LLM intent, and PII recall with PII-Tracer / Qwen3Guard against the deterministic detector. Alternatives: pre-NLU intent classifier, safety/PII classifier in production, health/visibility classifiers. Consequences: no extra runtime/service or false-routing risk now; revisit triggers are explicit; document-type classification arrives with the Vault and safety classification with kid mode.
-
-**ADR-026 — Family Records Vault (H1) with ID masking and Phase-1 hooks.**
-Decision: the Vault is H1, before the room speaker. Phase 1 reserves source/event/provenance hooks, shared detector `mask` mode, R2 key conventions and enum names; H1 adds document tables, extraction, masked chunks and citations. Alternatives: keep documents/photos as a vague later import; build local OCR sidecar now; store only metadata. Consequences: the architecture grows toward a family memory platform without changing Phase 1 scope; hosted extraction processors must pass S0; ID numbers are masked before indexing, embeddings, Q&A prompts and display snippets.
+Accepted choices and rationale live in the [ADR catalogue](adr/README.md), covering [ADR-001](adr/adr-001.md) through [ADR-037](adr/adr-037.md), [D1–D19 mappings](adr/README.md#d-decision-map) and [Q1–Q12 mappings](adr/README.md#resolved-question-map). Schemas, contracts, operational procedures and extension designs remain in this document. Acceptance does not pass the provider, model, phone or platform gates recorded in the [roadmap](05-implementation-roadmap.md#5-pending-validations-and-decisions).

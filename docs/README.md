@@ -6,12 +6,16 @@
 
 | # | Document | What's inside |
 |---|---|---|
-| 01 | [Product Plan](01-product-plan.md) | Problem, users and roles, goals and success metrics, trust-UX principles, journeys with acceptance criteria, scope and horizons, memory categories and sharing, risk-first phases (incl. Phase 0 spikes) with exit criteria, evaluation sets, risks, decisions on the open questions |
-| 02 | [Architecture](02-architecture.md) | Topology, turn pipeline and execution ledger, NLU contract, memory model (incl. sharing), data model (DDL), retrieval and answerability, identity, dates, reminders (occurrence model), voice, privacy (RLS matrix, forget), observability and evals, operations and backups, latency budget, API, evolution (Family Records Vault first), ADRs |
+| 01 | [Product Plan](01-product-plan.md) | Problem, users and roles, goals and success metrics, trust-UX principles, journeys with acceptance criteria, scope and horizons, memory categories and sharing, evaluation sets, risks, links to resolved decisions |
+| 02 | [Architecture](02-architecture.md) | Topology, turn pipeline and execution ledger, NLU contract, memory model (incl. sharing), data model (DDL), retrieval and answerability, identity, dates, reminders (occurrence model), voice, privacy (RLS matrix, forget), observability and evals, operations and backups, latency budget, API, evolution (Family Records Vault first), link to decision catalogue |
 | 03 | [Tech Stack](03-tech-stack.md) | Every layer's choice with rationale and rejected alternatives, the Vercel usage rule, AI model roles and bake-off candidates, LLM routing layer, classifier stance, cost model, provider eligibility and data policies, sources |
-| 04 | [Research & Decisions](04-research-and-decisions.md) | The October 2026 review: decision record and revision history, resolutions of the open questions, and the research behind them (name and domain, hosting, Vercel ecosystem vs alternatives, LLM routing, classifiers, authentication, speech-to-text, Family Records Vault, backups), with comparison tables and sources |
+| 04 | [Research](04-research.md) | The October 2026 evidence snapshot: comparisons, sources, dated findings and revision history, including clearly superseded revision-1 platform analysis; links to accepted ADRs |
+| 05 | [Implementation Roadmap](05-implementation-roadmap.md) | Phase 0–8 features and outcomes, spike prerequisites, journey coverage, project board, post-MVP horizons and pending validations |
+| ADR | [Decision catalogue](adr/README.md) | ADR-001–037 with context, decisions, alternatives, consequences and applied links; D1–D19 and Q1–Q12 mappings; [future-record template](adr/template.md) |
 
-Read them in order: the product plan says *what* and *why*, the architecture says *how*, and the tech stack says *with what*. **01–03 hold every final decision**; 04 keeps the evidence and the options we rejected.
+Start with Product for *what* and *why*, then Architecture for *how* and Tech Stack for *with what*. Use the [ADR catalogue](adr/README.md) to understand accepted choices, rationale and the legacy D/Q map; follow its links to Research for detailed evidence. Read the Roadmap for build order and validation ownership.
+
+Product owns requirements; Architecture owns technical design, schemas, contracts and operational procedures; Tech Stack owns technology selections, dependency versions and provider status; ADRs own accepted choices and rationale; Research owns dated findings, comparison evidence, sources and historical review context; Roadmap owns delivery order and completion outcomes. Acceptance is distinct from approval, benchmarking and implementation. New decisions append ADR IDs; superseding records link to predecessors, preserving history.
 
 ## The decisions in one screen
 
@@ -24,11 +28,8 @@ Read them in order: the product plan says *what* and *why*, the architecture say
 - **Hosting:** **Railway, Singapore** (existing account): `app`, `worker` and `postgres` (we operate the Postgres). Nightly encrypted, restore-tested backups to Cloudflare R2 with a forget journal; the master key and runbook live in a shared OneDrive document.
 - **AI defaults (to be confirmed by Phase 0 bake-offs, after the provider eligibility and data-terms gate):** OpenAI **GPT-6 Luna** (NLU and synthesis; Claude Haiku 4.5 as challenger) · `text-embedding-3-small` @ 768 · **Sarvam Saaras v4** STT (Deepgram Nova-3 fallback) · **Sarvam Bulbul v3** en-IN voice (your wife picks). **Gemini is excluded** because its API terms restrict consumer use and apps likely used by under-18s.
 - **Cost:** about **₹1,400–2,700/month** (Railway is the main cost; AI ≈ ₹300–600).
-- **Delivery:** risk-first phases. Phase 0 spikes (provider gate, iPhone PWA, STT, NLU, voice, Railway platform incl. the reminder gate, domain) → walking skeleton with the safety rails → first real-memory release (remember/correct/undo/forget/share) + shopping list → retrieval → history polish → reminders → voice polish → family pilot → stabilize.
+- **Delivery:** [Implementation Roadmap](05-implementation-roadmap.md) — the single home for build sequence, phase features, completion outcomes and later horizons.
 
-## Before Phase 1
-1. Read the decisions together with your wife ([01 §14](01-product-plan.md#14-decisions-on-the-open-questions)).
-2. Buy **nilumi.in** **before installing the app on your phones** (the installed app, push subscriptions and sign-in emails are tied to it).
-3. Clear the provider eligibility and data-terms gate (Tech §7) **before uploading any family voice**.
-4. Create the OneDrive recovery document (backup key + runbook) in a folder you both can open.
-5. Run the Phase 0 spikes (Product §11) and record decisions in the ADR log.
+## Delivery prerequisites
+
+See the [roadmap prerequisites](05-implementation-roadmap.md#prerequisites-and-dependencies) and [Phase 0 spikes](05-implementation-roadmap.md#phase-0--spikes-and-decisions). Accepted choices still need their validation gates; current unresolved items are in the [pending-validation register](05-implementation-roadmap.md#5-pending-validations-and-decisions).

@@ -1,7 +1,7 @@
 # 01 — Product Plan: Nilumi (MVP)
 
 > **Status:** Revised after the October 2026 review (revision 2) · **Date:** October 2026 · Product name: **Nilumi** · Domain: **nilumi.in**
-> **Related:** [02 Architecture](02-architecture.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research & Decisions](04-research-and-decisions.md)
+> **Related:** [ADR catalogue](adr/README.md) · [02 Architecture](02-architecture.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research](04-research.md) · [05 Implementation Roadmap](05-implementation-roadmap.md)
 
 ---
 
@@ -127,7 +127,7 @@ Cards always show one visibility badge: `🏠 Household`, `👥 Shared` or `🔒
 
 | Priority | Items |
 |---|---|
-| **Must (MVP)** | PWA on Android + iPhone · email-code sign-in (invite-only profiles) + optional Face ID step-up · hold-to-talk + text · on-screen transcript and cards · STT (en-IN) · TTS with a voice-reply toggle · remember / ask / inspect / correct / forget / safe undo · explicit memory sharing · predicate registry · entities + aliases + speaker-relative resolution · household / shared / private visibility (RLS, incl. existence) · sensitive-input boundary on every ingress · crash-safe turn ledger · shopping list (offline + realtime sync between phones via SSE) · tasks + reminders (scheduled by a background worker) + web push + inbox · deterministic and evidence-grounded answers + abstention · turn traces + admin viewer · eval harness + gates · nightly encrypted backups (worker) + restore test + forget journal · cold-start seeding form · Phase-1 Family Records Vault hooks · provider eligibility gate |
+| **Must (MVP)** | PWA on Android + iPhone · email-code sign-in (invite-only profiles) + optional Face ID step-up · hold-to-talk + text · on-screen transcript and cards · STT (en-IN) · TTS with a voice-reply toggle · remember / ask / inspect / correct / forget / safe undo · explicit memory sharing · predicate registry · entities + aliases + speaker-relative resolution · household / shared / private visibility (RLS, incl. existence) · sensitive-input boundary on every ingress · crash-safe turn ledger · shopping list (offline + realtime sync between phones via SSE) · tasks + reminders (scheduled by a background worker) + web push + inbox · deterministic and evidence-grounded answers + abstention · turn traces + admin viewer · eval harness + gates · nightly encrypted backups (worker) + restore test + forget journal · cold-start seeding form · Family Records Vault provenance/masking hooks · provider eligibility gate |
 | **Should** | Recurrence and "next due" (J14) · duplicate detection prompts · feedback buttons on answers · keyterm loop (aliases → STT) · quiet hours · **versioned JSON export/import** (J16) · cost dashboard |
 | **Could** | Custom lists · notification actions (done/snooze from the notification) · weekly household digest · Tamil UI strings |
 | **Later horizons** | H1 Family Records Vault · H2 room speaker via Home Assistant with "Hey Nilumi" wake phrase · H3 Tamil/Tanglish speech · H4 proactive maintenance · H5 kid mode · H6 shared list for household help · H7 conversation mode |
@@ -151,55 +151,11 @@ Cards always show one visibility badge: `🏠 Household`, `👥 Shared` or `🔒
 
 **Visibility values:** `household` is readable and editable by both adults; `private` is readable only by its owner; `shared` is readable by both adults but keeps an immutable owner, and only that owner can edit, forget or un-share it.
 
-**Rule:** "me / my note / remind me" → private. "Us / our / the house / a family member as subject" → household. An explicit share cue ("share it with my wife", "tell my husband", "for both of us") → shared. The owner can also Share / Un-share on the card. Sensitive categories (credentials, financial identifiers, government IDs, OTPs, security codes) → **refused**. Document-derived facts come later with H1 Family Records Vault; Phase 1 only reserves provenance, masking and visibility hooks.
+**Rule:** "me / my note / remind me" → private. "Us / our / the house / a family member as subject" → household. An explicit share cue ("share it with my wife", "tell my husband", "for both of us") → shared. The owner can also Share / Un-share on the card. Sensitive categories (credentials, financial identifiers, government IDs, OTPs, security codes) → **refused**. Document-derived facts come later with H1 Family Records Vault. The MVP reserves provenance, masking and visibility hooks; their delivery is mapped in the [roadmap](05-implementation-roadmap.md#phase-1--walking-skeleton-with-safety-rails).
 
 ## 11. Delivery phases (risk-first, with exit criteria; no durations)
 
-Each phase ends with a demo to your wife and a go/no-go against its exit criteria.
-
-### Phase 0 — Spikes and decisions (retire the big risks before building)
-| Spike | What | Exit criterion |
-|---|---|---|
-| **S0 Provider eligibility & data terms (gate)** | For OpenAI, Anthropic, Sarvam, Deepgram, ElevenLabs / Azure if chosen, Railway, Cloudflare R2, Resend, GitHub and any new processors: are household/personal use and a home with kids permitted? Training opt-out, ZDR/retention, deletion process and settings for **our** account. Get written Sarvam confirmation for a household account in a home with minors. Current status per provider: [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) | Only eligible providers, with settings recorded, may receive **any** family voice or data, including bake-off clips |
-| S1 PWA on both phones | Next.js 16 + Turbopack PWA install with Serwist; email-code sign-in inside the installed iPhone app; cookie persistence and re-sign-in fallback; optional Face ID step-up; mic capture in native formats (webm/opus on Android, mp4/aac on iOS); recorder interruptions (lock, call, backgrounding); permission persistence; web push with the app closed; SSE in the installed app across background/resume; Next.js #95588; reply playback after resume, with a Play-button fallback | Works on both phones with friction your wife accepts. **Otherwise → decide on Capacitor** (ADR-015), including its signing/distribution plan |
-| S2 STT bake-off | Each adult records ~40 utterances (names, brands, dates, numbers, phone numbers, a few Tanglish) in kitchen, fan and TV conditions. Compare Sarvam Saaras v4, Deepgram Nova-3, ElevenLabs Scribe v2 and Azure Fast Transcription / MAI-Transcribe-2. Check native audio acceptance and Sarvam p50/p95 | Pick by entity-name accuracy first, then WER, then p95 latency |
-| S3 NLU bake-off | 60-case golden set → **OpenAI GPT-6 Luna** and **Claude Haiku 4.5** with the real schema; add the shadow-mode path and two offline classifier experiments; measure serialized prompt size and cache behaviour | Pick by structural accuracy, p95 latency, schema-valid rate |
-| S4 Voice pick | 3–4 en-IN voices (Sarvam Bulbul v3, Azure en-IN, OpenAI TTS); per-sentence playback on the installed iPhone app | **Your wife chooses**; first-audio p95 ≤ 700 ms |
-| S5 Platform smoke | Railway Singapore: Postgres 18 + pgvector + pg_trgm/FTS on Tamil strings (`show_trgm`, `ts_debug`) + RLS with pooled `withMemberTx` (pool reuse, missing context, rollback) + graphile-worker wrapper timing + reminder gate of ≥ 200 automated occurrences incl. edits mid-flight, worker restarts and a redeploy → 100% dispatched within 60 s, no stale sends + streamed POST and SSE through the Railway proxy (heartbeat, 15-minute cap, reconnect) + RTT from home + backup to R2 with the in-job restore test, forget-journal replay and one manual restore with the master key + Railway volume backups configured + App Sleeping off + measured monthly cost | All green; decision records updated |
-| S6 Domain | Buy `nilumi.in`, attach it to Railway with TLS and verify the Resend sender before installing the app on the phones | `nilumi.in` live with TLS and sender verified before either phone installs the app |
-
-**Phase 0 output:** pinned model IDs, prices and provider data settings recorded in `config/models.ts`, `config/providers.md` (including new processors) and the ADR log.
-
-### Phase 1 — Walking skeleton (end to end, thin, but with the safety rails)
-Monorepo (Next.js 16 + Turbopack app + worker), GitHub Actions CI (typecheck, lint, tests) and Railway deploy pipeline with pre-deploy migrations · email-code auth for both adults · household, members and member relations seeded · sharing-ready visibility model · Phase-1 Vault hooks · **sensitive-input boundary on every ingress** · **`withMemberTx` + RLS + privacy test harness** · **turn execution ledger** (idempotent, resumable turns) · PWA shell (Talk tab, recorder state machine) · hold-to-talk → STT → turn recorded → echo card · text input · source events, turns and traces · admin trace viewer · backups via the worker + restore test (with forget-journal replay) · one rehearsed rollback.
-**Exit:** both phones log in and complete voice and text turns; a killed process mid-turn resumes correctly on retry; secrets are refused on every ingress; the privacy matrix tests pass; traces show per-stage timings; the restore drill passes.
-
-### Phase 2 — First real-memory release + shopping list (start the daily habit)
-Everything a family needs to **trust** what it stores ships together: predicate registry v1 (~40 predicates, qualifiers) · entities and aliases (incl. private entities) · NLU v1 (remember, correct, forget, undo, share, un-share, list commands, smalltalk) · evidence and polarity checks · memory card with **safe Undo/Edit** (revision-checked) and owner-only Share / Un-share · **supersession** (serialized) · **correct** (was wrong vs changed) · **forget** with full redaction and tombstones · privacy cases for sharing, un-sharing and non-owner refusal · health-fact confirmation · shopping list (offline with mutation receipts, realtime invalidations, dedupe, visible conflicts) · cold-start seeding form · keyterm loop (per member).
-**Exit:** NLU golden set ≥ 90% structurally correct (incl. held-out); privacy and secret cases 100%; the remember → correct → undo → forget flow passes, and the forget audit finds no residue anywhere; the shopping list works offline on both phones; your wife uses the list unprompted.
-
-### Phase 3 — Retrieval and grounded answers
-Ask and inspect · entity-scoped lookup + hybrid search · **answerability gate** (with negative examples) · **deterministic answers** for single-fact questions · sentence-gated synthesis with citations · Memory tab (entity pages, search) · TTS replies (per-sentence queue).
-**Exit:** 60-question retrieval set: top-5 ≥ 90%, answer correctness ≥ 85%, abstention ≥ 95%, privacy 100%.
-
-### Phase 4 — History, duplicates and memory polish
-"Who was our plumber before Ravi?" (valid-time history) · history view (X → Y) · duplicate detection prompts · entity merge tooling · conflict UX for concurrent edits · export/import (`nilumi-export` versioned JSON, round-trip tested).
-**Exit:** history questions pass in eval; the export → import round trip passes the retrieval eval.
-
-### Phase 5 — Tasks, reminders, notifications
-Tasks · reminder schedules and occurrences via graphile-worker (occurrence model) (relative dates, "us", recurrence, snooze-one vs edit-series, late policy) · web push with stable tags · inbox · per-recipient quiet hours · delivery telemetry (dispatch / accepted / received / acknowledged) · notification-health screen · generic previews for private reminders.
-**Exit:** ≥ 200 occurrences incl. edits mid-flight and worker restarts dispatch 100% on time with no stale sends; real-device test reminders arrive on both phones; failed deliveries surface in the inbox and admin.
-
-### Phase 6 — Voice polish, latency and degraded modes
-Per-sentence TTS queue tuning · voice-reply modes · latency tuning (measured caching, speculative retrieval, REST vs streaming STT decision) · fallback grammar when the LLM is down · AI budget reservations and soft/hard caps · cost dashboard.
-**Exit:** latency targets met over 100 real turns (bucketed by clip length and including first request after deploy); a simulated LLM outage still handles list and reminder commands; a simulated budget cap keeps lists, tasks and reminders working.
-
-### Phase 7 — Family pilot
-Use naturally, with no new features. Feedback buttons on every answer. Weekly review of traces grouped by failure type: **STT error · NLU error · entity resolution · retrieval miss · answer hallucination · policy/privacy · UX friction**. Pilot rule: collect patterns for several days before fixing.
-**Report:** turns, memories created, correction rate, retrieval success, abstentions, hallucinations, latency p50/p95, cost, top three valued features, top three frustrations, your wife's unprompted weekly uses.
-
-### Phase 8 — Stabilise and freeze
-Fix the top five failures in each category through the eval gate · tune defaults · runbook and troubleshooting docs · freeze MVP scope · choose the next horizon based on the pilot data.
+Phase 0–8, prerequisites, completion outcomes and later horizons are defined in the [Implementation Roadmap](05-implementation-roadmap.md#2-mvp-phases). This document owns product requirements and acceptance criteria; the roadmap owns delivery order.
 
 ## 12. Evaluation (product view)
 
@@ -217,7 +173,7 @@ Model and prompt changes must meet **absolute floors and regression limits** (Ar
 
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| iPhone PWA mic and push friction hurts adoption | Medium | High | Next.js doesn't change WebKit limits; Spike S1 first; Capacitor wrapper of the same code if the installed PWA is not acceptable (ADR-015) |
+| iPhone PWA mic and push friction hurts adoption | Medium | High | Next.js doesn't change WebKit limits; [roadmap S1](05-implementation-roadmap.md#phase-0--spikes-and-decisions); Capacitor wrapper of the same code if the installed PWA is not acceptable ([ADR-015](adr/adr-015.md)) |
 | STT mishears names and brands | High | High | Keyterms from aliases; on-screen transcript; phonetic entity matching; edit on the card |
 | Your wife doesn't find it useful | Medium | Critical | She chooses the use cases and voice; shopping list early; north-star metric; no feature work during the pilot |
 | A private note leaks between spouses | Low | Critical | RLS + privacy test gate + forget audit |
@@ -225,37 +181,18 @@ Model and prompt changes must meet **absolute floors and regression limits** (Ar
 | Family memory is lost | Low | Critical | Encrypted off-platform nightly backups + in-job restore test + forget-journal replay + manual restore runbook |
 | Railway Postgres is unmanaged (we operate it) | Medium | High | We operate minor updates, extension updates, config, disk monitoring and recovery; monthly ops checklist; Railway volume backups; encrypted off-platform backups + restore test; exit to managed Postgres if operations become a burden |
 | Railway cost creep | Medium | Medium | Measure in S5; Railway budget alerts; per-turn cost in traces; monthly AI budget with soft and hard caps |
-| Scope creep (builder bias) | High | Medium | Phase exit criteria; "Later horizons" list; pilot rule |
+| Scope creep (builder bias) | High | Medium | [Roadmap completion outcomes and pilot rule](05-implementation-roadmap.md#2-mvp-phases); "Later horizons" list |
 | Domain change after install forces reinstall and push re-subscription | Medium | Medium | Buy `nilumi.in` before installing on the phones |
 | Mailbox takeover = account takeover | Medium | High | Both email accounts use two-factor sign-in; optional step-up for export, private items after inactivity and forget-all |
-| **AI provider terms don't permit household or minor-adjacent use, or a provider retains or trains on family data** | Medium | High | S0 eligibility and data-terms gate before any family clip or data is uploaded; opt-outs recorded; default to an eligible provider (ADR-017); re-check before kid mode |
+| **AI provider terms don't permit household or minor-adjacent use, or a provider retains or trains on family data** | Medium | High | S0 eligibility and data-terms gate before any family clip or data is uploaded; opt-outs recorded; default to an eligible provider ([ADR-017](adr/adr-017.md)); re-check before kid mode |
 | Builder unavailable (illness, travel) when something breaks | Medium | High | OneDrive recovery document with the master key and runbook; both adults hold admin role; walk through the recovery path together |
 
 ## 14. Decisions on the open questions
 
-The accepted resolutions are the source of truth in [04 §2](04-research-and-decisions.md#2-section-14-open-questions-resolutions).
+Q1–Q12 are resolved. Their decision history and links to the applied requirements are maintained once in the [ADR resolved-question map](adr/README.md#resolved-question-map). Product behavior is defined here in §4 (membership), §6–§8 (trust UX and journeys), §9 (scope) and §10 (visibility). Technical defaults for dates, retention, recovery and notifications are defined in Architecture and linked from that decision map.
 
-| # | Question | Decision |
-|---|---|---|
-| Q1 | Are *your own* preferences ("I like strong filter coffee") household-visible or private? | Household; notes, "for me" and "remind me" stay private |
-| Q2 | Should a spouse see that a private item *exists* (without its content)? | No |
-| Q3 | Voice reply default: speak only when spoken to, always, or never? | Voice-first: speak when spoken to; text input gets text-only reply |
-| Q4 | What does "morning / evening / tonight" mean for reminders? | 09:00 / 18:30 / 20:30 IST, editable |
-| Q5 | How long to keep conversational turns that produced no memory? | 30 days, then purge |
-| Q6 | Opt in to keeping audio clips for 7 days to improve STT? | Off by default; on during Phase 0 and the pilot only |
-| Q7 | Assistant name (for UI, and a future wake phrase)? | **Nilumi**; future room speaker wake phrase: "Hey Nilumi" |
-| Q8 | Which custom domain? | **nilumi.in**, bought before installing the app on the phones |
-| Q9 | Should household help (cook or maid) get shopping-list-only access in future? | Later (H6) |
-| Q10 | Kids' health facts (allergies, vaccination dates) in MVP memory? | Yes, as facts with explicit confirmation; never advice |
-| Q11 | Where does the recovery material live, and does your wife know how to use it? | A dedicated OneDrive document shared with your wife; walk through it once together |
-| Q12 | Should *household* reminders show their text on the lock screen? | Yes for household, generic for private |
-| New | Memory sharing | Owner-only explicit sharing creates `shared` visibility; only the owner can edit, forget or un-share |
-| New | Family records / documents | Family Records Vault is the first horizon (H1); Phase 1 reserves hooks now |
-| New | Hosting | Railway (Singapore), existing paid account |
-| New | Vercel | Only free open-source libraries: Next.js, Turbopack and AI SDK |
+Accepted choices and pending validations are distinct: provider approvals, model/voice selections and platform proofs remain in the [roadmap's pending-validation register](05-implementation-roadmap.md#5-pending-validations-and-decisions).
 
 ## 15. Project board
 
-Epics: **E0 Spikes & decisions · E1 Platform & delivery · E2 Identity & household · E3 Conversation & NLU · E4 Memory write · E5 Entity resolution · E6 Retrieval & answers · E7 Correct/forget/history · E8 Lists · E9 Tasks/reminders/notifications · E10 Voice · E11 Privacy & security · E12 Observability & evaluation · E13 Family pilot · E14 Family Records Vault (H1, later).**
-
-States: **Backlog → In progress → Family testing → Done.**
+Epic identifiers and board states live in the [roadmap's journey coverage and project board](05-implementation-roadmap.md#4-journey-coverage-and-project-board).
