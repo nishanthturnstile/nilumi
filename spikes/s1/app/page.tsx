@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Recorder } from "@/components/recorder";
+import { Playback } from "@/components/playback";
+import { PushManager } from "@/components/push-manager";
 
 export default function Home() {
   return (
@@ -11,6 +13,8 @@ export default function Home() {
         <Link className="underline" href="/sensitive">Sensitive view</Link>
       </div>
       <Recorder />
+      <Playback />
+      <PushManager />
     </main>
   );
 }
