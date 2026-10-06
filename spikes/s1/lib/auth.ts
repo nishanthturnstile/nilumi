@@ -2,7 +2,6 @@ import crypto from "node:crypto";
 
 // Stateless HMAC session cookie (survives server restart); codes are in-memory
 // (a restart just means requesting a fresh code). Spike-grade, not production.
-const SECRET = process.env.AUTH_SECRET ?? "nilumi-s1-dev-secret";
 const SESSION_TTL_MS = 90 * 24 * 60 * 60 * 1000; // 90-day sliding window
 const STEPUP_WINDOW_MS = 10 * 60 * 1000;
 
@@ -24,7 +23,11 @@ export function checkCode(email: string, code: string): boolean {
 }
 
 function sign(payload: string): string {
-  return crypto.createHmac("sha256", SECRET).update(payload).digest("base64url");
+  const secret = process.env.AUTH_SECRET;
+  if (process.env.NODE_ENV === "production" && !secret) {
+    throw new Error("AUTH_SECRET must be configured in production");
+  }
+  return crypto.createHmac("sha256", secret ?? "nilumi-s1-dev-secret").update(payload).digest("base64url");
 }
 
 export function createSessionToken(email: string, now = Date.now()): string {

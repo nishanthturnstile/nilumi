@@ -7,6 +7,7 @@ export function StepUpForm({ email }: { email: string }) {
   const [requested, setRequested] = useState(false);
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [devCode, setDevCode] = useState<string | null>(null);
 
   async function request() {
     setError(null);
@@ -15,7 +16,11 @@ export function StepUpForm({ email }: { email: string }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
     });
-    if (res.ok) setRequested(true);
+    if (res.ok) {
+      const data = await res.json();
+      setDevCode(data.devCode ?? null);
+      setRequested(true);
+    }
     else setError("failed to send code");
   }
 
@@ -38,6 +43,7 @@ export function StepUpForm({ email }: { email: string }) {
         </button>
       ) : (
         <>
+          {devCode && <p className="text-amber-600">Dev code: {devCode}</p>}
           <input
             className="w-72 rounded border border-neutral-300 p-3 text-black"
             inputMode="numeric"
