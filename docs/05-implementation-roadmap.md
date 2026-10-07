@@ -151,6 +151,7 @@ The accepted Q1–Q12 resolutions are recorded in [ADR resolved-question map](ad
 |---|---|
 | Provider eligibility, effective retention/training settings and Sarvam written confirmation | **Resolved in S0 (Oct 2026)**; status stays in [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) |
 | Phone acceptability or Capacitor signing/distribution contingency | Resolved in S1 — PWA accepted on both phones; contingency not triggered ([ADR-039](adr/adr-039.md)) |
+| ElevenLabs S0 verification (household terms, training opt-out, retention/region) before it processes family audio | Owner: you · Gate: Tech §7 row flips green before `ELEVENLABS_API_KEY` ships in production |
 | Exact model IDs, STT winner/fallback performance and chosen TTS voice | S2–S4 |
 | Railway cost, database/stream/worker feasibility, restore proof and optional PITR support | S5 |
 | Whether measured batch STT latency warrants streaming | Phase 6; REST remains the accepted MVP default |
