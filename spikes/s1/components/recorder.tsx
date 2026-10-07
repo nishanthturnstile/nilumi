@@ -145,15 +145,18 @@ export function Recorder() {
   const holdStarted = useRef(false);
   const pointerStartedAt = useRef(0);
   const suppressClick = useRef(false);
+  const holdTimerRef = useRef<number | undefined>(undefined);
+  const holdActiveRef = useRef(false);
+  const HOLD_THRESHOLD_MS = 400;
   return (
     <section className="flex flex-col items-center gap-4">
       <p className="text-sm text-neutral-500" role="status">Phase: {phase}</p>
       <button
         aria-label={phase === "recording" ? "Stop recording" : "Hold to talk, or tap to start recording"}
         className="rounded-full bg-black px-8 py-4 text-white select-none touch-none"
-        onPointerDown={(e) => {
-          e.preventDefault();
+        onPointerDown={() => {
           if (phaseRef.current === "recording" && modeRef.current === "tap") {
+            // Tap-to-stop while in tap-record mode.
             suppressClick.current = true;
             finish(true);
             return;
@@ -161,29 +164,43 @@ export function Recorder() {
           if (phaseRef.current !== "idle" && phaseRef.current !== "error") return;
           holdStarted.current = true;
           pointerStartedAt.current = Date.now();
-          modeRef.current = "hold";
-          start();
+          // Start hold-to-talk only after the pointer has been down a moment;
+          // a quick release is treated as a tap (handled in onClick).
+          holdTimerRef.current = window.setTimeout(() => {
+            if (holdStarted.current) {
+              holdActiveRef.current = true;
+              modeRef.current = "hold";
+              start();
+            }
+          }, HOLD_THRESHOLD_MS);
         }}
         onPointerUp={() => {
           if (!holdStarted.current) return;
           holdStarted.current = false;
-          suppressClick.current = true; // this was a hold, don't let the click toggle tap mode
-          if (modeRef.current === "hold" && Date.now() - pointerStartedAt.current < 250) {
-            // Quick tap: convert to tap-to-start/stop mode (keep recording).
-            modeRef.current = "tap";
-            return;
+          if (holdTimerRef.current) window.clearTimeout(holdTimerRef.current);
+          if (holdActiveRef.current) {
+            // Released a hold-to-talk: finish. Suppress the trailing click.
+            holdActiveRef.current = false;
+            suppressClick.current = true;
+            finish(true);
           }
-          finish(true);
+          // Quick release with no hold ever started: let onClick treat it as a tap.
         }}
         onPointerCancel={() => {
           holdStarted.current = false;
-          suppressClick.current = true;
-          cancelledRef.current = true;
-          finish(false);
+          if (holdTimerRef.current) window.clearTimeout(holdTimerRef.current);
+          if (holdActiveRef.current) {
+            holdActiveRef.current = false;
+            suppressClick.current = true;
+            cancelledRef.current = true;
+            finish(false);
+          }
         }}
         onPointerLeave={() => {
-          if (modeRef.current === "hold" && holdStarted.current) {
+          if (holdActiveRef.current && holdStarted.current) {
             holdStarted.current = false;
+            holdActiveRef.current = false;
+            if (holdTimerRef.current) window.clearTimeout(holdTimerRef.current);
             suppressClick.current = true;
             cancelledRef.current = true;
             finish(false); // slide off = cancel
@@ -194,7 +211,7 @@ export function Recorder() {
             suppressClick.current = false;
             return;
           }
-          // Tap-to-start / tap-to-stop
+          // Tap toggle: start recording (sticky) or stop it.
           if (phase === "idle") {
             modeRef.current = "tap";
             start();
