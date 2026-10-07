@@ -57,6 +57,7 @@ for (const entry of entries) {
       (!entry.expectedSilence || row.text.trim() === "");
     const observation = {
       file: entry.file,
+      fixture: entry,
       tags: entry.tags,
       noise: entry.noise,
       expectedStatus,

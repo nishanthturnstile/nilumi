@@ -401,3 +401,59 @@ test("adapters cover fields, HTTP failures, malformed schemas, silence, timeout 
     }
   }
 });
+
+test("digital-silence guard preserves quiet signals and rejects malformed WAV assumptions", async () => {
+  const { isSilentPcmWav, providerAudio } = require(
+    join(compiled, "stt/audio.js"),
+  );
+  const wav = Buffer.alloc(48);
+  wav.write("RIFF");
+  wav.writeUInt32LE(40, 4);
+  wav.write("WAVE", 8);
+  wav.write("fmt ", 12);
+  wav.writeUInt32LE(16, 16);
+  wav.writeUInt16LE(1, 20);
+  wav.writeUInt16LE(1, 22);
+  wav.writeUInt32LE(16000, 24);
+  wav.writeUInt32LE(32000, 28);
+  wav.writeUInt16LE(2, 32);
+  wav.writeUInt16LE(16, 34);
+  wav.write("data", 36);
+  wav.writeUInt32LE(4, 40);
+  assert.equal(await isSilentPcmWav(new Blob([wav])), true);
+  const quiet = Buffer.from(wav);
+  quiet[44] = 1;
+  assert.equal(await isSilentPcmWav(new Blob([quiet])), false);
+  const malformed = Buffer.from(wav);
+  malformed.writeUInt32LE(999, 40);
+  assert.equal(await isSilentPcmWav(new Blob([malformed])), false);
+  const otherCodec = Buffer.from(wav);
+  otherCodec.writeUInt16LE(3, 20);
+  assert.equal(await isSilentPcmWav(new Blob([otherCodec])), false);
+  assert.equal(await isSilentPcmWav(new Blob(["fake WAV"])), false);
+  assert.equal(
+    providerAudio(new Blob(["mp4"], { type: "video/mp4" }), "phone.mp4").type,
+    "audio/mp4",
+  );
+  assert.equal(
+    providerAudio(new Blob(["webm"], { type: "video/webm" }), "phone.webm")
+      .type,
+    "audio/webm",
+  );
+  const originalFetch = globalThis.fetch;
+  const oldKey = process.env.SARVAM_API_KEY;
+  try {
+    process.env.SARVAM_API_KEY = "mock";
+    globalThis.fetch = async () =>
+      assert.fail("digital silence must not call provider");
+    const result = await transcribeSarvam(new Blob([wav]), "silence.wav");
+    assert.equal(result.status, "error");
+    assert.match(result.error, /no speech/);
+    assert.equal(result.ms, 0);
+    assert.equal(result.text, "");
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (oldKey === undefined) delete process.env.SARVAM_API_KEY;
+    else process.env.SARVAM_API_KEY = oldKey;
+  }
+});

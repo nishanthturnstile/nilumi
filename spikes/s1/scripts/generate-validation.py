@@ -49,8 +49,15 @@ entries.append(dict(entries[0], file='tv.wav', noise='synthetic-competing-speech
 with wave.open(str(out / 'silence.wav'), 'wb') as audio:
     audio.setparams((1, 2, 16000, 0, 'NONE', 'not compressed'))
     audio.writeframes(bytes(16000 * 2 * 2))
-entries.append(dict(entries[0], file='silence.wav', noise='silence', tags=['negative-control'], expectedSilence=True))
+entries.append(dict(entries[0], file='silence.wav', noise='silence', tags=['negative-control'], expectedSilence=True, expectedStatus='error'))
 (out / 'corrupt.wav').write_bytes(b'This is deliberately not an audio file.')
 entries.append(dict(entries[0], file='corrupt.wav', noise='invalid-container', tags=['negative-control'], expectedStatus='error'))
+# Store measured WAV durations; do not inherit the clean duration for variants.
+for entry in entries:
+    if entry['file'].endswith('.wav') and entry.get('expectedStatus') != 'error':
+        with wave.open(str(out / entry['file'])) as audio:
+            entry['durationSeconds'] = audio.getnframes() / audio.getframerate()
+    else:
+        entry.pop('durationSeconds', None)
 (out / 'manifest.json').write_text(json.dumps(entries, ensure_ascii=False, indent=2) + '\n')
 print(f'Generated {len(entries)} synthetic scenarios in {out}')

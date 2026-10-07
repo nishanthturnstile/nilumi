@@ -12,7 +12,7 @@
     "file": "clip-002.wav",
     "truth": "Buy Aavin curd and Tata salt",
     "tags": ["brand", "multi-entity"],
-    "noise": "clean",
+    "noise": "kitchen-fan",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Buy Aavin curd and Tata salt"
@@ -21,7 +21,7 @@
     "file": "clip-003.wav",
     "truth": "Order rice from BigBasket",
     "tags": ["brand", "shopping"],
-    "noise": "clean",
+    "noise": "tv",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Order rice from BigBasket"
@@ -30,7 +30,7 @@
     "file": "clip-004.wav",
     "truth": "Remind Nishanth to call the doctor",
     "tags": ["name", "reminder"],
-    "noise": "clean",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Remind Nishanth to call the doctor"
@@ -48,7 +48,7 @@
     "file": "clip-006.wav",
     "truth": "Diya has a school event tomorrow",
     "tags": ["name", "date"],
-    "noise": "clean",
+    "noise": "kitchen-fan",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Diya has a school event tomorrow"
@@ -57,7 +57,7 @@
     "file": "clip-007.wav",
     "truth": "Call Amma after dinner",
     "tags": ["alias", "reminder"],
-    "noise": "clean",
+    "noise": "tv",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Call Amma after dinner"
@@ -66,7 +66,7 @@
     "file": "clip-008.wav",
     "truth": "Appa will visit Paati and Thatha",
     "tags": ["alias", "multi-entity"],
-    "noise": "clean",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Appa will visit Paati and Thatha"
@@ -84,7 +84,7 @@
     "file": "clip-010.wav",
     "truth": "The Samsung warranty expires next month",
     "tags": ["brand", "date"],
-    "noise": "clean",
+    "noise": "kitchen-fan",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "The Samsung warranty expires next month"
@@ -93,7 +93,7 @@
     "file": "clip-011.wav",
     "truth": "Recharge Jio and Airtel tomorrow",
     "tags": ["brand", "multi-entity"],
-    "noise": "kitchen-fan",
+    "noise": "tv",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Recharge Jio and Airtel tomorrow"
@@ -102,7 +102,7 @@
     "file": "clip-012.wav",
     "truth": "Pay the electricity bill with PhonePe",
     "tags": ["brand", "payment"],
-    "noise": "kitchen-fan",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Pay the electricity bill with PhonePe"
@@ -111,7 +111,7 @@
     "file": "clip-013.wav",
     "truth": "Use Google Pay for the grocery bill",
     "tags": ["brand", "phrase"],
-    "noise": "kitchen-fan",
+    "noise": "clean",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Use Google Pay for the grocery bill"
@@ -129,7 +129,7 @@
     "file": "clip-015.wav",
     "truth": "Add Harpic to the shopping list",
     "tags": ["brand", "shopping"],
-    "noise": "kitchen-fan",
+    "noise": "tv",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Add Harpic to the shopping list"
@@ -138,7 +138,7 @@
     "file": "clip-016.wav",
     "truth": "Buy Aashirvaad flour and Britannia biscuits",
     "tags": ["brand", "multi-entity"],
-    "noise": "kitchen-fan",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Buy Aashirvaad flour and Britannia biscuits"
@@ -147,7 +147,7 @@
     "file": "clip-017.wav",
     "truth": "Pick up the parcel from T Nagar",
     "tags": ["place", "phrase"],
-    "noise": "kitchen-fan",
+    "noise": "clean",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Pick up the parcel from T Nagar"
@@ -165,7 +165,7 @@
     "file": "clip-019.wav",
     "truth": "We are going to Velachery and Adyar",
     "tags": ["place", "multi-entity"],
-    "noise": "kitchen-fan",
+    "noise": "tv",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "We are going to Velachery and Adyar"
@@ -174,7 +174,7 @@
     "file": "clip-020.wav",
     "truth": "The school bus starts from Tambaram",
     "tags": ["place", "school"],
-    "noise": "kitchen-fan",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "The school bus starts from Tambaram"
@@ -183,7 +183,7 @@
     "file": "clip-021.wav",
     "truth": "Take OMR instead of ECR",
     "tags": ["place", "abbreviation"],
-    "noise": "tv",
+    "noise": "clean",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Take OMR instead of ECR"
@@ -192,7 +192,7 @@
     "file": "clip-022.wav",
     "truth": "Book tickets from Chennai to Coimbatore",
     "tags": ["place", "travel"],
-    "noise": "tv",
+    "noise": "kitchen-fan",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Book tickets from Chennai to Coimbatore"
@@ -210,7 +210,7 @@
     "file": "clip-024.wav",
     "truth": "Remind me on 15 October at 7 pm",
     "tags": ["date", "number"],
-    "noise": "tv",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Remind me on 15 October at 7 pm"
@@ -219,7 +219,7 @@
     "file": "clip-025.wav",
     "truth": "Buy 2 litres of milk and 3 kilograms of rice",
     "tags": ["quantity", "multi-command"],
-    "noise": "tv",
+    "noise": "clean",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Buy 2 litres of milk and 3 kilograms of rice"
@@ -228,7 +228,7 @@
     "file": "clip-026.wav",
     "truth": "The plumber charged 1500 rupees",
     "tags": ["money", "number"],
-    "noise": "tv",
+    "noise": "kitchen-fan",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "The plumber charged 1500 rupees"
@@ -246,7 +246,7 @@
     "file": "clip-028.wav",
     "truth": "Our anniversary is on 21 November",
     "tags": ["date", "household"],
-    "noise": "tv",
+    "noise": "distance",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Our anniversary is on 21 November"
@@ -255,7 +255,7 @@
     "file": "clip-029.wav",
     "truth": "The doctor appointment is at 10:45 am",
     "tags": ["time", "health"],
-    "noise": "tv",
+    "noise": "clean",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "The doctor appointment is at 10:45 am"
@@ -264,7 +264,7 @@
     "file": "clip-030.wav",
     "truth": "Buy milk no wait buy curd instead",
     "tags": ["correction", "hesitation"],
-    "noise": "tv",
+    "noise": "kitchen-fan",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Buy milk no wait buy curd instead"
@@ -273,7 +273,7 @@
     "file": "clip-031.wav",
     "truth": "Add rice and dal and remind me to buy milk",
     "tags": ["multi-command", "shopping"],
-    "noise": "distance",
+    "noise": "tv",
     "speaker": "replace-with-adult-label",
     "kind": "recording-prompt",
     "speech": "Add rice and dal and remind me to buy milk"

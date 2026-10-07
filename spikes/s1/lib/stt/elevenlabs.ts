@@ -1,3 +1,4 @@
+import { isSilentPcmWav, providerAudio } from "./audio";
 import { requestTranscript, type SttResult } from "./request";
 
 export async function transcribeElevenlabs(
@@ -15,8 +16,18 @@ export async function transcribeElevenlabs(
       error: "ElevenLabs requires S0 approval and an API key",
     };
   }
+  if (/\.wav$/i.test(filename) && (await isSilentPcmWav(audio))) {
+    return {
+      provider: "elevenlabs",
+      model: "scribe-v2",
+      text: "",
+      ms: 0,
+      status: "error",
+      error: "Silent PCM WAV: no speech to transcribe",
+    };
+  }
   const form = new FormData();
-  form.append("file", audio, filename);
+  form.append("file", providerAudio(audio, filename), filename);
   form.append("model_id", "scribe_v2");
   return requestTranscript(
     "elevenlabs",

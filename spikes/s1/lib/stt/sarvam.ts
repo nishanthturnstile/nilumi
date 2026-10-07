@@ -1,4 +1,5 @@
 import { KEYTERMS } from "../keyterms";
+import { isSilentPcmWav, providerAudio } from "./audio";
 import { requestTranscript, type SttResult } from "./request";
 
 export type { SttResult } from "./request";
@@ -28,8 +29,18 @@ export async function transcribeSarvam(
       status: "error",
       error: "SARVAM_API_KEY missing",
     };
+  if (/\.wav$/i.test(filename) && (await isSilentPcmWav(audio))) {
+    return {
+      provider: "sarvam",
+      model: "saaras-v4",
+      text: "",
+      ms: 0,
+      status: "error",
+      error: "Silent PCM WAV: no speech to transcribe",
+    };
+  }
   const form = new FormData();
-  form.append("file", audio, filename);
+  form.append("file", providerAudio(audio, filename), filename);
   form.append("model", "saaras:v4");
   form.append("language_code", options.language);
   form.append("mode", options.mode);

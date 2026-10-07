@@ -147,9 +147,8 @@ real clips, aliases and handwritten transcripts under ignored `clips/local/`.
 Do not copy private household information into the committed examples.
 Record the same set separately for each adult. Use speaker prefixes in the
 filenames (`adult-a-001.webm`, `adult-b-001.mp4`) and update the local manifest
-accordingly. Tag the actual speaker, noise and device/MIME. Prompts assign ten
-English recordings to each of quiet, kitchen/fan, TV, and distance, then eight
-Tanglish cases distributed across those conditions. Transcribe what was
+accordingly. Tag the actual speaker, noise and device/MIME. Prompts distribute ten recordings to each of quiet, kitchen/fan, TV,
+and distance, including two Tanglish cases in each condition. Transcribe what was
 actually said; a prompt is only a starting truth.
 
 The 50-term seed is editable in the page. Sarvam defaults to `saaras:v4`,
@@ -200,3 +199,20 @@ recordings before S2 can be accepted. ElevenLabs comparison also remains gated.
 Sarvam references: [REST formats and clip limit](https://docs.sarvam.ai/api-reference/speech-to-text/transcribe),
 [output modes and scripts](https://docs.sarvam.ai/api/api-guides-tutorials/speech-to-text/how-to/select-output-mode),
 [keyterm rules](https://docs.sarvam.ai/api/api-guides-tutorials/speech-to-text/how-to/keyterms).
+
+
+### October 7 validation status
+
+The initial live synthetic run exposed an MP4 MIME rejection and a hallucinated
+word on digital silence. The adapter now sends MP4/M4A as `audio/mp4` and rejects
+exactly silent 16-bit PCM WAV before making a provider call. This silence guard
+is deliberately narrow: it does not detect silence in WebM/MP4 or suppress
+non-silent background noise. A real-device VAD decision remains separate.
+
+Live different-truth batches, custom keyterms, Tamil `translit` with `ta-IN`,
+ElevenLabs refusal, malformed manifests, invalid modes and excess keyterms were
+also exercised. The automated suite has 38 tests covering scoring, validation,
+adapters, silence and existing Safari WAV ranges. Exact benchmark outcomes are
+in the ignored `validation-results/` JSON reports; synthetic accuracy is not a
+household acceptance gate. Both adults' real recordings, real aliases and
+real kitchen/fan/TV behavior remain pending. S2 is not marked accepted.
