@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import type { BakeoffRow, summarize } from "@/lib/bakeoff";
 import { KEYTERMS } from "@/lib/keyterms";
@@ -66,6 +67,14 @@ export default function Bakeoff() {
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-6 max-w-5xl mx-auto w-full">
+      <nav aria-label="Bakeoff navigation">
+        <Link
+          className="inline-flex min-h-11 items-center rounded border px-4"
+          href="/"
+        >
+          ← Back to home
+        </Link>
+      </nav>
       <h1 className="text-2xl font-semibold">STT bake-off</h1>
       <p>
         Choose clips and enter their exact transcripts before running. Example

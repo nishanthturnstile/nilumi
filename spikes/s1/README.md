@@ -134,7 +134,9 @@ has been corrected; iPhone acceptance remains pending a retest of that deploymen
 
 ## S2: STT validation and household recording kit
 
-Open `/bakeoff`. Select the audio files, enter one shared truth or load a
+From the home screen, tap **STT bakeoff** to open `/bakeoff`. Tap **Back to home**
+at the top of the bakeoff screen to return, including in the installed phone app.
+Select the audio files, enter one shared truth or load a
 per-clip JSON manifest, edit the keyterms, and press **Run bakeoff**. Filenames
 match by basename; duplicates and missing truths are rejected before provider
 calls. The batch can contain up to 80 clips, each at most 10 MiB, with 80 MiB

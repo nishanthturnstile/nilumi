@@ -6,6 +6,7 @@
       "lib/scoring.ts",
       "lib/keyterms.ts",
       "lib/stt/**",
+      "app/page.tsx",
       "app/bakeoff/**",
       "app/api/bakeoff/**",
       "tests/bakeoff.test.mjs",
