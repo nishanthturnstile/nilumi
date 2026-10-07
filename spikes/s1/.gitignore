@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Consented household recordings, aliases and benchmark results
+/clips/local/
+/clips/generated/
+/validation-results/

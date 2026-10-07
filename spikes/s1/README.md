@@ -131,3 +131,72 @@ follow afterward.
 2026-10-06 phone results: Android acceptance reported pass. iPhone Safari M3
 reported “audio unavailable” on the first turn. The missing byte-range support
 has been corrected; iPhone acceptance remains pending a retest of that deployment.
+
+## S2: STT validation and household recording kit
+
+Open `/bakeoff`. Select the audio files, enter one shared truth or load a
+per-clip JSON manifest, edit the keyterms, and press **Run bakeoff**. Filenames
+match by basename; duplicates and missing truths are rejected before provider
+calls. The batch can contain up to 80 clips, each at most 10 MiB, with 80 MiB
+combined. Keep every clip under 30 seconds (Sarvam REST limit).
+
+`clips/clips.json` now contains **40 recording prompts per adult**, not recorded
+household evidence. Meena, Kavin and Diya are example names. Replace them with
+consented names, and replace brands/places with those you actually use. Keep
+real clips, aliases and handwritten transcripts under ignored `clips/local/`.
+Do not copy private household information into the committed examples.
+Record the same set separately for each adult. Use speaker prefixes in the
+filenames (`adult-a-001.webm`, `adult-b-001.mp4`) and update the local manifest
+accordingly. Tag the actual speaker, noise and device/MIME. Prompts assign ten
+English recordings to each of quiet, kitchen/fan, TV, and distance, then eight
+Tanglish cases distributed across those conditions. Transcribe what was
+actually said; a prompt is only a starting truth.
+
+The 50-term seed is editable in the page. Sarvam defaults to `saaras:v4`,
+`mode=codemix`, and auto-detected language. Codemix writes Tamil in Tamil script
+and English words in Latin script. Use the provided Tamil-script truths for
+codemix; if you select **Latin script**, replace those truths with the
+`truthTranslit` examples and correct them by hand. WER does not equate scripts
+or normalize equivalent number spellings. Inspect dates, quantities, negation
+and corrections manually as well as reading the aggregate scores.
+
+Results contain each truth, full transcript, status, tags/noise, request time,
+WER, entity hit rate, and per-provider summary. **Download results JSON** saves
+these locally. Entity rate is N/A when no configured keyterm appears in truth.
+Means are per successful clip, not weighted corpus WER; entity mean only uses
+clips with expected keyterms. p50/p95 use nearest-rank successful provider
+request times, including upload; they exclude browser time and failed calls.
+A small synthetic sample cannot establish household p95 or select an STT
+winner. Provider requests time out after 30 seconds.
+
+ElevenLabs stays blocked on the server even if a browser requests it unless
+both `ELEVENLABS_API_KEY` and `ELEVENLABS_S0_APPROVED=true` are present. Set the
+approval flag only after recording the green S0 row in Tech §7. Sarvam remains
+the only provider exercised live by the validation script.
+
+The focused S2 files use pinned Biome for formatting/linting. Existing Next.js
+ESLint rules remain for framework checks. `pnpm format` formats only this scope;
+`pnpm lint`, `pnpm typecheck`, `pnpm test`, and `pnpm build` check the project.
+
+To repeat **synthetic integration checks** with locally installed `espeak-ng`
+and `ffmpeg` (no TTS API or household data needed):
+
+```sh
+python3 scripts/generate-validation.py
+node scripts/validate-live.mjs https://staging.nilumi.in
+```
+
+`ESPEAK_BIN`, `ESPEAK_DATA_PATH`, and `FFMPEG_BIN` optionally override tool paths.
+Generation creates 40 synthetic speech fixtures, three format conversions,
+low-volume/fast/slow/hum/competing-speech variants, silence and corrupt audio.
+The generated manifest and audio stay in ignored `clips/generated/`; reports
+stay in ignored `validation-results/`. The live script makes 50 Sarvam calls
+and is a billable smoke test. A pipeline pass means a valid response, not an
+accurate transcript. It records accuracy separately and excludes negative
+controls from speech averages. Real fan/TV/reverb, recording interruptions,
+Safari/Android microphone encoding and both adults' accents need actual phone
+recordings before S2 can be accepted. ElevenLabs comparison also remains gated.
+
+Sarvam references: [REST formats and clip limit](https://docs.sarvam.ai/api-reference/speech-to-text/transcribe),
+[output modes and scripts](https://docs.sarvam.ai/api/api-guides-tutorials/speech-to-text/how-to/select-output-mode),
+[keyterm rules](https://docs.sarvam.ai/api/api-guides-tutorials/speech-to-text/how-to/keyterms).

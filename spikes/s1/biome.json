@@ -1,0 +1,19 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+  "files": {
+    "includes": [
+      "lib/bakeoff.ts",
+      "lib/scoring.ts",
+      "lib/keyterms.ts",
+      "lib/stt/**",
+      "app/bakeoff/**",
+      "app/api/bakeoff/**",
+      "tests/bakeoff.test.mjs",
+      "scripts/validate-live.mjs",
+      "clips/clips.json"
+    ]
+  },
+  "formatter": { "indentStyle": "space", "indentWidth": 2 },
+  "linter": { "enabled": true, "rules": { "recommended": true } },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } }
+}

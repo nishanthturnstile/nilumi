@@ -1,43 +1,45 @@
 import { KEYTERMS } from "../keyterms";
+import { requestTranscript, type SttResult } from "./request";
 
-export type SttResult = {
-  provider: string;
-  model: string;
-  text: string;
-  ms: number;
-  status: "ok" | "error";
-  error?: string;
+export type { SttResult } from "./request";
+
+export type SttOptions = {
+  keyterms: string[];
+  language: "unknown" | "en-IN" | "ta-IN";
+  mode: "codemix" | "translit" | "transcribe";
 };
 
 export async function transcribeSarvam(
   audio: Blob,
-  filename: string
+  filename: string,
+  options: SttOptions = {
+    keyterms: KEYTERMS,
+    language: "unknown",
+    mode: "codemix",
+  },
 ): Promise<SttResult> {
   const key = process.env.SARVAM_API_KEY;
-  if (!key) return { provider: "sarvam", model: "saaras-v4", text: "", ms: 0, status: "error", error: "SARVAM_API_KEY missing" };
-  const form = new FormData();
-  form.append("file", audio, filename);
-  form.append("model", "saaras:v4");
-  form.append("language_code", "en-IN");
-  form.append("mode", "transcribe");
-  form.append("keyterms", JSON.stringify(KEYTERMS.slice(0, 50)));
-  const started = Date.now();
-  try {
-    const res = await fetch("https://api.sarvam.ai/speech-to-text", {
-      method: "POST",
-      headers: { "api-subscription-key": key },
-      body: form,
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`);
+  if (!key)
     return {
       provider: "sarvam",
       model: "saaras-v4",
-      text: data.transcript ?? data.text ?? "",
-      ms: Date.now() - started,
-      status: "ok",
+      text: "",
+      ms: 0,
+      status: "error",
+      error: "SARVAM_API_KEY missing",
     };
-  } catch (e) {
-    return { provider: "sarvam", model: "saaras-v4", text: "", ms: Date.now() - started, status: "error", error: e instanceof Error ? e.message : "error" };
-  }
+  const form = new FormData();
+  form.append("file", audio, filename);
+  form.append("model", "saaras:v4");
+  form.append("language_code", options.language);
+  form.append("mode", options.mode);
+  form.append("keyterms", JSON.stringify(options.keyterms));
+  return requestTranscript(
+    "sarvam",
+    "saaras-v4",
+    "https://api.sarvam.ai/speech-to-text",
+    { "api-subscription-key": key },
+    form,
+    "transcript",
+  );
 }

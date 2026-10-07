@@ -1,20 +1,370 @@
 [
   {
-    "file": "clips/clip-001.webm",
+    "file": "clip-001.wav",
     "truth": "Add Amul milk to the shopping list",
-    "tags": ["entity", "en-IN"],
-    "noise": "kitchen-fan"
+    "tags": ["brand", "shopping"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Add Amul milk to the shopping list"
   },
   {
-    "file": "clips/clip-002.webm",
-    "truth": "Remind me on the 15th at 7 pm",
+    "file": "clip-002.wav",
+    "truth": "Buy Aavin curd and Tata salt",
+    "tags": ["brand", "multi-entity"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Buy Aavin curd and Tata salt"
+  },
+  {
+    "file": "clip-003.wav",
+    "truth": "Order rice from BigBasket",
+    "tags": ["brand", "shopping"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Order rice from BigBasket"
+  },
+  {
+    "file": "clip-004.wav",
+    "truth": "Remind Nishanth to call the doctor",
+    "tags": ["name", "reminder"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Remind Nishanth to call the doctor"
+  },
+  {
+    "file": "clip-005.wav",
+    "truth": "Ask Meena to pick up Kavin from school",
+    "tags": ["name", "multi-entity"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Ask Meena to pick up Kavin from school"
+  },
+  {
+    "file": "clip-006.wav",
+    "truth": "Diya has a school event tomorrow",
+    "tags": ["name", "date"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Diya has a school event tomorrow"
+  },
+  {
+    "file": "clip-007.wav",
+    "truth": "Call Amma after dinner",
+    "tags": ["alias", "reminder"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Call Amma after dinner"
+  },
+  {
+    "file": "clip-008.wav",
+    "truth": "Appa will visit Paati and Thatha",
+    "tags": ["alias", "multi-entity"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Appa will visit Paati and Thatha"
+  },
+  {
+    "file": "clip-009.wav",
+    "truth": "Buy Bisleri water bottles",
+    "tags": ["brand", "shopping"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Buy Bisleri water bottles"
+  },
+  {
+    "file": "clip-010.wav",
+    "truth": "The Samsung warranty expires next month",
+    "tags": ["brand", "date"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "The Samsung warranty expires next month"
+  },
+  {
+    "file": "clip-011.wav",
+    "truth": "Recharge Jio and Airtel tomorrow",
+    "tags": ["brand", "multi-entity"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Recharge Jio and Airtel tomorrow"
+  },
+  {
+    "file": "clip-012.wav",
+    "truth": "Pay the electricity bill with PhonePe",
+    "tags": ["brand", "payment"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Pay the electricity bill with PhonePe"
+  },
+  {
+    "file": "clip-013.wav",
+    "truth": "Use Google Pay for the grocery bill",
+    "tags": ["brand", "phrase"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Use Google Pay for the grocery bill"
+  },
+  {
+    "file": "clip-014.wav",
+    "truth": "Buy Surf Excel and Dettol",
+    "tags": ["brand", "shopping"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Buy Surf Excel and Dettol"
+  },
+  {
+    "file": "clip-015.wav",
+    "truth": "Add Harpic to the shopping list",
+    "tags": ["brand", "shopping"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Add Harpic to the shopping list"
+  },
+  {
+    "file": "clip-016.wav",
+    "truth": "Buy Aashirvaad flour and Britannia biscuits",
+    "tags": ["brand", "multi-entity"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Buy Aashirvaad flour and Britannia biscuits"
+  },
+  {
+    "file": "clip-017.wav",
+    "truth": "Pick up the parcel from T Nagar",
+    "tags": ["place", "phrase"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Pick up the parcel from T Nagar"
+  },
+  {
+    "file": "clip-018.wav",
+    "truth": "The appointment is in Anna Nagar",
+    "tags": ["place", "phrase"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "The appointment is in Anna Nagar"
+  },
+  {
+    "file": "clip-019.wav",
+    "truth": "We are going to Velachery and Adyar",
+    "tags": ["place", "multi-entity"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "We are going to Velachery and Adyar"
+  },
+  {
+    "file": "clip-020.wav",
+    "truth": "The school bus starts from Tambaram",
+    "tags": ["place", "school"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "The school bus starts from Tambaram"
+  },
+  {
+    "file": "clip-021.wav",
+    "truth": "Take OMR instead of ECR",
+    "tags": ["place", "abbreviation"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Take OMR instead of ECR"
+  },
+  {
+    "file": "clip-022.wav",
+    "truth": "Book tickets from Chennai to Coimbatore",
+    "tags": ["place", "travel"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Book tickets from Chennai to Coimbatore"
+  },
+  {
+    "file": "clip-023.wav",
+    "truth": "Visit Mylapore on Saturday",
+    "tags": ["place", "date"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Visit Mylapore on Saturday"
+  },
+  {
+    "file": "clip-024.wav",
+    "truth": "Remind me on 15 October at 7 pm",
     "tags": ["date", "number"],
-    "noise": "clean"
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Remind me on 15 October at 7 pm"
   },
   {
-    "file": "clips/clip-003.mp4",
-    "truth": "Namma veetla sapadu ready",
-    "tags": ["tanglish"],
-    "noise": "tv"
+    "file": "clip-025.wav",
+    "truth": "Buy 2 litres of milk and 3 kilograms of rice",
+    "tags": ["quantity", "multi-command"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Buy 2 litres of milk and 3 kilograms of rice"
+  },
+  {
+    "file": "clip-026.wav",
+    "truth": "The plumber charged 1500 rupees",
+    "tags": ["money", "number"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "The plumber charged 1500 rupees"
+  },
+  {
+    "file": "clip-027.wav",
+    "truth": "Set a reminder for 6:30 am tomorrow",
+    "tags": ["time", "date"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Set a reminder for 6:30 am tomorrow"
+  },
+  {
+    "file": "clip-028.wav",
+    "truth": "Our anniversary is on 21 November",
+    "tags": ["date", "household"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Our anniversary is on 21 November"
+  },
+  {
+    "file": "clip-029.wav",
+    "truth": "The doctor appointment is at 10:45 am",
+    "tags": ["time", "health"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "The doctor appointment is at 10:45 am"
+  },
+  {
+    "file": "clip-030.wav",
+    "truth": "Buy milk no wait buy curd instead",
+    "tags": ["correction", "hesitation"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Buy milk no wait buy curd instead"
+  },
+  {
+    "file": "clip-031.wav",
+    "truth": "Add rice and dal and remind me to buy milk",
+    "tags": ["multi-command", "shopping"],
+    "noise": "distance",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Add rice and dal and remind me to buy milk"
+  },
+  {
+    "file": "clip-032.wav",
+    "truth": "Do not buy Amul buy Aavin instead",
+    "tags": ["negation", "brand"],
+    "noise": "distance",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Do not buy Amul buy Aavin instead"
+  },
+  {
+    "file": "clip-033.wav",
+    "truth": "நாளைக்கு Amul பால் வாங்கணும்",
+    "truthTranslit": "Naalaikku Amul paal vaanganum",
+    "tags": ["tanglish", "brand"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "நாளைக்கு Amul பால் வாங்கணும்"
+  },
+  {
+    "file": "clip-034.wav",
+    "truth": "Amma doctor appointment நாளைக்கு",
+    "truthTranslit": "Amma doctor appointment naalaikku",
+    "tags": ["tanglish", "alias"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Amma doctor appointment நாளைக்கு"
+  },
+  {
+    "file": "clip-035.wav",
+    "truth": "T Nagar போயிட்டு school போகணும்",
+    "truthTranslit": "T Nagar poittu school poganum",
+    "tags": ["tanglish", "place"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "T Nagar போயிட்டு school போகணும்"
+  },
+  {
+    "file": "clip-036.wav",
+    "truth": "ரெண்டு litre பால் வாங்கு",
+    "truthTranslit": "Rendu litre paal vaangu",
+    "tags": ["tanglish", "quantity"],
+    "noise": "distance",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "ரெண்டு litre பால் வாங்கு"
+  },
+  {
+    "file": "clip-037.wav",
+    "truth": "சாதம் ready ஆனதும் சொல்லு",
+    "truthTranslit": "Saadham ready aanadhum sollu",
+    "tags": ["tanglish", "household"],
+    "noise": "clean",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "சாதம் ready ஆனதும் சொல்லு"
+  },
+  {
+    "file": "clip-038.wav",
+    "truth": "நாளைக்கு evening 7 மணிக்கு remind பண்ணு",
+    "truthTranslit": "Naalaikku evening 7 manikku remind pannu",
+    "tags": ["tanglish", "time"],
+    "noise": "kitchen-fan",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "நாளைக்கு evening 7 மணிக்கு remind பண்ணு"
+  },
+  {
+    "file": "clip-039.wav",
+    "truth": "PhonePe ல bill pay பண்ணு",
+    "truthTranslit": "PhonePe la bill pay pannu",
+    "tags": ["tanglish", "brand"],
+    "noise": "tv",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "PhonePe ல bill pay பண்ணு"
+  },
+  {
+    "file": "clip-040.wav",
+    "truth": "Appa birthday நாளைக்கு",
+    "truthTranslit": "Appa birthday naalaikku",
+    "tags": ["tanglish", "alias"],
+    "noise": "distance",
+    "speaker": "replace-with-adult-label",
+    "kind": "recording-prompt",
+    "speech": "Appa birthday நாளைக்கு"
   }
 ]
