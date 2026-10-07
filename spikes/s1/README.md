@@ -194,9 +194,9 @@ The generated manifest and audio stay in ignored `clips/generated/`; reports
 stay in ignored `validation-results/`. The live script makes 50 Sarvam calls
 and is a billable smoke test. A pipeline pass means a valid response, not an
 accurate transcript. It records accuracy separately and excludes negative
-controls from speech averages. Real fan/TV/reverb, recording interruptions,
-Safari/Android microphone encoding and both adults' accents need actual phone
-recordings before S2 can be accepted. ElevenLabs comparison also remains gated.
+controls from speech averages. Synthetic inputs cannot establish real fan/TV/
+reverb behavior, phone capture behavior or both adults' accuracy. The owner's
+subsequent manual approval is recorded below. ElevenLabs comparison remains gated.
 
 Sarvam references: [REST formats and clip limit](https://docs.sarvam.ai/api-reference/speech-to-text/transcribe),
 [output modes and scripts](https://docs.sarvam.ai/api/api-guides-tutorials/speech-to-text/how-to/select-output-mode),
@@ -216,5 +216,40 @@ ElevenLabs refusal, malformed manifests, invalid modes and excess keyterms were
 also exercised. The automated suite has 38 tests covering scoring, validation,
 adapters, silence and existing Safari WAV ranges. Exact benchmark outcomes are
 in the ignored `validation-results/` JSON reports; synthetic accuracy is not a
-household acceptance gate. Both adults' real recordings, real aliases and
-real kitchen/fan/TV behavior remain pending. S2 is not marked accepted.
+household acceptance gate. This was the initial automated-validation status;
+the subsequent owner approval below is the current S2 status.
+
+
+### S2 owner approval: October 7, 2026
+
+**Status: approved to proceed with Sarvam Saaras v4.** The owner reports that
+manual review and validation succeeded and explicitly requests S2 approval
+and progression to the next spike. No further S2 recordings are required to
+honor that approval.
+
+Recorded supporting evidence:
+
+- 38 automated tests, lint, type-check and production build passed.
+- The final 50-scenario synthetic run passed processing checks: 48 speech
+  uploads processed, exact digital silence refused locally, and corrupt audio
+  refused. Synthetic mean WER was 31.2%, mean entity accuracy 67.8%, provider
+  p50 255 ms and p95 511 ms. These are synthetic results, not household scores.
+- One real M4A result was supplied in chat: a milk-and-sugar shopping request
+  retained both items, provider time 518 ms, WER 0.1 (one inserted article),
+  and configured-keyterm accuracy 1.0. This sample does not establish household
+  p50/p95 or recognition of unconfigured entities.
+- Home-to-bakeoff and return navigation were deployed and verified live; the
+  owner reported successful phone validation.
+
+The complete manual test files, speaker counts and noise coverage were not
+supplied to the repository. Approval records the owner's acceptance, without
+claiming a measured 40-clip-per-adult benchmark or an ElevenLabs comparison.
+ElevenLabs still requires its green S0 row and server approval flag before use.
+Later real-turn latency and regression gates remain as defined in the roadmap.
+
+**Next: S3, NLU bake-off.** Build the command schema and a 60-case golden set,
+then evaluate structured command extraction, dates, evidence spans, privacy,
+clarifications and multi-command handling through the approved AI Gateway path.
+The spike evaluates interpretations; persistent memory/list/reminder execution
+belongs to the later implementation phases. S4 voice selection and S5 platform
+checks follow before the Phase 1 walking skeleton.
