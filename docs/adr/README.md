@@ -2,7 +2,7 @@
 
 This catalogue owns accepted choices and their rationale. Product owns requirements; Architecture owns implementation design, schemas, contracts and operational procedures; Tech Stack owns technology selections, dependency versions and provider status; Research owns dated evidence, comparisons, sources and review history; Roadmap owns sequencing and pending validations.
 
-All 39 records describe the accepted baseline. ADR-001–026 retain their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 adds the Vercel AI Gateway decision from S0 and partly supersedes ADR-022. **Accepted does not mean implemented, approved or benchmarked.** Provider eligibility, model/voice bake-offs, phone/platform proofs and future Vault choices remain in the [pending-validation register](../05-implementation-roadmap.md#5-pending-validations-and-decisions).
+All 40 records describe the accepted baseline and scoped exceptions. ADR-001–026 retain their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 adds the Vercel AI Gateway decision from S0 and partly supersedes ADR-022. **Accepted does not mean implemented, approved or benchmarked.** Provider eligibility, model/voice bake-offs, phone/platform proofs and future Vault choices remain in the [pending-validation register](../05-implementation-roadmap.md#5-pending-validations-and-decisions).
 
 Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHub Actions backups and AI Gateway. Revision 2 restored/adopted Railway, graphile-worker, SSE, worker backups and direct in-process routing. The [dated review history](../04-research.md) and [superseded platform analysis](../04-research.md#62-revision-1-analysis-vercel-hobby--neon-kept-for-reference) remain explicit. They are not allocated retrospective IDs. [ADR-020](adr-020.md) refines [ADR-001](adr-001.md) and [ADR-015](adr-015.md); these records remain accepted together, as do [ADR-007](adr-007.md) with [ADR-031](adr-031.md), and [ADR-014](adr-014.md) with [ADR-032](adr-032.md).
 
@@ -49,6 +49,7 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-037](adr-037.md) | Confirmed health facts and information-only responses |
 | [ADR-038](adr-038.md) | LLM/embeddings via Vercel AI Gateway with ZDR + no-training enforcement; supersedes ADR-022's no-hosted-gateway part |
 | [ADR-039](adr-039.md) | S1 outcome: PWA kept on both phones; Capacitor fallback not triggered |
+| [ADR-040](adr-040.md) | S3 synthetic-only evaluation on Hobby under a US$0.50 cap; family-data ZDR gate retained |
 
 ## D decision map
 

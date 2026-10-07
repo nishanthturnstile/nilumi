@@ -1,0 +1,27 @@
+{
+  "provenance": "Manually authored synthetic offline responses; no model calls or model performance evidence.",
+  "schema_failure": {
+    "language": "en",
+    "commands": [{ "kind": "list_add", "items": "milk" }]
+  },
+  "success": {
+    "language": "en",
+    "commands": [
+      {
+        "kind": "list_add",
+        "list": { "mention": "shopping", "list_id": "shopping" },
+        "items": [{ "name": "milk" }, { "name": "sugar" }]
+      }
+    ]
+  },
+  "wrong_item_count": {
+    "language": "en",
+    "commands": [
+      {
+        "kind": "list_add",
+        "list": { "mention": "shopping", "list_id": "shopping" },
+        "items": [{ "name": "milk" }]
+      }
+    ]
+  }
+}

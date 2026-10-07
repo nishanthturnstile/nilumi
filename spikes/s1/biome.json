@@ -11,10 +11,30 @@
       "app/api/bakeoff/**",
       "tests/bakeoff.test.mjs",
       "scripts/validate-live.mjs",
-      "clips/clips.json"
+      "clips/clips.json",
+      "lib/nlu/**",
+      "config/**",
+      "evals/**",
+      "app/api/nlu/**",
+      "tests/nlu*.mjs",
+      "scripts/*nlu*.mjs"
     ]
   },
-  "formatter": { "indentStyle": "space", "indentWidth": 2 },
-  "linter": { "enabled": true, "rules": { "recommended": true } },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } }
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
 }

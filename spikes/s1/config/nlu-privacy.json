@@ -1,0 +1,37 @@
+{
+  "version": "s3-privacy-v2",
+  "team": "mnishanth02s-projects",
+  "verified_at": "2026-10-07T19:51:00+05:30",
+  "verified_by": "Owner-supplied Windows native chat dashboard report",
+  "team_zero_data_retention": false,
+  "team_no_prompt_training": false,
+  "gateway_managed_credentials_only": true,
+  "approved_providers": ["openai"],
+  "approved_models": [
+    "openai/gpt-6-luna",
+    "openai/gpt-5-nano",
+    "openai/gpt-4.1-nano",
+    "openai/gpt-4.1-mini"
+  ],
+  "fixture_review_sha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+  "fixture_reviewed_by": "Nishanth Murugan — explicit review approval of all 60 cases in implementation chat",
+  "synthetic_hobby": {
+    "approved_at": "2026-10-07T19:57:50+05:30",
+    "approved_by": "Nishanth Murugan — explicit approval in implementation chat",
+    "fixture_sha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd"
+  },
+  "notes": "Owner supplied authenticated Hobby dashboard inspection 2026-10-07 19:51 IST, confirmed that Nilumi\u0027s Key was copied into Railway, and approved all 60 expected actions and ADR-040. Hobby cannot enforce provider ZDR; strict family-data readiness remains false. Luna is excluded from free-credit access, GPT-5 nano timed out, and owner-approved GPT-4.1 nano/mini failed their semantic staging smoke (1/3 and 2/3 correct). Inline receipts verified managed OpenAI routing for valid responses. No model selected or full corpus run completed. The US$5 allowance and US$0.50 cumulative testing cap remain unchanged. See docs/08-s3-gateway-verification.md for spending and shutdown evidence.",
+  "key_name": "Nilumi\u0027s Key",
+  "key_identity_confirmed_at": "2026-10-07T20:16:27+05:30",
+  "fixture_reviewed_at": "2026-10-07T20:16:27+05:30",
+  "challenger_approval": {
+    "model": "openai/gpt-4.1-nano",
+    "approved_by": "Nishanth Murugan — explicit reply: Approve GPT-4.1 nano challenger",
+    "scope": "Synthetic-only; omit unsupported reasoning effort; OpenAI managed routing, no-training, store:false, five-second deadline and cumulative US$0.50 cap retained"
+  },
+  "mini_challenger_approval": {
+    "model": "openai/gpt-4.1-mini",
+    "approved_by": "Nishanth Murugan — explicit reply: Approve GPT-4.1 mini challenger",
+    "scope": "Same synthetic-only controls; three development cases first; stop if smoke fails"
+  }
+}

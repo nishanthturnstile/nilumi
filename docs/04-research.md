@@ -385,3 +385,16 @@ The revision-2 additions are incorporated into the single [Roadmap Phase 0](05-i
 **Vault:** bugs.webkit.org/show_bug.cgi?id=273046 · bugs.webkit.org/show_bug.cgi?id=275527 · developer.mozilla.org (HTML `capture`, `navigator.share`) · github.com/marquaye/scanic · github.com/puffinsoft/jscanify · github.com/Hopding/pdf-lib · github.com/WebKit/standards-positions/issues/11 · vercel.com/docs/errors/function_payload_too_large · developers.cloudflare.com/r2/platform/limits · mistral.ai/news/ocr-4 · learn.microsoft.com/azure/ai-services/document-intelligence · github.com/PaddlePaddle/PaddleOCR · github.com/docling-project/docling · dpdprules.org/act/3 · dpdpa.com/dpdpa2023/chapter-1/section3.html · uidai.gov.in (circulars)
 
 **Name and domain:** rdap.verisign.com · pubapi.registry.google/rdap · data.iana.org/rdap/dns.json · cloudflare.com/products/registrar · github.com/dscripka/openWakeWord · esphome.io/components/micro_wake_word · home-assistant.io/voice-pe
+
+
+## October 7 S3 Gateway update and subscription-free alternatives
+
+The authenticated Hobby dashboard evidence supersedes earlier assumptions of
+Gateway family-data ZDR readiness. The owner approved a fixture-only exception,
+reviewed all 60 expected actions and confirmed Railway uses the inspected key.
+[The S3 verification record](08-s3-gateway-verification.md) contains the dated
+inspection, request-level controls and sourced comparison of OpenCode Zen,
+OpenRouter Standard, Cloudflare Unified Billing and a self-hosted LiteLLM proxy.
+OpenRouter is a research candidate for future ZDR without a monthly gateway
+subscription. Current synthetic testing retains Vercel's existing free credit;
+no production processor selection or accepted ZDR requirement has changed.

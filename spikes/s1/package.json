@@ -7,21 +7,30 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --import tsx --test tests/*.test.mjs",
     "lint": "biome check . && eslint",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "nlu:review": "node --import tsx scripts/review-nlu.mjs",
+    "nlu:eval": "node --import tsx scripts/evaluate-nlu.mjs",
+    "nlu:eval:subscription": "node --import tsx scripts/evaluate-subscription-nlu.mjs"
   },
   "dependencies": {
+    "@ai-sdk/gateway": "4.0.106",
+    "ai": "7.0.130",
+    "chrono-node": "2.10.2",
+    "luxon": "3.7.2",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "resend": "^6.32.0",
     "sharp": "^0.35.5",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
     "@tailwindcss/postcss": "^4",
+    "@types/luxon": "3.7.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -29,6 +38,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
+    "tsx": "4.23.15",
     "typescript": "^5"
   },
   "packageManager": "pnpm@12.9.1",

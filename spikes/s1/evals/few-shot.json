@@ -1,0 +1,72 @@
+[
+  {
+    "transcript": "I enjoy pottery",
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "remember",
+          "facts": [
+            {
+              "subject": { "mention": "I", "relation": "self" },
+              "predicate": "prefers",
+              "value": { "type": "text", "value": "pottery" },
+              "evidence": { "start": 0, "end": 15 },
+              "polarity": "affirmed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "Do not add pears",
+    "result": { "language": "en", "commands": [] }
+  },
+  {
+    "transcript": "Add apples and oats",
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "list_add",
+          "list": { "mention": "shopping" },
+          "items": [{ "name": "apples" }, { "name": "oats" }]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "Remind me to feed the cat",
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "reminder_create",
+          "text": "feed the cat",
+          "targets": [{ "mention": "me" }]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "If I liked chess",
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "remember",
+          "facts": [
+            {
+              "subject": { "mention": "I", "relation": "self" },
+              "predicate": "prefers",
+              "value": { "type": "text", "value": "chess" },
+              "evidence": { "start": 0, "end": 16 },
+              "polarity": "hypothetical"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

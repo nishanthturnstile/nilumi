@@ -253,3 +253,213 @@ clarifications and multi-command handling through the approved AI Gateway path.
 The spike evaluates interpretations; persistent memory/list/reminder execution
 belongs to the later implementation phases. S4 voice selection and S5 platform
 checks follow before the Phase 1 walking skeleton.
+
+## S3: command understanding (October 7, 2026)
+
+The implementation is available for offline validation in this spike. It does
+not save memories, change shopping lists, schedule reminders, or answer queries.
+It parses and scores proposed commands and policy outcomes. The 60 synthetic
+cases include 23 Tamil/Tanglish cases, 10 multi-command cases, and a stratified
+48 development / 12 held-out split. The owner approved all 60 cases in
+[the expected-action review](../../docs/07-s3-expected-actions.md).
+
+Run from `spikes/s1`:
+
+```sh
+pnpm nlu:review
+pnpm nlu:eval
+pnpm nlu:eval --cases=all --models=openai/gpt-6-luna,openai/gpt-5-nano
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+`nlu:eval` defaults to a **dry run with zero model calls**, showing the conservative
+maximum reservation. Default live selection is three development cases on
+`openai/gpt-6-luna`, low reasoning. The cheaper candidate is `openai/gpt-5-nano`,
+also low reasoning. Prices were checked against the public Gateway catalog on
+October 7: Luna $0.10/$0.50 input/output per million tokens, Nano $0.05/$0.40.
+Luna cache writes cost $0.125/M; reservations account for that premium. These are
+candidates, not measured winners. Claude comparison is deferred for this testing
+increment. No search, external tools, repair calls, retries, cross-model fallback,
+priority tiers or direct-provider keys are used in the scored comparison.
+
+Follow-up: Luna is excluded from free-credit access; buying credits was not
+authorized. The owner approved `openai/gpt-4.1-nano` and `openai/gpt-4.1-mini`
+as synthetic-only challengers with unsupported reasoning-effort settings
+omitted. Their three-case staging smoke scores were 1/3 and 2/3 respectively;
+neither passed the semantic smoke gate. Mini returned three schema-valid,
+verified OpenAI-managed responses within five seconds. No full-corpus run or
+model selection followed. Inline Gateway receipts now verify routing without
+requiring an immediately available generation lookup. The final code passed
+181 tests, lint, type checking and build. See the
+[follow-up evidence](../../docs/08-s3-gateway-verification.md) for reports,
+accounting and shutdown verification.
+
+### Live evaluation gates
+
+The owner's October 7, 19:51 IST dashboard report confirms **Hobby**, with ZDR
+and provider/model allowlists unavailable. The family-data gate fails; the
+US$5 monthly allowance remains the spending ceiling. The owner-approved
+[synthetic-only exception](../../docs/adr/adr-040.md) is implemented as a separate
+server mode. The owner approved all 60 expected actions and confirmed that
+Railway uses the inspected “Nilumi's Key”. Live probe results are recorded below.
+
+The `POST /api/nlu/evaluate` route is disabled by default. Before enabling it:
+
+1. Review all 60 expected actions and freeze the held-out set. Record the exact
+   fixture hash from `pnpm nlu:review` and reviewer in `config/nlu-privacy.json`.
+2. Select the server mode. Default `zdr` requires team-wide ZDR (including
+   no-training), approved provider/model restrictions and Gateway-managed
+   credentials. The owner-approved `synthetic_hobby` exception requires its
+   fixed corpus hash and approval metadata instead of team ZDR. Both modes
+   require team verification, reviewed fixture hash, approved model IDs and
+   confirmed Gateway-managed OpenAI credentials. The owner confirmed the
+   Railway key's team; runtime routing must still be checked. Hobby calls enforce no-training,
+   `only: ['openai']`, low reasoning and `store: false`; reports explicitly
+   disclose no ZDR requirement and no production acceptance. Unknown or
+   mismatched Hobby runtime routing stops further calls. Callers cannot choose
+   a mode or submit transcripts; a changed corpus fails the Hobby gate.
+3. Deploy the reviewed code to Railway staging. Confirm server variables:
+
+| Variable | Value |
+| --- | --- |
+| `AI_GATEWAY_API_KEY` | Already present in staging; never expose the value |
+| `RAILWAY_ENVIRONMENT_NAME` | `staging` (Railway supplies it) |
+| `NLU_EVALUATION_ENABLED` | `true`, only after review/privacy gates |
+| `NLU_EVALUATION_MODE` | `synthetic_hobby` for the approved fixture-only exception; default `zdr`; other values block calls |
+| `NLU_EVALUATION_ORIGIN` | `https://staging.nilumi.in` |
+| `NLU_EVALUATOR_EMAILS` | Comma-separated exact authenticated evaluator emails |
+
+The route checks the existing session, caller allowlist, configured origin,
+committed case/model IDs, unique IDs and one active run per service instance.
+The request allows only `caseIds`, `modelIds` and `passes` (1–3). It never accepts
+arbitrary transcripts or client budgets. Missing configuration blocks calls.
+
+Keep an authenticated `nilumi_session` cookie in `NLU_SESSION_COOKIE` in a local
+ignored environment file, and load it into the process without printing it.
+This is a session credential; do not put it in command arguments or tracked
+files. Once gates pass, all smoke/comparison calls go through the local runner:
+
+```sh
+# Three development cases, one pass, Luna low:
+pnpm nlu:eval --live
+# Full comparison, one pass (only after the smoke results are checked):
+pnpm nlu:eval --live --cases=all --models=openai/gpt-6-luna,openai/gpt-5-nano
+```
+
+For approved Hobby testing, add `--mode=synthetic_hobby` to both dry and live
+commands. The runner verifies the server's reported mode; this CLI flag cannot
+select or relax the server policy. Use one mode throughout a comparison.
+
+### Budget and report behavior
+
+**The owner has $5 for the entire month, not $5 for S3.** The runner limits this
+S3 testing increment to **$0.50 total**, including smoke tests, repeats, failed
+calls and retained reservations. One pass is the default. It reloads the
+content-free `validation-results/nlu-budget.json` ledger before every run,
+locks it exclusively and uses atomic file replacement with fsync. Before each
+request it reserves uncached UTF-8 input (including both schema copies and an
+envelope margin) plus all 4,096 allowed output tokens. It verifies public prices
+before live execution and blocks changed/unknown rates. There are no tool fees
+because this workload uses no tools. Cache hits are only reported when observed.
+
+Settlement uses reported charge when available, otherwise token usage with
+pinned rates. Missing usage, timeouts, disconnects and process interruptions
+retain the whole allowance. Budget exhaustion marks pending cases not evaluated.
+These bounds are intentionally pessimistic: a full two-model reservation can
+exceed $0.50, while settlement may allow coverage within the cap. Never raise
+the cap just to finish a report. Incomplete coverage cannot qualify a candidate.
+
+**Do not delete or reset the budget ledger** between runs, models, service
+restarts or smoke tests. If a killed process leaves `nlu-budget.lock`, first
+verify that its recorded PID is no longer running and there is no outstanding
+comparison, then remove only that stale lock. Keep its unsettled charges in the
+ledger. Calls made outside this script or by other applications are not covered
+by this local ledger; use Gateway key/account spend controls as an additional
+monthly safeguard. The endpoint is not an account-wide durable limiter.
+
+Reports are saved under ignored `validation-results/`. They contain version and
+fixture hashes, parsed synthetic output, deterministic outcomes, correctness,
+schema validity, per-model/pass/category/language/split/tag slices, nearest-rank
+p50/p95, usage/cache observations, route metadata, and known versus reserved
+costs. Secret-bearing turns are refused before prompt construction and reports
+contain only the refusal category and content-free identifiers. Provider error
+text is never logged. Latency measures the model call through structured output,
+with deterministic validation timing separate; it is not voice latency.
+
+Selection requires all 60 cases and 12 held-out cases for every reported pass,
+>=90% overall and at least 11/12 held-out correct, 100% relevant date/privacy
+cases and verified managed routing. The 1,400 ms NLU p95 target is reported
+separately. With missing routing metadata, incomplete coverage or failed hard
+gates, selection stays pending. A mock/recorded-response pass demonstrates the
+harness, never real model accuracy. `lib/nlu/recovery.ts` exercises repair and
+challenger behavior offline only and is not connected to the live evaluator.
+
+Contract details: evidence uses JavaScript UTF-16 offsets with an exclusive end.
+Parser date `resolved` and reminder `at` may be absent; validated commands require
+those slots, resolve supplied fixture references and remain interpretation-only.
+The schematic target adds `task_id` for visible synthetic task fixtures; memory
+IDs cannot complete tasks. Supported Tamil/Tanglish date phrases are explicit
+spike rules. Unresolved/unsupported phrases, disagreements and already-past
+reminder times require clarification. Synthetic visibility checks do not validate
+production RLS. Secret detection is heuristic, not a complete secret recognizer.
+
+**Current status:** All 60 expected actions and Railway key identity are
+owner-approved. The synthetic-only evaluator has been deployed to Railway
+staging. Live validation found Luna unavailable under the approved routing
+restrictions and a provider schema incompatibility affecting Nano. The schema
+fix uses nested `anyOf`, required nullable optional fields, and SDK normalization
+before semantic validation. All three staging development probes with this fix exceeded the five-second
+Nano deadline. Evaluation was disabled and its allowlist cleared afterward. See [live results and budget accounting](../../docs/08-s3-gateway-verification.md)
+for the final smoke result, retained allowances and actual Gateway balance.
+The full comparison and model selection remain incomplete. Family-data ZDR,
+classifier experiments and production shadow validation remain deferred.
+
+October 7 offline verification: **180 automated tests passed**, including
+38 existing S1/S2 tests and 142 S3 tests. `pnpm lint`, `pnpm typecheck` and
+`pnpm build` passed. Regression coverage includes strict provider schema output,
+SDK parsing of nullable optional fields, routing restrictions, authenticated
+proxy origin handling, corpus approval, failure attribution and durable budgets.
+The current three-case Luna dry run reserves at most US$0.026952; a complete
+60-case Nano dry run reserves at most US$0.255969. These are maximum allowances,
+not measured charges. No model winner is established by offline fixtures.
+
+Railway terminates TLS before Next.js. The evaluation origin gate accepts the
+configured public origin either directly or through Railway's exact
+`X-Forwarded-Host` plus a single HTTPS `X-Forwarded-Proto` value in staging.
+Wrong origins, suffix hosts, ports, missing headers and comma-separated values
+fail before model access. Session and evaluator allowlist checks still apply.
+A clean frozen-lockfile install and `tsx` execution also passed after explicitly
+recording `esbuild: false` in pnpm's build-script policy, matching the existing
+policy for platform packages whose prebuilt binaries are used.
+
+Subscription-only prompt development is available through
+`pnpm nlu:eval:subscription`. It requires an existing ChatGPT-authenticated
+Codex CLI and accepts only the frozen synthetic corpus. Default scope is the
+48 development cases; `--cases shopping-01,memories-01,dates-01` runs the smoke.
+Use `--concurrency 2` for at most two independent extraction sessions.
+`--codex-bin <executable>` and `--work-root <temporary-directory>` support a
+Windows Codex executable launched from WSL. Each session receives only parser
+instructions, the output schema and its visible synthetic input. Expected
+answers remain in the parent scorer; sessions have no repository context.
+
+Reports are saved under ignored `validation-results/subscription/` and never
+modify `nlu-budget.json`. To run all 60 cases after freezing, use `--split all
+--frozen-prompt-sha256 <hash-from-development-report>`. Held-out cases must not
+inform prompt revisions; replacing an exposed holdout requires new owner
+review. Subscription results establish synthetic correctness only. They do
+not verify Gateway routing, prices, latency, no-training or ZDR, and cannot
+select a deployment model. Subscription rate limits stop new dispatch without
+an API-key fallback. See [ADR-040](../../docs/adr/adr-040.md) for scope and
+[validation evidence](../../docs/08-s3-gateway-verification.md) for outcomes.
+
+Completed subscription benchmark: frozen `s3-extract-v5` reached **57/60 correct
+(95%)**, **100% schema validity**, **11/12 held-out**, **11/12 dates**, and
+**8/8 privacy**. It **did not pass synthetic correctness acceptance** because
+every date case must pass. Development improved from 27/48 to 47/48; its one
+privacy failure is retained as variability evidence. All **187 tests**, lint,
+type checking and production build passed. The updated prompt is local; the
+Gateway evaluator remains disabled, its retained ledger remains US$0.122884725,
+and deployment model selection/family-data ZDR remain pending.
