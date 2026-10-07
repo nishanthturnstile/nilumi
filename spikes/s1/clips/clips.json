@@ -1,0 +1,20 @@
+[
+  {
+    "file": "clips/clip-001.webm",
+    "truth": "Add Amul milk to the shopping list",
+    "tags": ["entity", "en-IN"],
+    "noise": "kitchen-fan"
+  },
+  {
+    "file": "clips/clip-002.webm",
+    "truth": "Remind me on the 15th at 7 pm",
+    "tags": ["date", "number"],
+    "noise": "clean"
+  },
+  {
+    "file": "clips/clip-003.mp4",
+    "truth": "Namma veetla sapadu ready",
+    "tags": ["tanglish"],
+    "noise": "tv"
+  }
+]
