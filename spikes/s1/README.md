@@ -447,7 +447,8 @@ answers remain in the parent scorer; sessions have no repository context.
 
 Reports are saved under ignored `validation-results/subscription/` and never
 modify `nlu-budget.json`. To run all 60 cases after freezing, use `--split all
---frozen-prompt-sha256 <hash-from-development-report>`. Held-out cases must not
+--frozen-prompt-sha256 <hash-from-development-report>
+--frozen-pipeline-sha256 <hash-from-development-report>`. Held-out cases must not
 inform prompt revisions; replacing an exposed holdout requires new owner
 review. Subscription results establish synthetic correctness only. They do
 not verify Gateway routing, prices, latency, no-training or ZDR, and cannot
@@ -463,3 +464,21 @@ privacy failure is retained as variability evidence. All **187 tests**, lint,
 type checking and production build passed. The updated prompt is local; the
 Gateway evaluator remains disabled, its retained ledger remains US$0.122884725,
 and deployment model selection/family-data ZDR remain pending.
+
+The next interpretation stage calculates supported literal dates locally and
+records each normalization. Reports retain `extractionScore` beside final
+scores. Unique visible note selectors receive their existing ID; conflicting,
+ambiguous and invented IDs are not repaired. No model retry runs. Frozen evaluation fingerprints
+the NLU/config sources, few-shots, runner, package manifest and lockfile.
+Changes during a run invalidate its acceptance result. Repeating the original
+held-out split is regression evidence, with prior metric/failed-ID exposure
+disclosed in the verification notes.
+
+The deterministic increment passes **199 automated tests**, lint, type checking
+and production build. The full v7 regression scored **57/60**, dates **12/12**,
+held-out **10/12**, privacy **7/8**. It **fails synthetic acceptance**: two
+held-out semantic failures and a rejected collaboration-tool call remain.
+Disabling both CLI multi-agent flags did not establish tool-free isolation.
+See [compact checked-in evidence](evals/results/subscription-v7.json) and
+[the complete verification notes](../../docs/08-s3-gateway-verification.md).
+No paid Gateway calls or deployment followed this failed gate.

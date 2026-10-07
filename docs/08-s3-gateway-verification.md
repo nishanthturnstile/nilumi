@@ -530,3 +530,156 @@ runner and frozen prompt passed **187 automated tests**, lint, type checking
 and production build. Meaningful new regression checks cover subscription
 credential isolation, held-out selection, tool/turn rejection, bounded
 dispatch, correctness-versus-deployment status, and UTF-16 span boundaries.
+
+## Deterministic interpretation increment — October 7–8
+
+Existing delivered S3 work was committed as `becd350`. The owner then requested
+research, implementation and validation of the next correctness increment.
+The new pipeline keeps model extraction separate from deterministic interpretation:
+complete supported dates are calculated locally, and unique visible share/unshare
+note targets are canonicalized to their existing memory ID. Raw extraction scores
+and normalization paths remain in reports. No additional model call or invented-ID
+repair occurs. Ownership, evidence, ambiguity and privacy validation remain in force.
+An omitted adjacent numeric clock invalidates a temporal interpretation.
+
+Research and the implementation sequence are recorded in
+[the S3 plan](06-s3-command-understanding-plan.md#next-correctness-increment--deterministic-interpretation).
+The original approved corpus hash and golden actions are unchanged. Only
+development transcripts and expected actions informed this revision. Repeating
+the original held-out split is regression evidence, with prior aggregate metrics
+and failed-ID exposure disclosed; it is not a new independently authored holdout.
+
+Development evidence, all under ignored `validation-results/subscription/`:
+
+- `s3-extract-v6` three-case smoke: **3/3**; report
+  `d35a6608-9292-4ee2-b44d-a80ccfce03e3.json`.
+- `s3-extract-v6` full development: **44/48**, raw **43/48**, dates **10/10**,
+  privacy **5/6**; report `8e4d63a7-c9b6-4917-9700-8420ffe8c1ea.json`.
+  The privacy mismatch selected the correct note through entity/predicate
+  selectors, and validation still rejected sharing it with `not_owner`.
+- A preliminary v7 prompt accidentally included exact development transcript
+  examples. The existing golden-leak test detected this. The wording was removed.
+  Reports `b8730306-8b1c-4740-bfe8-eedf2b2504fb.json` and
+  `2c5330f7-d3c2-44a5-b778-17cb35adbeb2.json` are excluded from final evidence.
+  The latter also detects the source change during its run and explicitly
+  returns unsuccessful acceptance despite 48 correct rows.
+- Final v7 three-case smoke: **3/3 interpreted**, **2/3 raw extraction**,
+  all schema-valid; report `00935d88-8bd4-4e59-a2a4-3eb5ba896286.json`.
+  One supported date was normalized deterministically.
+
+Final v7 prompt SHA-256:
+`6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397`.
+The earlier v7 smoke used interpretation `s3-interpret-v2`, pipeline SHA-256:
+`008141c692d5d4cf959cc98a5780ee416d0356854b003fdf2fbecec61b305023`.
+The freeze includes the runner, NLU/config sources, few-shots, package manifest
+and lockfile. Held-out evaluation requires both hashes. Source changes during
+a run invalidate acceptance. Subscription process timings remain separate from
+Gateway latency and cannot establish the production five-second deadline.
+
+Final v7 live development: **47/48**, raw **47/48**, dates **9/10**, privacy
+**6/6**, all 47 model outputs schema-valid. Report
+`fdcbf119-2a59-4b88-aaac-3a1343f72595.json`. The sole mismatch omitted the
+unique member ID for “me”; missing reminder time still correctly required
+clarification. No date/time was invented.
+
+Interpretation `s3-interpret-v3` adds deterministic unique member-alias binding
+for reminder targets and task assignees. Supplied conflicting IDs and ambiguous
+aliases remain unchanged and fail validation. The prompt stayed frozen.
+Replaying the captured 48 development extractions through v3 scored **48/48**,
+raw **47/48**, dates **10/10** and privacy **6/6**, with one member reference
+normalization and no new model calls. Report `development-v7-replay.json` is
+explicitly labeled `offline_development_replay`; it does not replace the live
+development scores. The v3 pipeline SHA-256 was:
+`66ef6d281deac59bfcf93897a9f5b6f99baae59ed3a5c76983d58f3681d46edb`.
+
+A fresh v3-pipeline three-case smoke scored **3/3**, raw **2/3**, all
+schema-valid; report `76aabab5-258e-4d99-9eab-8d3fe406d193.json`.
+The original approved 60-case regression is run only after these checks, with
+both prompt and final pipeline hashes required and no held-out-driven edits.
+
+Offline checks: **199 tests passed**, lint, type checking and production build
+passed. New regressions cover timezone-equivalent weekday anchors, standalone
+daypart defaults, conflicting/partial/ranged dates, omitted adjacent clocks,
+raw-output immutability, stable note IDs, unchanged ownership, invisible and
+ambiguous records, and shared interpretation in both evaluator paths.
+No Gateway calls, paid purchases or deployment occurred in this increment;
+the conservative Gateway ledger remains **US$0.122884725** under its
+**US$0.50** cap. Family-data ZDR and deployment model selection remain pending.
+
+The final prompt's configured-price Mini dry run reserves at most
+**US$0.065440** for the three development cases and **US$1.2657788** for the
+whole corpus. These are offline maximum reservations, not charges or newly
+verified live prices. The smoke fits the conservative remaining
+**US$0.377115275** allowance; the full maximum does not. Actual sequential
+settlement may be lower, but no complete paid comparison is guaranteed under
+the current cap. A future live smoke requires deployment of this local revision,
+current price/routing checks and evaluator shutdown afterward.
+
+The initial frozen full attempt stopped at **33/60** cases after a rejected
+`collab_tool_call` event. Report `2a72908f-03bd-4437-989a-b029951d1cd7.json`
+records **30/33 correct**, **2/4 held-out**, and unsuccessful acceptance.
+Failed held-out IDs were `shopping-11` and `memories-11`; their contents did
+not inform subsequent changes. Codex CLI 0.161.0 exposes two separate feature
+switches: `multi_agent` defaults on, while `multi_agent_v2` defaults off.
+The runner previously disabled only v2. It now disables both, plus goal,
+sleep and tool-suggestion features; event inspection still rejects every tool
+item. No rejected tool result is accepted as an extraction.
+
+An attempted Code Mode host disable failed closed before extraction. Report
+`37651388-ec0c-434a-b6df-abd55d38bef4.json` records the startup error. The
+installed CLI requires that host even for this structured parser workflow,
+so it remains available while individual action tools stay disabled.
+
+After this isolation fix, a development smoke returned **2/3** in report
+`c00e267f-877d-4078-a9a9-77ab04ba31b1.json`. Its only mismatch used “weekend”
+instead of the literal “this weekend”; the computed instant and validation
+outcome were correct. Interpretation `s3-interpret-v4` preserves the literal
+modifier only when the transcript has exactly one weekend occurrence preceded
+by “this”. It does not infer a missing time or change the weekend instant.
+The prompt was unchanged throughout this follow-up.
+
+The final v4 development replay remains **48/48**, raw **47/48**, with one
+member-ID normalization. A fresh final smoke scored **3/3** and emitted no
+tool activity; report `8c58a1a6-8d11-4f02-8921-7a7e6d376767.json`.
+Final pipeline SHA-256:
+`45fe8f19dfe2401255df46d74770eef27dba9c68b50a24b85df829c8f8df2cf6`.
+The new full regression follows the isolation fix; the aborted run and failed
+smokes are retained rather than overwritten or used to replace individual scores.
+
+The complete new regression attempted **60/60** cases and scored **57/60
+(95%)**, raw **56/59** scoreable extractions/refusals. All **12/12 dates**
+passed. Held-out **10/12** fails the required 11/12 threshold; privacy **7/8**
+fails its all-cases gate. Schema validity is **57/58 (98.28%)** when the
+failed model call remains in the denominator; all 57 returned parser objects
+were schema-valid. Report `36f888fc-5a53-4644-a7a7-86e96382a316.json`
+returns `syntheticCorrectnessPass=false` and pending deployment acceptance.
+
+The two semantic failures were held-out `shopping-11` and `memories-11`.
+Development `privacy-03` failed with `tool_activity_rejected:collab_tool_call`
+despite disabling both multi-agent flags. The runner rejected that result;
+no rejected output was validated or accepted. Therefore the requested CLI
+feature settings do **not** establish absence of collaboration tools. Resolving
+this isolation limitation is required before treating the subscription runner
+as a reliable tool-free evaluation path. It is not a reason to permit tool
+outputs, silently retry failed cases or claim acceptance.
+
+After the frozen run, a TypeScript narrowing error was corrected with an erased
+`as string` annotation. TypeScript 5.9.3 emitted **identical JavaScript** before
+and after the change, SHA-256
+`f76965e1aa15392c291035bd1ffa69a45a7438d89f8b5475064234e49c290f98`.
+The final source pipeline hash is
+`84c7656466a6d1cc94595d261027cb1408329e4b13765deceec8c705e9d6e33e`;
+the benchmark's frozen source hash remains the earlier v4 hash. This is an
+explicit type-only source difference, not a revised prompt or runtime behavior.
+Type checking and production build passed after the correction.
+
+Checked-in [compact evidence](../spikes/s1/evals/results/subscription-v7.json)
+contains phase summaries, report hashes, per-case scores, normalization paths,
+the aborted run and runtime-equivalence proof. It contains no held-out transcript,
+expected answer or raw model text. Original reports remain ignored locally.
+
+Next acceptance work is to resolve CLI tool registration/isolation and improve
+blind shopping/memory generalization. Do not deploy or run a paid model selection
+comparison on the basis of this failed synthetic gate. If the failed held-out
+contents are inspected for tuning, retire them as regression cases and obtain
+independent authoring/owner review of a replacement holdout before a fresh claim.

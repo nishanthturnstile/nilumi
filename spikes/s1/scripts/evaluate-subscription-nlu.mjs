@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   mkdir,
   mkdtemp,
+  readdir,
   readFile,
   rename,
   rm,
@@ -18,12 +19,36 @@ import {
 } from "../lib/nlu/contracts.ts";
 import { loadFixtures } from "../lib/nlu/fixtures.ts";
 import {
+  INTERPRETATION_VERSION,
+  interpretResult,
+} from "../lib/nlu/interpret.ts";
+import {
   buildPrompt,
   PROMPT_VERSION,
   STATIC_PREFIX,
 } from "../lib/nlu/prompt.ts";
 import { score } from "../lib/nlu/scoring.ts";
-import { validateResult } from "../lib/nlu/validate.ts";
+export async function pipelineFingerprint() {
+  const files = [
+    "scripts/evaluate-subscription-nlu.mjs",
+    "evals/few-shot.json",
+    "package.json",
+    "pnpm-lock.yaml",
+  ];
+  for (const directory of ["lib/nlu", "config"])
+    for (const name of await readdir(
+      new URL(`../${directory}/`, import.meta.url),
+    ))
+      if (/\.(ts|json)$/.test(name)) files.push(`${directory}/${name}`);
+  const hash = createHash("sha256");
+  for (const file of files.sort()) {
+    hash.update(file).update("\0");
+    hash
+      .update(await readFile(new URL(`../${file}`, import.meta.url)))
+      .update("\0");
+  }
+  return hash.digest("hex");
+}
 
 // Local, synthetic correctness evidence only. Never import Gateway or its ledger.
 export function subscriptionEnvironment(source) {
@@ -77,6 +102,15 @@ export function subscriptionSummary(rows, selected) {
     attempted: rows.length,
     correct,
     accuracy: rows.length ? correct / rows.length : null,
+    extraction: {
+      attempted: rows.filter((x) => x.extractionScore || x.status === "refused")
+        .length,
+      correct: rows.filter(
+        (x) =>
+          x.extractionScore?.correct || (x.status === "refused" && x.correct),
+      ).length,
+    },
+    normalizedCases: rows.filter((x) => x.normalizations?.length).length,
     schemaValidRate: calls.length
       ? calls.filter((x) => x.schemaValid === true).length / calls.length
       : null,
@@ -181,6 +215,14 @@ export function codexArguments({
     "features.view_image=false",
     "-c",
     "features.multi_agent_v2=false",
+    "-c",
+    "features.multi_agent=false",
+    "-c",
+    "features.goals=false",
+    "-c",
+    "features.sleep_tool=false",
+    "-c",
+    "features.tool_suggest=false",
     "-c",
     "features.unbounded_connection_retries=false",
     "-",
@@ -310,6 +352,7 @@ async function main() {
     "work-root",
     "concurrency",
     "frozen-prompt-sha256",
+    "frozen-pipeline-sha256",
   ]);
   for (let i = 2; i < process.argv.length; i += 2) {
     if (
@@ -356,12 +399,18 @@ async function main() {
     split,
     args.get("cases")?.split(","),
   );
+  const pipelineSha256 = await pipelineFingerprint();
   if (
     split !== "development" &&
     args.get("frozen-prompt-sha256") !==
       createHash("sha256").update(STATIC_PREFIX).digest("hex")
   )
     throw new Error("Held-out evaluation requires the frozen prompt hash");
+  if (
+    split !== "development" &&
+    args.get("frozen-pipeline-sha256") !== pipelineSha256
+  )
+    throw new Error("Held-out evaluation requires the frozen pipeline hash");
   const directory = resolve("validation-results/subscription");
   await mkdir(directory, { recursive: true });
   const reportPath = join(directory, `${randomUUID()}.json`);
@@ -380,6 +429,8 @@ async function main() {
     promptVersion: PROMPT_VERSION,
     promptSha256: createHash("sha256").update(STATIC_PREFIX).digest("hex"),
     fixtureSha256: hash,
+    interpretationVersion: INTERPRETATION_VERSION,
+    pipelineSha256,
     split,
     createdAt: new Date().toISOString(),
     timeoutMs: options.timeoutMs,
@@ -400,6 +451,7 @@ async function main() {
           selected.findIndex((x) => x.id === b.caseId),
       );
       report.summary = subscriptionSummary(report.rows, selected);
+      if (report.abortReason) report.summary.syntheticCorrectnessPass = false;
       const temporary = `${reportPath}.tmp`;
       await writeFile(temporary, JSON.stringify(report, null, 2), {
         mode: 0o600,
@@ -414,6 +466,7 @@ async function main() {
       reportPath,
       selected: selected.length,
       promptSha256: report.promptSha256,
+      pipelineSha256,
     }),
   );
   await runBounded(selected, concurrency, async (fixture) => {
@@ -437,16 +490,19 @@ async function main() {
     } else {
       try {
         const response = await extract(prompt, options);
-        const validation = validateResult(
-          normalizeProviderOutput(response.raw),
-          fixture.transcript,
-          fixture.context,
-        );
+        const { validation, extractionValidation, normalizations } =
+          interpretResult(
+            normalizeProviderOutput(response.raw),
+            fixture.transcript,
+            fixture.context,
+          );
         report.rows.push({
           ...base,
           status: validation.status === "parsed" ? "ok" : validation.status,
           ...response,
           validation,
+          extractionScore: score(fixture, extractionValidation),
+          normalizations,
           ...score(fixture, validation),
         });
       } catch (error) {
@@ -483,6 +539,11 @@ async function main() {
     );
     return true;
   });
+  if ((await pipelineFingerprint()) !== pipelineSha256) {
+    report.abortReason = "Pipeline changed during evaluation";
+    process.exitCode = 1;
+  }
+  await save();
   console.log(JSON.stringify(report.summary));
 }
 

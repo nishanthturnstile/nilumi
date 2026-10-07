@@ -18,8 +18,8 @@ export function resolveDate(
   let s = phrase.normalize("NFC").toLowerCase().trim();
   for (const [a, b] of [
     ["நாளை", "tomorrow"],
-    ["naalai", "tomorrow"],
     ["naalaikku", "tomorrow"],
+    ["naalai", "tomorrow"],
     ["இன்று", "today"],
     ["innaikku", "today"],
     ["காலை", "morning"],
@@ -88,29 +88,45 @@ export function resolveDate(
     evening: [18, 30],
     tonight: [20, 30],
   };
-  const part = Object.keys(defaults).find((p) => s.includes(p));
+  const relative =
+    /^(today|tomorrow|tonight|next (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday))(?:(?: in the)? (morning|afternoon|evening)|(?: at)? (\d{1,2}(?::\d{2})?\s*(?:am|pm)))?$/.exec(
+      s,
+    );
+  const clockOnly = /^(?:at )?\d{1,2}(?::\d{2})?\s*(?:am|pm)$/.test(s);
+  const dayPartOnly = Object.hasOwn(defaults, s);
+  // A relative rule may consume only the whole phrase, never ignore another date.
+  if (
+    /\b(?:today|tomorrow|tonight|next (?:monday|tuesday|wednesday|thursday|friday|saturday|sunday))\b/.test(
+      s,
+    ) &&
+    !relative
+  )
+    return {
+      reason: /\bat \d{1,2}$/.test(s) ? "ambiguous_time" : "unresolved_date",
+    };
+  const part = relative?.[2] ?? (dayPartOnly ? s : undefined);
   let base = now.startOf("day");
   const weekday =
     /next (monday|tuesday|wednesday|thursday|friday|saturday|sunday)/.exec(s);
-  if (s.includes("tomorrow")) base = base.plus({ days: 1 });
+  if (relative?.[1] === "tomorrow") base = base.plus({ days: 1 });
   else if (weekday) {
     const day =
       "monday tuesday wednesday thursday friday saturday sunday"
         .split(" ")
         .indexOf(weekday[1]) + 1;
     base = base.plus({ days: (day - now.weekday + 7) % 7 || 7 });
-  } else if (
-    !(
-      s.includes("today") ||
-      s.includes("tonight") ||
-      /^(?:at )?\d{1,2}(?::\d{2})?\s*(?:am|pm)$/.test(s)
-    )
-  ) {
+  } else if (!relative && !clockOnly && !dayPartOnly) {
     const parsed = chrono.en.GB.parse(s, {
       instant: now.toJSDate(),
       timezone: 330,
     });
-    if (parsed.length !== 1) return { reason: "unresolved_date" };
+    if (
+      parsed.length !== 1 ||
+      parsed[0].index !== 0 ||
+      parsed[0].text.length !== s.length ||
+      parsed[0].end
+    )
+      return { reason: "unresolved_date" };
     const start = parsed[0].start;
     base = base.set({
       year: start.get("year") ?? now.year,

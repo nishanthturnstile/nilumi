@@ -1,8 +1,8 @@
 # S3 — Command understanding implementation plan
 
-> **Status:** Implementation and approved synthetic-only staging smoke delivered. Owner fixture review and Railway key identity are confirmed. Luna has no eligible provider; Nano misses the five-second deadline. Full comparison and model selection remain incomplete; evaluator disabled. Family-data ZDR remains blocked.
+> **Status:** Implementation and deterministic interpretation delivered. Subscription regression: 57/60; dates pass, held-out and privacy gates fail. CLI tool isolation remains unresolved. Deployment comparison/model selection remain incomplete; Gateway evaluator disabled. Family-data ZDR remains blocked.
 > **Date:** October 7, 2026
-> **Next owner review:** The 60 transcripts and their expected actions.
+> **Next acceptance work:** Synthetic correctness, then a successful live smoke and budget-bounded deployment comparison. The 60 expected actions are already owner-approved.
 > **Prerequisite:** S2 owner approval is recorded; no additional recordings are needed.
 
 ## 1. Objective and agreed decisions
@@ -505,3 +505,48 @@ used held-out evidence, no Gateway requests were made, no deployment model was
 selected, and S3 acceptance remains pending. See
 [the complete subscription evidence](08-s3-gateway-verification.md) for hashes,
 reports, known failures, scope and remaining budget constraints.
+
+## Next correctness increment — deterministic interpretation
+
+1. Commit the delivered S3 implementation and subscription evidence as a
+   reviewable baseline (`becd350`).
+2. Resolve complete, literal date phrases locally using the existing Chrono
+   and Luxon dependencies. Reject partial parses, ranges and conflicting
+   relative expressions; retain clarification for missing or ambiguous times.
+3. Improve literal self mentions and last-record reference instructions using
+   development inputs. Preserve contracts, expected actions and scorer.
+4. Report raw extraction and interpreted results separately. Add regression
+   tests for all weekday anchors, timezone equivalence, unsupported phrases,
+   invented IDs, privacy refusals and integration with both evaluators.
+5. Run the three failing development examples, then the 48-case development
+   set. Freeze prompt plus pipeline before the repeated 60-case regression.
+6. Record actual results and commit the new implementation. Proceed to a paid
+   deployment smoke only once synthetic gates pass and the reserve fits the
+   remaining cumulative allowance. No subscription result selects a hosted
+   model or proves five-second latency, Gateway routing or family-data ZDR.
+
+The prior full run's aggregate results and failed IDs were already observed.
+This revision does not use held-out transcripts or expected answers to tune;
+the repeated original holdout will be labeled as regression evidence. A new
+holdout requires independent authoring and owner review.
+
+Research supports this separation: OpenAI's
+[Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs)
+establishes schema constraints, while semantic checks remain application work.
+[Chrono's documentation](https://github.com/wanasit/chrono) exposes matched
+text/index, ranges, explicit reference instants/timezones and certainty flags;
+these allow complete-phrase validation rather than accepting a partial match.
+[Luxon's calendar math documentation](https://github.com/moment/luxon/blob/master/docs/math.md)
+supports calendar-day arithmetic in an explicit household timezone. The
+upcoming-Saturday convention remains Nilumi's product rule.
+
+This increment delivered deterministic date/reference interpretation and
+**199 passing automated tests** plus lint, type checking and build. The complete
+v7 regression is **57/60**, dates **12/12**, held-out **10/12**, privacy **7/8**.
+Synthetic acceptance still fails: two blind semantic cases and a rejected
+collaboration tool call remain. CLI multi-agent disable settings alone did not
+establish isolation. Resolve that before further subscription benchmarks, then
+improve blind shopping/memory generalization without tuning to held-out answers.
+Inspecting failed held-out content requires replacing and independently reviewing
+the holdout before claiming a fresh test. No paid comparison or deployment
+followed this failed gate; the Gateway ledger remains unchanged.

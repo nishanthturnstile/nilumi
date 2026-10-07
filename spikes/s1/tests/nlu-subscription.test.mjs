@@ -66,6 +66,9 @@ test("subscription evaluation excludes API credentials and inherited orchestrati
     "features.shell_tool=false",
     "features.plugins=false",
     "features.hooks=false",
+    "features.multi_agent=false",
+    "features.multi_agent_v2=false",
+    "features.goals=false",
     "project_doc_max_bytes=0",
     'web_search="disabled"',
   ])
@@ -99,6 +102,7 @@ test("subscription output requires one completed turn without tool activity or e
     "command_execution",
     "file_change",
     "mcp_tool_call",
+    "collab_tool_call",
     "web_search",
     "unknown_tool",
   ])

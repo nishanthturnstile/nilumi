@@ -1,0 +1,949 @@
+{
+  "scope": "synthetic_correctness_regression",
+  "model": "gpt-6-luna",
+  "reasoningEffort": "low",
+  "authentication": "chatgpt",
+  "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+  "heldOutLimit": "Original holdout repeated; previous aggregate metrics and failed IDs observed. No held-out transcript or expected answer used for tuning this revision.",
+  "deploymentAcceptance": "pending_live_gates",
+  "gatewaySpendThisIncrementUsd": 0,
+  "subscriptionCostUsd": null,
+  "retainedGatewayLedgerUsd": 0.122884725,
+  "cumulativeTestingCapUsd": 0.5,
+  "timingScope": "Codex process wall time is not production Gateway latency",
+  "privacyScope": "Synthetic only; no ZDR or Gateway no-training claim",
+  "automatedTestsPassed": 199,
+  "runtimeEquivalence": {
+    "compiler": "TypeScript 5.9.3",
+    "emittedJavaScriptIdentical": true,
+    "emittedJavaScriptSha256": "f76965e1aa15392c291035bd1ffa69a45a7438d89f8b5475064234e49c290f98",
+    "benchmarkPipelineSha256": "45fe8f19dfe2401255df46d74770eef27dba9c68b50a24b85df829c8f8df2cf6",
+    "finalPipelineSha256": "84c7656466a6d1cc94595d261027cb1408329e4b13765deceec8c705e9d6e33e"
+  },
+  "isolationLimitation": "A collab_tool_call was observed despite both multi-agent disable flags. Its output was rejected. Tool registration isolation remains unverified.",
+  "lint": "passed",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "evidence": {
+    "smoke": {
+      "reportFile": "8c58a1a6-8d11-4f02-8921-7a7e6d376767.json",
+      "reportSha256": "e869647cbb47e5c8e8bb860b87a86ccbdcfc8fd16c4db1fb0184702c9936b337",
+      "mode": "subscription_synthetic_correctness",
+      "promptSha256": "6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397",
+      "pipelineSha256": "45fe8f19dfe2401255df46d74770eef27dba9c68b50a24b85df829c8f8df2cf6",
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 3,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 3,
+          "correct": 3
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "privacy": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": []
+    },
+    "development": {
+      "reportFile": "fdcbf119-2a59-4b88-aaac-3a1343f72595.json",
+      "reportSha256": "49c2a7cfcb984491c2286420cf5d66790ec10337dc6701913e7614027a17cb00",
+      "mode": "subscription_synthetic_correctness",
+      "promptSha256": "6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397",
+      "pipelineSha256": "008141c692d5d4cf959cc98a5780ee416d0356854b003fdf2fbecec61b305023",
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 47,
+        "accuracy": 0.9791666666666666,
+        "extraction": {
+          "attempted": 48,
+          "correct": 47
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 9
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 6
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "dates-04",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": false,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": ["commands"],
+          "normalizations": []
+        }
+      ]
+    },
+    "developmentReplay": {
+      "reportFile": "development-v7-replay.json",
+      "reportSha256": "7d54b1606d360e2dc06e4837ac0836ea3f21dc7493d45eaecbbe9a599e47608f",
+      "mode": "offline_development_replay",
+      "promptSha256": "6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397",
+      "pipelineSha256": "45fe8f19dfe2401255df46d74770eef27dba9c68b50a24b85df829c8f8df2cf6",
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 48,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 48,
+          "correct": 47
+        },
+        "normalizedCases": 1,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 10
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 6
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "dates-04",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "offline_replay",
+          "correct": true,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": [
+            {
+              "path": "result.commands.0.targets.0",
+              "kind": "reference"
+            }
+          ]
+        }
+      ]
+    },
+    "abortedBenchmark": {
+      "reportFile": "2a72908f-03bd-4437-989a-b029951d1cd7.json",
+      "reportSha256": "a42d02c9a14e7b0faef16fc68aa7c90a9346457f5ae42cf670f98c1bb6939583",
+      "mode": "subscription_synthetic_correctness",
+      "abortReason": "tool_activity_rejected:collab_tool_call",
+      "promptSha256": "6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397",
+      "pipelineSha256": "66ef6d281deac59bfcf93897a9f5b6f99baae59ed3a5c76983d58f3681d46edb",
+      "summary": {
+        "expected": 60,
+        "attempted": 33,
+        "correct": 30,
+        "accuracy": 0.9090909090909091,
+        "extraction": {
+          "attempted": 32,
+          "correct": 29
+        },
+        "normalizedCases": 1,
+        "schemaValidRate": 0.9696969696969697,
+        "heldOut": {
+          "attempted": 4,
+          "correct": 2
+        },
+        "dates": {
+          "attempted": 9,
+          "correct": 8
+        },
+        "privacy": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "coverageComplete": false,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "shopping-11",
+          "split": "held_out",
+          "tags": ["tamil", "multi_command"],
+          "status": "ok",
+          "correct": false,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": ["commands", "outcomes"],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-11",
+          "split": "held_out",
+          "tags": ["tamil", "multi_command"],
+          "status": "ok",
+          "correct": false,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": ["commands", "outcomes"],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-06",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": [
+            {
+              "path": "result.commands.0.at",
+              "kind": "date"
+            }
+          ]
+        },
+        {
+          "caseId": "dates-07",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "execution_error",
+          "correct": false,
+          "extractionCorrect": null,
+          "schemaValid": false,
+          "normalizations": []
+        }
+      ]
+    },
+    "benchmark": {
+      "reportFile": "36f888fc-5a53-4644-a7a7-86e96382a316.json",
+      "reportSha256": "f5a276babba5c8c77ed6ddf7246b8f8e35de4fb75960dfa4e4a87af22b780b6e",
+      "mode": "subscription_synthetic_correctness",
+      "abortReason": "tool_activity_rejected:collab_tool_call",
+      "promptSha256": "6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397",
+      "pipelineSha256": "45fe8f19dfe2401255df46d74770eef27dba9c68b50a24b85df829c8f8df2cf6",
+      "summary": {
+        "expected": 60,
+        "attempted": 60,
+        "correct": 57,
+        "accuracy": 0.95,
+        "extraction": {
+          "attempted": 59,
+          "correct": 56
+        },
+        "normalizedCases": 1,
+        "schemaValidRate": 0.9827586206896551,
+        "heldOut": {
+          "attempted": 12,
+          "correct": 10
+        },
+        "dates": {
+          "attempted": 12,
+          "correct": 12
+        },
+        "privacy": {
+          "attempted": 8,
+          "correct": 7
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "shopping-01",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-02",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-03",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-04",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-05",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-06",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-07",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-08",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-09",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-10",
+          "split": "development",
+          "tags": ["multi_command"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-11",
+          "split": "held_out",
+          "tags": ["tamil", "multi_command"],
+          "status": "ok",
+          "correct": false,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": ["commands", "outcomes"],
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-12",
+          "split": "held_out",
+          "tags": ["multi_command"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-01",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-02",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-03",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-04",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-05",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-06",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-07",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-08",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-09",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-10",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-11",
+          "split": "held_out",
+          "tags": ["tamil", "multi_command"],
+          "status": "ok",
+          "correct": false,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": ["commands", "outcomes"],
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-12",
+          "split": "held_out",
+          "tags": ["multi_command"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-01",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-02",
+          "split": "development",
+          "tags": ["tamil", "dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-03",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-04",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-05",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-06",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-07",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-08",
+          "split": "development",
+          "tags": ["dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-09",
+          "split": "development",
+          "tags": ["tamil", "dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": false,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": [
+            {
+              "path": "result.commands.0.at",
+              "kind": "date"
+            }
+          ]
+        },
+        {
+          "caseId": "dates-10",
+          "split": "development",
+          "tags": ["tamil", "multi_command", "dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-11",
+          "split": "held_out",
+          "tags": ["multi_command", "dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-12",
+          "split": "held_out",
+          "tags": ["tamil", "dates"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-01",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-02",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-03",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-04",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-05",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-06",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-07",
+          "split": "held_out",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-08",
+          "split": "held_out",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-01",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-02",
+          "split": "development",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-03",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-04",
+          "split": "development",
+          "tags": ["tamil", "multi_command"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-05",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-06",
+          "split": "development",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-07",
+          "split": "held_out",
+          "tags": ["tamil"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-08",
+          "split": "held_out",
+          "tags": [],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-01",
+          "split": "development",
+          "tags": ["privacy"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-02",
+          "split": "development",
+          "tags": ["tamil", "privacy"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-03",
+          "split": "development",
+          "tags": ["privacy"],
+          "status": "execution_error",
+          "correct": false,
+          "extractionCorrect": null,
+          "schemaValid": false,
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-04",
+          "split": "development",
+          "tags": ["tamil", "privacy"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-05",
+          "split": "development",
+          "tags": ["tamil", "multi_command", "privacy"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-06",
+          "split": "development",
+          "tags": ["privacy"],
+          "status": "refused",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": null,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-07",
+          "split": "held_out",
+          "tags": ["tamil", "privacy"],
+          "status": "refused",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": null,
+          "mismatches": [],
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-08",
+          "split": "held_out",
+          "tags": ["multi_command", "privacy"],
+          "status": "ok",
+          "correct": true,
+          "extractionCorrect": true,
+          "schemaValid": true,
+          "mismatches": [],
+          "normalizations": []
+        }
+      ]
+    }
+  }
+}

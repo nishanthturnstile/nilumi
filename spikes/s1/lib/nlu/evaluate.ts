@@ -18,9 +18,9 @@ import { FIXTURE_VERSION, REGISTRY_VERSION } from "./context";
 import { CONTRACT_VERSION } from "./contracts";
 import { type Fixture, loadFixtures } from "./fixtures";
 import { type Adapter, gatewayAdapter, SchemaGenerationError } from "./gateway";
+import { INTERPRETATION_VERSION, interpretResult } from "./interpret";
 import { buildPrompt, PROMPT_VERSION } from "./prompt";
 import { score } from "./scoring";
-import { validateResult } from "./validate";
 
 export const EvaluationRequest = z
   .strictObject({
@@ -170,11 +170,12 @@ export async function evaluateCase(
     if (signal.aborted) throw new Error("cancelled");
     const response = { ...generated, ...metadata };
     const validationStart = performance.now();
-    const validation = validateResult(
+    const interpretation = interpretResult(
       response.raw,
       fixture.transcript,
       fixture.context,
     );
+    const { validation, extractionValidation, normalizations } = interpretation;
     const routedMismatch =
       response.isByok === true ||
       (response.routedProvider !== undefined &&
@@ -202,6 +203,8 @@ export async function evaluateCase(
           ? "schema_error"
           : "ok",
       validation,
+      extractionScore: score(fixture, extractionValidation),
+      normalizations,
       ...score(fixture, validation),
       ...(routedMismatch ? { correct: false, mismatches: ["routing"] } : {}),
       latencyMs,
@@ -358,6 +361,7 @@ export async function handleEvaluation(
             fixtureHash: loaded.hash,
             models: MODEL_CONFIG_VERSION,
             contract: CONTRACT_VERSION,
+            interpretation: INTERPRETATION_VERSION,
           },
         });
         for (const job of schedule(
