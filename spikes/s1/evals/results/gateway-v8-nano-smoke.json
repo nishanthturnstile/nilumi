@@ -1,0 +1,599 @@
+{
+  "scope": "Synthetic-only managed Gateway staging smoke",
+  "sourceCommit": "81d9a65",
+  "deploymentId": "3d390548-da23-4d87-8952-50a9718d50b8",
+  "createdAt": "2026-10-08T02:27:32.064Z",
+  "reportId": "e5a5431c-418e-4cde-8535-a0d7e54a8df1",
+  "reportSha256": "5c76fc2af7d2170e8d1d110d5f6b805d32dec028bc77daac7113f86a1dceec6a",
+  "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+  "requestControls": {
+    "providerOnly": ["openai"],
+    "noPromptTraining": true,
+    "store": false,
+    "deadlineMs": 5000,
+    "retries": 0,
+    "fallback": false,
+    "reasoningEffort": null
+  },
+  "configuredRatesVerified": "All pinned model rates matched the live public catalog before deployment and again inside the smoke runner",
+  "summary": {
+    "expected": 3,
+    "attempted": 3,
+    "correct": 2,
+    "accuracy": 0.6666666666666666,
+    "modelCalls": 3,
+    "schemaValidRate": 1,
+    "successfulCalls": 3,
+    "failures": 0,
+    "latency": {
+      "samples": 3,
+      "p50Ms": 2187.463649000001,
+      "p95Ms": 2622.6519560000015
+    },
+    "tokenUsage": {
+      "callsWithUsage": 3,
+      "input": 18258,
+      "output": 254,
+      "cached": 11776,
+      "cacheWrite": 0,
+      "reasoning": 0,
+      "observedCacheHits": 2
+    },
+    "unknownCostCalls": 0,
+    "accountedCostUsd": 0.0010442,
+    "reportedOrEstimatedCostUsd": 0.0010442,
+    "notEvaluated": 0,
+    "costUsd": 0.0010442,
+    "slices": {
+      "model:openai/gpt-4.1-nano": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442
+      },
+      "model:openai/gpt-4.1-nano/pass:1": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442
+      },
+      "category:shopping": {
+        "attempted": 1,
+        "correct": 1,
+        "accuracy": 1,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 2622.6519560000015,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6084,
+          "output": 71,
+          "cached": 0,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 0
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0006368,
+        "reportedOrEstimatedCostUsd": 0.0006368
+      },
+      "model:openai/gpt-4.1-nano/pass:1/category:shopping": {
+        "attempted": 1,
+        "correct": 1,
+        "accuracy": 1,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 2622.6519560000015,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6084,
+          "output": 71,
+          "cached": 0,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 0
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0006368,
+        "reportedOrEstimatedCostUsd": 0.0006368
+      },
+      "model:openai/gpt-4.1-nano/pass:1/language:en": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442
+      },
+      "language:en": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442
+      },
+      "split:development": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442
+      },
+      "model:openai/gpt-4.1-nano/pass:1/split:development": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442
+      },
+      "category:memories": {
+        "attempted": 1,
+        "correct": 0,
+        "accuracy": 0,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2187.463649000001
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6082,
+          "output": 115,
+          "cached": 5888,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 1
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0002126,
+        "reportedOrEstimatedCostUsd": 0.0002126
+      },
+      "model:openai/gpt-4.1-nano/pass:1/category:memories": {
+        "attempted": 1,
+        "correct": 0,
+        "accuracy": 0,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2187.463649000001
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6082,
+          "output": 115,
+          "cached": 5888,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 1
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0002126,
+        "reportedOrEstimatedCostUsd": 0.0002126
+      },
+      "category:dates": {
+        "attempted": 1,
+        "correct": 1,
+        "accuracy": 1,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 1866.4043270000002,
+          "p95Ms": 1866.4043270000002
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6092,
+          "output": 68,
+          "cached": 5888,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 1
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0001948,
+        "reportedOrEstimatedCostUsd": 0.0001948
+      },
+      "model:openai/gpt-4.1-nano/pass:1/category:dates": {
+        "attempted": 1,
+        "correct": 1,
+        "accuracy": 1,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 1866.4043270000002,
+          "p95Ms": 1866.4043270000002
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6092,
+          "output": 68,
+          "cached": 5888,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 1
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0001948,
+        "reportedOrEstimatedCostUsd": 0.0001948
+      },
+      "tag:dates": {
+        "attempted": 1,
+        "correct": 1,
+        "accuracy": 1,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 1866.4043270000002,
+          "p95Ms": 1866.4043270000002
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6092,
+          "output": 68,
+          "cached": 5888,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 1
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0001948,
+        "reportedOrEstimatedCostUsd": 0.0001948
+      },
+      "model:openai/gpt-4.1-nano/pass:1/tag:dates": {
+        "attempted": 1,
+        "correct": 1,
+        "accuracy": 1,
+        "modelCalls": 1,
+        "schemaValidRate": 1,
+        "successfulCalls": 1,
+        "failures": 0,
+        "latency": {
+          "samples": 1,
+          "p50Ms": 1866.4043270000002,
+          "p95Ms": 1866.4043270000002
+        },
+        "tokenUsage": {
+          "callsWithUsage": 1,
+          "input": 6092,
+          "output": 68,
+          "cached": 5888,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 1
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0001948,
+        "reportedOrEstimatedCostUsd": 0.0001948
+      }
+    },
+    "candidates": {
+      "openai/gpt-4.1-nano": {
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "modelCalls": 3,
+        "schemaValidRate": 1,
+        "successfulCalls": 3,
+        "failures": 0,
+        "latency": {
+          "samples": 3,
+          "p50Ms": 2187.463649000001,
+          "p95Ms": 2622.6519560000015
+        },
+        "tokenUsage": {
+          "callsWithUsage": 3,
+          "input": 18258,
+          "output": 254,
+          "cached": 11776,
+          "cacheWrite": 0,
+          "reasoning": 0,
+          "observedCacheHits": 2
+        },
+        "unknownCostCalls": 0,
+        "accountedCostUsd": 0.0010442,
+        "reportedOrEstimatedCostUsd": 0.0010442,
+        "passes": [
+          {
+            "pass": 1,
+            "fullCoverage": false,
+            "privacyPass": false,
+            "datePass": false,
+            "heldOutPass": false,
+            "accuracyPass": false,
+            "latencyTargetPass": false,
+            "routeVerified": true,
+            "qualifies": false
+          }
+        ],
+        "qualifies": false
+      }
+    },
+    "coverageComplete": true,
+    "selection": "pending_live_gates"
+  },
+  "rows": [
+    {
+      "caseId": "shopping-01",
+      "status": "ok",
+      "correct": true,
+      "schemaValid": true,
+      "extractionScore": {
+        "correct": true,
+        "schemaValid": true,
+        "mismatches": []
+      },
+      "normalizations": [],
+      "latencyMs": 2622.6519560000015,
+      "usage": {
+        "input": 6084,
+        "output": 71,
+        "cached": 0,
+        "cacheWrite": 0,
+        "reasoning": 0
+      },
+      "costUsd": 0.0006368,
+      "costBasis": "reported",
+      "accountedCostUsd": 0.0006368,
+      "routedProvider": "openai",
+      "routedModel": "openai/gpt-4.1-nano",
+      "isByok": false,
+      "mismatches": [],
+      "versions": {
+        "prompt": "s3-extract-v8",
+        "registry": "synthetic-v1",
+        "fixture": "golden-v1",
+        "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+        "models": "s3-openai-challengers-v4",
+        "contract": "s3-v1",
+        "interpretation": "s3-interpret-v4"
+      }
+    },
+    {
+      "caseId": "memories-01",
+      "status": "ok",
+      "correct": false,
+      "schemaValid": true,
+      "extractionScore": {
+        "correct": false,
+        "schemaValid": true,
+        "mismatches": ["commands", "outcomes"]
+      },
+      "normalizations": [],
+      "latencyMs": 2187.463649000001,
+      "usage": {
+        "input": 6082,
+        "output": 115,
+        "cached": 5888,
+        "cacheWrite": 0,
+        "reasoning": 0
+      },
+      "costUsd": 0.0002126,
+      "costBasis": "reported",
+      "accountedCostUsd": 0.0002126,
+      "routedProvider": "openai",
+      "routedModel": "openai/gpt-4.1-nano",
+      "isByok": false,
+      "mismatches": ["commands", "outcomes"],
+      "versions": {
+        "prompt": "s3-extract-v8",
+        "registry": "synthetic-v1",
+        "fixture": "golden-v1",
+        "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+        "models": "s3-openai-challengers-v4",
+        "contract": "s3-v1",
+        "interpretation": "s3-interpret-v4"
+      }
+    },
+    {
+      "caseId": "dates-01",
+      "status": "ok",
+      "correct": true,
+      "schemaValid": true,
+      "extractionScore": {
+        "correct": false,
+        "schemaValid": true,
+        "mismatches": ["commands", "outcomes"]
+      },
+      "normalizations": [
+        {
+          "path": "result.commands.0.at",
+          "kind": "date"
+        }
+      ],
+      "latencyMs": 1866.4043270000002,
+      "usage": {
+        "input": 6092,
+        "output": 68,
+        "cached": 5888,
+        "cacheWrite": 0,
+        "reasoning": 0
+      },
+      "costUsd": 0.0001948,
+      "costBasis": "reported",
+      "accountedCostUsd": 0.0001948,
+      "routedProvider": "openai",
+      "routedModel": "openai/gpt-4.1-nano",
+      "isByok": false,
+      "mismatches": [],
+      "versions": {
+        "prompt": "s3-extract-v8",
+        "registry": "synthetic-v1",
+        "fixture": "golden-v1",
+        "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+        "models": "s3-openai-challengers-v4",
+        "contract": "s3-v1",
+        "interpretation": "s3-interpret-v4"
+      }
+    }
+  ],
+  "decision": "Smoke failed2/3; full60 and additional paid testing stopped. No model selected.",
+  "failureAnalysis": "Development memories-01: ordinary preference misclassified as correction of a prior preference. Validator required clarification; interpretation did not rewrite its intent.",
+  "budget": {
+    "testCapUsd": 0.5,
+    "monthCapUsd": 5,
+    "reportedIncrementUsd": 0.0010442,
+    "retainedUsd": 0.12392892499999997,
+    "remainingUsd": 0.37607107500000003,
+    "ledgerSha256": "b188a6eea794613301e45172fb14b742c7778bb7c3a441a34d429873cd61f3d2",
+    "ledgerEntries": 25
+  },
+  "limitations": "Three development cases are not a full accuracy or latency benchmark. Cache hits observed on2calls. No family-data ZDR claim. Full model comparison and hosted acceptance remain pending.",
+  "shutdown": {
+    "deploymentId": "1f309d7c-d73f-49cc-a822-077e19c2afb2",
+    "deploymentStatus": "SUCCESS",
+    "enabled": false,
+    "allowlistCount": 0,
+    "authenticatedPreflightStatus": 404,
+    "authenticatedPreflightError": "evaluation_disabled"
+  },
+  "gatewayAccountReadout": {
+    "at": "2026-10-08T02:26:27.017Z",
+    "balanceUsd": "4.97610865",
+    "totalUsedUsd": "0.02389135",
+    "scope": "Account-wide read-only balance, distinct from conservative testing ledger"
+  }
+}

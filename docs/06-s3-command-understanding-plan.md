@@ -619,3 +619,18 @@ The complete content-free score record is
 [verification notes](08-s3-gateway-verification.md) retain phase hashes and
 limits. No paid Gateway calls, deployment, purchase or model selection occurred.
 Hosted S3 acceptance remains pending the budget-bounded live workflow above.
+Hosted follow-up on October 8: deployed reviewed v8 to staging and ran the
+three approved development smoke cases through managed OpenAI GPT-4.1 nano.
+Schema/routing passed and all calls completed within five seconds, but semantic
+correctness was **2/3**. An ordinary preference was misclassified as a correction;
+validation required clarification. The full run and further paid tests stopped.
+No model selection occurred. Three reported charges total US$0.0010442; retained
+ledger US$0.123928925, remaining testing allowance US$0.376071075. Evaluator
+disable/allowlist clearing and tested-artifact redeploy followed the failure.
+See [hosted smoke evidence](08-s3-gateway-verification.md).
+
+The next implementation item is development-only prompt/input simplification
+for the hosted small model, followed by a frozen synthetic evaluation and another
+bounded smoke only when the revised pipeline qualifies. Preserve correction
+semantics, privacy/date gates, the deadline, and the ledger. The successful Luna
+subscription regression does not establish Nano accuracy or hosted acceptance.

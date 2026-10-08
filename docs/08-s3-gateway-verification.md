@@ -757,3 +757,78 @@ price/routing verification, staging deployment, a passing Nano smoke, then its
 frozen full pass through the durable ledger runner. Stop if smoke fails and
 disable evaluator afterward. That single-model validation does not complete the
 original two-model comparison. **Hosted S3 acceptance remains pending.**
+## October 8 — hosted v8 Nano smoke, stopped at the correctness gate
+
+Owner authorized the hosted next step with “ok ple proceed”. All configured
+model rates matched the current public Gateway catalog before deployment and
+again inside the authoritative runner. The initial retained ledger was
+US$0.122884725 across 22 entries (SHA-256
+`dea2128839b6fd4386b36dc9934afae9245f111d7f57deba3f48f65370b9e10f`).
+No rates, spend caps, privacy controls or deadlines were changed.
+
+Uploaded reviewed commit `81d9a65` directly to the existing staging service;
+deployment `3d390548-da23-4d87-8952-50a9718d50b8` became healthy. Only the owner
+was temporarily allowlisted. The authenticated empty-body preflight returned
+HTTP 400 `invalid_request`, with no model access. The smoke used only original
+development cases `shopping-01`, `memories-01`, `dates-01`, through the durable
+budget runner. Server reports confirmed `s3-extract-v8`, `s3-interpret-v4` and
+the unchanged approved corpus hash; no previous deployment was scored.
+
+| Development case | Correct | Schema | Model-call latency | Reported cost |
+| --- | --- | --- | --- | --- |
+| shopping-01 | Yes | Valid | 2622.65 ms | US$0.0006368 |
+| memories-01 | No | Valid | 2187.46 ms | US$0.0002126 |
+| dates-01 | Yes after deterministic date resolution | Valid | 1866.40 ms | US$0.0001948 |
+
+All three calls completed within the five-second deadline. Managed routing
+receipts verified OpenAI / `openai/gpt-4.1-nano`, with BYOK false and required
+no-training receipt handling. Requests retained `only:['openai']`,
+`disallowPromptTraining:true`, `store:false`, no reasoning-effort field, zero SDK
+retries, no fallback and the five-second timeout. This is the synthetic-only
+Hobby exception; it does not establish family-data ZDR.
+
+**Smoke failed: 2/3 interpreted correctness; 1/3 raw extraction correctness.**
+`memories-01` was an ordinary preference statement but the model emitted a
+correction of the earlier contextual preference. The unchanged validator asked
+for clarification instead of treating that unsupported correction as executable.
+No intent rewrite was added to make the result pass. The dates case's raw
+resolution failed before the existing deterministic stage corrected it.
+
+Smoke p50 was 2187.46 ms and p95 2622.65 ms over only three successful model
+calls; this exceeds the separate 1400 ms target and is not a full latency
+benchmark. Cache hits were observed on two calls (11776 cached input tokens
+out of 18258 input tokens), so no cold-cache performance claim is made.
+
+The full 60-case run and further paid tests were **not started** after the smoke
+failed. No model was selected. Report
+`nlu-e5a5431c-418e-4cde-8535-a0d7e54a8df1.json` remains ignored in validation-results;
+[compact checked-in evidence](../spikes/s1/evals/results/gateway-v8-nano-smoke.json)
+contains versions, scores, latencies, usage, routing, costs and limitations.
+All three reservations settled to reported costs totaling **US$0.0010442**.
+The ledger now retains **US$0.123928925** across 25 entries, leaving
+**US$0.376071075** under the cumulative US$0.50 cap. Historical unresolved
+reservations were retained. Read-only Gateway accounting at
+2026-10-08T02:26:27Z reported total used **US$0.02389135**, remaining credits
+**US$4.97610865**; account-wide usage and the conservative testing ledger are
+separate measures.
+
+Shutdown was initiated by setting `NLU_EVALUATION_ENABLED=false` and clearing
+`NLU_EVALUATOR_EMAILS`, then redeploying the tested artifact as
+`1f309d7c-d73f-49cc-a822-077e19c2afb2`. Final runtime shutdown verification is
+recorded below. No Git push, new service, family-data call or purchase occurred.
+
+The next correctness work should target a simpler extraction prompt/input for
+the small hosted model using development cases and fresh separately authored
+examples. Preserve ordinary preference versus explicit correction semantics;
+do not weaken scoring or convert an unsupported model correction into a write.
+Freeze and validate any changed prompt synthetically before another bounded
+hosted smoke. A larger model's subscription pass does not transfer automatically
+to Nano. S3 hosted acceptance and the two-model comparison remain pending.
+Final shutdown verification: deployment
+`1f309d7c-d73f-49cc-a822-077e19c2afb2` reached **SUCCESS**. The previous enabled
+deployment was removed. An authenticated empty-body request now returns HTTP
+**404** with `evaluation_disabled`; service configuration has enabled=false
+and zero allowlisted evaluators. No model call is made by that probe. Shutdown
+is verified, not merely requested. Documentation and content-free evidence were
+checked with the existing pinned Biome tooling; no application source changed
+in this validation increment.

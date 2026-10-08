@@ -502,3 +502,10 @@ US$0.377115275. Current configured-price Nano smoke plus full-pass maximum is
 US$0.3416375; Mini's full pass alone reserves US$1.2993724. Verify current prices
 and routing before live dispatch. Hosted S3 acceptance and model selection remain
 pending; the Gateway evaluator remains disabled.
+October 8 hosted validation: v8 deployment smoke with GPT-4.1 nano scored **2/3**
+(schema 3/3; all calls under five seconds; managed OpenAI routing verified).
+The memory intent case failed, so the full run and further paid tests stopped.
+Reported smoke spend US$0.0010442; retained ledger US$0.123928925; remaining cap
+US$0.376071075. No model selection or hosted S3 acceptance. See
+[smoke evidence](evals/results/gateway-v8-nano-smoke.json) and
+[verification/shutdown notes](../../docs/08-s3-gateway-verification.md).
