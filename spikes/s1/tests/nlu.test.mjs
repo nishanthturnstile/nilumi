@@ -135,7 +135,9 @@ const env = {
   NLU_EVALUATION_ENABLED: "true",
   NLU_EVALUATOR_EMAILS: "owner@example.invalid",
   NLU_EVALUATION_ORIGIN: "https://example.invalid",
-  AI_GATEWAY_API_KEY: "mock-only",
+  CLOUDFLARE_API_TOKEN: "mock-only",
+  CLOUDFLARE_ACCOUNT_ID: "00000000000000000000000000000000",
+  CLOUDFLARE_AI_GATEWAY_ID: "offline-test",
 };
 const hobbyPrivacy = {
   ...privacy,
@@ -1001,7 +1003,7 @@ test("endpoint blocks disabled/non-staging evaluation, auth, allowlist, origin, 
     [{ env: { ...env, RAILWAY_ENVIRONMENT_NAME: "production" } }, 404],
     [{ email: null }, 401],
     [{ email: "other@example.invalid" }, 403],
-    [{ env: { ...env, AI_GATEWAY_API_KEY: "" } }, 503],
+    [{ env: { ...env, CLOUDFLARE_API_TOKEN: "" } }, 503],
     [{ privacy: { ...privacy, team_zero_data_retention: false } }, 503],
   ]) {
     let calls = 0;
@@ -1182,6 +1184,7 @@ test("authoritative runner reserves before each request, settles, and reloads cu
         {
           type: "start",
           evaluationMode: "zdr",
+          gateway: "cloudflare",
           versions: { fixtureHash: hash },
         },
         {
@@ -1623,25 +1626,10 @@ test("complete accuracy gates include every held-out/date/privacy pass and verif
   assert.equal(summarize(rows, 60).selection, "pending_live_gates");
 });
 
-test("live rate verification tolerates decimal roundoff while rejecting changed or missing prices", async () => {
+test("live rate verification uses Cloudflare prices and blocks unverified challengers", async () => {
   const { verifyRates } = await import("../scripts/evaluate-nlu.mjs");
-  const data = Object.entries(MODELS).map(([id, m]) => ({
-    id,
-    pricing: {
-      input: String(m.inputPerMillion / 1e6),
-      output: String(m.outputPerMillion / 1e6),
-      input_cache_read: String(m.cachedInputPerMillion / 1e6),
-      input_cache_write: String(m.cacheWritePerMillion / 1e6),
-    },
-  }));
-  await verifyRates(async () => Response.json({ data }));
-  data[0].pricing.input = "0.000005";
   await assert.rejects(
-    verifyRates(async () => Response.json({ data })),
-    /rates_changed/,
-  );
-  await assert.rejects(
-    verifyRates(async () => Response.json({ data: [] })),
-    /rates_changed/,
+    verifyRates(["openai/gpt-4.1-nano"]),
+    /cloudflare_prices_pending/,
   );
 });

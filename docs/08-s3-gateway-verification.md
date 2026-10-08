@@ -1,5 +1,9 @@
 # S3 Gateway configuration verification — October 7, 2026
 
+> October 8 update: This file preserves Vercel evidence. Cloudflare preparation,
+> explicit transport selection and remaining blockers are recorded in
+> [the Cloudflare plan](09-s3-cloudflare-gateway.md). No Cloudflare live acceptance is claimed.
+
 ## Evidence and provenance
 
 The owner supplied a Windows native chat report from the authenticated in-app

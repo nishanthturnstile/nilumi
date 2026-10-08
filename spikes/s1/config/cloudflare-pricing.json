@@ -1,0 +1,15 @@
+{
+  "version": "s3-cloudflare-pricing-v1",
+  "purchase_fee_fraction": 0.05,
+  "models": {
+    "openai/gpt-6-luna": {
+      "verified_at": "2026-10-08T00:00:00Z",
+      "source": "https://developers.cloudflare.com/ai/models/openai/gpt-6-luna/",
+      "inputPerMillion": 0.2,
+      "outputPerMillion": 0.75,
+      "cachedInputPerMillion": 0.02,
+      "cacheWritePerMillion": 0.25,
+      "notes": "Conservative long-context rates. Short-context input/output/cache-read/cache-write rates are 0.10/0.50/0.01/0.125. Reverify before live testing; other approved challengers remain unverified on Cloudflare."
+    }
+  }
+}

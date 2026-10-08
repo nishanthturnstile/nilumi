@@ -306,10 +306,17 @@ US$5 monthly allowance remains the spending ceiling. The owner-approved
 server mode. The owner approved all 60 expected actions and confirmed that
 Railway uses the inspected “Nilumi's Key”. Live probe results are recorded below.
 
+Cloudflare transport is now prepared, with explicit gateway selection and no
+automatic fallback. Live Cloudflare validation is pending: the account has
+USD 0.00 credits, its privacy profile is unverified, and no named gateway or
+token installation was completed. See the [Cloudflare setup and budget plan](../../docs/09-s3-cloudflare-gateway.md).
+Production needs acceptance on its actual paid model and verified privacy route.
+
 The `POST /api/nlu/evaluate` route is disabled by default. Before enabling it:
 
 1. Review all 60 expected actions and freeze the held-out set. Record the exact
-   fixture hash from `pnpm nlu:review` and reviewer in `config/nlu-privacy.json`.
+   fixture hash from `pnpm nlu:review` and reviewer in the selected gateway's
+   privacy profile (`config/cloudflare-privacy.json` or historical `config/nlu-privacy.json`).
 2. Select the server mode. Default `zdr` requires team-wide ZDR (including
    no-training), approved provider/model restrictions and Gateway-managed
    credentials. The owner-approved `synthetic_hobby` exception requires its
@@ -325,7 +332,11 @@ The `POST /api/nlu/evaluate` route is disabled by default. Before enabling it:
 
 | Variable | Value |
 | --- | --- |
-| `AI_GATEWAY_API_KEY` | Already present in staging; never expose the value |
+| `NLU_GATEWAY` | `cloudflare` (default) or explicit `vercel`; unknown values block calls |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare only; install privately with scoped inference/management read permissions |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare only; must match the verified privacy profile |
+| `CLOUDFLARE_AI_GATEWAY_ID` | Cloudflare only; explicit named gateway |
+| `AI_GATEWAY_API_KEY` | Vercel only; existing staging credential; never expose the value |
 | `RAILWAY_ENVIRONMENT_NAME` | `staging` (Railway supplies it) |
 | `NLU_EVALUATION_ENABLED` | `true`, only after review/privacy gates |
 | `NLU_EVALUATION_MODE` | `synthetic_hobby` for the approved fixture-only exception; default `zdr`; other values block calls |
@@ -344,13 +355,15 @@ files. Once gates pass, all smoke/comparison calls go through the local runner:
 
 ```sh
 # Three development cases, one pass, Luna low:
-pnpm nlu:eval --live
+pnpm nlu:eval --live --gateway=cloudflare
 # Full comparison, one pass (only after the smoke results are checked):
-pnpm nlu:eval --live --cases=all --models=openai/gpt-6-luna,openai/gpt-5-nano
+pnpm nlu:eval --live --gateway=cloudflare --cases=all --models=openai/gpt-6-luna
 ```
 
 For approved Hobby testing, add `--mode=synthetic_hobby` to both dry and live
-commands. The runner verifies the server's reported mode; this CLI flag cannot
+commands. Use `--gateway=vercel` with matching server `NLU_GATEWAY=vercel` for
+explicit Vercel testing. Cloudflare pricing for additional challengers remains
+unverified. The runner verifies the server's reported gateway and mode; CLI flags cannot
 select or relax the server policy. Use one mode throughout a comparison.
 
 ### Budget and report behavior

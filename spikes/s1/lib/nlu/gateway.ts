@@ -38,6 +38,7 @@ export type ModelResponse = {
   routedModel?: string;
   isByok?: boolean;
   generationId?: string;
+  routingEvidence?: "cloudflare_configuration_and_response_model";
 };
 export type Adapter = (args: {
   modelId: ModelId;
@@ -175,4 +176,5 @@ export async function callGateway(
     metadata,
   };
 }
-export const gatewayAdapter: Adapter = (args) => callGateway(args);
+// Historical Vercel implementation retained for receipt regression tests.
+// Runtime selects a gateway explicitly; there is no cross-gateway fallback.

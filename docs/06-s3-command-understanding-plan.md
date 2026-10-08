@@ -13,7 +13,9 @@ must produce one shopping-add command containing two distinct items.
 
 The deliverables are a runtime-validated contract, 60 synthetic golden cases,
 an expected-action review, an offline test harness, and a gated comparison of
-two models through the approved Vercel AI Gateway.
+two models through an explicitly selected gateway. October 8 Cloudflare
+preparation and the preserved Vercel option are documented in
+[the gateway migration plan](09-s3-cloudflare-gateway.md); live acceptance remains pending.
 
 Decisions confirmed during planning:
 

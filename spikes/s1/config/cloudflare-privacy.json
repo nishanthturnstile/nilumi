@@ -1,0 +1,24 @@
+{
+  "version": "s3-cloudflare-privacy-v1",
+  "team": "68876249314ab88c8b5bdb86ba5fd8c8",
+  "verified_at": null,
+  "verified_by": null,
+  "team_zero_data_retention": false,
+  "team_no_prompt_training": false,
+  "gateway_managed_credentials_only": false,
+  "approved_providers": ["openai"],
+  "approved_models": [
+    "openai/gpt-6-luna",
+    "openai/gpt-5-nano",
+    "openai/gpt-4.1-nano",
+    "openai/gpt-4.1-mini"
+  ],
+  "fixture_review_sha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+  "fixture_reviewed_by": "Nishanth Murugan — previous explicit approval of all 60 synthetic cases",
+  "synthetic_hobby": {
+    "approved_at": "2026-10-08T00:00:00Z",
+    "approved_by": "Nishanth Murugan — switch synthetic evaluation to Cloudflare AI Gateway",
+    "fixture_sha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd"
+  },
+  "notes": "Pending Cloudflare-specific verification. Dashboard on 2026-10-08 showed credits USD 0.00 and onboarding. Vercel verification is historical and does not authorize Cloudflare. synthetic_hobby remains the legacy wire name for the approved synthetic-only exception; it does not describe a Cloudflare plan. Family-data eligibility is not approved."
+}

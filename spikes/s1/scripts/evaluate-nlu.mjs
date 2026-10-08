@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { DateTime } from "luxon";
 import { DEFAULT_MODEL, MODELS, PRICE_SOURCE } from "../config/models.ts";
+import { gatewayTransport } from "../config/nlu-gateway.ts";
 import {
   evaluationDisclosure,
   evaluationMode,
@@ -16,6 +17,10 @@ import {
   settle,
   validateLedger,
 } from "../lib/nlu/budget.ts";
+import {
+  estimateCloudflareReservation,
+  verifyCloudflarePricing,
+} from "../lib/nlu/cloudflare-pricing.ts";
 import { schedule } from "../lib/nlu/evaluate.ts";
 import { loadFixtures } from "../lib/nlu/fixtures.ts";
 import { buildPrompt } from "../lib/nlu/prompt.ts";
@@ -68,18 +73,27 @@ export async function acquireLedger(directory) {
     throw error;
   }
 }
-export async function verifyRates(fetcher) {
-  const matches = (rate, expected) =>
-    Number.isFinite(Number(rate)) &&
-    Math.abs(Number(rate) * 1e6 - expected) < 1e-9;
+export async function verifyRates(
+  ids = [DEFAULT_MODEL],
+  gateway = "cloudflare",
+  fetcher = fetch,
+) {
+  if (gateway === "cloudflare") return verifyCloudflarePricing(ids);
+  if (gateway !== "vercel") throw new Error("invalid_gateway");
   const response = await fetcher(PRICE_SOURCE, {
     signal: AbortSignal.timeout(5000),
   });
   if (!response.ok) throw new Error("rate_verification_failed");
   const { data } = await response.json();
-  for (const [id, m] of Object.entries(MODELS)) {
-    const route = data.find((x) => x.id === id);
+  const matches = (rate, expected) =>
+    rate !== undefined &&
+    Number.isFinite(Number(rate)) &&
+    Math.abs(Number(rate) * 1e6 - expected) < 1e-9;
+  for (const id of ids) {
+    const m = MODELS[id],
+      route = data?.find((x) => x.id === id);
     if (
+      !m ||
       !route ||
       !matches(route.pricing?.input, m.inputPerMillion) ||
       !matches(route.pricing?.output, m.outputPerMillion) ||
@@ -101,13 +115,19 @@ export async function runComparison({
   fetcher = fetch,
   verifyPricing = true,
   mode = "zdr",
+  gateway = "cloudflare",
 }) {
+  if (gatewayTransport(gateway) !== gateway) throw new Error("invalid_gateway");
+  const estimate =
+    gateway === "cloudflare"
+      ? estimateCloudflareReservation
+      : estimateReservation;
   if (
     evaluationMode(mode) !== mode ||
     (mode === "synthetic_hobby" && fixtureHash !== SYNTHETIC_FIXTURE_SHA256)
   )
     throw new Error("invalid_evaluation_policy");
-  if (verifyPricing) await verifyRates(fetcher);
+  if (verifyPricing) await verifyRates(modelIds, gateway, fetcher);
   const url = new URL(origin);
   if (
     url.protocol !== "https:" &&
@@ -124,6 +144,7 @@ export async function runComparison({
   const reportPath = resolve(directory, `nlu-${runId}.json`);
   const report = () => ({
     runId,
+    gateway,
     fixtureHash,
     ...evaluationDisclosure(mode),
     rows,
@@ -143,12 +164,7 @@ export async function runComparison({
       const month = DateTime.now().setZone("Asia/Kolkata").toFormat("yyyy-MM");
       if (prompt.status === "ready") {
         if (
-          !reserve(
-            store.ledger,
-            id,
-            month,
-            estimateReservation(job.modelId, prompt.bytes),
-          )
+          !reserve(store.ledger, id, month, estimate(job.modelId, prompt.bytes))
         ) {
           rows.push({
             ...job,
@@ -186,12 +202,14 @@ export async function runComparison({
         let result,
           versions,
           serverMode,
+          serverGateway,
           done = false;
         for (const line of (await response.text()).trim().split("\n")) {
           const event = JSON.parse(line);
           if (event.type === "start") {
             versions = event.versions;
             serverMode = event.evaluationMode;
+            serverGateway = event.gateway;
           }
           if (event.type === "result") {
             if (result) throw new Error("multiple_results");
@@ -204,6 +222,7 @@ export async function runComparison({
           !result ||
           versions?.fixtureHash !== fixtureHash ||
           serverMode !== mode ||
+          serverGateway !== gateway ||
           result.caseId !== job.caseId ||
           result.modelId !== job.modelId
         )
@@ -265,13 +284,19 @@ async function main() {
       (x) =>
         x !== "--live" &&
         x !== "--" &&
-        !/^--(?:cases|models|passes|origin|mode)=/.test(x),
+        !/^--(?:cases|models|passes|origin|mode|gateway)=/.test(x),
     )
   )
     throw new Error("unknown_argument");
   const loaded = await loadFixtures();
   const mode = evaluationMode(option("mode"));
   if (!mode) throw new Error("invalid_evaluation_mode");
+  const gateway = gatewayTransport(option("gateway"));
+  if (!gateway) throw new Error("invalid_gateway");
+  const reserveEstimate =
+    gateway === "cloudflare"
+      ? estimateCloudflareReservation
+      : estimateReservation;
   const caseIds =
     option("cases") === "all"
       ? loaded.fixtures.map((x) => x.id)
@@ -297,13 +322,13 @@ async function main() {
       const f = loaded.fixtures.find((x) => x.id === j.caseId);
       const p = buildPrompt(f.transcript, f.context);
       return (
-        sum +
-        (p.status === "ready" ? estimateReservation(j.modelId, p.bytes) : 0)
+        sum + (p.status === "ready" ? reserveEstimate(j.modelId, p.bytes) : 0)
       );
     }, 0);
     console.log(
       JSON.stringify({
         mode: "dry_run",
+        gateway,
         ...evaluationDisclosure(mode),
         calls: caseIds.length * modelIds.length * passes,
         maximumReservationUsd: estimate,
@@ -327,6 +352,7 @@ async function main() {
     cookie,
     directory: resolve("validation-results"),
     mode,
+    gateway,
   });
   console.log(`Synthetic report saved: ${result.reportPath}`);
 }

@@ -1,23 +1,30 @@
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
+import cloudflarePrivacy from "../../config/cloudflare-privacy.json";
 import {
   MODEL_CONFIG_VERSION,
   MODELS,
   type ModelId,
   TIMEOUT_MS,
 } from "../../config/models";
+import { gatewayTransport } from "../../config/nlu-gateway";
 import {
   type EvaluationMode,
   evaluationDisclosure,
   evaluationMode,
   SYNTHETIC_FIXTURE_SHA256,
 } from "../../config/nlu-policy";
-import privacy from "../../config/nlu-privacy.json";
+import vercelPrivacy from "../../config/nlu-privacy.json";
 import { calculateCost } from "./budget";
+import { callCloudflare, cloudflareConfiguration } from "./cloudflare";
+import {
+  calculateCloudflareCost,
+  verifyCloudflarePricing,
+} from "./cloudflare-pricing";
 import { FIXTURE_VERSION, REGISTRY_VERSION } from "./context";
 import { CONTRACT_VERSION } from "./contracts";
 import { type Fixture, loadFixtures } from "./fixtures";
-import { type Adapter, gatewayAdapter, SchemaGenerationError } from "./gateway";
+import { type Adapter, callGateway, SchemaGenerationError } from "./gateway";
 import { INTERPRETATION_VERSION, interpretResult } from "./interpret";
 import { buildPrompt, PROMPT_VERSION } from "./prompt";
 import { score } from "./scoring";
@@ -193,7 +200,10 @@ export async function evaluateCase(
     const cost = reportedCost
       ? response.cost
       : response.usage
-        ? calculateCost(modelId, response.usage)
+        ? response.routingEvidence ===
+          "cloudflare_configuration_and_response_model"
+          ? calculateCloudflareCost(modelId, response.usage)
+          : calculateCost(modelId, response.usage)
         : null;
     return {
       ...base,
@@ -220,6 +230,7 @@ export async function evaluateCase(
       routedProvider: response.routedProvider ?? null,
       routedModel: response.routedModel ?? null,
       isByok: response.isByok ?? null,
+      routingEvidence: response.routingEvidence ?? null,
       generationId: response.generationId,
       options: MODELS[modelId].reasoningEffort,
       billable: true,
@@ -327,8 +338,46 @@ export async function handleEvaluation(
     return Response.json({ error: "invalid_evaluation_mode" }, { status: 503 });
   if (input.caseIds.some((id) => !loaded.fixtures.some((x) => x.id === id)))
     return Response.json({ error: "unknown_case" }, { status: 400 });
-  if (!env.AI_GATEWAY_API_KEY)
-    return Response.json({ error: "missing_gateway_key" }, { status: 503 });
+  const gateway = gatewayTransport(env.NLU_GATEWAY);
+  if (!gateway)
+    return Response.json({ error: "invalid_gateway" }, { status: 503 });
+  const privacy = gateway === "cloudflare" ? cloudflarePrivacy : vercelPrivacy;
+  let adapter: Adapter;
+  if (gateway === "cloudflare") {
+    const configuration = cloudflareConfiguration(env);
+    if (!configuration.success)
+      return Response.json(
+        { error: "missing_cloudflare_configuration" },
+        { status: 503 },
+      );
+    if (!deps.adapter && privacy.team !== configuration.data.accountId)
+      return Response.json(
+        { error: "cloudflare_privacy_pending" },
+        { status: 503 },
+      );
+    adapter = (args) => callCloudflare(args, configuration.data);
+  } else {
+    if (!env.AI_GATEWAY_API_KEY)
+      return Response.json({ error: "missing_gateway_key" }, { status: 503 });
+    adapter = (args) => callGateway(args);
+  }
+  // Injected adapters are offline test doubles. Runtime requires provider-specific
+  // no-training verification even under the synthetic retention exception.
+  if (!deps.adapter && gateway === "cloudflare") {
+    if (!privacy.team_no_prompt_training)
+      return Response.json(
+        { error: "cloudflare_privacy_pending" },
+        { status: 503 },
+      );
+    try {
+      verifyCloudflarePricing(input.modelIds);
+    } catch {
+      return Response.json(
+        { error: "cloudflare_prices_pending" },
+        { status: 503 },
+      );
+    }
+  }
   if (!privacyReady(deps.privacy ?? privacy, loaded.hash, input.modelIds, mode))
     return Response.json(
       { error: "privacy_or_review_pending" },
@@ -353,6 +402,7 @@ export async function handleEvaluation(
         emit({
           type: "start",
           runId,
+          gateway,
           ...evaluationDisclosure(mode),
           versions: {
             prompt: PROMPT_VERSION,
@@ -376,7 +426,7 @@ export async function handleEvaluation(
             fixture,
             job.modelId,
             job.pass,
-            deps.adapter ?? gatewayAdapter,
+            deps.adapter ?? adapter,
             controller.signal,
             mode,
           );
