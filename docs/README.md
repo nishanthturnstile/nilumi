@@ -19,6 +19,8 @@
 | 11 | [S3 V11 validation](11-s3-v11-validation.md) | Development-only V11 fixes, frozen regression, hosted Luna 56/60 with deadline timeouts, costs and shutdown |
 | 12 | [S3 deadline reliability](12-s3-deadline-reliability.md) | Deadline enforcement, `s3-wire-v2` schema, transport timing, failed Luna smoke, ledger and shutdown |
 | 13 | [S3 live acceptance](13-s3-live-acceptance.md) | Regional reliability experiment, preserved failed prompt regressions, Luna low synthetic correctness acceptance, budget and verified shutdown |
+| 14 | [S5 platform validation](14-s5-platform-validation.md) | Local database/RLS/worker/stream/restore harness, evidence, proposed live isolation and pending Railway gates |
+| 15 | [S5 recovery runbook](15-s5-recovery-runbook.md) | Template for the private shared OneDrive document; real-key, R2 and manual restore steps still to rehearse |
 | — | [Product analysis summary](producct-analysis-summary.md) | Owner's comparison of open-source assistants that informed the October 8 review |
 | ADR | [Decision catalogue](adr/README.md) | ADR-001–049 with context, decisions, alternatives, consequences and applied links; D1–D19 and Q1–Q12 mappings; [future-record template](adr/template.md) |
 

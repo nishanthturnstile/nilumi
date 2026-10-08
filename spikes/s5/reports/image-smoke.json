@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-08T13:46:36.739Z",
+  "environment": "local_docker_image",
+  "image": "sha256:b2de378f2f2b5b797ac7a52fe89ff6e4ade6c9b33ac4076cde790aff467707d2",
+  "ready": true,
+  "unauthenticatedStream": 401,
+  "resumedStream": true,
+  "railwayAccepted": false
+}
