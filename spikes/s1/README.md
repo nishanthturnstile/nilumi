@@ -524,3 +524,9 @@ lint, type checking and build pass. Earlier development failures remain recorded
 the original holdout is regression evidence. See
 [v10 evidence](evals/results/subscription-v10.json). Hosted S3 acceptance and
 model selection remain pending the bounded staging workflow.
+
+V10 hosted Nano smoke failed **2/3** despite valid schemas and all calls under
+five seconds. Full hosted testing stopped. The evaluator is verified disabled;
+remaining retained allowance is **US$0.373965975** after US$0.0021051 smoke spend.
+See [hosted v10 evidence](evals/results/gateway-v10-nano-smoke.json). Hosted S3
+acceptance and model selection remain pending.

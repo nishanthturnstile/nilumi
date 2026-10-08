@@ -943,3 +943,59 @@ US$0.0174415 for smoke and US$0.3373537 for one full pass, combined US$0.3547952
 within retained remaining allowance US$0.376071075. No historical reservation
 was removed. Subscription evaluation added no Gateway charge. Hosted acceptance,
 model selection and family-data ZDR remain pending live evidence.
+
+## October 8 — v10 Nano hosted smoke failed; shutdown verified
+
+Uploaded reviewed commit `b7a11fc` to the existing staging service. Deployment
+`1b6431b4-75ac-49f3-aae1-793778c12ea4` reached SUCCESS; owner-only authenticated
+zero-call preflight returned 400 `invalid_request`. Configured rates matched the
+live catalog at 2026-10-08T03:21:25.450Z and again inside the authoritative runner.
+The original three development smoke cases used the unchanged durable ledger.
+Server reports confirmed v10, interpreter v4 and the reviewed corpus hash.
+
+| Case | Correct | Model-call latency | Reported cost |
+| --- | --- | --- | --- |
+| shopping-01 | Yes | 2434.01 ms | US$0.0007011 |
+| memories-01 | No | 2243.01 ms | US$0.0007065 |
+| dates-01 | Yes after existing deterministic resolution | 2112.09 ms | US$0.0006975 |
+
+**Smoke failed at 2/3 interpreted correctness; raw extraction 1/3.** All three
+schemas were valid and calls met the five-second deadline. Managed OpenAI Nano
+routing was verified, BYOK=false. The configured request retained OpenAI-only,
+no-training, store:false, no reasoning effort, zero retries and no fallback.
+The memory case again emitted a correction for an ordinary preference, with
+an altered literal value. The unchanged validator required clarification
+(`correction_reason_unclear`); no intent or value repair was added.
+
+P50 over three calls was 2243.01 ms; p95 2434.01 ms exceeds the separate 1400 ms
+target. This is not a full latency benchmark. No input cache hits were reported
+for these three calls (20115 input tokens, 234 output tokens); no general
+cold-cache performance inference is made. Subscription v10's passing correctness
+does not establish Nano reliability. **The full hosted comparison and further
+paid calls stopped after this failed smoke. No model was selected.**
+
+Report `nlu-5ccea0a9-6370-465a-975a-072f6e27d4f9.json` is retained locally;
+[checked-in smoke evidence](../spikes/s1/evals/results/gateway-v10-nano-smoke.json)
+contains content-free versions, scores, timing, routing, accounting and shutdown.
+The smoke settled to **US$0.0021051**. Retained ledger is **US$0.126034025** across
+28 entries, leaving **US$0.373965975** under the cumulative US$0.50 cap. Historical
+reservations remain intact; ledger SHA-256:
+`874982ab82557d820b120ff27b9d525e286f65af283c650d3504e589e74fadab`.
+Read-only account verification at 2026-10-08T03:26:02.417Z reported total used
+US$0.02599645 and remaining credits US$4.97400355. Account-wide usage remains
+distinct from the conservative testing ledger.
+
+Disabled evaluation and cleared the allowlist, then redeployed the tested
+artifact as `db46f970-7a61-449e-830d-2641785e801a`. Shutdown deployment reached
+**SUCCESS**, the enabled deployment was **REMOVED**, and an authenticated zero-call
+probe returned **404 evaluation_disabled**. Configuration is enabled=false with
+zero allowlisted evaluators. No model was called by shutdown verification.
+
+V10 development and synthetic validation are delivered, but hosted S3 acceptance
+remains pending. Two prompt revisions now retain the same Nano preference-intent
+failure. Next work should assess a stronger eligible model/route against the
+remaining cumulative allowance and deadline before further paid dispatch.
+Recheck worst-case reservations: the current Mini full-pass bound is four times
+Nano's and cannot fit this remaining cap. Do not purchase credits, reset the
+ledger, weaken accuracy/privacy gates or repair wrong model intent to force
+acceptance. Family-data ZDR and the original two-model comparison remain pending.

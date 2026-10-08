@@ -702,3 +702,13 @@ remains recorded; no held-out content was inspected for tuning. All 205 tests
 and quality checks pass. See [v10 verification](08-s3-gateway-verification.md).
 Next authorized gate is the bounded Nano hosted smoke with unchanged routing,
 privacy, five-second deadline and cumulative budget controls.
+
+Hosted v10 follow-up: managed OpenAI Nano smoke scored 2/3, schemas valid and all
+calls within five seconds. Ordinary-preference intent failed again; validation
+required clarification. Full hosted comparison and further paid calls stopped.
+Smoke cost US$0.0021051; retained ledger US$0.126034025, remaining cap
+US$0.373965975. Evaluator disable/empty allowlist and tested-artifact redeployment
+were verified with authenticated 404 `evaluation_disabled`. No model selection.
+V10 development is delivered; S3 acceptance still requires a reliable eligible
+model/route that fits the deadline and retained budget. See the verification
+notes and [hosted evidence](../spikes/s1/evals/results/gateway-v10-nano-smoke.json).

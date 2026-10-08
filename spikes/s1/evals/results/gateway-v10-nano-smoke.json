@@ -1,0 +1,240 @@
+{
+  "scope": "Synthetic-only managed Gateway staging smoke",
+  "sourceCommit": "b7a11fc",
+  "deploymentId": "1b6431b4-75ac-49f3-aae1-793778c12ea4",
+  "createdAt": "2026-10-08T03:26:54.578Z",
+  "reportId": "5ccea0a9-6370-465a-975a-072f6e27d4f9",
+  "reportSha256": "6b076df54502bdc70ce3a96595989468995d434c4eb746b34589015f908c1c8c",
+  "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+  "requestControls": {
+    "providerOnly": ["openai"],
+    "noPromptTraining": true,
+    "store": false,
+    "deadlineMs": 5000,
+    "retries": 0,
+    "fallback": false,
+    "reasoningEffort": null
+  },
+  "configuredRatesVerified": "All configured model rates matched the live public catalog at 2026-10-08T03:21:25.450Z and again inside the authoritative smoke runner",
+  "summary": {
+    "attempted": 3,
+    "correct": 2,
+    "accuracy": 0.6666666666666666,
+    "modelCalls": 3,
+    "schemaValidRate": 1,
+    "successfulCalls": 3,
+    "failures": 0,
+    "latency": {
+      "samples": 3,
+      "p50Ms": 2243.0094619999945,
+      "p95Ms": 2434.0069930000027
+    },
+    "tokenUsage": {
+      "callsWithUsage": 3,
+      "input": 20115,
+      "output": 234,
+      "cached": 0,
+      "cacheWrite": 0,
+      "reasoning": 0,
+      "observedCacheHits": 0
+    },
+    "unknownCostCalls": 0,
+    "accountedCostUsd": 0.0021051,
+    "reportedOrEstimatedCostUsd": 0.0021051,
+    "passes": [
+      {
+        "pass": 1,
+        "fullCoverage": false,
+        "privacyPass": false,
+        "datePass": false,
+        "heldOutPass": false,
+        "accuracyPass": false,
+        "latencyTargetPass": false,
+        "routeVerified": true,
+        "qualifies": false
+      }
+    ],
+    "qualifies": false
+  },
+  "extractionCorrect": 1,
+  "rows": [
+    {
+      "caseId": "shopping-01",
+      "modelId": "openai/gpt-4.1-nano",
+      "status": "ok",
+      "correct": true,
+      "schemaValid": true,
+      "mismatches": [],
+      "latencyMs": 2434.0069930000027,
+      "usage": {
+        "input": 6703,
+        "output": 77,
+        "cached": 0,
+        "cacheWrite": 0,
+        "reasoning": 0
+      },
+      "costUsd": 0.0007011,
+      "accountedCostUsd": 0.0007011,
+      "costBasis": "reported",
+      "routedProvider": "openai",
+      "routedModel": "openai/gpt-4.1-nano",
+      "isByok": false,
+      "versions": {
+        "prompt": "s3-extract-v10",
+        "registry": "synthetic-v1",
+        "fixture": "golden-v1",
+        "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+        "models": "s3-openai-challengers-v4",
+        "contract": "s3-v1",
+        "interpretation": "s3-interpret-v4"
+      },
+      "extractionScore": {
+        "correct": true,
+        "schemaValid": true,
+        "mismatches": []
+      },
+      "normalizations": [],
+      "outcomes": [
+        {
+          "index": 0,
+          "status": "interpreted",
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "caseId": "memories-01",
+      "modelId": "openai/gpt-4.1-nano",
+      "status": "ok",
+      "correct": false,
+      "schemaValid": true,
+      "mismatches": ["commands", "outcomes"],
+      "latencyMs": 2243.0094619999945,
+      "usage": {
+        "input": 6701,
+        "output": 91,
+        "cached": 0,
+        "cacheWrite": 0,
+        "reasoning": 0
+      },
+      "costUsd": 0.0007065,
+      "accountedCostUsd": 0.0007065,
+      "costBasis": "reported",
+      "routedProvider": "openai",
+      "routedModel": "openai/gpt-4.1-nano",
+      "isByok": false,
+      "versions": {
+        "prompt": "s3-extract-v10",
+        "registry": "synthetic-v1",
+        "fixture": "golden-v1",
+        "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+        "models": "s3-openai-challengers-v4",
+        "contract": "s3-v1",
+        "interpretation": "s3-interpret-v4"
+      },
+      "extractionScore": {
+        "correct": false,
+        "schemaValid": true,
+        "mismatches": ["commands", "outcomes"]
+      },
+      "normalizations": [],
+      "outcomes": [
+        {
+          "index": 0,
+          "status": "clarification_required",
+          "reasons": ["correction_reason_unclear"]
+        }
+      ]
+    },
+    {
+      "caseId": "dates-01",
+      "modelId": "openai/gpt-4.1-nano",
+      "status": "ok",
+      "correct": true,
+      "schemaValid": true,
+      "mismatches": [],
+      "latencyMs": 2112.0866590000005,
+      "usage": {
+        "input": 6711,
+        "output": 66,
+        "cached": 0,
+        "cacheWrite": 0,
+        "reasoning": 0
+      },
+      "costUsd": 0.0006975,
+      "accountedCostUsd": 0.0006975,
+      "costBasis": "reported",
+      "routedProvider": "openai",
+      "routedModel": "openai/gpt-4.1-nano",
+      "isByok": false,
+      "versions": {
+        "prompt": "s3-extract-v10",
+        "registry": "synthetic-v1",
+        "fixture": "golden-v1",
+        "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+        "models": "s3-openai-challengers-v4",
+        "contract": "s3-v1",
+        "interpretation": "s3-interpret-v4"
+      },
+      "extractionScore": {
+        "correct": false,
+        "schemaValid": true,
+        "mismatches": ["commands", "outcomes"]
+      },
+      "normalizations": [
+        {
+          "path": "result.commands.0.at",
+          "kind": "date"
+        }
+      ],
+      "outcomes": [
+        {
+          "index": 0,
+          "status": "interpreted",
+          "reasons": []
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "smokePassed": false,
+    "fullRunStarted": false,
+    "furtherPaidTestsStarted": false,
+    "modelSelected": false,
+    "hostedAcceptance": false,
+    "reason": "Ordinary preference emitted as correction with altered literal value; validator required clarification. No semantic intent repair."
+  },
+  "budget": {
+    "capUsd": 0.5,
+    "smokeReportedCostUsd": 0.0021051,
+    "retainedLedgerBeforeUsd": 0.123928925,
+    "retainedLedgerUsd": 0.126034025,
+    "remainingUsd": 0.373965975,
+    "entryCount": 28,
+    "ledgerSha256": "874982ab82557d820b120ff27b9d525e286f65af283c650d3504e589e74fadab",
+    "historicalReservationsPreserved": true
+  },
+  "accounting": {
+    "verifiedAt": "2026-10-08T03:26:02.417Z",
+    "accountTotalUsedUsd": 0.02599645,
+    "accountRemainingCreditsUsd": 4.97400355,
+    "limitation": "Account-wide actual usage differs from the conservative testing ledger."
+  },
+  "shutdown": {
+    "deploymentId": "db46f970-7a61-449e-830d-2641785e801a",
+    "deploymentStatus": "SUCCESS",
+    "enabledDeploymentStatus": "REMOVED",
+    "enabled": false,
+    "allowlistCount": 0,
+    "authenticatedProbeStatus": 404,
+    "authenticatedProbeError": "evaluation_disabled",
+    "modelCallsInProbe": 0
+  },
+  "limitations": [
+    "Three development cases are not a full latency benchmark; p95 exceeds separate 1400 ms target",
+    "No cache hits were observed in these three receipts; do not infer general cold-cache performance",
+    "Subscription correctness does not establish Nano accuracy",
+    "Synthetic Hobby exception does not establish family-data ZDR",
+    "Full hosted comparison and model selection remain pending"
+  ]
+}
