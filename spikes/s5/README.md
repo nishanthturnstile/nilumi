@@ -71,7 +71,7 @@ watermark, restores into `s5_restore`, checks RLS and replays forget tombstones,
 then uses the `age` CLI with `S5_AGE_RECIPIENT` to encrypt the dump. Only the public
 recipient belongs in worker configuration. Plaintext is piped directly into age;
 no plaintext temporary dump file is created. Output is an ignored `.age` file. R2 tooling is implemented
-below; real-key offsite and manual recovery have not been exercised yet.
+below; real-key offsite upload/download passed, and manual recovery remains pending.
 
 [Recovery runbook](../../docs/15-s5-recovery-runbook.md) must be reviewed and copied
 into the shared OneDrive document. Never commit or paste the private key.
@@ -100,8 +100,10 @@ removed; the reported cost is lagging and the cumulative reserve is $0.20 of $2.
 `r2-config.example.json` records public configuration only. The identified bucket
 is the private bucket `nilumi-backups`, prefix `s5-synthetic/recovery-drill/`. The
 original `nilumi` bucket serves `nilumi.in` publicly and must not receive backups.
-Authenticated bucket access has
-not yet been verified. No bucket creation or lifecycle changes are performed.
+Authenticated bucket access, real encryption, upload/download and retention dry
+run passed in [live offsite evidence](reports/offsite-smoke.json). Manual
+decryption and each adult's recovery remain pending. The scripts do not create
+buckets or change bucket lifecycle rules.
 
 Before running, install age locally and complete the real-key setup in the
 runbook. Enter the following environment variables privately on the operator's

@@ -67,7 +67,8 @@ Fill in dates and outcomes privately; publish only non-secret evidence in S5:
 - Both adults independently accessed the recovery document: user confirmed.
 - Real master-key storage: user confirmed; one shared identity for both adults.
 - Both accounts' 2FA and real master-key decryption: pending.
-- Real master-key encryption and R2 upload/hash verification: pending.
+- Real master-key encryption and R2 upload/hash verification: passed October 8, 2026.
+- Encrypted recovery download and content-free journal hash verification: passed.
 - Restore to separate scratch with roles/extensions/RLS intact: pending live drill.
 - Post-backup forget canary absent before traffic: pending live drill.
 - Both operators completed recovery within target: pending.
@@ -79,6 +80,13 @@ Fill in dates and outcomes privately; publish only non-secret evidence in S5:
 The automated local test uses a synthetic database dump and verifies policy and
 forget replay. It does not validate OneDrive availability, the real key, R2
 access, production roles or either adult's ability to recover the system.
+
+Current synthetic backup manifest:
+`s5-synthetic/recovery-drill/backups/24b96953-3802-4de1-817e-d88489519d38.manifest.json`
+in private bucket `nilumi-backups`. Object credentials are configured privately;
+the test token expires October 15, 2026. The private master identity is not in
+that configuration. Retention was a dry run with no eligible pairs or deletions.
+Recheck the latest forget journals before actual recovery/cutover.
 
 ## Guided OneDrive and key setup
 

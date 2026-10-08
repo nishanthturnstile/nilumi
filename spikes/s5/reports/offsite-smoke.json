@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-08T16:04:57.703Z",
+  "syntheticOnly": true,
+  "bucket": "nilumi-backups",
+  "prefix": "s5-synthetic/recovery-drill/",
+  "bucketPrivacy": {
+    "verifiedInDashboard": true,
+    "customDomains": 0,
+    "publicDevelopmentUrlEnabled": false,
+    "originalPublicBucketPreserved": true
+  },
+  "credentialScope": {
+    "tokenName": "nilumi-s5-synthetic-backups",
+    "permission": "Object Read & Write",
+    "onlyBucket": "nilumi-backups",
+    "expiresOn": "2026-10-15"
+  },
+  "offsiteAutomationPassed": true,
+  "upload": {
+    "manifestKey": "s5-synthetic/recovery-drill/backups/24b96953-3802-4de1-817e-d88489519d38.manifest.json",
+    "ciphertextSha256": "37d64ffd91e00a38171c5387e559a436af431c4716b99065b5495360272edb6e",
+    "ciphertextBytes": 14136,
+    "journalCount": 1,
+    "downloadVerified": true
+  },
+  "retention": {
+    "keep": 7,
+    "minimumAgeDays": 7,
+    "candidates": 0,
+    "dryRun": true
+  },
+  "manualRecovery": "pending_both_adults",
+  "recoveryDownload": {
+    "downloadVerified": true,
+    "journalCount": 1,
+    "manualDecryptionAndRestore": "pending"
+  },
+  "temporaryLocalDatabaseRemoved": true,
+  "temporaryCredentialDownloadCleanup": "blocked_by_policy_outside_workspace; operator_removal_pending"
+}

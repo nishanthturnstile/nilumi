@@ -212,10 +212,21 @@ confirmed no custom domains and the public development URL disabled. S5 public
 and ignored private configuration now use this bucket, retaining prefix
 `s5-synthetic/recovery-drill/`. No backup objects were uploaded.
 
-The browser connection became unstable while opening R2 token creation. Bucket
-configuration is complete; credential creation/configuration and authenticated
-upload/download remain pending. Use an Object Read & Write token scoped only to
-`nilumi-backups`; do not reuse existing tokens with access to all buckets.
+The browser connection initially became unstable, then recovered. Created
+`nilumi-s5-synthetic-backups`: Object Read & Write, only `nilumi-backups`, one-week
+TTL, dashboard-confirmed expiry October 15, 2026. Credentials were transferred
+privately to the ignored mode-600 configuration without displaying values in
+tool output. A temporary credential download outside the workspace could not be
+removed because automatic policy blocked deletion; operator cleanup is pending.
+
+[Live offsite evidence](../spikes/s5/reports/offsite-smoke.json) records successful
+real-recipient age encryption, journal/ciphertext read-back SHA-256 verification,
+manifest publication, verified download and retention dry run (zero candidates,
+zero deletions). The recovery command also downloaded verified ciphertext and
+the merged content-free journal to ignored private storage. The 200-occurrence
+local regression passed; temporary local Docker resources were stopped/removed.
+No Railway resources or AI calls were added. Master-key decryption, recovery by
+each adult, 2FA confirmation and installed-PWA/home RTT remain pending.
 
 ## Primary references
 
