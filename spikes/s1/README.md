@@ -311,6 +311,9 @@ and requested live synthetic validation within the unchanged USD 0.50 cap.
 The [paid validation report](../../docs/10-s3-paid-vercel-validation.md) records
 Luna's complete 60-case run (54/60), failed privacy/held-out gates and mini's
 failed smoke. No model is selected; S3 acceptance remains pending.
+The [V11 follow-up](../../docs/11-s3-v11-validation.md) fixes development failures
+and improves hosted Luna to 56/60 with privacy 8/8. Three deadline failures and
+mini's failed smoke keep selection pending; evaluator shutdown is verified.
 Cloudflare transport remains available only through explicit selection, with no
 automatic fallback. Its gateway and private credential setup are verified, but
 live Cloudflare privacy validation is pending. See the [Cloudflare setup and budget plan](../../docs/09-s3-cloudflare-gateway.md).

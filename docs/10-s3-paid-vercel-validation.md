@@ -1,5 +1,9 @@
 # S3 paid Vercel validation — October 8, 2026
 
+The [V11 follow-up](11-s3-v11-validation.md) records development corrections,
+improved privacy correctness, retained deadline failures and verified shutdown.
+S3 acceptance remains pending.
+
 The owner added approximately USD 20 in Vercel AI Gateway credits and selected
 Vercel for current testing. Vercel is again the default transport for server and
 runner. Cloudflare remains an explicitly selected spike adapter for future work;
