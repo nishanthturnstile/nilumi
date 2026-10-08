@@ -75,7 +75,7 @@ export async function acquireLedger(directory) {
 }
 export async function verifyRates(
   ids = [DEFAULT_MODEL],
-  gateway = "cloudflare",
+  gateway = "vercel",
   fetcher = fetch,
 ) {
   if (gateway === "cloudflare") return verifyCloudflarePricing(ids);
@@ -115,7 +115,7 @@ export async function runComparison({
   fetcher = fetch,
   verifyPricing = true,
   mode = "zdr",
-  gateway = "cloudflare",
+  gateway = "vercel",
 }) {
   if (gatewayTransport(gateway) !== gateway) throw new Error("invalid_gateway");
   const estimate =

@@ -1003,3 +1003,10 @@ Recheck worst-case reservations: the current Mini full-pass bound is four times
 Nano's and cannot fit this remaining cap. Do not purchase credits, reset the
 ledger, weaken accuracy/privacy gates or repair wrong model intent to force
 acceptance. Family-data ZDR and the original two-model comparison remain pending.
+# October 8 paid-credit follow-up
+
+The owner funded Vercel credits and restored Vercel as the default spike gateway.
+The [paid validation report](10-s3-paid-vercel-validation.md) records a complete
+60-case Luna run, failed hard semantic gates, a stopped mini smoke, retained costs
+and shutdown verification. This supersedes the earlier free-credit access blocker;
+it does not establish S3 acceptance or family-data eligibility.

@@ -289,6 +289,7 @@ test("Vercel credentials alone cannot enable the migrated endpoint, and Cloudfla
     RAILWAY_ENVIRONMENT_NAME: "staging",
     NLU_EVALUATOR_EMAILS: "owner@example.invalid",
     NLU_EVALUATION_ORIGIN: "https://example.invalid",
+    NLU_GATEWAY: "cloudflare",
     CLOUDFLARE_ACCOUNT_ID: c.accountId,
     CLOUDFLARE_AI_GATEWAY_ID: c.gatewayId,
     CLOUDFLARE_API_TOKEN: c.token,

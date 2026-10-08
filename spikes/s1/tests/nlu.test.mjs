@@ -131,6 +131,7 @@ const privacy = {
   fixture_reviewed_by: "offline-reviewer",
 };
 const env = {
+  AI_GATEWAY_API_KEY: "mock-only",
   RAILWAY_ENVIRONMENT_NAME: "staging",
   NLU_EVALUATION_ENABLED: "true",
   NLU_EVALUATOR_EMAILS: "owner@example.invalid",
@@ -1003,7 +1004,7 @@ test("endpoint blocks disabled/non-staging evaluation, auth, allowlist, origin, 
     [{ env: { ...env, RAILWAY_ENVIRONMENT_NAME: "production" } }, 404],
     [{ email: null }, 401],
     [{ email: "other@example.invalid" }, 403],
-    [{ env: { ...env, CLOUDFLARE_API_TOKEN: "" } }, 503],
+    [{ env: { ...env, AI_GATEWAY_API_KEY: "" } }, 503],
     [{ privacy: { ...privacy, team_zero_data_retention: false } }, 503],
   ]) {
     let calls = 0;
@@ -1184,7 +1185,7 @@ test("authoritative runner reserves before each request, settles, and reloads cu
         {
           type: "start",
           evaluationMode: "zdr",
-          gateway: "cloudflare",
+          gateway: "vercel",
           versions: { fixtureHash: hash },
         },
         {
@@ -1629,7 +1630,7 @@ test("complete accuracy gates include every held-out/date/privacy pass and verif
 test("live rate verification uses Cloudflare prices and blocks unverified challengers", async () => {
   const { verifyRates } = await import("../scripts/evaluate-nlu.mjs");
   await assert.rejects(
-    verifyRates(["openai/gpt-4.1-nano"]),
+    verifyRates(["openai/gpt-4.1-nano"], "cloudflare"),
     /cloudflare_prices_pending/,
   );
 });

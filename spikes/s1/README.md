@@ -306,10 +306,14 @@ US$5 monthly allowance remains the spending ceiling. The owner-approved
 server mode. The owner approved all 60 expected actions and confirmed that
 Railway uses the inspected “Nilumi's Key”. Live probe results are recorded below.
 
-Cloudflare transport is now prepared, with explicit gateway selection and no
-automatic fallback. Live Cloudflare validation is pending: the account has
-USD 0.00 credits, its privacy profile is unverified, and no named gateway or
-token installation was completed. See the [Cloudflare setup and budget plan](../../docs/09-s3-cloudflare-gateway.md).
+Vercel is the default gateway. The owner added paid Vercel credits on October 8
+and requested live synthetic validation within the unchanged USD 0.50 cap.
+The [paid validation report](../../docs/10-s3-paid-vercel-validation.md) records
+Luna's complete 60-case run (54/60), failed privacy/held-out gates and mini's
+failed smoke. No model is selected; S3 acceptance remains pending.
+Cloudflare transport remains available only through explicit selection, with no
+automatic fallback. Its gateway and private credential setup are verified, but
+live Cloudflare privacy validation is pending. See the [Cloudflare setup and budget plan](../../docs/09-s3-cloudflare-gateway.md).
 Production needs acceptance on its actual paid model and verified privacy route.
 
 The `POST /api/nlu/evaluate` route is disabled by default. Before enabling it:
@@ -332,7 +336,7 @@ The `POST /api/nlu/evaluate` route is disabled by default. Before enabling it:
 
 | Variable | Value |
 | --- | --- |
-| `NLU_GATEWAY` | `cloudflare` (default) or explicit `vercel`; unknown values block calls |
+| `NLU_GATEWAY` | `vercel` (default) or explicit `cloudflare`; unknown values block calls |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare only; install privately with scoped inference/management read permissions |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare only; must match the verified privacy profile |
 | `CLOUDFLARE_AI_GATEWAY_ID` | Cloudflare only; explicit named gateway |
@@ -355,9 +359,9 @@ files. Once gates pass, all smoke/comparison calls go through the local runner:
 
 ```sh
 # Three development cases, one pass, Luna low:
-pnpm nlu:eval --live --gateway=cloudflare
+pnpm nlu:eval --live --gateway=vercel
 # Full comparison, one pass (only after the smoke results are checked):
-pnpm nlu:eval --live --gateway=cloudflare --cases=all --models=openai/gpt-6-luna
+pnpm nlu:eval --live --gateway=vercel --cases=all --models=openai/gpt-6-luna
 ```
 
 For approved Hobby testing, add `--mode=synthetic_hobby` to both dry and live

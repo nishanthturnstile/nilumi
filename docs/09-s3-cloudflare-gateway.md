@@ -4,8 +4,9 @@
 
 The owner requested Cloudflare AI Gateway for synthetic testing, then clarified
 that either Vercel or Cloudflare may serve development while a paid route is
-selected for production. Gateway transport is now explicit: `NLU_GATEWAY`
-accepts `cloudflare` (the new default) or `vercel`. Unknown values block calls.
+selected for production. The owner subsequently added paid Vercel credits and
+selected Vercel for the current synthetic evaluation. Gateway transport is
+explicit: `NLU_GATEWAY` accepts `vercel` (default) or `cloudflare`. Unknown values block calls.
 There is no automatic cross-gateway fallback. Existing Vercel code, privacy
 evidence and regression tests remain available when Vercel is explicitly selected.
 
