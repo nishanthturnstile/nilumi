@@ -1,8 +1,6 @@
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { chmod, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { writeFile } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { databaseUrl, pool } from "../src/db.mjs";
 
@@ -193,20 +191,16 @@ export async function restoreLocal(db, afterDump = async () => {}) {
     ]);
   }
 }
-export async function encryptDump(dump, recipient, ageBinary = "age") {
+export async function encryptDump(
+  dump,
+  recipient,
+  ageBinary = process.env.S5_AGE_BINARY || "age",
+) {
   if (!recipient || !/^age1[a-z0-9]+$/.test(recipient))
     throw new Error("s5_public_age_recipient_required");
-  const directory = await mkdtemp(join(tmpdir(), "nilumi-s5-backup-"));
-  try {
-    await chmod(directory, 0o700);
-    const plaintext = join(directory, "dump.pg");
-    const encrypted = join(directory, "dump.pg.age");
-    await writeFile(plaintext, dump, { mode: 0o600 });
-    await runCommand(ageBinary, ["-r", recipient, "-o", encrypted, plaintext]);
-    return await readFile(encrypted);
-  } finally {
-    await rm(directory, { recursive: true, force: true });
-  }
+  // Pipe plaintext directly: also supports Windows age.exe from WSL without
+  // exposing WSL paths to the Windows executable or writing plaintext to disk.
+  return runCommand(ageBinary, ["-r", recipient], { input: dump });
 }
 if (
   process.argv[1] &&

@@ -69,8 +69,8 @@ version change needs an explicit owner migration and privilege review.
 `pnpm backup` supports the local Docker transport only. It verifies the journal
 watermark, restores into `s5_restore`, checks RLS and replays forget tombstones,
 then uses the `age` CLI with `S5_AGE_RECIPIENT` to encrypt the dump. Only the public
-recipient belongs in worker configuration. Plaintext temporary files are removed
-on success or failure. Output is an ignored `.age` file. R2 tooling is implemented
+recipient belongs in worker configuration. Plaintext is piped directly into age;
+no plaintext temporary dump file is created. Output is an ignored `.age` file. R2 tooling is implemented
 below; real-key offsite and manual recovery have not been exercised yet.
 
 [Recovery runbook](../../docs/15-s5-recovery-runbook.md) must be reviewed and copied
@@ -110,6 +110,8 @@ device, using a restricted file under ignored `validation-results/` if helpful:
 - `S5_AGE_RECIPIENT`: only the real public recipient.
 - `S5_MASTER_KEY_CONFIRMED=true`: only after both adults can access the real key.
 - `S5_APPLY_RETENTION=false`: default to a dry run.
+- `S5_AGE_BINARY`: optional explicit age executable, including Windows `age.exe`
+  when running the Node harness in WSL. Pipe transport avoids cross-OS file paths.
 
 Node can load a private environment file without putting secrets in command
 arguments. Write it privately; never paste credentials into chat. Example:
@@ -139,3 +141,8 @@ to a private ignored recovery directory. Decryption and scratch restore follow
 the runbook on the trusted recovery device; this download command does not load
 the private key. Adapter tests use header-shaped fixtures, not real age
 encryption. Neither passing tests nor a verified download accepts S5 recovery.
+
+`node --env-file=validation-results/offsite.env scripts/encryption-smoke.mjs`
+validates local dump/restore and real encryption with the configured public
+recipient without R2 calls or private-key access. Its encrypted output and report
+are ignored. Decryption and each adult's recovery remain separate gates.

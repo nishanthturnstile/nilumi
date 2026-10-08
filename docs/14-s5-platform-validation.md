@@ -2,8 +2,9 @@
 
 **Status:** Local and bounded Railway synthetic checks passed; full S5 acceptance pending. User authorized
 starting S5 after the S3 correctness spike. The user now confirms the shared
-OneDrive recovery document exists and both adults can access it. Real-key setup
-and recovery are still pending. No production/family
+OneDrive recovery document exists and both adults can access it. The user generated
+and privately stored one master identity for both adults; its public recipient
+is configured for the synthetic spike. Decryption and recovery are still pending. No production/family
 data or AI inference is part of this spike.
 
 ## Scope and gates
@@ -183,6 +184,24 @@ Next: complete the runbook's guided key/document setup, privately configure scop
 R2 credentials, run the real synthetic encrypted offsite drill, and record both
 adults' independent recovery and RPO/RTO. Installed-PWA/home-network evidence
 remains separate. **S5 and Phase 0 remain open.**
+
+## Real-recipient encryption increment — October 8, 2026
+
+Both adults' document access and private master-key storage are user confirmed.
+One shared age identity is intended for both operators. The public recipient is
+configured; the agent has not read the identity or recovery document.
+[Encryption evidence](../spikes/s5/reports/encryption-smoke.json) records a real
+synthetic PostgreSQL dump encrypted with age 1.3.2 and that recipient, with
+ciphertext hash/size and snapshot metadata. The dump was restored locally before
+encryption. Plaintext now flows over stdin rather than a temporary dump file,
+which also supports the installed Windows executable from the WSL harness.
+
+The 200-occurrence regression and all 11 tests, syntax and Biome checks pass.
+Private R2 configuration is prepared in ignored `validation-results/offsite.env`,
+with credential fields empty. The upload command stopped at
+`s5_r2_credentials_required` before any R2 call. Real-key decryption, offsite
+upload/download, both-operator recovery and 2FA confirmation remain pending.
+No Railway resources or AI calls were added in this increment.
 
 ## Primary references
 

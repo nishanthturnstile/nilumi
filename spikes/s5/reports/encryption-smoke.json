@@ -1,0 +1,35 @@
+{
+  "at": "2026-10-08T15:28:17.600Z",
+  "syntheticOnly": true,
+  "realRecipientEncryptionPassed": true,
+  "publicRecipient": "age1xpktwyl7yfswh3mah3zqctalgwgsvqsyhlzattk5aukj2aks9qdqv962ce",
+  "ageVersion": "v1.3.2",
+  "sourceManifest": {
+    "serverVersionNum": 180006,
+    "localeProvider": "i",
+    "locale": "en-US",
+    "extensions": [
+      {
+        "extname": "pg_trgm",
+        "extversion": "1.6"
+      },
+      {
+        "extname": "vector",
+        "extversion": "0.8.7"
+      }
+    ],
+    "rowCounts": {
+      "members": 3,
+      "records": 4,
+      "occurrences": 220,
+      "deliveries": 200,
+      "forget_tombstones": 1
+    }
+  },
+  "ciphertextBytes": 14173,
+  "ciphertextSha256": "2dccd175247884e24a37f07a43321ab4f33991db148d52dddcbb928d9643ee48",
+  "plaintextTemporaryFileCreated": false,
+  "r2UploadAccepted": false,
+  "masterKeyDecryptionAccepted": false,
+  "bothAdultRecoveryAccepted": false
+}
