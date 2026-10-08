@@ -482,3 +482,23 @@ Disabling both CLI multi-agent flags did not establish tool-free isolation.
 See [compact checked-in evidence](evals/results/subscription-v7.json) and
 [the complete verification notes](../../docs/08-s3-gateway-verification.md).
 No paid Gateway calls or deployment followed this failed gate.
+
+October 8 follow-up passes synthetic regression gates: prompt v8 development
+**48/48**, smoke **3/3**, frozen original corpus **59/60**, held-out **11/12**,
+dates **12/12**, privacy **8/8**, schema **58/58 model calls**. Two sensitive cases
+were refused locally. The one `memories-11` semantic failure remains recorded;
+held-out content was not used for tuning. All **202 automated tests**, lint,
+type checking and build passed. See [v8 evidence](evals/results/subscription-v8.json).
+
+The subscription runner now requires strict configuration, disables
+`agents.enabled` alongside both feature switches, excludes collaboration/clock
+from nested code mode, and rejects tool/error events as they arrive. No tool
+activity was observed in these completed runs. The CLI does not guarantee an
+empty tool catalog; event observation can follow dispatch. Subscription process
+timing remains separate from Gateway latency and no-training/ZDR verification.
+
+No paid calls or deployment occurred. The conservative remaining cap is
+US$0.377115275. Current configured-price Nano smoke plus full-pass maximum is
+US$0.3416375; Mini's full pass alone reserves US$1.2993724. Verify current prices
+and routing before live dispatch. Hosted S3 acceptance and model selection remain
+pending; the Gateway evaluator remains disabled.

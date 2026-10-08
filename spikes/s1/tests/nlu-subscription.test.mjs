@@ -7,6 +7,7 @@ import {
   runBounded,
   selectFixtures,
   subscriptionEnvironment,
+  subscriptionEventStream,
   subscriptionSummary,
 } from "../scripts/evaluate-subscription-nlu.mjs";
 
@@ -68,6 +69,8 @@ test("subscription evaluation excludes API credentials and inherited orchestrati
     "features.hooks=false",
     "features.multi_agent=false",
     "features.multi_agent_v2=false",
+    "agents.enabled=false",
+    'features.code_mode.excluded_tool_namespaces=["collaboration","clock"]',
     "features.goals=false",
     "project_doc_max_bytes=0",
     'web_search="disabled"',
@@ -75,6 +78,7 @@ test("subscription evaluation excludes API credentials and inherited orchestrati
     assert.ok(args.includes(constraint));
   assert.ok(args.includes("--ignore-user-config"));
   assert.ok(args.includes("--ephemeral"));
+  assert.ok(args.includes("--strict-config"));
   assert.ok(!args.some((x) => /resume|expected|fixtures/.test(x)));
 });
 
@@ -151,4 +155,40 @@ test("subscription correctness never implies deployment acceptance and counts fa
   assert.equal(summary.attempted, 60);
   assert.equal(summary.correct, 59);
   assert.equal(summary.syntheticCorrectnessPass, false);
+});
+
+test("stream rejects tool dispatch immediately across split JSONL chunks", () => {
+  const stream = subscriptionEventStream();
+  stream.push('{"type":"item.started","item":{"type":"collab_');
+  assert.throws(
+    () => stream.push('tool_call"}}\n'),
+    /tool_activity_rejected:collab_tool_call/,
+  );
+});
+
+test("stream accepts UTF-8 text, CRLF and a final line without newline", () => {
+  const stream = subscriptionEventStream();
+  stream.push(
+    '{"type":"item.completed","item":{"type":"agent_message","text":"தமிழ்"}}\r\n',
+  );
+  stream.push('{"type":"turn.completed","usage":{"input_tokens":9}}');
+  assert.deepEqual(stream.finish(), {
+    usage: { input_tokens: 9 },
+    toolActivity: false,
+  });
+});
+
+test("stream rejects errors, oversized output and incomplete turns", () => {
+  for (const event of [
+    { type: "error" },
+    { type: "turn.failed" },
+    { item: { type: "error", message: "failure" } },
+    { item: { type: "unknown_tool" } },
+  ])
+    assert.throws(() =>
+      subscriptionEventStream().push(`${JSON.stringify(event)}\n`),
+    );
+  assert.throws(() => subscriptionEventStream().push("x".repeat(2_000_001)));
+  assert.throws(() => subscriptionEventStream().push("invalid JSON\n"));
+  assert.throws(() => subscriptionEventStream().finish());
 });

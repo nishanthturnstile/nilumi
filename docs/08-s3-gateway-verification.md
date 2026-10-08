@@ -683,3 +683,77 @@ blind shopping/memory generalization. Do not deploy or run a paid model selectio
 comparison on the basis of this failed synthetic gate. If the failed held-out
 contents are inspected for tuning, retire them as regression cases and obtain
 independent authoring/owner review of a replacement holdout before a fresh claim.
+
+## October 8 — explicit tool controls and passing v8 synthetic regression
+
+The owner requested research, planning, implementation and validation of the
+remaining tool/correctness item. Official
+[Codex schema](https://learn.chatgpt.com/docs/config-schema.json) research found
+`agents.enabled` defaults to true independently of the old switches. The
+installed Luna catalog selects a V2 multi-agent backend. These observations
+explain why relying only on switches was insufficient; they do not prove the
+exact internal dispatch path. Added `agents.enabled=false`, strict config, and
+[documented code-mode namespace exclusions](https://learn.chatgpt.com/docs/config-file/config-reference)
+for collaboration and clock. No persistent client settings or auth changed.
+
+The runner parses bounded UTF-8 JSONL during execution, kills the subprocess on
+an observed tool/error event, waits for closure before ordinary cleanup, and
+rejects output. Started events may follow dispatch; no claim that rejection
+prevented the first tool call or that the entire CLI tool catalog is empty.
+All successful model calls in this increment had **no observed tool activity**.
+The CLI remains distinct from a direct `tools: []` API call.
+
+Prompt `s3-extract-v8` extracts supported actions before ownership/ambiguity
+validation, preserves every literal shopping item and fact clause, and uses only
+supplied visible notes for share targets. No contract, validator, scorer, golden
+answer, fixture split or acceptance threshold changed. Held-out transcripts,
+expected answers and failed raw outputs were not inspected for tuning.
+
+| Phase | Report ID | Result |
+| --- | --- | --- |
+| v7 configuration probe | `f9952acb-cb37-4639-b94a-a53fc0f18072` | 2/3; privacy-03 returned unsupported; no tool events |
+| v8 prompt smoke | `edeeef60-2c43-4221-b91e-20eb1b65e55b` | 3/3 |
+| v8 development | `61db888f-24f8-4866-80fe-3a47fe405958` | 48/48 interpreted, 45/48 raw; dates 10/10; privacy 6/6 |
+| final pipeline smoke | `cee552e4-c2cf-474e-b923-9a3cdff80935` | 3/3 after subprocess cleanup refinement |
+| frozen original-corpus regression | `83100a34-8243-492c-9523-e0e6c40ccfad` | 60 attempted; 59 correct; no abort |
+
+The completed frozen run passes synthetic gates: **98.33% overall (59/60)**,
+**91.67% held-out (11/12)**, **dates 12/12**, **privacy 8/8**, and **schema validity
+58/58 model responses**. Two sensitive fixtures were locally refused. Raw
+extraction plus those local refusals scored 57/60; interpreted scoring is 59/60,
+with two normalization cases. `memories-11` fails commands/outcomes; that failure
+is retained. No selective retries or subsequent full rerun were used to improve
+the reported pass. Prior aggregate/failed-ID exposure means this is regression
+evidence rather than a newly independent holdout.
+
+Frozen identifiers:
+
+- Prompt SHA-256: `1489153ba0a363531ce5612019d8bec3fbe3af517008d3ba1ace7c2a8046a773`.
+- Pipeline SHA-256: `45db537f269896c863d0c57a54fd0c511d4aa12f362fd942ce964cdc466aaccf`.
+- Corpus SHA-256: `962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd`.
+- Model: CLI-pinned `gpt-6-luna`, low reasoning, ChatGPT authentication,
+  Codex CLI 0.161.0. Subscription route has no Gateway provider receipt.
+
+[Compact checked-in evidence](../spikes/s1/evals/results/subscription-v8.json)
+records each report hash, configuration, score rows and limitations without raw
+model text, transcripts or golden answers. Full reports remain ignored under
+`spikes/s1/validation-results/subscription/`. Source was unchanged during each
+scored phase. The final cleanup refinement changes only the runner fingerprint
+between development and final smoke; prompt/interpretation/scoring remain fixed.
+
+All **202 tests**, lint, type checking and production build passed. No Gateway
+calls, deployment, purchases, auth changes or model selection occurred. Ledger
+retention remains **US$0.122884725**, leaving **US$0.377115275** under the
+US$0.50 cumulative testing cap. Subscription charges are unknown; paid Gateway
+spend for this increment is zero. Subscription results do not establish the
+five-second deadline, managed OpenAI routing, no-training or family-data ZDR.
+
+Offline configured-price maximum reservations for v8: Nano three-case smoke
+US$0.0167944; Nano full pass US$0.3248431; combined US$0.3416375. Mini smoke
+US$0.0671776; Mini full pass US$1.2993724. These are upper allowances, not fresh
+rate checks or actual spend. A Nano smoke/full pass fits the current allowance;
+a guaranteed full Mini pass does not. The next hosted step is current
+price/routing verification, staging deployment, a passing Nano smoke, then its
+frozen full pass through the durable ledger runner. Stop if smoke fails and
+disable evaluator afterward. That single-model validation does not complete the
+original two-model comparison. **Hosted S3 acceptance remains pending.**

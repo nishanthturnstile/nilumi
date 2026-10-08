@@ -1,6 +1,6 @@
 # S3 — Command understanding implementation plan
 
-> **Status:** Implementation and deterministic interpretation delivered. Subscription regression: 57/60; dates pass, held-out and privacy gates fail. CLI tool isolation remains unresolved. Deployment comparison/model selection remain incomplete; Gateway evaluator disabled. Family-data ZDR remains blocked.
+> **Status:** Implementation delivered. Latest subscription regression passes synthetic gates: 59/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy; no observed tool activity under strengthened controls. One semantic failure remains. Hosted S3 acceptance/model selection remain pending; Gateway evaluator disabled. Family-data ZDR remains blocked.
 > **Date:** October 7, 2026
 > **Next acceptance work:** Synthetic correctness, then a successful live smoke and budget-bounded deployment comparison. The 60 expected actions are already owner-approved.
 > **Prerequisite:** S2 owner approval is recorded; no additional recordings are needed.
@@ -550,3 +550,72 @@ improve blind shopping/memory generalization without tuning to held-out answers.
 Inspecting failed held-out content requires replacing and independently reviewing
 the holdout before claiming a fresh test. No paid comparison or deployment
 followed this failed gate; the Gateway ledger remains unchanged.
+
+## October 8 follow-up — subscription tool controls and blind regression
+
+The next item is to resolve the observed collaboration activity and improve
+synthetic correctness before any paid deployment validation. Preserve the 60
+owner-approved fixtures, semantic scorer, privacy/date thresholds, five-second
+Gateway deadline and cumulative US$0.50 cap. Do not inspect held-out transcripts,
+expected answers or failed raw outputs for tuning.
+
+Research found a separate `agents.enabled` setting in the official
+[Codex configuration schema](https://learn.chatgpt.com/docs/config-schema.json).
+It defaults to true; disabling feature switches alone was insufficient in the
+previous run. The runner now sets `agents.enabled=false`, retains both disabled
+multi-agent feature switches, uses `--strict-config`, and excludes collaboration
+and clock from the nested code-mode surface. The
+[configuration reference](https://learn.chatgpt.com/docs/config-file/config-reference)
+documents nested namespace exclusions. Runtime JSONL is checked as it arrives;
+any observed tool/error event stops the subprocess and rejects that case.
+This is defense in depth: a started event can follow dispatch, and the CLI is
+not an API request with `tools: []`. Passing runs establish no observed tool
+activity, not proof that every tool definition is absent.
+
+Implementation and validation order:
+
+1. Probe only development cases that previously triggered tool activity.
+2. Clarify extraction versus execution policy: supported actions still reach
+   deterministic validation even when ownership, missing slots or ambiguity
+   prevent execution. Strengthen shopping item and literal memory extraction
+   using development evidence, never held-out answers.
+3. Run the 48 development cases and automated regression checks.
+4. Freeze prompt and complete pipeline; run one 60-case regression and retain
+   every attempted failure. Do not rerun selectively to obtain a passing score.
+5. Check in compact content-free evidence and record whether the hard gates
+   pass. Only then consider hosted smoke/model comparison within the existing
+   remaining allowance. Family-data ZDR remains a separate gate.
+The offline deployment budget calculation for prompt v8 reserves at most
+US$0.0167944 for GPT-4.1 nano's three original development smoke cases, and
+US$0.3248431 for its full 60-case pass. Together, US$0.3416375 fits the retained
+US$0.377115275 remaining testing allowance, leaving US$0.035477775 at maximum
+reservation. Mini's smoke reserves US$0.0671776 and its full pass US$1.2993724;
+a complete Mini pass cannot currently be guaranteed within the cap. These are
+configured-price upper allowances from dry runs, not live charges or fresh rate
+verification. No ledger entries were added.
+
+The concrete hosted next step, after synthetic gates pass, is to verify current
+Nano pricing and eligible OpenAI-only/no-training/store:false routing, deploy
+the reviewed extraction changes to staging, run the authorized three-case Nano
+smoke with the five-second deadline, and stop if any smoke case fails. Only a
+passing smoke permits the frozen 60-case pass through the durable budget runner.
+This affordable single-candidate validation does not by itself complete the
+original two-model comparison. No model selection or family-data authorization
+can be derived from subscription results.
+October 8 result: development **48/48**, final smoke **3/3**, frozen complete
+regression **59/60 (98.33%)**, held-out **11/12**, dates **12/12**, privacy **8/8**,
+and schema validity **100% (58/58 model responses)**. Two sensitive cases were
+refused locally with no model call. Raw extraction plus local refusal scoring
+was **57/60**; deterministic interpretation produced **59/60**, with two
+normalization cases. No tool events or execution failures were observed, no
+source changed during the frozen run, and all synthetic thresholds pass.
+`memories-11` remains incorrect; its transcript, expected answer and raw output
+were not used for tuning. This increment is closed with that failure retained.
+It is a repeated-corpus regression, not a newly independent holdout.
+
+All **202 automated tests**, lint, type checking and production build passed.
+The complete content-free score record is
+[subscription-v8.json](../spikes/s1/evals/results/subscription-v8.json), and
+[verification notes](08-s3-gateway-verification.md) retain phase hashes and
+limits. No paid Gateway calls, deployment, purchase or model selection occurred.
+Hosted S3 acceptance remains pending the budget-bounded live workflow above.

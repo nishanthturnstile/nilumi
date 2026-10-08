@@ -160,6 +160,7 @@ export function codexArguments({
     "exec",
     "--ignore-user-config",
     "--ignore-rules",
+    "--strict-config",
     "--ephemeral",
     "--skip-git-repo-check",
     "--sandbox",
@@ -218,6 +219,10 @@ export function codexArguments({
     "-c",
     "features.multi_agent=false",
     "-c",
+    "agents.enabled=false",
+    "-c",
+    'features.code_mode.excluded_tool_namespaces=["collaboration","clock"]',
+    "-c",
     "features.goals=false",
     "-c",
     "features.sleep_tool=false",
@@ -255,6 +260,46 @@ export function inspectEvents(events) {
   return { usage: completed[0].usage, toolActivity: false };
 }
 
+// Check each event as it arrives, before accepting any final output. A started
+// event may follow tool dispatch: this stops further work, not the first call.
+export function subscriptionEventStream() {
+  let pending = "";
+  let bytes = 0;
+  const events = [];
+  const parse = (line) => {
+    if (!line.trim()) return;
+    const event = JSON.parse(line);
+    if (
+      event.item &&
+      !["agent_message", "reasoning"].includes(event.item.type)
+    ) {
+      if (event.item.type === "error") inspectEvents([event]);
+      throw new Error(`tool_activity_rejected:${event.item.type}`);
+    }
+    if (["turn.failed", "error"].includes(event.type))
+      throw new Error("incomplete_or_failed_turn");
+    events.push(event);
+  };
+  return {
+    push(chunk) {
+      bytes += Buffer.byteLength(chunk);
+      if (bytes > 2_000_000) throw new Error("subscription_event_limit");
+      pending += chunk;
+      let boundary = pending.indexOf("\n");
+      while (boundary !== -1) {
+        parse(pending.slice(0, boundary));
+        pending = pending.slice(boundary + 1);
+        boundary = pending.indexOf("\n");
+      }
+    },
+    finish() {
+      parse(pending);
+      pending = "";
+      return inspectEvents(events);
+    },
+  };
+}
+
 async function extract(prompt, options) {
   const windowsExecutable = /\.exe$/i.test(options.binary);
   const directory = await mkdtemp(join(options.workRoot, "nilumi-synthetic-"));
@@ -286,25 +331,38 @@ async function extract(prompt, options) {
         stdio: ["pipe", "pipe", "pipe"],
         windowsHide: true,
       });
-      let stdout = "";
+      const stream = subscriptionEventStream();
       let stderr = "";
+      let streamFailure;
       const timer = setTimeout(() => {
         child.kill();
-        reject(new Error("subscription_timeout"));
+        reject(streamFailure ?? new Error("subscription_timeout"));
       }, options.timeoutMs);
+      child.stdout.setEncoding("utf8");
+      child.stderr.setEncoding("utf8");
       child.stdout.on("data", (data) => {
-        stdout += data;
+        if (streamFailure) return;
+        try {
+          stream.push(data);
+        } catch (error) {
+          streamFailure = error;
+          child.kill();
+        }
       });
       child.stderr.on("data", (data) => {
-        stderr += data;
+        stderr = (stderr + data).slice(-8000);
       });
       child.stdin.on("error", () => {});
       child.on("error", () => {
         clearTimeout(timer);
-        reject(new Error("codex_launch_failed"));
+        reject(streamFailure ?? new Error("codex_launch_failed"));
       });
       child.on("close", (code) => {
         clearTimeout(timer);
+        if (streamFailure) {
+          reject(streamFailure);
+          return;
+        }
         try {
           if (code !== 0) {
             const diagnostic = stderr
@@ -320,11 +378,7 @@ async function extract(prompt, options) {
               .slice(0, 1000);
             throw new Error(`codex_exit_${code}: ${diagnostic}`);
           }
-          const events = stdout
-            .trim()
-            .split("\n")
-            .map((line) => JSON.parse(line));
-          accept(inspectEvents(events));
+          accept(stream.finish());
         } catch (error) {
           reject(error);
         }
@@ -440,6 +494,15 @@ async function main() {
     gatewaySpendUsd: 0,
     subscriptionCostUsd: null,
     privacy: "Subscription policy applies; no ZDR or Gateway no-training claim",
+    toolIsolation: {
+      agentsEnabled: false,
+      excludedNestedNamespaces: ["collaboration", "clock"],
+      strictConfig: true,
+      runtimePolicy:
+        "Stop on the first observed tool/error event; reject output",
+      limitation:
+        "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent.",
+    },
     rows: [],
   };
   let saving = Promise.resolve();

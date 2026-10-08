@@ -1,0 +1,941 @@
+{
+  "scope": "Subscription synthetic correctness only; hosted S3 acceptance remains pending",
+  "createdAt": "2026-10-08T01:16:25.582Z",
+  "heldOutPolicy": "Repeated original holdout is regression evidence. Prior scores and failed IDs seen; no held-out transcript, expected answer or raw output used for tuning.",
+  "changes": [
+    "agents.enabled=false plus existing multi-agent flags",
+    "Strict CLI configuration; collaboration/clock nested namespace exclusions",
+    "Reject tool/error JSONL during execution; wait for process closure before cleanup",
+    "Prompt v8 extracts supported actions before deterministic permission/ambiguity validation"
+  ],
+  "isolationLimitation": "No observed tool activity is the measured result, not proof of an empty tool catalog. A started event may follow dispatch. CLI is not a tools:[] API request.",
+  "checks": {
+    "tests": 202,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "budget": {
+    "capUsd": 0.5,
+    "retainedLedgerUsd": 0.122884725,
+    "remainingUsd": 0.377115275,
+    "gatewaySpendThisIncrementUsd": 0,
+    "subscriptionChargeUsd": null,
+    "prices": "Offline configured-price maximum reservations, not fresh rate verification or actual charges",
+    "nanoSmokeMaximumUsd": 0.0167944,
+    "nanoFullMaximumUsd": 0.3248431,
+    "miniSmokeMaximumUsd": 0.0671776,
+    "miniFullMaximumUsd": 1.2993724
+  },
+  "phases": [
+    {
+      "phase": "configuration_probe_v7",
+      "reportId": "f9952acb-cb37-4639-b94a-a53fc0f18072",
+      "reportSha256": "ebd0d2c0cdcd367ebf37f09496454ba062b2ea64223c453bdcbe9f085daf5269",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v7",
+      "promptSha256": "6c6015e80485a058374473fd2f49843590a4312244da3eef940a4bfc9e4a6397",
+      "pipelineSha256": "c171e3d17f9bb1f1b0d9690afa6b8938a16d03329b2c6607d3431a58d91e22af",
+      "interpretationVersion": "s3-interpret-v4",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "createdAt": "2026-10-08T01:08:43.607Z",
+      "abortReason": null,
+      "toolIsolation": null,
+      "successfulToolFreeCalls": 3,
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "extraction": {
+          "attempted": 3,
+          "correct": 2
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "privacy": {
+          "attempted": 1,
+          "correct": 0
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "privacy-03",
+          "split": "development",
+          "correct": false,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": ["commands", "outcomes"],
+          "status": "ok",
+          "normalizations": []
+        }
+      ]
+    },
+    {
+      "phase": "prompt_v8_smoke",
+      "reportId": "edeeef60-2c43-4221-b91e-20eb1b65e55b",
+      "reportSha256": "e669fef0c09d23127b47673744fbec0c6cdd863c431e3a84446f70cf2a1bc8de",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v8",
+      "promptSha256": "1489153ba0a363531ce5612019d8bec3fbe3af517008d3ba1ace7c2a8046a773",
+      "pipelineSha256": "660f6ff6830025a1a32e20c8c7e4a9621e22b26bb1d7299c5d96ee4af9d2513a",
+      "interpretationVersion": "s3-interpret-v4",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "createdAt": "2026-10-08T01:09:40.599Z",
+      "abortReason": null,
+      "toolIsolation": null,
+      "successfulToolFreeCalls": 3,
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 3,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 3,
+          "correct": 3
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "privacy": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": []
+    },
+    {
+      "phase": "development",
+      "reportId": "61db888f-24f8-4866-80fe-3a47fe405958",
+      "reportSha256": "6e4e0a63c27da1f69ad3f0860432f59c35478fdff6cee1f9e22241d083b9a9f4",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v8",
+      "promptSha256": "1489153ba0a363531ce5612019d8bec3fbe3af517008d3ba1ace7c2a8046a773",
+      "pipelineSha256": "5f32a4486456bf7d802231c0e3834bc4dcf3725cb4af74283c6e3dabd722dd2a",
+      "interpretationVersion": "s3-interpret-v4",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "createdAt": "2026-10-08T01:10:54.143Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "successfulToolFreeCalls": 47,
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 48,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 48,
+          "correct": 45
+        },
+        "normalizedCases": 3,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 10
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 6
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "dates-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": [
+            {
+              "path": "result.commands.0.targets.0",
+              "kind": "reference"
+            }
+          ]
+        },
+        {
+          "caseId": "dates-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": [
+            {
+              "path": "result.commands.0.at",
+              "kind": "date"
+            }
+          ]
+        },
+        {
+          "caseId": "dates-09",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": [
+            {
+              "path": "result.commands.0.at",
+              "kind": "date"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "phase": "final_pipeline_smoke",
+      "reportId": "cee552e4-c2cf-474e-b923-9a3cdff80935",
+      "reportSha256": "a6b694d66b6150d1daf1b8bc18ed89626aa75ae3a460654ef5688888fab65ab5",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v8",
+      "promptSha256": "1489153ba0a363531ce5612019d8bec3fbe3af517008d3ba1ace7c2a8046a773",
+      "pipelineSha256": "45db537f269896c863d0c57a54fd0c511d4aa12f362fd942ce964cdc466aaccf",
+      "interpretationVersion": "s3-interpret-v4",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "createdAt": "2026-10-08T01:13:12.078Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "successfulToolFreeCalls": 3,
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 3,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 3,
+          "correct": 3
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "privacy": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": []
+    },
+    {
+      "phase": "frozen_regression",
+      "reportId": "83100a34-8243-492c-9523-e0e6c40ccfad",
+      "reportSha256": "ef998bf5414f749081cd9e5c93b62ebe4780780137b0bfbc689803eeae618f20",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v8",
+      "promptSha256": "1489153ba0a363531ce5612019d8bec3fbe3af517008d3ba1ace7c2a8046a773",
+      "pipelineSha256": "45db537f269896c863d0c57a54fd0c511d4aa12f362fd942ce964cdc466aaccf",
+      "interpretationVersion": "s3-interpret-v4",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "createdAt": "2026-10-08T01:13:45.557Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "successfulToolFreeCalls": 58,
+      "summary": {
+        "expected": 60,
+        "attempted": 60,
+        "correct": 59,
+        "accuracy": 0.9833333333333333,
+        "extraction": {
+          "attempted": 60,
+          "correct": 57
+        },
+        "normalizedCases": 2,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 12,
+          "correct": 11
+        },
+        "dates": {
+          "attempted": 12,
+          "correct": 12
+        },
+        "privacy": {
+          "attempted": 8,
+          "correct": 8
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": true,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "rows": [
+        {
+          "caseId": "shopping-01",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-02",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-03",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-05",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-07",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-08",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-09",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-10",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-11",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "shopping-12",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-01",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-02",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-03",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-05",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-07",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-08",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-09",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-10",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-11",
+          "split": "held_out",
+          "correct": false,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": ["commands", "outcomes"],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "memories-12",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-01",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-02",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-03",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": [
+            {
+              "path": "result.commands.0.targets.0",
+              "kind": "reference"
+            }
+          ]
+        },
+        {
+          "caseId": "dates-05",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-07",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-08",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-09",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": false,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": [
+            {
+              "path": "result.commands.0.at",
+              "kind": "date"
+            }
+          ]
+        },
+        {
+          "caseId": "dates-10",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-11",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "dates-12",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-01",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-02",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-03",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-05",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-07",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "questions-08",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-01",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-02",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-03",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-05",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-07",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "corrections-08",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-01",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-02",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-03",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-04",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-05",
+          "split": "development",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        },
+        {
+          "caseId": "privacy-06",
+          "split": "development",
+          "correct": true,
+          "schemaValid": null,
+          "extractionCorrect": null,
+          "mismatches": [],
+          "status": "refused"
+        },
+        {
+          "caseId": "privacy-07",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": null,
+          "extractionCorrect": null,
+          "mismatches": [],
+          "status": "refused"
+        },
+        {
+          "caseId": "privacy-08",
+          "split": "held_out",
+          "correct": true,
+          "schemaValid": true,
+          "extractionCorrect": true,
+          "mismatches": [],
+          "status": "ok",
+          "normalizations": []
+        }
+      ]
+    }
+  ]
+}
