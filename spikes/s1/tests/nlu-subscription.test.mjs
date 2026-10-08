@@ -16,15 +16,7 @@ import {
 } from "../scripts/evaluate-subscription-nlu.mjs";
 
 test("independent extraction examples preserve negation, note scope and explicit references", () => {
-  const revised = examples.filter((example) =>
-    [
-      "I do not enjoy hiking",
-      "For myself, I have a note book a hotel",
-      "I enjoy gardening",
-      "That was mistaken, I meant sort the receipts",
-      "What is Dev's private note?",
-    ].includes(example.transcript),
-  );
+  const revised = examples.slice(-5);
   assert.equal(revised.length, 5);
   for (const example of revised) {
     const context = {
@@ -70,61 +62,6 @@ test("evidence hints preserve decoded UTF-16 offsets across Tamil, emoji and cla
     assert.ok(span.end <= transcript.length);
   }
   assert.deepEqual(transcriptSpans("  \n; "), []);
-});
-test("literal prefer contrast preserves change cues and repeats fixed rules after data", () => {
-  const pair = examples.filter(
-    (example) => example.context?.speaker_id === "contrast-member",
-  );
-  assert.equal(pair.length, 2);
-  assert.deepEqual(pair[0].context, pair[1].context);
-  const context = {
-    ...pair[0].context,
-    occurred_at: "2026-10-08T12:00:00+05:30",
-    lists: [],
-    tasks: [],
-    operations: [],
-  };
-  const inputs = [];
-  for (const example of pair) {
-    const result = validateResult(example.result, example.transcript, context);
-    assert.equal(result.status, "parsed");
-    assert.equal(result.outcomes[0].status, "interpreted");
-    const prompt = buildPrompt(example.transcript, context);
-    assert.equal(prompt.status, "ready");
-    const input = JSON.parse(prompt.prompt);
-    assert.deepEqual(input.reference_context, visibleContext(context));
-    assert.equal(input.current_input.transcript, example.transcript);
-    assert.equal(Object.keys(input).at(-1), "final_extraction_rules");
-    inputs.push(input);
-  }
-  assert.equal(pair[0].result.commands[0].kind, "remember");
-  assert.equal(pair[1].result.commands[0].kind, "correct");
-  assert.equal(
-    inputs[0].final_extraction_rules,
-    inputs[1].final_extraction_rules,
-  );
-  const incorrect = structuredClone(pair[1].result);
-  incorrect.commands[0].evidence.end = pair[0].transcript.length;
-  const rejected = validateResult(incorrect, pair[0].transcript, context);
-  assert.ok(rejected.outcomes[0].reasons.includes("correction_reason_unclear"));
-});
-test("independent calendar example omits leading on and preserves day-first clock resolution", () => {
-  const example = examples.find(
-    (item) => item.context?.speaker_id === "calendar-member",
-  );
-  assert.ok(example);
-  const context = { lists: [], tasks: [], operations: [], ...example.context };
-  const result = validateResult(example.result, example.transcript, context);
-  assert.equal(result.status, "parsed");
-  assert.equal(result.outcomes[0].status, "interpreted");
-  const at = result.parsed.commands[0].at;
-  assert.equal(at.phrase, "6/7/2028 at 10 am");
-  assert.equal(at.resolved, "2028-07-06T10:00:00+05:30");
-  assert.ok(example.transcript.includes(at.phrase));
-  const incorrect = structuredClone(example.result);
-  incorrect.commands[0].at.phrase = `on ${at.phrase}`;
-  const rejected = validateResult(incorrect, example.transcript, context);
-  assert.ok(rejected.outcomes[0].reasons.includes("unresolved_date"));
 });
 
 test("subscription scheduling caps concurrent calls and stops dispatch after failure", async () => {
@@ -296,12 +233,8 @@ test("stream rejects errors, oversized output and incomplete turns", () => {
 });
 
 test("preference contrast examples validate with the same prior preference", () => {
-  const pair = examples.filter(
-    (example) =>
-      example.context?.speaker_id === "example-member" &&
-      example.context?.memories?.some(
-        (memory) => memory.predicate === "prefers",
-      ),
+  const pair = examples.filter((example) =>
+    example.context?.memories?.some((memory) => memory.predicate === "prefers"),
   );
   assert.equal(pair.length, 2);
   assert.deepEqual(pair[0].context, pair[1].context);

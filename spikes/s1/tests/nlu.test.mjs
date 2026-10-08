@@ -30,6 +30,7 @@ import { checkDate, resolveDate } from "../lib/nlu/dates.ts";
 import {
   EvaluationRequest,
   evaluateCase,
+  evaluationDeadlineMs,
   handleEvaluation,
   privacyReady,
   schedule,
@@ -764,6 +765,65 @@ test("late completions fail even when timer delivery is blocked and adapter late
   assert.equal(row.status, "timeout");
   assert.equal(row.correct, false);
   assert.ok(row.latencyMs >= 5000);
+});
+test("30-second correctness allowance is opt-in and restricted to synthetic fixtures", () => {
+  assert.equal(evaluationDeadlineMs("zdr"), 5000);
+  assert.equal(evaluationDeadlineMs("synthetic_hobby"), 5000);
+  assert.equal(
+    evaluationDeadlineMs("synthetic_hobby", "synthetic_correctness"),
+    30000,
+  );
+  assert.throws(() => evaluationDeadlineMs("zdr", "synthetic_correctness"));
+  assert.throws(() => evaluationDeadlineMs("synthetic_hobby", "unbounded"));
+  assert.equal(
+    EvaluationRequest.safeParse({
+      caseIds: ["shopping-01"],
+      modelIds: ["openai/gpt-6-luna"],
+      passes: 1,
+      purpose: "unbounded",
+    }).success,
+    false,
+  );
+});
+test("synthetic correctness scores a valid response beyond the application deadline", async () => {
+  const f = fixture();
+  const row = await evaluateCase(
+    f,
+    "openai/gpt-6-luna",
+    1,
+    async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5100));
+      return mockResponse(f);
+    },
+    controller().signal,
+    "synthetic_hobby",
+    "synthetic_correctness",
+  );
+  assert.equal(row.status, "ok");
+  assert.equal(row.correct, true);
+  assert.equal(row.generationDeadlineMs, 30000);
+  assert.equal(row.evaluationPurpose, "synthetic_correctness");
+  assert.ok(row.latencyMs >= 5000);
+});
+test("endpoint refuses a correctness deadline outside synthetic mode before dispatch", async () => {
+  let calls = 0;
+  const response = await handleEvaluation(
+    req({
+      caseIds: ["shopping-01"],
+      modelIds: ["openai/gpt-6-luna"],
+      passes: 1,
+      purpose: "synthetic_correctness",
+    }),
+    deps({
+      adapter: async () => {
+        calls++;
+        return mockResponse(byId("shopping-01"));
+      },
+    }),
+  );
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).error, "invalid_evaluation_purpose");
+  assert.equal(calls, 0);
 });
 test("synchronous adapter cancellation cannot race past the abort listener", async () => {
   const c = controller();
