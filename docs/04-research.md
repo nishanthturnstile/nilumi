@@ -145,7 +145,7 @@ The inventory distinguishes free libraries from metered/platform-bound services;
 | AI SDK agents (`ToolLoopAgent`) | GA | — | Yes | **Not for the core pipeline**; later for conversation mode, constrained, calling our executors |
 | AI SDK MCP client | GA | — | Yes | Later: expose executors as tools for conversation mode / Home Assistant |
 | AI Elements | Early, shadcn-style copy-in | Free OSS/copy-in components | React-coupled | **Optional** UI scaffolding |
-| **AI Gateway** | GA | Credit / usage based; BYOK; ZDR per request | Usable from anywhere | **Not used**: metered/credit-based hosted gateway |
+| **AI Gateway** | GA | Credit / usage based; BYOK; ZDR per request on Pro/Enterprise | Usable from anywhere | **Used** for LLM/embedding routing only, with purchased credits; the one metered exception to [ADR-021](adr/adr-021.md) ([ADR-038](adr/adr-038.md), [ADR-046](adr/adr-046.md)) |
 | **Vercel Workflow** (Workflow DevKit) | Durable `'use workflow'`/`'use step'`, `sleep(date)`, hooks, cancellation. Reported GA in Apr 2026 by one source and SDK still `beta` by another | Metered platform service; Postgres World exists but README says not production-hardened | Code portable in part; runtime platform-bound | **Not used**: graphile-worker handles jobs on Railway |
 | Vercel Queues | Beta | Metered platform service | No | **Not used** |
 | **Vercel Cron** | GA | Metered/platform-bound schedule | No | **Not used**: graphile-worker crontab handles maintenance |
@@ -192,9 +192,9 @@ The occurrence states, privileged wrapper, scheduling/edit/cancel behavior and r
 | Option | Cost at ~$1–5/month | Our own keys / data terms | Sarvam audio | Ops | Privacy / continuity | Verdict |
 |---|---|---|---|---|---|---|
 | **AI SDK registry + role aliases** (in-process) | $0 | Direct | Called directly | None | No new processor | **Chosen** |
-| **Vercel AI Gateway** | Credit / usage based; BYOK | BYOK; per-request ZDR. Failed BYOK calls may be retried on Vercel's own provider credentials unless restricted | No | None | Adds a hosted gateway and metered Vercel dependency | **Not used** under the free-OSS-only rule |
+| **Vercel AI Gateway** | Provider list price, no token markup; purchased credits (card fees are the customer's) or BYOK | Gateway-managed credentials or BYOK. ZDR only on Pro/Enterprise; `disallowPromptTraining` free per request but not enforced for BYOK (8 Oct review). Failed BYOK calls may be retried on Vercel's own provider credentials unless restricted | No | None | Another processor; per-request no-training and `only` routing; ZDR deferred to the production gate | **Used** for LLM/embeddings with managed credentials and purchased credits ([ADR-038](adr/adr-038.md), [ADR-046](adr/adr-046.md)); was Not used under the free-OSS-only rule before S0 |
 | OpenRouter | 5.5–8% on credits; BYOK free up to a cap | Proxies through OpenRouter | Text only | None | Own retention not clearly documented; another processor | Rejected for family data (fine for offline experiments with synthetic data) |
-| Cloudflare AI Gateway | No markup | BYOK | No | None | No ZDR toggle; another processor | Rejected |
+| Cloudflare AI Gateway | Free core; Unified Billing adds 5% on credits | Unified Billing with Cloudflare-managed credentials; ZDR only for catalog-marked models, not BYOK (8 Oct review) | No | None | Another processor; logging off per gateway and per request; ZDR enablement unverified | **Evaluated 8 Oct; not chosen**: catalog-limited ZDR and a 5% credit fee ([ADR-046](adr/adr-046.md)) |
 | LiteLLM proxy | Free (MIT) | Direct | Chat only | Its own DB service | Self-controlled | Rejected: another service to run |
 | Bifrost (OSS) | Free | Direct | **Chat + STT + TTS for Sarvam** | Single binary | Self-controlled | Later option if a self-hosted gateway becomes worth running on Railway |
 | Portkey / Helicone / TensorZero | — | — | — | — | Reported acquired/pivoting (Portkey), maintenance mode (Helicone), archived (TensorZero) | Avoid |
@@ -202,6 +202,8 @@ The occurrence states, privileged wrapper, scheduling/edit/cancel behavior and r
 ### 8.2 Findings
 
 **Finding:** an in-process registry meets the config-driven switching/fallback goal without another processor, service or fee. The accepted choice and revision-1 history are in [ADR-022](adr/adr-022.md). AI Gateway violates the free-OSS-only rule; OpenRouter adds a processor and fees; self-hosted gateways remain options only if routing complexity later warrants another service.
+
+**Update, 8 October 2026:** hosted routing was later accepted through Vercel AI Gateway ([ADR-038](adr/adr-038.md)), so the free-OSS-only finding above no longer holds for routing. On 8 October, Cloudflare AI Gateway was evaluated and not chosen. Nilumi stays on Vercel AI Gateway with purchased credits, and ZDR moves to a production privacy gate ([ADR-046](adr/adr-046.md)). The evidence is in the October 8 review: [Vercel](#vercel-ai-gateway-credits-and-controls-checked-8-oct-2026) and [Cloudflare](#cloudflare-ai-gateway-primary-docs-checked-8-oct-2026). The in-process registry and role aliases remain.
 
 Role aliases, model pinning, middleware and fallback behavior are defined in [Tech §4.3](03-tech-stack.md#43-llm-routing-layer). STT/TTS remain separate direct adapters in [Architecture §14](02-architecture.md#14-voice-subsystem). Offline evaluation followed by shadow comparison protects family traffic; [Architecture §16.2](02-architecture.md#162-evaluation-harness-and-gates) owns promotion gates.
 
@@ -398,3 +400,228 @@ OpenRouter Standard, Cloudflare Unified Billing and a self-hosted LiteLLM proxy.
 OpenRouter is a research candidate for future ZDR without a monthly gateway
 subscription. Current synthetic testing retains Vercel's existing free credit;
 no production processor selection or accepted ZDR requirement has changed.
+(8 October: the owner authorized purchased credits, which end the free credit,
+and moved ZDR to a production privacy gate; see [ADR-046](adr/adr-046.md).)
+
+
+## October 8 reference-architecture, consumer and platform review
+
+The owner's [comparison summary](producct-analysis-summary.md) reviewed five
+open-source assistants. This review checks those claims against the
+repositories, scans consumer competitors, and checks the platform constraints
+behind the Today brief, Google Calendar, a bounded agent path and a gateway
+change. The resulting decisions are [ADR-041](adr/adr-041.md)–[ADR-049](adr/adr-049.md).
+Items marked **(secondary)** come from press or aggregators. They must not
+drive budget, legal or release decisions until checked against a primary
+source.
+
+### Reference repositories (claims checked 8 Oct 2026)
+
+| Project | Repository | Licence, language, maturity | Claims | Pattern Nilumi adopts |
+|---|---|---|---|---|
+| OpenClaw | [openclaw/openclaw](https://github.com/openclaw/openclaw) | MIT, TypeScript, very active | 5/5 verified | Writer-ID and lifecycle-revision fencing (`src/config/sessions/transcript.ts:451-463`); three-tier memory (profile, durable facts, daily notes); multi-user docs saying a shared trust boundary is not isolation |
+| OpenDots | [CopilotKit/OpenDots](https://github.com/CopilotKit/OpenDots) | MIT, TypeScript, template created 29 Sep 2026 | 5/5 verified | Approvals store the exact connection, tool and arguments, replay the stored request and recheck availability (`src/server/connections.ts:277`, `docs/CONNECTIONS.md:17`). Not adopted: new MCP tools are enabled by default and `readOnlyHint` sets the initial approval requirement |
+| Hermes Agent | [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) | MIT, Python, very active | 3/3 verified | Central tool registry with availability checks; delegation with a fresh task ID, narrowed tools, summary-only return and depth caps (`tools/delegate_tool.py`) |
+| OpenMuse | [CopilotKit/openmuse](https://github.com/CopilotKit/openmuse) | MIT, TypeScript, alpha | 5/5 verified | Leases, compare-and-swap transitions and checkpoints; an `OutcomeUnknownError` for actions that may have completed; docs stating cancellation cannot recall a dispatched request; a verification matrix that separates fixtures from live acceptance |
+| OpenBot | [CopilotKit/OpenBot](https://github.com/CopilotKit/OpenBot) | MIT, TypeScript, alpha | 5 verified, 1 partial | Policy separates mechanism from effect and the acting person from the run initiator (`server/src/computer/policy.ts:45-175`); fail-closed engine with an explicit default policy object; structured handoff envelopes with server-authored attribution; "declaring a tool is not granting it" |
+
+The partial OpenBot claim: component actions use a separate `store.decide()`,
+so one action boundary covers three of four surfaces. Its documented proxy
+limit is raw-socket bypass, not TLS inspection. The three CopilotKit
+repositories were weeks old when checked, so treat them as design ideas rather
+than proven implementations.
+
+**Finding:** none of the five isolates members inside one household.
+OpenClaw says so explicitly and OpenMuse is single-owner. Nilumi's
+RLS-enforced member privacy ([ADR-007](adr/adr-007.md), [ADR-031](adr/adr-031.md))
+remains unusual and should stay a design constraint, not a feature to trade
+away.
+
+### Consumer landscape (mostly secondary)
+
+| Category | Examples | Relevant behaviour | Gap Nilumi can use |
+|---|---|---|---|
+| Large assistants | Alexa+ India (reported launch 16 Sep 2026, Hindi/Hinglish, ₹2,000/month standalone or with Prime); Gemini for Home and Gemini Daily Brief (18+, paid tier, personal accounts); ChatGPT (Pulse reportedly folded into Scheduled Tasks in mid-2026); iOS 27 Siri personal context; Microsoft Copilot (Group Chat reportedly retired Aug 2026; only the Family-plan owner gets AI); Meta AI in WhatsApp groups | Memory, shared lists, daily briefs and some actions | Household data is pooled per account; no per-member privacy inside a shared home; remembered facts have no visible evidence; Tamil support unconfirmed |
+| Family organisers | Cozi, FamilyWall, OurHome, Maple, Skylight, Hearth, TimeTree, Any.do (WhatsApp bot) | Shared calendars, lists and chores | Little or no AI; no memory with evidence or correction |
+| AI chief-of-staff startups | Ohai.ai (US$6M seed, about US$30/month), Nori (launched Jan 2026, US$5–8/month, hub US/Canada only), Milo (shut down 2024) | Household memory and coordination | US-focused; no Indian languages; monetisation is hard |
+| India | WhatsApp groups, JioHome, Krutrim/Kruti, DigiLocker, bill apps (CRED, Paytm, NeverDue, Remyndar, PolicyNest), domestic-help apps (Homyo, BHS) | Coordination, transactions, document storage and single-purpose reminders | Nothing combines domestic help, bills/renewals, festivals and family memory; DigiLocker stores documents but does not answer questions about them |
+
+Repeated pains: the mental load carried mostly by mothers, overloaded WhatsApp
+groups, shared-list sync failures, reminders reaching the wrong person, and
+shared-account privacy. The [FTC/DOJ 2023 Alexa action](https://www.ftc.gov/news-events/news/press-releases/2023/05/ftc-doj-charge-amazon-violating-childrens-privacy-law-keeping-kids-alexa-voice-recordings-forever)
+over children's voice data is a primary example.
+
+Daily briefs converge on one pattern: one digest a day, "needs attention now"
+versus "looking ahead", short cards, and single-tap actions. The reported
+weakness of Pulse was generic cards when context was thin. Skylight's
+always-visible display is valued because it needs no push. Indian family
+digital subscriptions anchor at about ₹130–300/month; this is directional only.
+
+**Finding:** a daily digest alone is becoming a commodity. Nilumi's credible
+differences are:
+- evidence-linked household memory with correction and undo
+- per-member privacy inside one household
+- India household follow-through (domestic help, bills and renewals, festivals)
+- Tamil and Tanglish
+- Vault question-answering (H1)
+- working alongside WhatsApp rather than inside it
+
+Do not compete on smart-home control, general chat, media, large-scale
+bookings or dedicated hardware.
+
+### Platform constraints
+
+**Google Calendar.**
+- Read scopes include `calendar.events.readonly` and `calendar.freebusy`. They are sensitive rather than restricted, so no CASA assessment is needed. This is high confidence, but no single primary page classifies each scope.
+- Google's [OAuth app state overview](https://developers.google.com/identity/protocols/oauth2/production-readiness/overview) gives three states:
+  - Testing: 100 test users and 7-day refresh-token expiry.
+  - Published but unverified: a warning screen and a 100-user cap for sensitive scopes.
+  - Published and verified: no cap.
+- The [events.list reference](https://developers.google.com/workspace/calendar/api/v3/reference/events/list) does not allow `syncToken` together with `timeMin`/`timeMax`, so a moving window needs bounded polling or a full incremental-sync design.
+- Push channels expire and must be renewed. The quota is 600 requests/minute per user.
+- [Better Auth OAuth](https://www.better-auth.com/docs/concepts/oauth) supports `linkSocial` and `getAccessToken` with automatic refresh, storing tokens in the `account` table. Encryption at rest, refresh serialisation and upstream revocation still need proof.
+
+**AI SDK (v7).** The S1 spike pins `ai` 7.0.130. The [loop-control docs](https://ai-sdk.dev/docs/agents/loop-control) describe:
+- `ToolLoopAgent`, with a default `stopWhen: isStepCount(20)`
+- `prepareStep`
+- `activeTools`
+- `hasToolCall`
+
+The [tool-calling docs](https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling) replace the deprecated `needsApproval` with `toolApproval`, whose statuses are `not-applicable`, `approved`, `denied` and `user-approval`. `@ai-sdk/mcp` supports Streamable HTTP and negotiates MCP 2026-07-28.
+
+**MCP 2026-07-28.**
+- The core is stateless.
+- Client ID Metadata Documents replace deprecated dynamic client registration, and RFC 9728 is mandatory.
+- Clients must treat tool annotations as untrusted unless they come from a trusted server.
+- A human should be able to deny tool invocations.
+
+**UI protocols.** A2UI (Apache-2.0, v0.9.1 current) uses a declarative,
+pre-approved component catalog that matches Nilumi's trusted-catalog approach.
+AG-UI, CopilotKit and MCP Apps add dependencies that Nilumi does not need yet.
+
+**WhatsApp (secondary).** [TechCrunch](https://techcrunch.com/2025/10/18/whatssapp-changes-its-terms-to-bar-general-purpose-chatbots-from-its-platform/)
+quotes Meta's Business Solution Terms: general-purpose AI assistants whose
+primary function is AI are prohibited from 15 Jan 2026, with removals
+reported. India per-message rates and any CCI action were not verified.
+Alternatives: PWA push, Telegram Bot API, SMS for critical items, and RCS later.
+
+**DPDP (secondary).**
+- Section 3(c)(i) excludes processing by an individual for a personal or domestic purpose. The MeitY text could not be fetched.
+- Rules were notified 13 Nov 2025, with most obligations, including verifiable parental consent, reported from 13 May 2027.
+- Processing a second household's data plausibly falls outside the exemption.
+
+**Durable execution.** graphile-worker has no workflow replay.
+[DBOS Transact](https://docs.dbos.dev) (MIT, Postgres) is the closest library
+alternative. Temporal, Inngest, Trigger.dev and LangGraph add a service or
+another execution model.
+
+### Cloudflare AI Gateway (primary docs, checked 8 Oct 2026)
+
+**Billing.** The [pricing reference](https://developers.cloudflare.com/ai-gateway/reference/pricing/)
+states that core features are free. [Unified Billing](https://developers.cloudflare.com/ai-gateway/features/unified-billing/)
+(page updated 30 Sep 2026):
+- adds a 5% fee on credit purchases and passes provider rates through
+- warns that the balance can occasionally go negative and is then charged monthly, so credits are not a hard cap
+
+**Credentials.** Requests resolve credentials in this order:
+1. a key on the request
+2. the BYOK `default` alias
+3. Unified Billing
+
+"Require provider credentials" (`byok_only: true`) or `cf-aig-no-wholesale`
+stops the fallback to Unified Billing.
+
+**Zero data retention.** The same page states:
+- ZDR "routes Unified Billing traffic through provider endpoints that do not retain prompts or responses".
+- ZDR applies only to Cloudflare-managed credentials, not BYOK.
+- The model catalog marks which models support ZDR.
+- ZDR does not control gateway logging.
+- The documentation pages fetched do not state how to turn ZDR on. A third-party source names a gateway `zdr` setting and a `cf-aig-zdr` header; this was not verified because Cloudflare was not chosen.
+
+**Logging.** [Logging](https://developers.cloudflare.com/ai-gateway/observability/logging/)
+can be disabled per gateway, or per request with `cf-aig-collect-log: false`.
+`cf-aig-collect-log-payload: false` keeps metadata only. Gateways created on or
+after 24 Sep 2026 use Workers Logs pricing and retention.
+
+**Spend limits.** [Spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/)
+set dollar budgets by model, provider or metadata. They return HTTP 429 and
+are eventually consistent.
+
+**Caching.** Caching can be overridden per request.
+
+**AI SDK.** Integration uses the `ai-gateway-provider` package; its
+compatibility with `ai` 7 is unverified.
+
+This updates the [October 7 comparison](08-s3-gateway-verification.md#cloudflare-and-self-hosting),
+which recorded upstream ZDR as unverified. **Not chosen:** ZDR covers only
+catalog-marked models, credits carry a 5% fee, and Cloudflare would add a
+processor. Nilumi stays on Vercel ([ADR-046](adr/adr-046.md)).
+
+### Vercel AI Gateway credits and controls (checked 8 Oct 2026)
+
+These primary pages were fetched on 8 October; dates are the pages' "last
+updated" values.
+
+**[Pricing](https://vercel.com/docs/ai-gateway/pricing)** (updated 8 Sep)
+- Tokens are charged at provider list price, with no markup or platform fee.
+- The customer pays payment processing fees.
+- Buying credits moves the team to the paid tier: the US$5 monthly free credit stops and rate limits rise.
+- Auto top-up is off by default.
+- Doc 08's dashboard inspection recorded that purchased credits expire one year after purchase.
+
+**[Zero data retention](https://vercel.com/docs/ai-gateway/security-and-compliance/zdr)** (updated 22 Sep)
+- ZDR is available only on Pro and Enterprise.
+- Per-request ZDR (`zeroDataRetention: true`) has no surcharge. Team-wide ZDR costs US$0.10 per 1,000 successful requests that report usage.
+- Vercel keeps no prompts or outputs. Providers with an unknown stance count as non-ZDR, and BYOK keys are skipped unless marked ZDR-compliant.
+
+**[Disallow prompt training](https://vercel.com/docs/ai-gateway/security-and-compliance/disallow-prompt-training)** (updated 10 Sep)
+- The flag is free to all users and set per request.
+- "By default, AI Gateway does not route based on the training data policy."
+- It applies to fallbacks.
+- It returns 400 `no_providers_available` when no compliant provider exists.
+- It is not enforced for BYOK, except on failover to system credentials. Providers with an unknown stance are assumed to train.
+
+**[Provider filtering and ordering](https://vercel.com/docs/ai-gateway/models-and-providers/provider-filtering-and-ordering)** (updated 11 Sep)
+- `order` sets a preference only: providers not listed "are still available but will only be used after the specified providers".
+- `only` restricts routing to the listed providers.
+
+**[Budgets](https://vercel.com/docs/ai-gateway/observability-and-spend/budgets)** (updated 10 Sep)
+- Budgets can be set per team, project, API key or user.
+- They refresh monthly at UTC midnight on the 1st and are checked before each request.
+- Alerts at 50, 75 and 100% fire for custom budgets only.
+- A rejection may surface in AI SDK 7 as `GatewayInternalServerError`.
+- Project budgets apply only to OIDC tokens from that project's deployments, and API-key spend is never attributed to a project. BYOK spend has no budget.
+- **Re-checked October 8, after the credit purchase** ([budgets](https://vercel.com/docs/ai-gateway/observability-and-spend/budgets), [pricing](https://vercel.com/docs/ai-gateway/pricing), pricing page updated 8 Sep):
+  - The refresh period is `daily`, `weekly`, `monthly` or `none`; `none` is cumulative and never resets, which suits a fixed evaluation allowance.
+  - Budgets are soft caps. The request that crosses the limit completes, and later requests get HTTP 402 `quota_for_entity_exceeded`.
+  - Editing a budget keeps the spend already counted in the period; deleting and re-creating it starts from zero.
+  - API keys are attributed to the team or a member. Alerts go to the key's creator, at most once per threshold per period.
+  - No low-balance alert is documented, only auto top-up, which is off by default. Nilumi therefore relies on a monthly owner check.
+
+**[Fair use](https://vercel.com/docs/limits/fair-use-guidelines)** (updated 14 Sep)
+- Hobby is limited to non-commercial personal use.
+
+**Implications for Nilumi**
+- Purchased credits fund the founding household's pilot on Hobby.
+- No-training, `only` routing and `store: false` where supported are set by one wrapper on every call.
+- Budgets go on the Railway runtime's API key, not a project.
+- ZDR requires Pro or Enterprise, or another route, at the production privacy gate ([ADR-046](adr/adr-046.md)).
+
+### Claims needing primary verification
+
+| Claim | Owner of follow-up |
+|---|---|
+| Alexa+ India launch and pricing; Pulse retirement; Copilot family changes; Ohai/Nori pricing | Research before any positioning or pricing statement |
+| DPDP exemption text and Rules commencement dates | Legal review before any external household ([ADR-048](adr/adr-048.md)) |
+| WhatsApp India rates and any CCI action | Revisit trigger in [ADR-049](adr/adr-049.md) |
+| Vercel credit purchase effects, API-key budget enforcement and AI SDK 7 error shape, no-BYOK state, `only` and no-training on chat, embedding and fallback paths, and `store: false` forwarding with the pinned SDK | Roadmap spike S-VGW |
+| Google per-scope classification and installed-PWA linking | Roadmap spike S-GCAL |
+| A2UI React renderer package | Only if a renderer dependency is proposed |
+
+### October 8 sources
+
+**Repositories:** github.com/openclaw/openclaw · docs.openclaw.ai/concepts/memory · docs.openclaw.ai/concepts/multi-user · github.com/CopilotKit/OpenDots · github.com/NousResearch/hermes-agent · github.com/CopilotKit/openmuse · github.com/CopilotKit/OpenBot
+
+**Platforms:** developers.google.com/identity/protocols/oauth2/production-readiness/overview · developers.google.com/workspace/calendar/api/auth · developers.google.com/workspace/calendar/api/v3/reference/events/list · developers.google.com/workspace/calendar/api/guides/push · developers.google.com/workspace/calendar/api/guides/quota · better-auth.com/docs/concepts/oauth · ai-sdk.dev/docs/agents/loop-control · ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling · ai-sdk.dev/docs/ai-sdk-core/mcp-tools · modelcontextprotocol.io/specification/versioning · modelcontextprotocol.io/specification/2026-07-28/server/tools · a2ui.org · docs.ag-ui.com/introduction · developers.cloudflare.com/ai-gateway (unified-billing, logging, spend-limits, caching, pricing) · vercel.com/docs/ai-gateway (pricing, zdr, disallow-prompt-training, provider-filtering-and-ordering, budgets) · vercel.com/docs/limits/fair-use-guidelines · docs.dbos.dev · worker.graphile.org
+
+**Consumer and policy (secondary unless noted):** aboutamazon.in (Alexa+ India) · heynori.com/membership · fastcompany.com (Ohai) · startups.rip/company/milo · techcrunch.com (WhatsApp AI-provider terms) · dpdprules.org/act/3 · ftc.gov (Alexa children's data, primary) · one.google.com/intl/en_in/about

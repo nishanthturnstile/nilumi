@@ -308,6 +308,10 @@ Railway uses the inspected “Nilumi's Key”. Live probe results are recorded b
 
 Vercel is the default gateway. The owner added paid Vercel credits on October 8
 and requested live synthetic validation within the unchanged USD 0.50 cap.
+An October 8 owner amendment raises the cumulative cap to USD 2.00; it takes
+effect only after a reviewed change to `config/models.ts`, `lib/nlu/budget.ts` and
+the ledger that keeps every counted entry ([ADR-040](../../docs/adr/adr-040.md)).
+Until then the runner enforces USD 0.50.
 The [paid validation report](../../docs/10-s3-paid-vercel-validation.md) records
 Luna's complete 60-case run (54/60), failed privacy/held-out gates and mini's
 failed smoke. No model is selected; S3 acceptance remains pending.

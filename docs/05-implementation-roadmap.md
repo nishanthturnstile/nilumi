@@ -1,11 +1,11 @@
 # 05 — High-Level Implementation Roadmap: Nilumi
 
-> **Status:** Planned sequence · Based on the accepted revision-2 baseline · **Date:** October 2026
+> **Status:** Planned sequence · Based on the accepted revision-2 baseline, revised for the October 8, 2026 review ([ADR-041](adr/adr-041.md)–[ADR-049](adr/adr-049.md)) · **Date:** October 2026
 > **Related:** [ADR catalogue](adr/README.md) · [01 Product Plan](01-product-plan.md) · [02 Architecture](02-architecture.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research](04-research.md)
 
 ## 1. How to use this roadmap
 
-This document owns **what we build in what order**: Phase 0–8 for the MVP, followed by expansion horizons. Feature-level design and task breakdowns come later. No durations are assigned, and no phase is marked complete by this document.
+This document owns **what we build in what order**: Phase 0–8 for the MVP (including Phase 6A, the Today brief), followed by expansion horizons. Feature-level design and task breakdowns come later. No durations are assigned, and no phase is marked complete by this document.
 
 [Product §9](01-product-plan.md#9-scope) owns Must/Should/Could priorities. Items marked **Should** below are intended opportunities within a phase, not new MVP requirements; deferrals are recorded before moving on. Could items remain optional backlog. Architecture owns technical contracts and validation mechanics; Tech Stack owns technology choices and provider status; the ADR catalogue owns accepted decisions and rationale; Research owns dated evidence and comparison history.
 
@@ -15,10 +15,13 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 - Review the [accepted decisions and question resolutions](adr/README.md) together before Phase 1.
 - **S0 precedes every upload of family voice or data**, including bake-off clips. Synthetic inputs can be used while approval is pending.
+- **S-VGW and the household acknowledgement, recorded by the owner for both adults, precede the first family LLM or embedding call** ([ADR-046](adr/adr-046.md)). Until then, NLU and embeddings run on synthetic or seeded data only.
+- **S-GCAL precedes any calendar link** on a family account ([ADR-045](adr/adr-045.md)).
+- **The pilot stays inside the founding household.** Anyone outside it, helper access (H6), kid mode (H5), a second household or commercial use first needs the production privacy gate in §5.
 - **S6 precedes S1 phone installation**: the installed origin, sign-in sender and push subscriptions must use the final domain. S0–S6 are stable identifiers, not the order in which spikes must run.
 - Create the shared OneDrive recovery document before the S5 manual restore; its contents and key handling follow [Architecture §17.2](02-architecture.md#172-backups-and-restore-drill).
 - Complete the Phase 0 platform gates before Phase 1. S5 is a feasibility proof; Phase 1 establishes production safety and recovery, and Phase 5 repeats reminder validation against the implemented feature.
-- Follow Phase 1–8 in order. Foundation privacy, receipts and provenance precede real-memory writes; memory precedes retrieval; reliable scheduling precedes the pilot.
+- Follow Phase 1–8 in order, with Phase 6A between Phase 6 and the Phase 7 pilot. Foundation privacy, receipts and provenance precede real-memory writes; memory precedes retrieval; reliable scheduling precedes the brief; the brief precedes the pilot.
 
 ## 2. MVP phases
 
@@ -28,13 +31,22 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 | Spike | Capability to validate | Completion outcome / supporting reference |
 |---|---|---|
-| **S0 — Provider eligibility and data terms** | Household/minor-adjacent eligibility, training opt-outs, retention and deletion settings for every processor, including all bake-off candidates | Each provider receiving family data has a green, recorded status; Sarvam confirmation is obtained in writing. [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) — **Sarvam and infrastructure verified Oct 2026; Gateway re-verification failed Oct 7: Hobby cannot enforce ZDR. Family LLM/embedding data remains blocked under [ADR-038](adr/adr-038.md); [ADR-040](adr/adr-040.md) permits only synthetic S3 evaluation.** |
+| **S0 — Provider eligibility and data terms** | Household/minor-adjacent eligibility, training opt-outs, retention and deletion settings for every processor, including all bake-off candidates | Each provider receiving family data has a green, recorded status; Sarvam confirmation is obtained in writing. [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) — **Sarvam and infrastructure verified Oct 2026. Gateway re-verification failed Oct 7 (Hobby cannot enforce ZDR). Oct 8 ([ADR-046](adr/adr-046.md)): founding-household LLM/embedding data is allowed on Vercel AI Gateway with purchased credits after S-VGW and the household acknowledgement, with no-training and `only` routing; ZDR moves to the production privacy gate.** |
 | **S1 — PWA on both phones** | Install/offline shell and updates; in-app email-code sign-in, session persistence and step-up; native recording, permissions and interruptions; closed-app push; SSE and reply playback across resume; accessibility and Next.js issue #95588 | **DONE Oct 2026 — accepted on both phones with wife-observable friction; Capacitor fallback not triggered ([ADR-039](adr/adr-039.md)). Spike code in `spikes/s1/`** [Tech §2](03-tech-stack.md#2-client), [Architecture §14.1](02-architecture.md#141-capture-pwa) and [§15.5](02-architecture.md#155-authentication-sessions-and-recovery) |
 | **S2 — STT bake-off** | About 40 clips per adult with names, brands, dates/numbers and a few Tanglish cases in kitchen/fan/TV noise; native browser formats and measured p50/p95 | **APPROVED Oct 7, 2026 — owner reports successful manual validation and approves proceeding with Sarvam Saaras v4.** [S2 approval and evidence](../spikes/s1/README.md#s2-owner-approval-october-7-2026). Approval is based on owner review; a complete per-adult benchmark was not supplied to the repository. ElevenLabs remains gated by its S0 verification. Selection criteria remain entity-name accuracy, then WER, then p95 latency. |
-| **S3 — NLU bake-off** | Initial 60-case golden set with the real schema; model-role routing/fallback and shadow-mode instrumentation; prompt size/cache behavior; two offline classifier experiments | **IN PROGRESS Oct 7, 2026 — offline core and 60 synthetic cases implemented; [owner action review](07-s3-expected-actions.md), Gateway Hobby privacy blocker recorded; synthetic-only exception approved ([ADR-040](adr/adr-040.md)), all 60 expected actions reviewed and Railway key identity confirmed; staging implementation deployed and smoke completed: Luna has no eligible provider; Nano exceeded the five-second limit in all three cases. Evaluator disabled; full comparison and selection remain blocked.** Testing uses Luna low and the cheaper Nano candidate under a US$0.50 cap within the US$5 monthly budget. Select by structural accuracy, p95 latency and schema-valid rate; classifier experiments and production shadow validation remain deferred. [Tech §4](03-tech-stack.md#4-ai-and-voice), [Architecture §16.2](02-architecture.md#162-evaluation-harness-and-gates) |
+| **S3 — NLU bake-off** | Initial 60-case golden set with the real schema; model-role routing/fallback and shadow-mode instrumentation; prompt size/cache behavior; two offline classifier experiments | **IN PROGRESS Oct 7, 2026 — offline core and 60 synthetic cases implemented; [owner action review](07-s3-expected-actions.md), Gateway Hobby privacy blocker recorded; synthetic-only exception approved ([ADR-040](adr/adr-040.md)), all 60 expected actions reviewed and Railway key identity confirmed; staging implementation deployed and smoke completed: Luna has no eligible provider; Nano exceeded the five-second limit in all three cases. Evaluator disabled; full comparison and selection remain blocked. Oct 8: v9 failed its local frozen regression; v10 and V11 pass the frozen subscription regression (59/60), but no hosted run has passed. Nano and GPT-4.1 mini failed their smokes; Luna low scored 54/60 on v10 and 56/60 on V11 (three five-second timeouts); after deadline hardening its smoke scored 2/3 with one timeout ([10](10-s3-paid-vercel-validation.md), [11](11-s3-v11-validation.md), [12](12-s3-deadline-reliability.md)). Evaluator disabled; no model selected.** Testing uses Luna low and owner-approved challengers under the cumulative S3 cap, raised on Oct 8 from US$0.50 to US$2.00 (US$1.789466605 remaining; the runner enforces US$0.50 until its constants and ledger are migrated), on a separate evaluation key funded by purchased AI Gateway credits ([ADR-040](adr/adr-040.md), [ADR-046](adr/adr-046.md)). Cloudflare is an explicitly selected, unfunded spike adapter only ([09](09-s3-cloudflare-gateway.md)). Select by structural accuracy, p95 latency and schema-valid rate; classifier experiments and production shadow validation remain deferred. [Tech §4](03-tech-stack.md#4-ai-and-voice), [Architecture §16.2](02-architecture.md#162-evaluation-harness-and-gates) |
 | **S4 — Voice selection** | Three or four en-IN voices, sentence playback on the installed iPhone and first-audio latency | Your wife chooses the voice; first-audio p95 ≤ 700 ms. [Tech §4.1](03-tech-stack.md#41-model-roles-and-bake-off-candidates) |
 | **S5 — Railway platform smoke** | Database/extensions and Tamil locale behavior; pooled RLS/role boundaries; worker scheduling; streamed POST/SSE and reconnect; home RTT; encrypted backup, restore test, forget replay and manual master-key restore; volume backups/PITR support; always-on settings and measured cost | All platform checks pass, including the [≥ 200-occurrence reminder gate](02-architecture.md#162-evaluation-harness-and-gates). [Tech §3](03-tech-stack.md#3-server-and-data), [§6](03-tech-stack.md#6-hosting-operations-and-tooling), [Architecture §17.2](02-architecture.md#172-backups-and-restore-drill) |
 | **S6 — Final domain** | Purchase/attach `nilumi.in`, enable TLS and verify the Resend sender | Domain and sender work before either phone installs the app. [ADR-016](adr/adr-016.md) — **In progress Oct 2026: `nilumi.in` purchased; Cloudflare nameservers being added next; Resend sender verification and TLS still pending** |
+
+**Spikes added October 8.** S-VGW and S-GCAL are pre-pilot. S-AGENT and S-DBOS belong to the agentic horizon (§3) and are not Phase 1 prerequisites.
+
+| Spike | Capability to validate | Completion outcome / supporting reference |
+|---|---|---|
+| **S-VGW — Vercel AI Gateway credits and controls** | Synthetic canary prompts only, under their own small cap; not an S3 smoke. Credits purchased (US$20, owner-reported Oct 8) with auto top-up off and no BYOK credentials. Team budget US$10 monthly; runtime, S3 evaluation and canary API keys belong to the team, with the budgets in [ADR-046](adr/adr-046.md). `disallowPromptTraining` and `only` hold on chat, embedding and fallback paths. A request restricted to a non-compliant provider fails. `store: false` reaches the provider where supported. Budget exhaustion maps to degraded mode. Routing receipts are recorded | All checks pass with evidence in [doc 08](08-s3-gateway-verification.md). Together with the household acknowledgement, the gateway rows in [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) become green for the founding-household pilot only. Must pass before Phase 2's first family LLM call. [ADR-046](adr/adr-046.md) |
+| **S-GCAL — Read-only Google Calendar** | Better Auth `linkSocial` from both installed PWAs, with no sign-up path; exact `calendar.events.readonly` scope check; published (unverified) OAuth app; encrypted tokens and serialized refresh; bounded today-and-tomorrow sync with recurring, all-day and time-zone events; stale and Reconnect states; disconnect revokes at Google, fences sync and scrubs | Linking, refresh, sync and disconnect work for both adults; Google row in Tech §7 green. Must pass before Phase 6A's calendar work. [ADR-045](adr/adr-045.md), [Architecture §13.5](02-architecture.md#135-read-only-google-calendar-connection) |
+| **S-AGENT — First bounded run (post-pilot)** | One registered run type with an explicit step limit, an `activeTools` allow-list and one approval-gated tool; approval replay, stale-target and expiry cases; `outcome_unknown` handling; lease and fencing; prompt-injection and approval-bypass red-team cases | Trajectory and approval-bypass evals pass before any run type ships. [ADR-041](adr/adr-041.md)–[ADR-043](adr/adr-043.md), [Architecture §6.5–§6.7](02-architecture.md#65-execution-paths) |
+| **S-DBOS — DBOS Transact comparison (optional)** | The S-AGENT run type on DBOS Transact against Nilumi's own run tables on graphile-worker | Keep graphile-worker unless DBOS is clearly simpler for the same guarantees. [ADR-043](adr/adr-043.md) |
 
 **Output:** selected exact model IDs, measured prices and effective provider settings recorded in `config/models.ts`, `config/providers.md` and the ADR log when the project is initialized. Record spike results and any resulting baseline revisions; choosing a default alone does not pass a gate.
 
@@ -44,7 +56,15 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 **Features:** pnpm monorepo, CI and Railway deployment/migrations; invite-only adult sign-in, household/member relations, session revoke and optional step-up; PWA Talk shell with recording and text input; STT-to-transcript/echo cards; sensitive-input boundary on every available ingress; member-scoped transactions, sharing-ready RLS and privacy harness; resumable turn ledger; provenance, traces/admin viewer; worker backups, forget-journal support and recovery/rollback rehearsal. Reserve Vault provenance/masking interfaces without creating the document feature.
 
-**Complete when:** both adults can sign in and submit voice/text turns; crash/retry resumes correctly; secret and privacy tests pass; stage timings are visible; restore and compatible deployment rollback are rehearsed. [Architecture §5–§6](02-architecture.md#5-code-structure), [§15](02-architecture.md#15-privacy-and-security), [§17](02-architecture.md#17-reliability-and-operations)
+**October 8 additions:**
+- `household_id not null` on every household-owned table, taken from the session or job, never the client, with composite household foreign keys, trigger checks for ID arrays and polymorphic references, and a CI schema test ([ADR-048](adr/adr-048.md), [Architecture §9](02-architecture.md#9-data-model)).
+- Admin as a capability (`members.is_admin`) on adult members, granted only by an existing admin and re-checked inside each admin action.
+- The single AI Gateway wrapper with its CI guard and routing-receipt checks ([ADR-046](adr/adr-046.md)).
+- The household acknowledgement: the owner records it for both adults before the first real turn or calendar link; the wrapper fails closed without it; withdrawal by either adult is a veto ([Architecture §15.4](02-architecture.md#154-data-minimization-and-provider-retention)).
+- Stored-content injection fixtures and the rule that every write cites the member's own words in the current turn ([Architecture §7.2](02-architecture.md#72-validation-after-the-llm-deterministic), [§16.2](02-architecture.md#162-evaluation-harness-and-gates)).
+- Run, artifact, delegation and consent contracts reserved as schemas in `packages/contracts` and in Architecture only; their tables are created later ([ADR-041](adr/adr-041.md)–[ADR-044](adr/adr-044.md)).
+
+**Complete when:** both adults can sign in and submit voice/text turns after the owner records the household acknowledgement; withdrawing it stops every AI call; crash/retry resumes correctly; secret, privacy and second-household isolation tests pass; stage timings are visible; restore and compatible deployment rollback are rehearsed. [Architecture §5–§6](02-architecture.md#5-code-structure), [§15](02-architecture.md#15-privacy-and-security), [§17](02-architecture.md#17-reliability-and-operations)
 
 ### Phase 2 — First real-memory release and shopping list
 
@@ -52,7 +72,7 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 **Features:** predicate registry, entities/aliases and speaker-relative references; remember, correct, supersede, safe Undo/Edit, confirmed forget/redaction, owner-only share/un-share and clarifications; health/allergy confirmation; provenance cards; shopping-list add/read/tick/remove with dedupe, offline receipts, realtime sync and visible conflicts; cold-start seeding form. **Should:** per-member STT keyterm loop.
 
-**Complete when:** the NLU and privacy/secret gates pass; remember → correct → undo → forget leaves no forgotten residue; sharing permissions and revocation pass; shopping works offline on both phones and your wife uses the list unprompted. Retrieval-based journey checks finish in Phase 3. [Product §12](01-product-plan.md#12-evaluation-product-view), [Architecture §8](02-architecture.md#8-memory-model) and [§13.1](02-architecture.md#131-client-sync-offline-data-and-lists)
+**Complete when:** the NLU and privacy/secret gates pass; remember → correct → undo → forget leaves no forgotten residue; sharing permissions and revocation pass; shopping works offline on both phones and your wife uses the list unprompted. Retrieval-based journey checks finish in Phase 3. The first family NLU or embedding call waits for S-VGW. [Product §12](01-product-plan.md#12-evaluation-product-view), [Architecture §8](02-architecture.md#8-memory-model) and [§13.1](02-architecture.md#131-client-sync-offline-data-and-lists)
 
 ### Phase 3 — Retrieval and grounded answers
 
@@ -84,15 +104,36 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 **Features:** voice-reply modes and playback queue tuning; measured latency/cache/speculative-retrieval tuning; REST-versus-streaming STT reassessment only if latency warrants it; deterministic outage grammar; AI budget reservations, soft/hard caps and alerts. **Should:** cost dashboard.
 
-**Complete when:** [product latency targets](01-product-plan.md#53-success-metrics) hold over 100 real turns, bucketed by clip length and including the first request after deployment; simulated LLM outage and budget exhaustion keep list/reminder commands and non-AI surfaces usable. [Architecture §17.3–§17.5](02-architecture.md#173-degraded-modes), [§18](02-architecture.md#18-latency-budget-push-to-talk-india--railway-singapore)
+**Complete when:** [product latency targets](01-product-plan.md#53-success-metrics) hold over 100 real turns, bucketed by clip length and including the first request after deployment; simulated LLM outage and budget exhaustion keep list/reminder commands and non-AI surfaces usable. Gateway budget, credit-exhaustion and `no_providers_available` errors enter hard-cap degraded mode without retry or fallback. [Architecture §17.3–§17.5](02-architecture.md#173-degraded-modes), [§18](02-architecture.md#18-latency-budget-push-to-talk-india--railway-singapore)
+
+### Phase 6A — Today brief and read-only calendar
+
+**Purpose:** give each adult a daily reason to open Nilumi, built on memory, lists and reminders, with evidence on every item ([ADR-045](adr/adr-045.md), [Architecture §13.4–§13.5](02-architecture.md#134-today-brief)).
+
+**Prerequisites:** Phases 2, 3, 5 and 6 (memory, retrieval, reminders, budget reservations and degraded modes). S-GCAL passes before any calendar link; the brief itself does not wait for S-GCAL or the S3 NLU gate.
+
+**Features:**
+- **Brief tables and job.** `daily_briefs` and `brief_items`; a per-member graphile-worker job in Asia/Kolkata, run under the member's own RLS context and idempotent per member and date.
+- **Today screen.** Today becomes the landing screen with attention, today, tomorrow and ahead sections. Each item renders as a server-built `nilumi-ui/1` card with an evidence chip ([ADR-044](adr/adr-044.md)).
+- **One push a day.** At most one brief push per member per day, through `notification_deliveries`, at the chosen time and outside quiet hours, with a generic lock-screen preview.
+- **Optional summary.** At most one LLM call per brief, under a budget reservation. The brief is complete without it.
+- **Approvals.** The `approvals` table and approval cards for internal actions only (J20), with an immutable, single-use approval and a recheck before execution. The approved effect, its `tool_invocations` row and `content_refs` commit in one transaction ([ADR-042](adr/adr-042.md), [Architecture §6.6](02-architecture.md#66-tool-broker-policy-and-approvals)).
+- **Calendar (after S-GCAL).** `connections` and `calendar_events_cache`; Settings → Connections; connect and disconnect (J19); the Reconnect chip and stale marker.
+- **Scrubbing.** Forget, un-share, visibility revocation and disconnect clear affected brief items and summaries through `content_refs`.
+
+**Complete when:**
+- The Today brief eval slice passes with **100%** privacy and exactly-once on seeded and form-entered households ([Product §12](01-product-plan.md#12-evaluation-product-view)).
+- J18–J20 pass on both phones.
+- Disconnect leaves no cached events or calendar-derived items.
+- The brief builds with the calendar disconnected, expired or stale, and with zero LLM calls at the soft cap or during an outage.
 
 ### Phase 7 — Family pilot
 
 **Purpose:** learn whether both adults naturally find the MVP useful.
 
-**Work:** use the app without new feature work; **Should:** answer feedback buttons. Review failures weekly by STT, NLU, entity resolution, retrieval, hallucination, privacy/policy and UX friction. Collect patterns over several days before fixing; consented failures extend the eval sets.
+**Work:** use the app without new feature work; **Should:** answer feedback buttons. Review failures weekly by STT, NLU, entity resolution, retrieval, hallucination, privacy/policy and UX friction. Collect patterns over several days before fixing; consented failures extend the eval sets. The pilot stays inside the founding household; widening it needs the production privacy gate (§5).
 
-**Outcome:** a pilot report covering usage, memories/corrections, retrieval/abstention/hallucinations, latency, cost, delivery stages, the top three valued features/frustrations and your wife's unprompted weekly uses, assessed against [Product §5.3](01-product-plan.md#53-success-metrics).
+**Outcome:** a pilot report covering usage, memories/corrections, retrieval/abstention/hallucinations, latency, cost (including AI Gateway credit purchases and card/forex charges), delivery stages, Today brief opens, evidence taps and approval outcomes, the top three valued features/frustrations and your wife's unprompted weekly uses, assessed against [Product §5.3](01-product-plan.md#53-success-metrics).
 
 ### Phase 8 — Stabilize and freeze
 
@@ -113,9 +154,20 @@ H2–H7 retain their identifiers as later horizons; feature planning and commitm
 | H2 | Home Assistant room speaker, “Hey Nilumi” wake phrase and channel integration |
 | H3 | Tamil/Tanglish speech, retrieval and UI localization |
 | H4 | Opt-in proactive maintenance suggestions |
-| H5 | Kid mode, audience restrictions and child-safety moderation; renewed provider eligibility checks |
-| H6 | Shopping-list-only access for household help |
+| H5 | Kid mode, audience restrictions and child-safety moderation; renewed provider eligibility checks and the production privacy gate |
+| H6 | Shopping-list-only access for household help, after the production privacy gate |
 | H7 | Conversation mode using the same deterministic executors and privacy controls |
+
+**Agentic horizon (post-pilot).** Each item needs its own ADR or gate and reuses the broker, approvals, durable runs and UI catalog ([Architecture §20.9](02-architecture.md#209-agentic-horizon)):
+- the first bounded run type after S-AGENT (optional S-DBOS), with the Activity view (pause and stop) and a separate Approvals view
+- artifacts rendered through the `nilumi-ui/1` catalog
+- an MCP client with every tool disabled until Nilumi assigns its effect class
+- delegation with narrowed tools and depth caps
+- calendar write with approval cards, under a new ADR
+- a Telegram adapter; SMS only for critical items; no WhatsApp channel ([ADR-049](adr/adr-049.md))
+- forwarded-text capture through `POST /v1/capture`: an Android Web Share Target, and on iPhone a paste box or an Apple Shortcut with a revocable write-only device token, under its own decision and injection fixtures ([Architecture §19](02-architecture.md#19-api-surface-v1))
+
+**More households.** Contracts are ready ([Architecture §20.8](02-architecture.md#208-multi-household-readiness)). Onboarding anyone outside the founding household needs the legal gate ([ADR-048](adr/adr-048.md)) and the production privacy gate ([ADR-046](adr/adr-046.md)).
 
 **Could backlog:** custom lists, notification Done/Snooze actions, weekly household digest and Tamil UI strings. These do not become phase completion requirements. Existing [non-goals](01-product-plan.md#52-non-goals-mvp) and [scope exclusions](01-product-plan.md#9-scope) continue to apply.
 
@@ -138,8 +190,11 @@ The acceptance criteria remain in [Product §8](01-product-plan.md#8-core-journe
 | J15 Lost phone | Phase 1 sign-in, session revoke and account recovery |
 | J16 Export (**Should**) | Phase 4 |
 | J17 Share/un-share | Phase 2 lifecycle and permissions; Phase 3 answer attribution |
+| J18 Today brief | Phase 6A; calendar items only after S-GCAL. The brief eval slice can run before the S3 NLU gate |
+| J19 Connect/disconnect calendar | Phase 6A, after S-GCAL |
+| J20 Approve, edit or reject a suggestion | Phase 6A, internal actions only; external actions belong to the agentic horizon |
 
-**Epics:** E0 Spikes & decisions · E1 Platform & delivery · E2 Identity & household · E3 Conversation & NLU · E4 Memory write · E5 Entity resolution · E6 Retrieval & answers · E7 Correct/forget/history · E8 Lists · E9 Tasks/reminders/notifications · E10 Voice · E11 Privacy & security · E12 Observability & evaluation · E13 Family pilot · E14 Family Records Vault (H1, later).
+**Epics:** E0 Spikes & decisions · E1 Platform & delivery · E2 Identity & household · E3 Conversation & NLU · E4 Memory write · E5 Entity resolution · E6 Retrieval & answers · E7 Correct/forget/history · E8 Lists · E9 Tasks/reminders/notifications · E10 Voice · E11 Privacy & security · E12 Observability & evaluation · E13 Family pilot · E14 Family Records Vault (H1, later) · E15 Today brief · E16 Calendar connection · E17 Approvals (Activity later) · E18 Agent runtime (post-pilot) · E19 Multi-household readiness and production privacy gate (later).
 
 **Board states:** Backlog → In progress → Family testing → Done. Epics can span phases; privacy, voice and evaluation evolve with each feature rather than waiting for their own late milestone.
 
@@ -149,7 +204,16 @@ The accepted Q1–Q12 resolutions are recorded in [ADR resolved-question map](ad
 
 | Pending item | Where it is resolved |
 |---|---|
-| Provider eligibility, effective retention/training settings and Sarvam written confirmation | **Gateway re-verification failed Oct 7, 2026:** Hobby cannot enforce provider ZDR. Family LLM/embedding path remains gated; synthetic-only S3 exception accepted. Other S0 approvals remain recorded in [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) |
+| Provider eligibility, effective retention/training settings and Sarvam written confirmation | **Gateway re-verification failed Oct 7, 2026** (Hobby cannot enforce provider ZDR). **Oct 8:** [ADR-046](adr/adr-046.md) allows founding-household LLM/embedding data after S-VGW and the household acknowledgement; ZDR moves to the production privacy gate. Other S0 approvals remain recorded in [Tech §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) |
+| AI Gateway credits and controls | S-VGW, with evidence in [doc 08](08-s3-gateway-verification.md) |
+| Household acknowledgement, recorded by the owner for both adults | Phase 1, before the first real turn or calendar link; withdrawal by either adult pauses AI calls ([ADR-046](adr/adr-046.md)) |
+| S3 NLU correctness and latency | V11 passes the frozen subscription regression, but no hosted run has passed: deadline timeouts, failed challenger smokes, and successful Luna calls with p95 above 4 s against the 1,400 ms NLU target ([Architecture §18](02-architecture.md#18-latency-budget-push-to-talk-india--railway-singapore), [12](12-s3-deadline-reliability.md)). **Owner decision (Oct 8):** latency is acceptable for spike work and its fix is deferred; the suspected cause, network distance, is not yet measured. The 1,400 ms target is unchanged, and a five-second timeout still fails its case, so the next hosted round still needs a passing smoke. The S3 cap was raised to US$2.00 on Oct 8 (US$1.789466605 remaining); the runner enforces US$0.50 until its constants and ledger are migrated ([06](06-s3-command-understanding-plan.md), [ADR-040](adr/adr-040.md)) |
+| Cloudflare spike credential | The S3 Cloudflare adapter is unfunded and not selected for household traffic. Its account-scoped token sits in Railway staging and an ignored local file and expires November 7. **Owner decision (Oct 8):** let it expire; no action needed ([09](09-s3-cloudflare-gateway.md)) |
+| Google OAuth app published (unverified) and calendar linking | S-GCAL ([ADR-045](adr/adr-045.md)) |
+| Production privacy gate: Vercel Pro/Enterprise or another ZDR route, ZDR on every call, `only` routing with negative tests, minimisation review and dated evidence | Before anyone outside the founding household, H5, H6, a second household or commercial use ([ADR-046](adr/adr-046.md)) |
+| DPDP applicability and obligations | Primary legal verification before any external household, whatever the date ([ADR-048](adr/adr-048.md)) |
+| Whether Vault document text needs ZDR inside the founding household | H1 processor gate ([ADR-026](adr/adr-026.md)) |
+| First bounded run type | S-AGENT, post-pilot; optional S-DBOS ([ADR-041](adr/adr-041.md), [ADR-043](adr/adr-043.md)) |
 | Phone acceptability or Capacitor signing/distribution contingency | Resolved in S1 — PWA accepted on both phones; contingency not triggered ([ADR-039](adr/adr-039.md)) |
 | ElevenLabs S0 verification (household terms, training opt-out, retention/region) before it processes family audio | Owner: you · Gate: Tech §7 row flips green before `ELEVENLABS_API_KEY` ships in production |
 | Exact model IDs, NLU selection, fallback performance and chosen TTS voice | Sarvam Saaras v4 approved in S2 by owner manual review; S3 (NLU) and S4 (voice) are next. ElevenLabs performance remains untested and S0-gated. |

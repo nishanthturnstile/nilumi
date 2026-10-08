@@ -1,8 +1,6 @@
 # S3 Gateway configuration verification — October 7, 2026
 
-> October 8 update: This file preserves Vercel evidence. Cloudflare preparation,
-> explicit transport selection and remaining blockers are recorded in
-> [the Cloudflare plan](09-s3-cloudflare-gateway.md). No Cloudflare live acceptance is claimed.
+> **October 8 decision ([ADR-046](adr/adr-046.md)).** Nilumi stays on Vercel AI Gateway (Hobby) with purchased credits. Cloudflare AI Gateway was evaluated and not chosen for household traffic ([research](04-research.md#cloudflare-ai-gateway-primary-docs-checked-8-oct-2026)). The S3 spike keeps an explicitly selected, unfunded Cloudflare adapter for synthetic tests only; its preparation and blockers are in [doc 09](09-s3-cloudflare-gateway.md), and no Cloudflare live acceptance is claimed. Founding-household data waits for spike S-VGW and the household acknowledgement, which the owner records for both adults; ZDR moves to the production privacy gate. S3 stays synthetic under [ADR-040](adr/adr-040.md). This file preserves the Vercel evidence; later S3 rounds are in docs [10](10-s3-paid-vercel-validation.md), [11](11-s3-v11-validation.md) and [12](12-s3-deadline-reliability.md). See [the October 8 section](#october-8--gateway-decision-and-s-vgw-evidence) for the gateway decision and S-VGW evidence.
 
 ## Evidence and provenance
 
@@ -97,7 +95,9 @@ The implemented mode follows these bounds:
    OpenAI route uses Gateway-managed credentials before enabling paid testing.
 5. Start with three development cases on `openai/gpt-6-luna`; compare
    `openai/gpt-5-nano` only within the same cumulative US$0.50 test budget. The
-   US$5 monthly allowance remains shared with all other work.
+   US$5 monthly allowance remains shared with all other work. (October 8: buying
+   credits under ADR-046 ends this free allowance; S3 then uses a separate
+   evaluation key with its remaining cap.)
 6. Label every report synthetic-only, with no ZDR claim or production acceptance.
    Retain owner fixture review, staging access checks and durable budget gates.
 
@@ -213,6 +213,8 @@ extra proxy has little immediate benefit at this budget.
 Next provider decision: investigate OpenRouter Standard's exact Azure model
 route, privacy settings and eligibility before proposing an ADR-038 migration.
 Keep current synthetic evaluation on Vercel and preserve the production gate.
+(Superseded October 8 by [ADR-046](adr/adr-046.md): no gateway migration; stay
+on Vercel with purchased credits.)
 
 
 ## Deployment preflight findings
@@ -301,6 +303,8 @@ would change the acceptance conditions and should not hide this failed smoke.
 The existing Vercel Hobby credits remain useful for synthetic testing; a future
 OpenRouter route requires its own eligibility/privacy verification and an ADR
 before family-data use. Family-data ZDR remains blocked under ADR-038.
+(October 8: family-data use now follows [ADR-046](adr/adr-046.md); ZDR is a
+production gate.)
 
 ## Follow-up investigation — October 7, 2026
 
@@ -1003,10 +1007,57 @@ Recheck worst-case reservations: the current Mini full-pass bound is four times
 Nano's and cannot fit this remaining cap. Do not purchase credits, reset the
 ledger, weaken accuracy/privacy gates or repair wrong model intent to force
 acceptance. Family-data ZDR and the original two-model comparison remain pending.
-# October 8 paid-credit follow-up
+
+## October 8 — paid-credit follow-up
 
 The owner funded Vercel credits and restored Vercel as the default spike gateway.
 The [paid validation report](10-s3-paid-vercel-validation.md) records a complete
 60-case Luna run, failed hard semantic gates, a stopped mini smoke, retained costs
 and shutdown verification. This supersedes the earlier free-credit access blocker;
-it does not establish S3 acceptance or family-data eligibility.
+it does not establish S3 acceptance or family-data eligibility. Later rounds are
+in [V11 validation](11-s3-v11-validation.md) and the
+[deadline investigation](12-s3-deadline-reliability.md); S3 acceptance and model
+selection remain pending.
+
+## October 8 — gateway decision and S-VGW evidence
+
+**Decision.** The owner compared Cloudflare AI Gateway with Vercel. Not every
+Cloudflare model is ZDR-enabled, and Unified Billing adds a 5% fee on credit
+purchases. [ADR-046](adr/adr-046.md) therefore keeps Vercel AI Gateway on Hobby,
+funded by purchased credits, with no paid Vercel plan.
+- **Pilot.** ZDR is not required for the founding-household pilot. Every request
+  still sets `disallowPromptTraining`, `only` routing and OpenAI `store: false`.
+- **Production.** ZDR on every call is part of the production privacy gate.
+- **Credits.** Buying credits ends the US$5 monthly free credit. Credits expire one
+  year after purchase. Auto top-up stays off.
+- **S3.** Evaluation stays synthetic under [ADR-040](adr/adr-040.md), with a separate
+  evaluation key. The hosted rounds recorded above and in docs 10–12 used the
+  existing staging key (“Nilumi's Key”) under the US$0.50 cap the runner enforces;
+  US$0.210533395 is counted after the deadline round. The owner's October 8
+  amendment raises the cumulative S3 cap to US$2.00, leaving US$1.789466605. It
+  takes effect only after the runner's constants and ledger are migrated
+  ([ADR-040 amendment](adr/adr-040.md)).
+
+No account, purchase, setting or model call was made while this decision was
+recorded. Afterwards, the owner reported buying US$20 of credits on October 8
+and planning about US$10 a month.
+
+### S-VGW evidence (pending)
+
+S-VGW uses synthetic canary prompts only, under its own small cap. It is not an
+S3 smoke. Record dated, non-secret evidence here for each proof in ADR-046:
+
+| Proof | Evidence |
+| --- | --- |
+| Credits purchased, auto top-up off, no BYOK credentials on the team | US$20 purchased (owner-reported, October 8). The account balance was US$24.97400355 before the paid S3 run, including unused free credit, and US$24.92349108 after the deadline round ([12](12-s3-deadline-reliability.md)). S3 routing receipts showed BYOK=false per request; the team-level auto top-up and BYOK checks are pending |
+| Team budget US$10 monthly with 50/75/100% alerts; runtime (US$8 monthly), S3 (refresh `none`, US$2.00 minus the S3 ledger total when set: US$1.789466605 after the deadline round) and canary (refresh `none`, about US$0.10) keys belong to the team, each with its budget | Pending |
+| Budget exhaustion fails closed: HTTP 402 `quota_for_entity_exceeded` (or the AI SDK 7 error) maps to hard-cap degraded mode without retry or fallback | Pending |
+| `disallowPromptTraining` and `only` hold on chat, embedding and fallback paths | Pending |
+| A request restricted to a non-compliant provider fails | Pending |
+| `store: false` reaches the provider with the pinned SDK where supported | Pending |
+| Routing receipts recorded | Pending |
+| Canary key revoked after the proofs | Pending |
+
+When every row passes and the owner has recorded the household acknowledgement, the gateway rows in
+[Tech Stack §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate)
+become **Green — founding-household pilot only**.

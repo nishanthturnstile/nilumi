@@ -1,9 +1,19 @@
 # S3 — Command understanding implementation plan
 
-> **Status:** Implementation delivered. Latest subscription regression passes synthetic gates: 59/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy; no observed tool activity under strengthened controls. One semantic failure remains. Hosted S3 acceptance/model selection remain pending; Gateway evaluator disabled. Family-data ZDR remains blocked.
+> **Status:** Implementation delivered. Latest subscription regression passes synthetic gates: 59/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy; no observed tool activity under strengthened controls. One semantic failure remains. Hosted S3 acceptance/model selection remain pending; Gateway evaluator disabled. Family-data routing now follows ADR-046 (see the October 8 note).
 > **Date:** October 7, 2026
 > **Next acceptance work:** Synthetic correctness, then a successful live smoke and budget-bounded deployment comparison. The 60 expected actions are already owner-approved.
 > **Prerequisite:** S2 owner approval is recorded; no additional recordings are needed.
+> **October 8 note ([ADR-046](adr/adr-046.md)):** the owner chose to stay on Vercel AI Gateway with purchased credits and no paid plan.
+> - **Family data.** Founding-household data waits for spike S-VGW and the household acknowledgement, which the owner records for both adults. ZDR moves to the production privacy gate.
+> - **S3 itself is unchanged.** Evaluation stays synthetic under [ADR-040](adr/adr-040.md).
+> - **Key and budget.** S3 uses a separate evaluation key. The owner bought US$20 of credits on October 8, so the US$5 monthly free credit no longer applies. The same day, the owner raised the cumulative S3 cap from US$0.50 to **US$2.00** of paid credits ([ADR-040 amendment](adr/adr-040.md)). After the October 8 deadline round, US$0.210533395 is counted, so **US$1.789466605 remains** under US$2.00. The key's Vercel budget uses refresh `none` ([ADR-046](adr/adr-046.md)). Later references to the US$0.50 cap and the US$5 monthly allowance are dated history.
+> - **Code change still needed.** The evaluator still enforces the old limits (`TEST_CAP_USD = 0.5` and `MONTH_CAP_USD = 5` in `spikes/s1/config/models.ts`), and the ledger check rejects any other value. Until a reviewed change raises the test cap to 2.00, replaces the free-credit monthly cap and carries every counted entry forward without resetting the ledger, the effective cap stays US$0.50 with US$0.289466605 remaining.
+> - **Evaluator mode.** The default `zdr` mode still requires ZDR.
+> - **Hosted status (October 8).** Prompt V11 with the `s3-wire-v2` schema passes the frozen subscription regression. Hosted runs have not passed: Luna low scored 54/60 on v10 ([10](10-s3-paid-vercel-validation.md)) and 56/60 on V11 with three five-second timeouts ([11](11-s3-v11-validation.md)), and the latest Luna smoke scored 2/3 with one timeout ([12](12-s3-deadline-reliability.md)). The Nano and GPT-4.1 mini challengers failed their smokes. Successful Luna calls have p95 above 4 s against the 1,400 ms NLU target. No model is selected, and the evaluator is disabled.
+> - **Latency deferred (owner decision, October 8).** Current latency is acceptable for spike work, and the fix comes later. The owner attributes it to network distance; that is not yet measured. The 1,400 ms target is unchanged, and a five-second timeout still fails its case.
+>
+> Later sections are dated history.
 
 ## 1. Objective and agreed decisions
 
@@ -14,18 +24,18 @@ must produce one shopping-add command containing two distinct items.
 The deliverables are a runtime-validated contract, 60 synthetic golden cases,
 an expected-action review, an offline test harness, and a gated comparison of
 two models through an explicitly selected gateway. October 8 Cloudflare
-preparation and the preserved Vercel option are documented in
-[the gateway migration plan](09-s3-cloudflare-gateway.md); live acceptance remains pending.
+adapter preparation and the preserved Vercel default are documented in
+[the Cloudflare adapter plan](09-s3-cloudflare-gateway.md); live acceptance remains pending.
 
 Decisions confirmed during planning:
 
 | Decision | Selected approach |
 | --- | --- |
 | Credential setup | Owner adds the Gateway key directly in Railway; no secret is shared in chat |
-| Privacy | Family data requires ADR-038 ZDR; owner approved the separate synthetic-only Hobby evaluation exception in ADR-040 |
-| Budget | US$5 for the entire month; this S3 testing increment is capped at US$0.50 including smoke calls, repeats, and retained reservations |
+| Privacy | Family data required ADR-038 ZDR (Oct 7); since Oct 8 it follows ADR-046 (S-VGW, the household acknowledgement, ZDR at the production gate). Owner approved the separate synthetic-only Hobby evaluation exception in ADR-040, which still governs S3 |
+| Budget | US$5 monthly free credit at the time; this S3 testing increment was capped at US$0.50 including smoke calls, repeats, and retained reservations. **Oct 8:** paid credits replace the free credit, and the cumulative cap is US$2.00 (US$1.789466605 remaining after the deadline round; the runner enforces US$0.50 until migrated) |
 | Models | Start with `openai/gpt-6-luna` at low reasoning; `openai/gpt-5-nano` at low reasoning is the cheaper comparator; Claude comparison is deferred |
-| Comparison repetitions | One pass by default; up to three only within the same US$0.50 testing allowance |
+| Comparison repetitions | One pass by default; up to three only within the same cumulative testing allowance |
 | Current increment | Core NLU contract, golden cases, validation, and Gateway comparison |
 | Classifier experiments | Deferred and recorded as remaining roadmap S3 work |
 | Production shadow traffic | Deferred; prepare mockable comparison instrumentation only |
@@ -235,8 +245,8 @@ record this failed gate; verified metadata must not be mistaken for readiness.
 Both team-wide and per-request ZDR require Pro or Enterprise. Request-level
 no-training and OpenAI-only filtering are available on Hobby, but do not
 establish ZDR. The owner explicitly approved the separate synthetic-only
-exception in [ADR-040](adr/adr-040.md); ADR-038 remains the baseline for family
-data. The default evaluator mode continues to require ZDR. The server may
+exception in [ADR-040](adr/adr-040.md); ADR-038 was then the baseline for family
+data (since October 8, [ADR-046](adr/adr-046.md)). The default evaluator mode continues to require ZDR. The server may
 explicitly select `NLU_EVALUATION_MODE=synthetic_hobby` after owner fixture review
 and confirmation of the Railway key's team and Gateway-managed OpenAI route.
 That mode requires the fixed synthetic corpus hash and separate exception
