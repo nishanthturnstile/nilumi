@@ -1,0 +1,678 @@
+{
+  "version": "s3-deadline-wire-v2-validation",
+  "checkedAt": "2026-10-08T06:23:57.729Z",
+  "codeCommit": "242d751",
+  "promptSha256": "a20411850e43b65602da6d7ee973772e73718527d9c8e7df3288d7735823ff62",
+  "pipelineSha256": "444ce3e9fbe5279f6dbb330b75177fc9e922107cb7721e57cb5cb47cdf70e353",
+  "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+  "heldOutPolicy": "Repeated original holdout is regression evidence. No held-out transcript, expected answer, case ID or raw output was inspected for this revision.",
+  "wireSchema": {
+    "equivalent": true,
+    "oldBytes": 22368,
+    "newBytes": 9742,
+    "expandedSemanticSha256": "81c44ccba9703586225bd8253c8e01cdb9b99aec4fdd646b69223d2ffa99f592"
+  },
+  "baseline": {
+    "sample": "Eight slowest completed V11 hosted calls; non-generative generation-info lookups. These are not an unbiased latency sample.",
+    "observations": [
+      {
+        "localMs": 4831.878847,
+        "firstTokenMs": 4479,
+        "generationMs": 4479,
+        "reasoning": 30,
+        "output": 94,
+        "cached": 7205,
+        "input": 3
+      },
+      {
+        "localMs": 4526.304148000025,
+        "firstTokenMs": 4001,
+        "generationMs": 4001,
+        "reasoning": 66,
+        "output": 123,
+        "cached": 7205,
+        "input": 3
+      },
+      {
+        "localMs": 4428.212101000012,
+        "firstTokenMs": 4078,
+        "generationMs": 4078,
+        "reasoning": 69,
+        "output": 101,
+        "cached": 7205,
+        "input": 3
+      },
+      {
+        "localMs": 4365.504633999983,
+        "firstTokenMs": 3852,
+        "generationMs": 3852,
+        "reasoning": 54,
+        "output": 86,
+        "cached": 7205,
+        "input": 3
+      },
+      {
+        "localMs": 4311.850750999991,
+        "firstTokenMs": 3801,
+        "generationMs": 3801,
+        "reasoning": 62,
+        "output": 90,
+        "cached": 7205,
+        "input": 3
+      },
+      {
+        "localMs": 4257.331545000023,
+        "firstTokenMs": 3904,
+        "generationMs": 3904,
+        "reasoning": 0,
+        "output": 118,
+        "cached": 8034,
+        "input": 3
+      },
+      {
+        "localMs": 4243.775151000009,
+        "firstTokenMs": 3733,
+        "generationMs": 3733,
+        "reasoning": 92,
+        "output": 161,
+        "cached": 7205,
+        "input": 3
+      },
+      {
+        "localMs": 4155.758628999989,
+        "firstTokenMs": 3642,
+        "generationMs": 3642,
+        "reasoning": 67,
+        "output": 120,
+        "cached": 7205,
+        "input": 3
+      }
+    ]
+  },
+  "changes": [
+    "Compact shared wire schema definitions with identical expanded constraints",
+    "Enforce generation deadline using monotonic elapsed time",
+    "Register cancellation listener before dispatch",
+    "Remove generation timers and listeners after completion",
+    "Abort metadata requests after their separate one-second allowance",
+    "Record numeric transport timing snapshots on successes and failures"
+  ],
+  "unchanged": [
+    "Prompt v11",
+    "Corpus",
+    "Goldens",
+    "Parsed contracts",
+    "Interpreter",
+    "Scorer",
+    "Model settings",
+    "Privacy controls",
+    "Five-second deadline",
+    "Cumulative cap",
+    "No retries or fallback"
+  ],
+  "checks": {
+    "tests": 223,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "subscription": {
+    "runId": "57800826-410e-452c-94c2-5450c96e919f",
+    "split": "all",
+    "summary": {
+      "expected": 60,
+      "attempted": 60,
+      "correct": 59,
+      "accuracy": 0.9833333333333333,
+      "extraction": {
+        "attempted": 60,
+        "correct": 56
+      },
+      "normalizedCases": 3,
+      "schemaValidRate": 1,
+      "heldOut": {
+        "attempted": 12,
+        "correct": 11
+      },
+      "dates": {
+        "attempted": 12,
+        "correct": 12
+      },
+      "privacy": {
+        "attempted": 8,
+        "correct": 8
+      },
+      "coverageComplete": true,
+      "syntheticCorrectnessPass": true,
+      "deploymentAcceptance": "pending_live_gates"
+    },
+    "abortReason": null,
+    "observedToolActivity": false
+  },
+  "hosted": {
+    "runId": "f8f59d23-271e-463a-99f9-56c1e3ac57cc",
+    "kind": "three-development-case smoke",
+    "versions": {
+      "prompt": "s3-extract-v11",
+      "registry": "synthetic-v1",
+      "fixture": "golden-v1",
+      "fixtureHash": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "models": "s3-openai-challengers-v4",
+      "contract": "s3-v1",
+      "wireSchema": "s3-wire-v2",
+      "interpretation": "s3-interpret-v4"
+    },
+    "summary": {
+      "expected": 3,
+      "attempted": 3,
+      "correct": 2,
+      "accuracy": 0.6666666666666666,
+      "modelCalls": 3,
+      "schemaValidRate": 0.6666666666666666,
+      "successfulCalls": 2,
+      "failures": 1,
+      "latency": {
+        "samples": 2,
+        "p50Ms": 3661.3375949999972,
+        "p95Ms": 4543.223545000001
+      },
+      "tokenUsage": {
+        "callsWithUsage": 2,
+        "input": 13428,
+        "output": 276,
+        "cached": 11754,
+        "cacheWrite": 1668,
+        "reasoning": 73,
+        "observedCacheHits": 2
+      },
+      "unknownCostCalls": 1,
+      "accountedCostUsd": 0.006868389999999999,
+      "reportedOrEstimatedCostUsd": 0.00046464,
+      "notEvaluated": 0,
+      "costUsd": null,
+      "slices": {
+        "model:openai/gpt-6-luna": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464
+        },
+        "model:openai/gpt-6-luna/pass:1": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464
+        },
+        "category:shopping": {
+          "attempted": 1,
+          "correct": 0,
+          "accuracy": 0,
+          "modelCalls": 1,
+          "schemaValidRate": 0,
+          "successfulCalls": 0,
+          "failures": 1,
+          "latency": {
+            "samples": 0,
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "tokenUsage": {
+            "callsWithUsage": 0,
+            "input": 0,
+            "output": 0,
+            "cached": 0,
+            "cacheWrite": 0,
+            "reasoning": 0,
+            "observedCacheHits": 0
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.00640375,
+          "reportedOrEstimatedCostUsd": 0
+        },
+        "model:openai/gpt-6-luna/pass:1/category:shopping": {
+          "attempted": 1,
+          "correct": 0,
+          "accuracy": 0,
+          "modelCalls": 1,
+          "schemaValidRate": 0,
+          "successfulCalls": 0,
+          "failures": 1,
+          "latency": {
+            "samples": 0,
+            "p50Ms": null,
+            "p95Ms": null
+          },
+          "tokenUsage": {
+            "callsWithUsage": 0,
+            "input": 0,
+            "output": 0,
+            "cached": 0,
+            "cacheWrite": 0,
+            "reasoning": 0,
+            "observedCacheHits": 0
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.00640375,
+          "reportedOrEstimatedCostUsd": 0
+        },
+        "model:openai/gpt-6-luna/pass:1/language:en": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464
+        },
+        "language:en": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464
+        },
+        "split:development": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464
+        },
+        "model:openai/gpt-6-luna/pass:1/split:development": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464
+        },
+        "category:memories": {
+          "attempted": 1,
+          "correct": 1,
+          "accuracy": 1,
+          "modelCalls": 1,
+          "schemaValidRate": 1,
+          "successfulCalls": 1,
+          "failures": 0,
+          "latency": {
+            "samples": 1,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 3661.3375949999972
+          },
+          "tokenUsage": {
+            "callsWithUsage": 1,
+            "input": 6709,
+            "output": 118,
+            "cached": 5877,
+            "cacheWrite": 829,
+            "reasoning": 0,
+            "observedCacheHits": 1
+          },
+          "unknownCostCalls": 0,
+          "accountedCostUsd": 0.000221695,
+          "reportedOrEstimatedCostUsd": 0.000221695
+        },
+        "model:openai/gpt-6-luna/pass:1/category:memories": {
+          "attempted": 1,
+          "correct": 1,
+          "accuracy": 1,
+          "modelCalls": 1,
+          "schemaValidRate": 1,
+          "successfulCalls": 1,
+          "failures": 0,
+          "latency": {
+            "samples": 1,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 3661.3375949999972
+          },
+          "tokenUsage": {
+            "callsWithUsage": 1,
+            "input": 6709,
+            "output": 118,
+            "cached": 5877,
+            "cacheWrite": 829,
+            "reasoning": 0,
+            "observedCacheHits": 1
+          },
+          "unknownCostCalls": 0,
+          "accountedCostUsd": 0.000221695,
+          "reportedOrEstimatedCostUsd": 0.000221695
+        },
+        "category:dates": {
+          "attempted": 1,
+          "correct": 1,
+          "accuracy": 1,
+          "modelCalls": 1,
+          "schemaValidRate": 1,
+          "successfulCalls": 1,
+          "failures": 0,
+          "latency": {
+            "samples": 1,
+            "p50Ms": 4543.223545000001,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 1,
+            "input": 6719,
+            "output": 158,
+            "cached": 5877,
+            "cacheWrite": 839,
+            "reasoning": 73,
+            "observedCacheHits": 1
+          },
+          "unknownCostCalls": 0,
+          "accountedCostUsd": 0.000242945,
+          "reportedOrEstimatedCostUsd": 0.000242945
+        },
+        "model:openai/gpt-6-luna/pass:1/category:dates": {
+          "attempted": 1,
+          "correct": 1,
+          "accuracy": 1,
+          "modelCalls": 1,
+          "schemaValidRate": 1,
+          "successfulCalls": 1,
+          "failures": 0,
+          "latency": {
+            "samples": 1,
+            "p50Ms": 4543.223545000001,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 1,
+            "input": 6719,
+            "output": 158,
+            "cached": 5877,
+            "cacheWrite": 839,
+            "reasoning": 73,
+            "observedCacheHits": 1
+          },
+          "unknownCostCalls": 0,
+          "accountedCostUsd": 0.000242945,
+          "reportedOrEstimatedCostUsd": 0.000242945
+        },
+        "tag:dates": {
+          "attempted": 1,
+          "correct": 1,
+          "accuracy": 1,
+          "modelCalls": 1,
+          "schemaValidRate": 1,
+          "successfulCalls": 1,
+          "failures": 0,
+          "latency": {
+            "samples": 1,
+            "p50Ms": 4543.223545000001,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 1,
+            "input": 6719,
+            "output": 158,
+            "cached": 5877,
+            "cacheWrite": 839,
+            "reasoning": 73,
+            "observedCacheHits": 1
+          },
+          "unknownCostCalls": 0,
+          "accountedCostUsd": 0.000242945,
+          "reportedOrEstimatedCostUsd": 0.000242945
+        },
+        "model:openai/gpt-6-luna/pass:1/tag:dates": {
+          "attempted": 1,
+          "correct": 1,
+          "accuracy": 1,
+          "modelCalls": 1,
+          "schemaValidRate": 1,
+          "successfulCalls": 1,
+          "failures": 0,
+          "latency": {
+            "samples": 1,
+            "p50Ms": 4543.223545000001,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 1,
+            "input": 6719,
+            "output": 158,
+            "cached": 5877,
+            "cacheWrite": 839,
+            "reasoning": 73,
+            "observedCacheHits": 1
+          },
+          "unknownCostCalls": 0,
+          "accountedCostUsd": 0.000242945,
+          "reportedOrEstimatedCostUsd": 0.000242945
+        }
+      },
+      "candidates": {
+        "openai/gpt-6-luna": {
+          "attempted": 3,
+          "correct": 2,
+          "accuracy": 0.6666666666666666,
+          "modelCalls": 3,
+          "schemaValidRate": 0.6666666666666666,
+          "successfulCalls": 2,
+          "failures": 1,
+          "latency": {
+            "samples": 2,
+            "p50Ms": 3661.3375949999972,
+            "p95Ms": 4543.223545000001
+          },
+          "tokenUsage": {
+            "callsWithUsage": 2,
+            "input": 13428,
+            "output": 276,
+            "cached": 11754,
+            "cacheWrite": 1668,
+            "reasoning": 73,
+            "observedCacheHits": 2
+          },
+          "unknownCostCalls": 1,
+          "accountedCostUsd": 0.006868389999999999,
+          "reportedOrEstimatedCostUsd": 0.00046464,
+          "passes": [
+            {
+              "pass": 1,
+              "fullCoverage": false,
+              "privacyPass": false,
+              "datePass": false,
+              "heldOutPass": false,
+              "accuracyPass": false,
+              "latencyTargetPass": false,
+              "routeVerified": false,
+              "qualifies": false
+            }
+          ],
+          "qualifies": false
+        }
+      },
+      "coverageComplete": true,
+      "selection": "pending_live_gates"
+    },
+    "budget": {
+      "testCapUsd": 0.5,
+      "monthCapUsd": 5,
+      "chargedUsd": 0.2105333950000001
+    },
+    "transport": [
+      {
+        "status": "timeout",
+        "correct": false,
+        "schemaValid": false,
+        "latencyMs": 5003.264460000006,
+        "timings": {
+          "requestCount": 1,
+          "requestStartedMs": 9.305728999999701
+        }
+      },
+      {
+        "status": "ok",
+        "correct": true,
+        "schemaValid": true,
+        "latencyMs": 3661.3375949999972,
+        "timings": {
+          "requestCount": 1,
+          "requestStartedMs": 1.8991810000006808,
+          "responseHeadersMs": 3655.9586770000024,
+          "responseStatus": 200,
+          "completedMs": 3660.2306120000067
+        }
+      },
+      {
+        "status": "ok",
+        "correct": true,
+        "schemaValid": true,
+        "latencyMs": 4543.223545000001,
+        "timings": {
+          "requestCount": 1,
+          "requestStartedMs": 1.7152439999990747,
+          "responseHeadersMs": 4540.385897,
+          "responseStatus": 200,
+          "completedMs": 4543.0818260000015
+        }
+      }
+    ],
+    "smokePass": false,
+    "fullComparisonRun": false,
+    "decision": "Stop paid testing after failed smoke"
+  },
+  "deployment": {
+    "enabled": "0aa11b19-b917-46c7-8830-57e5f8e9a7aa",
+    "disabled": "4ba09cad-ed6e-44a5-9ada-d7273c754d45"
+  },
+  "selection": "pending_live_gates",
+  "productionAccepted": false,
+  "budget": {
+    "capUsd": 0.5,
+    "retainedUsd": 0.2105333950000001,
+    "remainingUsd": 0.2894666049999999,
+    "entries": 164,
+    "preservedPriorEntries": 161,
+    "sha256": "0038630def5ecf064c4605d20f37708a20a828406c93af0aba76aa5cab78d313"
+  },
+  "credits": {
+    "startingBalanceUsd": 24.92484752,
+    "endingBalanceUsd": 24.92349108,
+    "decreaseUsd": 0.001356439999998571,
+    "providerTotalUsedUsd": 0.07650892
+  },
+  "shutdown": {
+    "configuredDisabled": true,
+    "allowlistEmpty": true,
+    "httpStatus": 404,
+    "error": "evaluation_disabled",
+    "verified": true
+  }
+}
