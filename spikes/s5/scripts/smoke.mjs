@@ -336,6 +336,7 @@ try {
     restoredRows: backup.restoredRows,
     restoredChecks: backup.restoredChecks,
     dumpSha256: backup.sha256,
+    sourceManifest: backup.sourceManifest,
     ageEncryption: "pending_recipient_and_cli",
     r2Upload: "pending",
     masterKeyRecovery: "pending_shared_document",

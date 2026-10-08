@@ -53,16 +53,51 @@ export async function restoreLocal(db, afterDump = async () => {}) {
     throw new Error("s5_local_backup_transport_required");
   await journalSnapshot(db);
   const compose = ["compose", "-f", "compose.yaml", "exec", "-T", "postgres"];
-  const dump = await runCommand("docker", [
-    ...compose,
-    "pg_dump",
-    "-U",
-    "s5_owner",
-    "-d",
-    "s5_smoke",
-    "-Fc",
-    "--schema=s5",
-  ]);
+  const snapshot = await db.connect();
+  let dump, sourceManifest;
+  try {
+    await snapshot.query("begin isolation level repeatable read read only");
+    const id = (await snapshot.query("select pg_export_snapshot() as id"))
+      .rows[0].id;
+    sourceManifest = (
+      await snapshot.query(
+        'select current_setting(\'server_version_num\')::int as "serverVersionNum",datlocprovider as "localeProvider",datlocale as locale from pg_database where datname=current_database()',
+      )
+    ).rows[0];
+    sourceManifest.extensions = (
+      await snapshot.query(
+        "select extname,extversion from pg_extension where extname in ('vector','pg_trgm') order by extname",
+      )
+    ).rows;
+    sourceManifest.rowCounts = {};
+    for (const table of [
+      "members",
+      "records",
+      "occurrences",
+      "deliveries",
+      "forget_tombstones",
+    ])
+      sourceManifest.rowCounts[table] = (
+        await snapshot.query(`select count(*)::int as n from s5.${table}`)
+      ).rows[0].n;
+    dump = await runCommand("docker", [
+      ...compose,
+      "pg_dump",
+      "-U",
+      "s5_owner",
+      "-d",
+      "s5_smoke",
+      "-Fc",
+      "--schema=s5",
+      `--snapshot=${id}`,
+    ]);
+    await snapshot.query("commit");
+  } catch (error) {
+    await snapshot.query("rollback");
+    throw error;
+  } finally {
+    snapshot.release();
+  }
   await afterDump();
   const journal = await journalSnapshot(db);
   await runCommand("docker", [
@@ -145,6 +180,7 @@ export async function restoreLocal(db, afterDump = async () => {}) {
       journal,
       restoredRows: original.rows[0].count,
       restoredChecks,
+      sourceManifest,
       sha256: createHash("sha256").update(dump).digest("hex"),
     };
   } finally {

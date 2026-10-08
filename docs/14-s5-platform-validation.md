@@ -66,7 +66,7 @@ synthetic dataset. The package is not a production migration.
 ## Initial evidence and limits
 
 [Tracked local evidence](../spikes/s5/reports/local-smoke.json) records actual
-results. Four boundary tests and the syntax/lint checks pass. The local run
+results. Eleven boundary/offsite tests and the syntax/lint checks pass. The local run
 dispatches 200 synthetic occurrences with no stale or early dispatch and verifies
 20 cancelled occurrences produce no delivery. It also passes non-superuser
 pooled RLS, POST/SSE reconnect, a real dump/restore, restored RLS policies and
@@ -127,14 +127,14 @@ the existing `nilumi-s1` deployment stayed unchanged. Usage reporting can lag;
 the report separates reported S5 service charges from the conservative reserve.
 No AI calls were made and the S3 evaluator remained disabled.
 
-**PITR eligibility:** Railway CLI reports the pinned upstream pgvector image is
+**Initial PITR eligibility:** Railway CLI reports the pinned upstream pgvector image is
 unsupported for built-in PITR. It requires Railway's `postgres-ssl` or
 `postgres-patroni` image. Do not assume an image switch preserves PostgreSQL 18,
 extensions or locale: verify those and PITR recovery in a separate bounded
 increment before deciding the production backup configuration.
 
 **Remaining acceptance:** real-recipient age encryption, isolated R2 upload/hash/
-retention, offsite manifest and role recovery, both-adult master-key recovery,
+retention, live offsite manifest and role recovery, both-adult master-key recovery,
 installed-PWA resume on both phones and home RTT. Separate migration/maintenance
 credentials and complete production recurrence/provider-send behavior remain
 outside the runtime app/worker proof. The schema-only scratch restore on the same
@@ -145,11 +145,51 @@ accounts' access/2FA, generate/store the real master key there, and configure on
 its public recipient on the worker. R2 credentials must be entered privately.
 The user has requested the runbook before this document setup.
 
+## Recovery increment — October 8, 2026
+
+[Fresh-cluster evidence](../spikes/s5/reports/fresh-recovery.json) proves separate
+physical clusters, explicit recreation of restricted app/worker roles, a real
+dump/restore, FORCE RLS, both-adult and second-household visibility, queue
+boundaries and forget replay before restored app queries. This is a local
+synthetic proof; production migration/maintenance role separation is pending.
+Backup metadata and the dump now share an exported PostgreSQL snapshot.
+
+[Live PITR evidence](../spikes/s5/reports/pitr-smoke.json) supersedes the earlier
+eligibility blocker: Railway's `postgres-ssl:18` major tag enabled PITR in the
+existing staging environment. The source canary changed after the selected
+timestamp; the restored service recovered its earlier value. PostgreSQL 18.6,
+ICU `en-US`, vector 0.8.7, pg_trgm 1.6 and restricted app/FORCE RLS checks passed.
+Railway rejected the digest-pinned reference for PITR. The production choice
+therefore still needs an image update policy; the recorded local audit digest
+does not assert the live deployment ran that exact digest.
+
+The disposable source used 1 GB storage and 0.5 CPU/0.5 GB memory. Railway created
+a 50 GB restored volume by default, inheriting the compute limits; both were
+removed after the short drill. Cleanup inventory confirms only the unchanged
+`nilumi-s1` service, zero volumes/buckets and no staged changes. Reported charges
+for these two services were ~$0.000715, subject to lag. Another $0.10 is reserved:
+**$0.20 cumulative S5 reserve within the $2 allowance**, separate from AI spending.
+
+R2 publishing/download, manifest/hash verification, content-free journal replay
+and bounded retention are now implemented with pinned AWS SDK 3.1147.0. Tests
+cover corruption, missing privacy boundaries, watermark ordering and retention
+failure paths. Their ciphertext fixtures are not real encryption. The user
+identified bucket `nilumi` and requested guided OneDrive/key setup later.
+Prefix `s5-synthetic/recovery-drill/` is prepared, but no R2 call or real-key
+encryption occurred. The endpoint is not proof of authenticated bucket access.
+
+Next: complete the runbook's guided key/document setup, privately configure scoped
+R2 credentials, run the real synthetic encrypted offsite drill, and record both
+adults' independent recovery and RPO/RTO. Installed-PWA/home-network evidence
+remains separate. **S5 and Phase 0 remain open.**
+
 ## Primary references
 
 [Graphile Worker running jobs](https://worker.graphile.org/docs/library/run),
 [transactional SQL-backed addJob](https://worker.graphile.org/docs/library/add-job),
 [PostgreSQL 18 RLS](https://www.postgresql.org/docs/18/ddl-rowsecurity.html),
 [Railway backup/restore layers](https://docs.railway.com/guides/postgres-backups-restores).
+[Railway PITR](https://docs.railway.com/volumes/point-in-time-recovery),
+[Cloudflare R2 AWS SDK](https://developers.cloudflare.com/r2/examples/aws/aws-sdk-js-v3/).
 These inform the harness; they do not establish that the user's Railway account
 or template has passed the corresponding gates.

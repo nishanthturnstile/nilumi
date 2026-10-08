@@ -1,6 +1,6 @@
 {
   "version": "s5-local-v1",
-  "at": "2026-10-08T14:30:57.672Z",
+  "at": "2026-10-08T14:49:08.323Z",
   "environment": "local_docker",
   "syntheticOnly": true,
   "railwayAccepted": false,
@@ -40,7 +40,7 @@
     "dispatched": 200,
     "stale": 0,
     "early": 0,
-    "maximum_lateness_ms": 618.931,
+    "maximum_lateness_ms": 588.344,
     "scenarios": [
       "one_off",
       "recurring_instance",
@@ -77,7 +77,29 @@
       "policies": 1,
       "forgotten": 0
     },
-    "dumpSha256": "8f486f2a79185ff378f0dd53a0da4ee5e3eedbca7e53188a872277a15ffaa600",
+    "dumpSha256": "b94143cc24e6dcaf255e17d142d1a2507505c755ddb08bbddfa35140e14727cd",
+    "sourceManifest": {
+      "serverVersionNum": 180006,
+      "localeProvider": "i",
+      "locale": "en-US",
+      "extensions": [
+        {
+          "extname": "pg_trgm",
+          "extversion": "1.6"
+        },
+        {
+          "extname": "vector",
+          "extversion": "0.8.7"
+        }
+      ],
+      "rowCounts": {
+        "members": 3,
+        "records": 5,
+        "occurrences": 220,
+        "deliveries": 200,
+        "forget_tombstones": 0
+      }
+    },
     "ageEncryption": "pending_recipient_and_cli",
     "r2Upload": "pending",
     "masterKeyRecovery": "pending_shared_document"

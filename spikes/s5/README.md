@@ -70,8 +70,72 @@ version change needs an explicit owner migration and privilege review.
 watermark, restores into `s5_restore`, checks RLS and replays forget tombstones,
 then uses the `age` CLI with `S5_AGE_RECIPIENT` to encrypt the dump. Only the public
 recipient belongs in worker configuration. Plaintext temporary files are removed
-on success or failure. Output is an ignored `.age` file; R2 upload and manual
-master-key recovery are not implemented/accepted yet.
+on success or failure. Output is an ignored `.age` file. R2 tooling is implemented
+below; real-key offsite and manual recovery have not been exercised yet.
 
 [Recovery runbook](../../docs/15-s5-recovery-runbook.md) must be reviewed and copied
 into the shared OneDrive document. Never commit or paste the private key.
+
+## Fresh-cluster recovery and PITR
+
+With the source compose database running, start a separate scratch cluster:
+
+```sh
+docker compose -f compose.recovery.yaml up -d --wait
+pnpm smoke:recovery
+docker compose -f compose.recovery.yaml down
+```
+
+This command resets the dedicated source fixture, recreates app/worker roles on
+the fresh target, restores a real dump and verifies restricted access, FORCE RLS,
+queue permissions and post-dump forget replay. Recreate the scratch container
+before repeating it. [Fresh recovery evidence](reports/fresh-recovery.json) and
+[live PITR evidence](reports/pitr-smoke.json) passed. Railway PITR required the
+major tag `ghcr.io/railwayapp-templates/postgres-ssl:18`; digest pinning was rejected.
+The local compatible image is digest pinned. All temporary live resources were
+removed; the reported cost is lagging and the cumulative reserve is $0.20 of $2.
+
+## Synthetic R2 offsite commands
+
+`r2-config.example.json` records public configuration only. The identified bucket
+is `nilumi`, prefix `s5-synthetic/recovery-drill/`. Authenticated bucket access has
+not yet been verified. No bucket creation or lifecycle changes are performed.
+
+Before running, install age locally and complete the real-key setup in the
+runbook. Enter the following environment variables privately on the operator's
+device, using a restricted file under ignored `validation-results/` if helpful:
+
+- `S5_R2_ACCOUNT_ID`, `S5_R2_BUCKET`, `S5_R2_PREFIX` as in the example.
+- `S5_R2_ACCESS_KEY_ID` and `S5_R2_SECRET_ACCESS_KEY` with bucket-scoped access.
+- `S5_AGE_RECIPIENT`: only the real public recipient.
+- `S5_MASTER_KEY_CONFIRMED=true`: only after both adults can access the real key.
+- `S5_APPLY_RETENTION=false`: default to a dry run.
+
+Node can load a private environment file without putting secrets in command
+arguments. Write it privately; never paste credentials into chat. Example:
+
+```sh
+node --env-file=validation-results/offsite.env scripts/offsite.mjs
+```
+
+The source must be the dedicated local Docker database. Prepare it with `pnpm
+smoke`; `backup:offsite` does not initialize the fixture. The offsite command
+publishes and reads back content-free forget journals before marking them
+journaled, validates a snapshot-consistent dump through scratch restore, encrypts
+with age, verifies downloaded ciphertext and commits the manifest last.
+Retention keeps seven verified backups and requires seven days of age before
+deleting eligible pairs. Only explicit `S5_APPLY_RETENTION=true` applies deletion;
+journals and foreign objects are preserved. Truncated inventory, hash corruption
+and invalid manifests fail closed. Limits: 16 MiB per object and 1,000 objects.
+
+For recovery, add `S5_RECOVERY_MANIFEST_KEY` from the offsite report, then run:
+
+```sh
+node --env-file=validation-results/offsite.env scripts/download-offsite.mjs
+```
+
+This verifies and downloads encrypted data, the manifest and all forget journals
+to a private ignored recovery directory. Decryption and scratch restore follow
+the runbook on the trusted recovery device; this download command does not load
+the private key. Adapter tests use header-shaped fixtures, not real age
+encryption. Neither passing tests nor a verified download accepts S5 recovery.
