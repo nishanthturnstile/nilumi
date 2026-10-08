@@ -634,3 +634,60 @@ for the hosted small model, followed by a frozen synthetic evaluation and anothe
 bounded smoke only when the revised pipeline qualifies. Preserve correction
 semantics, privacy/date gates, the deadline, and the ledger. The successful Luna
 subscription regression does not establish Nano accuracy or hosted acceptance.
+
+## October 8 — small-model prompt simplification
+
+Owner approved continuing after the failed v8 Nano smoke. Simplify extraction
+instructions and the presentation of context using only development evidence.
+Keep `openai/gpt-4.1-nano`, the full command/output contracts, reviewed corpus,
+semantic scorer, deterministic interpreter, privacy requirements, five-second
+hosted deadline and cumulative budget unchanged.
+
+The official [GPT-4.1 prompting guide](https://developers.openai.com/cookbook/examples/gpt4-1_prompting_guide)
+recommends clearly grouped instructions and examples demonstrating desired
+behavior, followed by empirical evaluation. It is an archived model-family
+recipe; no SDK, account access or performance guarantee is inferred from it.
+Prompt v9 consolidates repeated rules into sections and makes intent selection
+precede history lookup. An ordinary preference remains remember even when a
+prior preference differs. Only explicit correction/change wording selects
+correct. Two separate pottery/cycling examples demonstrate this distinction;
+neither copies an approved fixture. Their outputs validate against the same
+prior context, and the unsupported correction of an ordinary statement is
+rejected by the unchanged validator.
+
+Model input now groups the complete visible context as `reference_context` and
+the transcript, UTF-16 length and spans as `current_input`. No visible context
+record was removed. Visibility filtering and whole-input secret scanning still
+run before input construction. Full golden-set leakage and privacy tests pass.
+Static prefix UTF-8 size decreases from 10065 to 9041 bytes (10.2%). The provider
+schema remains complete and unchanged.
+
+Validation order: corrected development smoke, all 48 development cases, freeze
+prompt and pipeline, one original-corpus 60-case regression, then a bounded Nano
+hosted smoke only if synthetic gates pass. Retain every failure. The original
+holdout remains regression evidence; do not inspect its transcripts, expected
+answers or raw outputs to tune this revision. Subscription correctness cannot
+establish the hosted model's accuracy or latency.
+
+A newly added contrast-example test caught an authoring serialization error.
+That error was corrected before the valid v9 smoke/development run. Prototype
+report `94a6aa79-3d50-4dc4-9c46-2b8c43167f08` is excluded from correctness evidence
+because its few-shot array was malformed. No held-out cases or paid calls were
+used in that prototype.
+
+Offline v9 configured-price reservations: Nano smoke US$0.0164956; full pass
+US$0.3190663; combined US$0.3355619, within the current US$0.376071075 retained
+remaining allowance. Verify current rates and budget again before live dispatch;
+these figures are maximum allowances, not charges. Stop and disable evaluation
+if the hosted smoke fails. No cap reset or removal of historical reservations.
+
+Final v9 outcome: revised development 47/48, dates 10/10 and privacy 6/6;
+frozen original-corpus regression 54/60, held-out 8/12, dates 11/12, privacy 7/8,
+schema 58/58. **Synthetic acceptance failed.** The prompt is an unaccepted local
+candidate and was not deployed. No paid calls followed. All 203 automated tests,
+lint, type checking and build passed. Staging remains disabled and the budget
+ledger is unchanged. See [v9 verification](08-s3-gateway-verification.md) and
+[retained score evidence](../spikes/s1/evals/results/subscription-v9.json).
+The simplification experiment is complete; S3 acceptance remains pending a
+qualifying correctness revision, then hosted validation. Do not rerun a frozen
+pipeline to select a favorable score or tune using held-out content.

@@ -832,3 +832,69 @@ and zero allowlisted evaluators. No model call is made by that probe. Shutdown
 is verified, not merely requested. Documentation and content-free evidence were
 checked with the existing pinned Biome tooling; no application source changed
 in this validation increment.
+
+## October 8 — v9 prompt development, frozen regression failed
+
+Researched the official GPT-4.1 prompting guide and consolidated extraction
+instructions, grouped complete visible context separately from current input,
+and added independently authored preference/correction and sharing examples.
+The static prefix decreased from 10065 to 9041 UTF-8 bytes (10.2%). Contracts,
+the corpus, scorer, interpreter, model configuration and privacy controls stayed
+unchanged. Whole-input secret scanning and visibility filtering still precede
+provider input construction. All **203 automated tests**, lint, type checking
+and production build passed.
+
+Initial development scored 45/48. Its three failures informed general rules for
+changed existing attributes, unique sharing targets, and all actions in a
+multi-command transcript. The revised focused rerun passed 3/3, followed by
+development **47/48**, dates **10/10**, privacy **6/6**. An unnecessary person
+type hint in an ambiguous query remained a scoring failure; validation still
+required clarification. Failed reports are retained. A malformed few-shot
+authoring prototype was caught by the new contrast-example test and corrected;
+prototype `94a6aa79-3d50-4dc4-9c46-2b8c43167f08` is excluded from evidence.
+
+The final prompt and pipeline were frozen before one full original-corpus run:
+
+| Gate | Result | Required |
+| --- | --- | --- |
+| Overall interpreted correctness | 54/60 | At least 54/60 |
+| Held-out correctness | 8/12 | At least 11/12 |
+| Date cases | 11/12 | 12/12 |
+| Privacy cases | 7/8 | 8/8 |
+| Schema validity | 58/58 model calls | All valid |
+
+Two sensitive cases were refused locally. Raw extraction correctness was 51/60;
+three cases used the unchanged deterministic normalizer. No tool activity was
+observed and no source change invalidated the freeze. Failed IDs are
+`shopping-11`, `memories-11`, `dates-05`, `questions-06`, `questions-07`,
+`privacy-08`. Held-out transcripts, expected answers and raw outputs were not
+inspected for tuning. Repeated original holdout remains regression evidence.
+
+**v9 fails synthetic acceptance and is an unaccepted local candidate.** No
+hosted smoke, paid calls, deployment or model selection followed. Report
+`aff1175e-e06d-4dc5-bfad-0736f657d3d6.json` retains the complete local evidence;
+[content-free v9 evidence](../spikes/s1/evals/results/subscription-v9.json)
+records every valid development phase and the failed frozen regression.
+
+Frozen prompt SHA-256:
+`0ecf1438a5d4cda0d035c3f8ff266d6eb6f50ec69a39967ec17a4be6a7f21928`.
+Pipeline SHA-256:
+`ae0d54538e5db8921e05aa6ff987e12c9d7e3c17d9358becc629e1363447bac8`.
+Corpus SHA-256 remains
+`962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd`.
+
+The unchanged ledger retains **US$0.123928925**, leaving **US$0.376071075** under
+the cumulative US$0.50 cap. Ledger SHA-256 remains
+`b188a6eea794613301e45172fb14b742c7778bb7c3a441a34d429873cd61f3d2`.
+Offline Nano maximum reservations are US$0.0164956 for smoke and US$0.3190663
+for a full pass; these are neither actual charges nor fresh price verification.
+Authenticated zero-call preflight still returns **404 evaluation_disabled**;
+configuration remains enabled=false with zero allowlisted evaluators. The
+previous disabled v8 deployment remains in staging.
+
+This closes the v9 simplification experiment, not S3 acceptance. Next work must
+address correctness with development evidence and separately authored examples;
+do not tune from held-out content or repeat a frozen run until a lucky pass.
+Preserve the failed comparison against v8 and obtain a qualifying synthetic
+pipeline before any further paid smoke. Hosted latency, model selection and
+family-data ZDR remain unverified.

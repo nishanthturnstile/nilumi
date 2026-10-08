@@ -1,0 +1,365 @@
+{
+  "scope": "Subscription synthetic correctness only; hosted acceptance remains pending live gates",
+  "heldOutPolicy": "Repeated original holdout is regression evidence. Prior scores/failed IDs seen; no held-out transcript, expected answer or raw output used for tuning.",
+  "excludedPrototype": {
+    "reportId": "94a6aa79-3d50-4dc4-9c46-2b8c43167f08",
+    "reason": "Malformed few-shot array found and corrected by contrast-example test before valid evaluation"
+  },
+  "changes": [
+    "Intent selection before history, grouped instructions and complete reference_context/current_input",
+    "Independent preference/correction contrast and sharing examples",
+    "Development regressions retained; explicit existing-attribute corrections and all transcript actions reinforced"
+  ],
+  "unchanged": [
+    "Reviewed corpus",
+    "Contracts",
+    "Semantic scoring",
+    "Deterministic interpreter",
+    "Hosted Nano configuration",
+    "Privacy controls",
+    "Five-second hosted deadline",
+    "Cumulative testing cap"
+  ],
+  "checks": {
+    "tests": 203,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "promptBytes": {
+    "v8": 10065,
+    "v9": 9041
+  },
+  "budget": {
+    "capUsd": 0.5,
+    "retainedLedgerUsd": 0.123928925,
+    "remainingUsd": 0.376071075,
+    "gatewaySpendDuringSubscriptionEvaluationUsd": 0,
+    "subscriptionChargeUsd": null,
+    "nanoSmokeMaximumUsd": 0.0164956,
+    "nanoFullMaximumUsd": 0.3190663,
+    "prices": "Configured-price reservations; live rates must be reverified"
+  },
+  "isolationLimitation": "No observed tool activity is measured, not proof of an empty catalog. Started events may follow dispatch. CLI is not tools:[] API.",
+  "phases": [
+    {
+      "phase": "corrected_initial_smoke",
+      "reportId": "398d8d49-6bc5-42d6-9048-9de1e33675cc",
+      "reportSha256": "41da3735e9c3b450afddb75f5d9858d37ec3af559f83ee4c70f04f689fc0a02c",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v9",
+      "promptSha256": "b87f0aa15907f4ce38217538ca8292e1abdb3ae715c259f22b7118431fb13224",
+      "pipelineSha256": "039e9969ea02ff97daabcdc54df01349bb7026aa9d0a1f70487fcbf73cdd563c",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T02:46:08.628Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 3,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 3,
+          "correct": 3
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "privacy": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": [],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 3
+    },
+    {
+      "phase": "initial_development_failed",
+      "reportId": "4db0a193-0251-469d-8b49-88a9bb0253fc",
+      "reportSha256": "c6c2696163488a33c9c03b1208d50f728f453fbe34925b01fc46b68d05984fc3",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v9",
+      "promptSha256": "b87f0aa15907f4ce38217538ca8292e1abdb3ae715c259f22b7118431fb13224",
+      "pipelineSha256": "039e9969ea02ff97daabcdc54df01349bb7026aa9d0a1f70487fcbf73cdd563c",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T02:46:36.613Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 45,
+        "accuracy": 0.9375,
+        "extraction": {
+          "attempted": 48,
+          "correct": 43
+        },
+        "normalizedCases": 2,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 10
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 4
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": ["corrections-05", "privacy-01", "privacy-05"],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 47
+    },
+    {
+      "phase": "focused_development_failed",
+      "reportId": "7be6430d-688b-4145-a03c-ca317efa6022",
+      "reportSha256": "db21eade57501f40e77ca9987747868d4aa6cb01c47d4b332b4d27a0dd0b9273",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v9",
+      "promptSha256": "2224c8839844e56b414119f9a0f916cb350c976254d9bb34185e2ed2cadda2ed",
+      "pipelineSha256": "940528b095737c8c0ee885eae317a6904bd04ffeb5d8e178e703013fc7df2f37",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T02:51:57.506Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 2,
+        "accuracy": 0.6666666666666666,
+        "extraction": {
+          "attempted": 3,
+          "correct": 2
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "privacy": {
+          "attempted": 2,
+          "correct": 1
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": ["privacy-01"],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 3
+    },
+    {
+      "phase": "revised_focused_development",
+      "reportId": "97f8e08a-18c0-4c19-9da6-538626694c65",
+      "reportSha256": "ac2e284b2a54e7e3db5805a8720a5d7b9952ab1eb07b08cab1b38bdb24e7810a",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v9",
+      "promptSha256": "0ecf1438a5d4cda0d035c3f8ff266d6eb6f50ec69a39967ec17a4be6a7f21928",
+      "pipelineSha256": "d3ee589b5792a827c0652995733f1790af2628059022f4d63ea187eda3e81ac8",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T02:52:27.250Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 3,
+        "attempted": 3,
+        "correct": 3,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 3,
+          "correct": 3
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "privacy": {
+          "attempted": 2,
+          "correct": 2
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": [],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 3
+    },
+    {
+      "phase": "revised_development",
+      "reportId": "00ebc034-c661-45cd-a6a6-47e658fee7a1",
+      "reportSha256": "50fec33a93fd4c2b2d688d521cab7119782fa8d72aee7aa11c04ada15a727574",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v9",
+      "promptSha256": "0ecf1438a5d4cda0d035c3f8ff266d6eb6f50ec69a39967ec17a4be6a7f21928",
+      "pipelineSha256": "ae0d54538e5db8921e05aa6ff987e12c9d7e3c17d9358becc629e1363447bac8",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T02:52:51.748Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 47,
+        "accuracy": 0.9791666666666666,
+        "extraction": {
+          "attempted": 48,
+          "correct": 45
+        },
+        "normalizedCases": 2,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 10
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 6
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": ["questions-06"],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 47
+    },
+    {
+      "phase": "frozen_original_corpus_regression",
+      "reportId": "aff1175e-e06d-4dc5-bfad-0736f657d3d6",
+      "reportSha256": "642e65a3be3f15038c6be813484b2fcbf8f1d16924c7791c92d5e27bd9fda0c4",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "codexVersion": "codex-cli 0.161.0",
+      "promptVersion": "s3-extract-v9",
+      "promptSha256": "0ecf1438a5d4cda0d035c3f8ff266d6eb6f50ec69a39967ec17a4be6a7f21928",
+      "pipelineSha256": "ae0d54538e5db8921e05aa6ff987e12c9d7e3c17d9358becc629e1363447bac8",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T02:55:37.735Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 60,
+        "attempted": 60,
+        "correct": 54,
+        "accuracy": 0.9,
+        "extraction": {
+          "attempted": 60,
+          "correct": 51
+        },
+        "normalizedCases": 3,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 12,
+          "correct": 8
+        },
+        "dates": {
+          "attempted": 12,
+          "correct": 11
+        },
+        "privacy": {
+          "attempted": 8,
+          "correct": 7
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": [
+        "shopping-11",
+        "memories-11",
+        "dates-05",
+        "questions-06",
+        "questions-07",
+        "privacy-08"
+      ],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 58
+    }
+  ]
+}

@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { transcriptSpans } from "../lib/nlu/prompt.ts";
+import examples from "../evals/few-shot.json" with { type: "json" };
+import { visibleContext } from "../lib/nlu/context.ts";
+import { buildPrompt, transcriptSpans } from "../lib/nlu/prompt.ts";
+import { validateResult } from "../lib/nlu/validate.ts";
 import {
   codexArguments,
   inspectEvents,
@@ -191,4 +194,71 @@ test("stream rejects errors, oversized output and incomplete turns", () => {
   assert.throws(() => subscriptionEventStream().push("x".repeat(2_000_001)));
   assert.throws(() => subscriptionEventStream().push("invalid JSON\n"));
   assert.throws(() => subscriptionEventStream().finish());
+});
+
+test("preference contrast examples validate with the same prior preference", () => {
+  const pair = examples.filter((example) =>
+    example.context?.memories.some((memory) => memory.predicate === "prefers"),
+  );
+  assert.equal(pair.length, 2);
+  assert.deepEqual(pair[0].context, pair[1].context);
+  const context = {
+    ...pair[0].context,
+    occurred_at: "2026-10-07T12:00:00+05:30",
+    members: [
+      {
+        id: "example-member",
+        entity_id: "example-person",
+        name: "Dev",
+        aliases: ["I"],
+        role: "adult",
+        relation: "self",
+      },
+    ],
+    entities: pair[0].context.entities.map((entity) => ({
+      ...entity,
+      visibility: "household",
+    })),
+    memories: pair[0].context.memories.map((memory) => ({
+      ...memory,
+      visibility: "household",
+    })),
+    lists: [],
+    operations: [],
+    tasks: [],
+  };
+  for (const example of pair) {
+    const result = validateResult(example.result, example.transcript, context);
+    assert.equal(result.status, "parsed");
+    assert.equal(result.outcomes[0].status, "interpreted");
+    const prompt = buildPrompt(example.transcript, context);
+    assert.equal(prompt.status, "ready");
+    const input = JSON.parse(prompt.prompt);
+    assert.deepEqual(input.reference_context, visibleContext(context));
+    assert.equal(input.current_input.transcript, example.transcript);
+    for (const span of input.current_input.transcript_spans)
+      assert.equal(example.transcript.slice(span.start, span.end), span.text);
+  }
+  assert.equal(pair[0].result.commands[0].kind, "remember");
+  assert.equal(pair[1].result.commands[0].kind, "correct");
+  const ordinary = pair[0];
+  const forbiddenCorrection = {
+    ...pair[1].result,
+    commands: [
+      {
+        ...pair[1].result.commands[0],
+        evidence: { start: 0, end: ordinary.transcript.length },
+      },
+    ],
+  };
+  const invalid = validateResult(
+    forbiddenCorrection,
+    ordinary.transcript,
+    context,
+  );
+  assert.notEqual(invalid.outcomes[0].status, "interpreted");
+  assert.equal(
+    buildPrompt("my password is secret123", context).status,
+    "refused",
+  );
 });

@@ -509,3 +509,11 @@ Reported smoke spend US$0.0010442; retained ledger US$0.123928925; remaining cap
 US$0.376071075. No model selection or hosted S3 acceptance. See
 [smoke evidence](evals/results/gateway-v8-nano-smoke.json) and
 [verification/shutdown notes](../../docs/08-s3-gateway-verification.md).
+
+The local v9 prompt simplification is an **unaccepted candidate**: development
+47/48, frozen regression 54/60, held-out 8/12, dates 11/12, privacy 7/8. Schema
+was valid for all 58 model calls; two sensitive inputs were refused locally.
+All 203 automated tests, lint, type checking and build pass, but synthetic
+acceptance failed. No deployment or paid smoke followed. Staging remains disabled
+and the retained remaining cap is US$0.376071075. See
+[v9 evidence](evals/results/subscription-v9.json) and the verification notes.
