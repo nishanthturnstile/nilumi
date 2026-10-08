@@ -844,5 +844,45 @@
         }
       ]
     }
+  },
+  {
+    "transcript": "Remind me to check insurance on 6/7/2028 at 10 am",
+    "context": {
+      "occurred_at": "2026-10-08T12:00:00+05:30",
+      "speaker_id": "calendar-member",
+      "members": [
+        {
+          "id": "calendar-member",
+          "entity_id": "calendar-person",
+          "name": "Sana",
+          "aliases": ["me"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [],
+      "memories": [],
+      "previous_turns": []
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "reminder_create",
+          "text": "check insurance",
+          "at": {
+            "phrase": "6/7/2028 at 10 am",
+            "resolved": "2028-07-06T10:00:00+05:30",
+            "precision": "minute"
+          },
+          "targets": [
+            {
+              "mention": "me",
+              "member_id": "calendar-member"
+            }
+          ]
+        }
+      ]
+    }
   }
 ]

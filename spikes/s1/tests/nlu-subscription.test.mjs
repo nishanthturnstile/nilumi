@@ -108,6 +108,24 @@ test("literal prefer contrast preserves change cues and repeats fixed rules afte
   const rejected = validateResult(incorrect, pair[0].transcript, context);
   assert.ok(rejected.outcomes[0].reasons.includes("correction_reason_unclear"));
 });
+test("independent calendar example omits leading on and preserves day-first clock resolution", () => {
+  const example = examples.find(
+    (item) => item.context?.speaker_id === "calendar-member",
+  );
+  assert.ok(example);
+  const context = { lists: [], tasks: [], operations: [], ...example.context };
+  const result = validateResult(example.result, example.transcript, context);
+  assert.equal(result.status, "parsed");
+  assert.equal(result.outcomes[0].status, "interpreted");
+  const at = result.parsed.commands[0].at;
+  assert.equal(at.phrase, "6/7/2028 at 10 am");
+  assert.equal(at.resolved, "2028-07-06T10:00:00+05:30");
+  assert.ok(example.transcript.includes(at.phrase));
+  const incorrect = structuredClone(example.result);
+  incorrect.commands[0].at.phrase = `on ${at.phrase}`;
+  const rejected = validateResult(incorrect, example.transcript, context);
+  assert.ok(rejected.outcomes[0].reasons.includes("unresolved_date"));
+});
 
 test("subscription scheduling caps concurrent calls and stops dispatch after failure", async () => {
   let active = 0,
