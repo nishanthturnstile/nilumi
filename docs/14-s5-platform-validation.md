@@ -1,10 +1,11 @@
 # S5 — Platform validation plan and initial implementation
 
-**Status:** Local and bounded Railway synthetic checks passed; full S5 acceptance pending. User authorized
-starting S5 after the S3 correctness spike. The user now confirms the shared
-OneDrive recovery document exists and both adults can access it. The user generated
-and privately stored one master identity for both adults; its public recipient
-is configured for the synthetic spike. Decryption and recovery are still pending. No production/family
+**Status: CLOSED — owner accepted October 8, 2026.** See the authoritative
+[S5 acceptance and follow-ups](16-s5-acceptance.md). The owner completed private
+decryption and chose one recovery operator, waiving the second-adult drill for
+S5. Both adults' document access and private master-key storage are user confirmed.
+The sections below preserve incremental evidence and earlier pending gates;
+the acceptance record supersedes those S5 closure statements. No production/family
 data or AI inference is part of this spike.
 
 ## Scope and gates
@@ -253,7 +254,8 @@ full human recovery timing is not measured. This archive contains `s5`, while
 Graphile queue runtime is reinstalled separately; queue contents and production
 job reconstruction are not restored. Independent both-adult recovery, 2FA,
 home-network/installed-PWA validation and production role/runtime work remain
-pending. **S5 and Phase 0 are still open.**
+pending at that increment. The owner subsequently closed S5 with the scope
+decision in [the acceptance record](16-s5-acceptance.md); Phase 0 remains open.
 
 ## Primary references
 

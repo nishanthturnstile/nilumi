@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-08T16:35:27Z",
+  "spike": "S5",
+  "status": "closed_owner_accepted",
+  "syntheticOnly": true,
+  "ownerValidationComplete": true,
+  "recoveryOperators": 1,
+  "secondAdultIndependentRecovery": "waived_by_owner_not_tested",
+  "productionAccepted": false,
+  "phase0Complete": false,
+  "decision": "docs/16-s5-acceptance.md",
+  "deferred": [
+    "human_recovery_timing",
+    "account_2fa_confirmation",
+    "implemented_pwa_resume_and_home_rtt",
+    "production_migration_maintenance_roles",
+    "production_backup_queue_reconstruction_and_runtime_behavior"
+  ]
+}

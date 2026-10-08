@@ -1,12 +1,15 @@
 # S5 recovery runbook — template for the shared OneDrive document
 
-**Status: shared document created; recovery not rehearsed.** The user confirmed
+**Status: S5 owner recovery validated and accepted.** The user confirmed
 both adults have copied the runbook and opened the shared OneDrive document using
 their own accounts. This is operator-reported access, not an automated inspection.
 The repo contains instructions only; never add credentials or the private age key.
 The user generated one real master key and confirmed private storage. Both
 adults use this same master identity; separate keys are not required. 2FA
-confirmation, successful decryption and each adult's recovery remain pending.
+confirmation and full human timing carry into production operations. The owner
+privately decrypted the real backup and the scratch restore passed. The owner
+chose one operator and waived the second-adult S5 recovery drill. See
+[S5 acceptance](16-s5-acceptance.md).
 
 ## Complete privately before the first drill
 
@@ -72,7 +75,9 @@ Fill in dates and outcomes privately; publish only non-secret evidence in S5:
 - Encrypted recovery download and content-free journal hash verification: passed.
 - Restore to separate scratch with roles/extensions/RLS intact: passed October 8, 2026.
 - Post-backup forget canary absent before traffic: passed; newer journal replayed.
-- Both operators completed recovery within target: pending.
+- Owner decryption and scratch recovery: passed; S5 owner accepted.
+- Second-adult independent recovery: waived by owner for S5, not tested.
+- Full human recovery timing: deferred to production operations.
 - Railway volume snapshot restore: passed October 8, 2026.
 - Railway PostgreSQL 18 PITR to a separate service: passed October 8, 2026.
 - Fresh-cluster role recreation and restricted-access restore: passed locally;

@@ -1,5 +1,10 @@
 # S5: Railway platform smoke
 
+**Closed with owner acceptance October 8, 2026.** The owner completed private
+master-key decryption; real offsite scratch restore and late-forget replay passed.
+One recovery operator is accepted; the second-adult drill is waived for S5.
+[Acceptance scope and production follow-ups](../../docs/16-s5-acceptance.md).
+
 This isolated package validates infrastructure using disposable synthetic data.
 It makes no AI calls and sends no real notifications. Local acceptance is not
 Railway acceptance. The S1/S3 app remains separate.
