@@ -108,6 +108,30 @@ upload alone does not complete the human recovery gate.
 
 Official installation reference: [age](https://github.com/FiloSottile/age#installation).
 
+### Windows setup progress and operator commands
+
+age 1.3.2 was installed with winget on October 8, 2026; installer hash verification
+passed. No real identity was generated. Open a new personal PowerShell window
+after installation so the updated PATH is available. After creating the shared
+document, run these commands yourself, outside the coding-agent terminal:
+
+```powershell
+$recoveryDir = Join-Path $env:LOCALAPPDATA 'NilumiRecovery'
+New-Item -ItemType Directory -Path $recoveryDir -Force | Out-Null
+age-keygen -o (Join-Path $recoveryDir 'recovery.agekey')
+```
+
+If an identity file already exists, stop and reuse the intended master identity;
+do not create a replacement without updating and verifying the recovery plan.
+Keep the complete identity file private. Copy its contents into the OneDrive
+recovery document yourself, then verify access from the second adult's account.
+Only return the printed public recipient and the access confirmation here.
+
+OneDrive setup: create folder **Nilumi Recovery**, create document **Nilumi
+Recovery Runbook**, copy this template, then use **Share → Specific people** with
+the other adult's account and edit access. Verify the document itself is accessible.
+Reference: [Microsoft OneDrive sharing instructions](https://support.microsoft.com/en-us/onedrive/share-files-and-folders-in-microsoft-onedrive).
+
 ## Device and home-network evidence still needed
 
 Use synthetic data only. For each adult's installed PWA, record device/browser,
