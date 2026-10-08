@@ -6,8 +6,11 @@ are delivered. The owner subsequently asked to prioritize
 correctness and defer production latency optimization; the 1,400 ms p95 target
 is reported separately and does not decide synthetic correctness acceptance.
 The owner explicitly approved **30 seconds per synthetic correctness response**,
-while preserving the application's five-second deadline, privacy controls and
-USD 0.50 cumulative cap. Earlier five-second results retain their original gates.
+while preserving the application's five-second deadline and privacy controls.
+The run stayed under the evaluator's effective USD 0.50 hard cap; the owner
+approved a separate USD 2.00 cumulative cap, but the runner and ledger still need
+migration before spending above USD 0.50 ([ADR-040](adr/adr-040.md)). Earlier
+five-second results retain their original gates.
 
 ## Regional reliability experiment
 
@@ -159,8 +162,10 @@ remain unchanged; the final ledger has 289 entries. SHA-256:
 
 All inference used the fixed synthetic corpus, OpenAI-only managed routing,
 no-training and `store:false`. No family data was sent. Cloudflare remains an
-explicit unused spike alternative. Family-data production use still requires a
-verified ZDR route; synthetic model selection does not grant production approval.
+explicit unused spike alternative. Founding-household runtime calls require
+S-VGW and the household acknowledgement under [ADR-046](adr/adr-046.md); users
+outside the founding household require the production ZDR gate. Synthetic model
+selection does not grant runtime approval.
 
 The evaluator was disabled, its allowlist cleared, and authenticated
 POST verified as HTTP 404 `evaluation_disabled`. Successful disabled deployment
@@ -169,7 +174,8 @@ POST verified as HTTP 404 `evaluation_disabled`. Successful disabled deployment
 [Content-free evidence](../spikes/s1/evals/results/live-acceptance-2026-10-08.json)
 records all failures and gates. Core implementation/report delivery can be
 closed with unmet gates stated, as specified in the S3 plan. Synthetic live
-correctness selection is complete. Production deadline reliability, a verified
-family-data ZDR route, independent acceptance data, production shadow validation,
+correctness selection is complete. Production deadline reliability, S-VGW and
+the household acknowledgement for founding-household runtime calls, the
+production ZDR gate, independent acceptance data, production shadow validation,
 fallback validation and deferred offline classifier experiments remain pending.
-Do not mark the entire roadmap S3 complete or enable production inference.
+Do not mark the entire roadmap S3 complete or enable runtime inference yet.

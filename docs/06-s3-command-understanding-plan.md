@@ -1,9 +1,19 @@
 # S3 — Command understanding implementation plan
 
-> **Status:** Core synthetic increment complete. [Live correctness acceptance](13-s3-live-acceptance.md) selects Luna low: 58/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy, schemas 58/58 and verified managed OpenAI routing. Owner-approved synthetic deadline is 30 seconds; application deadline stays five seconds. Two semantic errors remain. Evaluator disabled; production timing/privacy, shadow/fallback work and classifier experiments remain pending.
-> **Date:** October 7, 2026
-> **Next acceptance work:** Production deadline reliability and verified family-data ZDR, followed by independent acceptance/shadow validation. The approved 60-case synthetic correctness workflow is complete within the cumulative US$0.50 cap.
+> **Status:** Core synthetic increment complete. [Live correctness acceptance](13-s3-live-acceptance.md) selects Luna low for the spike: 58/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy, schemas 58/58 and verified managed OpenAI routing. The fixed synthetic correctness mode has an approved 30-second deadline; the application deadline remains five seconds. Two semantic errors remain. The evaluator is disabled. Production timing, founding-household runtime validation, production ZDR, shadow/fallback work and classifier experiments remain pending.
+> **Date:** October 8, 2026
+> **Next acceptance work:** Complete S-VGW and the household acknowledgement before founding-household runtime calls. Production deadline reliability, the production ZDR gate, independent acceptance data, shadow/fallback validation and classifier experiments remain pending.
 > **Prerequisite:** S2 owner approval is recorded; no additional recordings are needed.
+> **October 8 note ([ADR-046](adr/adr-046.md)):** the owner chose to stay on Vercel AI Gateway with purchased credits and no paid plan.
+> - **Family data.** Founding-household data waits for spike S-VGW and the household acknowledgement, which the owner records for both adults. ZDR moves to the production privacy gate.
+> - **S3 itself is unchanged.** Evaluation stays synthetic under [ADR-040](adr/adr-040.md).
+> - **Key and budget.** S3 uses a separate evaluation key. The owner bought US$20 of credits on October 8, so the US$5 monthly free credit no longer applies. The cumulative S3 owner cap rose from US$0.50 to **US$2.00** of paid credits ([ADR-040 amendment](adr/adr-040.md)). At the deadline round, US$0.210533395 was counted and US$1.789466605 remained under that cap. After the later correctness acceptance, conservative cumulative charges are US$0.277306460: US$1.722693540 remains under the owner cap. The key's Vercel budget uses refresh `none` ([ADR-046](adr/adr-046.md)); its configured amount reflects the balance at setup.
+> - **Code change still needed.** The evaluator still enforces `TEST_CAP_USD = 0.5` and `MONTH_CAP_USD = 5` in `spikes/s1/config/models.ts`, and the ledger check rejects any other values. All counted entries must be carried forward. Until a reviewed change migrates the cap and ledger, the effective hard stop stays US$0.50; after correctness acceptance, US$0.222693540 remains under it.
+> - **Evaluator mode.** The default `zdr` mode still requires ZDR.
+> - **Hosted status (October 8).** Earlier rounds are retained in [10](10-s3-paid-vercel-validation.md), [11](11-s3-v11-validation.md) and [12](12-s3-deadline-reliability.md): v10/V11 failures, unsuccessful Nano and GPT-4.1 mini smokes, and a failed five-second Luna smoke. The later 30-second synthetic correctness run passed its hard gates and selected Luna low for the spike ([13](13-s3-live-acceptance.md)). Production latency remains above target and the evaluator is disabled.
+> - **Latency deferred (owner decision, October 8).** Current latency is acceptable for spike work, and the fix comes later. The owner attributes it to network distance; that is not yet measured. The 1,400 ms target is unchanged, and a five-second timeout still fails its case.
+>
+> Later sections are dated history.
 
 ## 1. Objective and agreed decisions
 
@@ -14,18 +24,18 @@ must produce one shopping-add command containing two distinct items.
 The deliverables are a runtime-validated contract, 60 synthetic golden cases,
 an expected-action review, an offline test harness, and a gated comparison of
 two models through an explicitly selected gateway. October 8 Cloudflare
-preparation and the preserved Vercel option are documented in
-[the gateway migration plan](09-s3-cloudflare-gateway.md); live acceptance remains pending.
+adapter preparation and the preserved Vercel default are documented in
+[the Cloudflare adapter plan](09-s3-cloudflare-gateway.md); the later synthetic correctness acceptance is recorded in [doc 13](13-s3-live-acceptance.md), while production acceptance remains pending.
 
 Decisions confirmed during planning:
 
 | Decision | Selected approach |
 | --- | --- |
 | Credential setup | Owner adds the Gateway key directly in Railway; no secret is shared in chat |
-| Privacy | Family data requires ADR-038 ZDR; owner approved the separate synthetic-only Hobby evaluation exception in ADR-040 |
-| Budget | US$5 for the entire month; this S3 testing increment is capped at US$0.50 including smoke calls, repeats, and retained reservations |
-| Models | Start with `openai/gpt-6-luna` at low reasoning; `openai/gpt-5-nano` at low reasoning is the cheaper comparator; Claude comparison is deferred |
-| Comparison repetitions | One pass by default; up to three only within the same US$0.50 testing allowance |
+| Privacy | Family data required ADR-038 ZDR (Oct 7); since Oct 8 it follows ADR-046 (S-VGW, the household acknowledgement, ZDR at the production gate). Owner approved the separate synthetic-only Hobby evaluation exception in ADR-040, which still governs S3 |
+| Budget | US$5 monthly free credit at the time; this S3 testing increment was capped at US$0.50 including smoke calls, repeats, and retained reservations. **Oct 8:** paid credits replace the free credit, and the cumulative cap is US$2.00 (US$1.789466605 remaining after the deadline round; the runner enforces US$0.50 until migrated) |
+| Models | `openai/gpt-6-luna` at low reasoning is selected for the synthetic spike only; the cheaper challenger failed smoke, the complete two-model comparison remains incomplete, and no production default is selected |
+| Comparison repetitions | One pass by default; up to three only within the same cumulative testing allowance |
 | Current increment | Core NLU contract, golden cases, validation, and Gateway comparison |
 | Classifier experiments | Deferred and recorded as remaining roadmap S3 work |
 | Production shadow traffic | Deferred; prepare mockable comparison instrumentation only |
@@ -235,8 +245,8 @@ record this failed gate; verified metadata must not be mistaken for readiness.
 Both team-wide and per-request ZDR require Pro or Enterprise. Request-level
 no-training and OpenAI-only filtering are available on Hobby, but do not
 establish ZDR. The owner explicitly approved the separate synthetic-only
-exception in [ADR-040](adr/adr-040.md); ADR-038 remains the baseline for family
-data. The default evaluator mode continues to require ZDR. The server may
+exception in [ADR-040](adr/adr-040.md); ADR-038 was then the baseline for family
+data (since October 8, [ADR-046](adr/adr-046.md)). The default evaluator mode continues to require ZDR. The server may
 explicitly select `NLU_EVALUATION_MODE=synthetic_hobby` after owner fixture review
 and confirmation of the Railway key's team and Gateway-managed OpenAI route.
 That mode requires the fixed synthetic corpus hash and separate exception
