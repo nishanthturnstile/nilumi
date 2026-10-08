@@ -38,6 +38,32 @@ using Cloudflare-managed credentials; it does not disable gateway logging.
 No model-specific ZDR or upstream no-training verification is recorded as
 complete. Family-data eligibility remains false.
 
+### Pre-payment setup attempt and minimum deposit
+
+The owner subsequently authorized completing account configuration before
+payment. The collaborative browser reopened the creation form, but its host
+disconnected during the settings edit. No creation was submitted or verified.
+No usable local Wrangler credential or Cloudflare environment credential was
+found in the checked Windows/WSL locations. A stable authenticated browser
+connection or privately installed account-scoped credential is still required.
+Do not treat the intended settings below as saved account configuration.
+
+Cloudflare's [top-up API reference](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/billing/subresources/topup/methods/create/)
+specifies a minimum of 1,000 cents: **USD 10.00 in credits**. With the documented
+5% purchase fee, the expected payment is **USD 10.50 before applicable taxes,
+foreign exchange or card charges**. The account-specific checkout total has
+not been inspected. Automatic top-up should remain disabled. This deposit is
+separate from the unchanged USD 0.50 cumulative inference-testing cap and the
+existing USD 5 monthly usage allowance; it requires more upfront funding than
+that allowance. No purchase or cap increase is authorized or performed.
+
+Complete and verify gateway settings and scoped credential installation before
+recommending payment. The prepared target is `nilumi-s3`, authentication on,
+logs/cache/retries off, no provider keys, managed billing allowed, only the
+approved OpenAI model requested by the application. Model-specific no-training
+and ZDR evidence must be assessed separately; zero credits can block live
+eligibility/latency testing even after non-billable setup succeeds.
+
 ## Implemented transport and gates
 
 - Direct OpenAI Responses request, strict existing JSON schema, `store:false`,
