@@ -146,6 +146,23 @@ the runbook on the trusted recovery device; this download command does not load
 the private key. Adapter tests use header-shaped fixtures, not real age
 encryption. Neither passing tests nor a verified download accepts S5 recovery.
 
+After the operator privately decrypts the downloaded file to `backup.pg` in its
+ignored `recovery-<uuid>` directory, start a fresh target with
+`docker compose -f compose.recovery.yaml up -d --wait`. Set
+`S5_RECOVERY_DIRECTORY` to that directory and
+`S5_OPERATOR_DECRYPTION_CONFIRMED=true` only after successful age decryption, then
+run `node --env-file=validation-results/offsite.env scripts/restore-offsite.mjs`.
+The command verifies the remote backup and current journals again, recreates
+roles in the empty scratch cluster, checks dump counts against the manifest,
+replays forgets before app queries, and validates FORCE RLS and restricted logins.
+It never opens the private identity. This validator is prepared; its real-key
+restore execution remains pending until the operator decrypts the backup.
+
+The offsite dump contains `s5` only. Graphile's pinned schema/runtime is
+reinstalled separately; this command does not prove restoration of queue contents
+or production job reconstruction. Stop/remove the scratch compose cluster after
+validation. Human RTO and the second adult's recovery remain separate checks.
+
 `node --env-file=validation-results/offsite.env scripts/encryption-smoke.mjs`
 validates local dump/restore and real encryption with the configured public
 recipient without R2 calls or private-key access. Its encrypted output and report

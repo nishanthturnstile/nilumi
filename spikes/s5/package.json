@@ -9,13 +9,14 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "lint": "biome check .",
-    "check": "node --check scripts/smoke.mjs && node --check src/db.mjs && node --check src/worker.mjs && node --check src/server.mjs && node --check scripts/backup.mjs && node --check scripts/image-smoke.mjs && node --check scripts/live.mjs && node --check scripts/deploy-live.mjs && node --check scripts/restore-live.mjs && node --check scripts/offsite.mjs && node --check scripts/download-offsite.mjs && node --check scripts/fresh-recovery.mjs && node --check scripts/pitr-verify.mjs && node --check src/offsite.mjs && node --check src/r2.mjs",
+    "check": "node --check scripts/smoke.mjs && node --check src/db.mjs && node --check src/worker.mjs && node --check src/server.mjs && node --check scripts/backup.mjs && node --check scripts/image-smoke.mjs && node --check scripts/live.mjs && node --check scripts/deploy-live.mjs && node --check scripts/restore-live.mjs && node --check scripts/offsite.mjs && node --check scripts/download-offsite.mjs && node --check scripts/fresh-recovery.mjs && node --check scripts/pitr-verify.mjs && node --check scripts/encryption-smoke.mjs && node --check scripts/restore-offsite.mjs && node --check src/offsite.mjs && node --check src/r2.mjs",
     "smoke": "node scripts/smoke.mjs",
     "smoke:image": "node scripts/image-smoke.mjs",
     "serve": "node src/server.mjs",
     "backup": "node scripts/backup.mjs",
     "backup:offsite": "node scripts/offsite.mjs",
     "backup:download": "node scripts/download-offsite.mjs",
+    "backup:restore": "node scripts/restore-offsite.mjs",
     "smoke:recovery": "node scripts/fresh-recovery.mjs",
     "smoke:encryption": "node scripts/encryption-smoke.mjs"
   },
