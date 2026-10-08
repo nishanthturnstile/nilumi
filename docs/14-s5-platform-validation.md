@@ -1,8 +1,9 @@
 # S5 — Platform validation plan and initial implementation
 
 **Status:** Local and bounded Railway synthetic checks passed; full S5 acceptance pending. User authorized
-starting S5 after the S3 correctness spike. The shared OneDrive recovery document
-does not exist yet; prepare the runbook first, as requested. No production/family
+starting S5 after the S3 correctness spike. The user now confirms the shared
+OneDrive recovery document exists and both adults can access it. Real-key setup
+and recovery are still pending. No production/family
 data or AI inference is part of this spike.
 
 ## Scope and gates
