@@ -203,7 +203,7 @@ Railway pricing basis checked October 2026: Hobby $5/month includes $5 usage; us
 |---|---|---|
 | Team (all keys) | US$10 | Monthly; alerts at 50, 75 and 100% |
 | Runtime key | US$8 (≈ ₹696 at ₹87 per US$1, before card and forex charges); may rise to US$10 once the S3 key is revoked | Monthly; alerts at 50, 75 and 100% |
-| S3 evaluation key | US$2.00 cumulative cap minus the S3 ledger total when the budget is set (US$1.789466605 after the October 8 deadline round; [ADR-040](adr/adr-040.md)) | None |
+| S3 evaluation key | US$2.00 cumulative owner cap minus the S3 ledger total when the budget is set (US$1.722693540 after synthetic correctness acceptance; the runner still enforces US$0.50 with US$0.222693540 remaining until migration; [ADR-040](adr/adr-040.md)) | None |
 | S-VGW canary key | About US$0.10; revoked after S-VGW | None |
 
 At US$8 the runtime key is no longer looser than the ₹800 ledger, which also funds STT and TTS; it trips first only if Gateway spend alone passes about ₹696, which already points to a fault. Vercel has no low-balance alert, so the owner checks the balance, per-key spend and credit expiry each month.

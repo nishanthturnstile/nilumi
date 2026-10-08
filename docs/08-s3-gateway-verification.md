@@ -1016,8 +1016,10 @@ The [paid validation report](10-s3-paid-vercel-validation.md) records a complete
 and shutdown verification. This supersedes the earlier free-credit access blocker;
 it does not establish S3 acceptance or family-data eligibility. Later rounds are
 in [V11 validation](11-s3-v11-validation.md) and the
-[deadline investigation](12-s3-deadline-reliability.md); S3 acceptance and model
-selection remain pending.
+[deadline investigation](12-s3-deadline-reliability.md). The later
+[synthetic correctness acceptance](13-s3-live-acceptance.md) selects Luna low
+for the spike; production deadline reliability and the complete two-model
+comparison remain pending.
 
 ## October 8 — gateway decision and S-VGW evidence
 
@@ -1033,9 +1035,11 @@ funded by purchased credits, with no paid Vercel plan.
 - **S3.** Evaluation stays synthetic under [ADR-040](adr/adr-040.md), with a separate
   evaluation key. The hosted rounds recorded above and in docs 10–12 used the
   existing staging key (“Nilumi's Key”) under the US$0.50 cap the runner enforces;
-  US$0.210533395 is counted after the deadline round. The owner's October 8
-  amendment raises the cumulative S3 cap to US$2.00, leaving US$1.789466605. It
-  takes effect only after the runner's constants and ledger are migrated
+  US$0.210533395 was counted after the deadline round. The later correctness
+  acceptance brings conservative cumulative charges to US$0.277306460. The
+  owner's October 8 amendment raises the cumulative S3 cap to US$2.00, leaving
+  US$1.722693540 under the owner cap. The runner still enforces US$0.50, with
+  US$0.222693540 remaining, until its constants and ledger are migrated
   ([ADR-040 amendment](adr/adr-040.md)).
 
 No account, purchase, setting or model call was made while this decision was
@@ -1050,7 +1054,7 @@ S3 smoke. Record dated, non-secret evidence here for each proof in ADR-046:
 | Proof | Evidence |
 | --- | --- |
 | Credits purchased, auto top-up off, no BYOK credentials on the team | US$20 purchased (owner-reported, October 8). The account balance was US$24.97400355 before the paid S3 run, including unused free credit, and US$24.92349108 after the deadline round ([12](12-s3-deadline-reliability.md)). S3 routing receipts showed BYOK=false per request; the team-level auto top-up and BYOK checks are pending |
-| Team budget US$10 monthly with 50/75/100% alerts; runtime (US$8 monthly), S3 (refresh `none`, US$2.00 minus the S3 ledger total when set: US$1.789466605 after the deadline round) and canary (refresh `none`, about US$0.10) keys belong to the team, each with its budget | Pending |
+| Team budget US$10 monthly with 50/75/100% alerts; runtime (US$8 monthly), S3 (refresh `none`, US$2.00 minus the S3 ledger total when set: US$1.722693540 after synthetic correctness acceptance; runner hard-stop balance US$0.222693540 until migration) and canary (refresh `none`, about US$0.10) keys belong to the team, each with its budget | Pending |
 | Budget exhaustion fails closed: HTTP 402 `quota_for_entity_exceeded` (or the AI SDK 7 error) maps to hard-cap degraded mode without retry or fallback | Pending |
 | `disallowPromptTraining` and `only` hold on chat, embedding and fallback paths | Pending |
 | A request restricted to a non-compliant provider fails | Pending |

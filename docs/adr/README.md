@@ -57,7 +57,7 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-037](adr-037.md) | Confirmed health facts and information-only responses |
 | [ADR-038](adr-038.md) | LLM/embeddings via Vercel AI Gateway with no-training enforcement; supersedes ADR-022's no-hosted-gateway part — partially superseded by [ADR-046](adr-046.md) (ZDR and allowlist move to the production gate) |
 | [ADR-039](adr-039.md) | S1 outcome: PWA kept on both phones; Capacitor fallback not triggered |
-| [ADR-040](adr-040.md) | S3 synthetic-only evaluation on Hobby under a US$0.50 cap; Oct 8 follow-ups add an explicit Cloudflare adapter and the V10, paid, V11 and deadline rounds — amended by [ADR-046](adr-046.md) (purchased credits) and an Oct 8 owner amendment (cumulative cap US$2.00, US$1.789466605 remaining, effective after the runner migration) |
+| [ADR-040](adr-040.md) | S3 synthetic-only evaluation on Hobby; Oct 8 follow-ups add an explicit Cloudflare adapter, the V10, paid, V11 and deadline rounds, and Luna low synthetic correctness acceptance — amended by [ADR-046](adr-046.md) (purchased credits) and an Oct 8 owner amendment (US$2.00 owner cap with US$1.722693540 remaining; the runner's US$0.50 hard cap has US$0.222693540 remaining until migration) |
 | [ADR-041](adr-041.md) | Two execution paths: constrained commands (≤ 2 LLM calls) and bounded agent runs; partially supersedes ADR-003 |
 | [ADR-042](adr-042.md) | Tool broker, fail-closed policy and immutable, single-use approvals |
 | [ADR-043](adr-043.md) | Durable runs on graphile-worker with leases, compare-and-swap fencing and `outcome_unknown` |
