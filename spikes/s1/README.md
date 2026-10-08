@@ -517,3 +517,10 @@ All 203 automated tests, lint, type checking and build pass, but synthetic
 acceptance failed. No deployment or paid smoke followed. Staging remains disabled
 and the retained remaining cap is US$0.376071075. See
 [v9 evidence](evals/results/subscription-v9.json) and the verification notes.
+
+V10 passes the frozen synthetic regression: **59/60**, held-out **11/12**,
+dates **12/12**, privacy **8/8**, schema **58/58**. All **205 automated tests**,
+lint, type checking and build pass. Earlier development failures remain recorded;
+the original holdout is regression evidence. See
+[v10 evidence](evals/results/subscription-v10.json). Hosted S3 acceptance and
+model selection remain pending the bounded staging workflow.

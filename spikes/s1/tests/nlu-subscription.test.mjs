@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import examples from "../evals/few-shot.json" with { type: "json" };
 import { visibleContext } from "../lib/nlu/context.ts";
+import { normalizeProviderOutput } from "../lib/nlu/contracts.ts";
 import { buildPrompt, transcriptSpans } from "../lib/nlu/prompt.ts";
 import { validateResult } from "../lib/nlu/validate.ts";
 import {
@@ -198,7 +199,7 @@ test("stream rejects errors, oversized output and incomplete turns", () => {
 
 test("preference contrast examples validate with the same prior preference", () => {
   const pair = examples.filter((example) =>
-    example.context?.memories.some((memory) => memory.predicate === "prefers"),
+    example.context?.memories?.some((memory) => memory.predicate === "prefers"),
   );
   assert.equal(pair.length, 2);
   assert.deepEqual(pair[0].context, pair[1].context);
@@ -261,4 +262,93 @@ test("preference contrast examples validate with the same prior preference", () 
     buildPrompt("my password is secret123", context).status,
     "refused",
   );
+});
+
+test("ambiguity examples preserve the distinction between missing and ambiguous slots", () => {
+  const context = {
+    occurred_at: "2026-10-07T12:00:00+05:30",
+    speaker_id: "example-member",
+    members: [
+      {
+        id: "example-member",
+        entity_id: "example-person",
+        name: "Dev",
+        aliases: ["me"],
+        role: "adult",
+        relation: "self",
+      },
+    ],
+    entities: [],
+    memories: [],
+    lists: [],
+    operations: [],
+    previous_turns: [],
+  };
+  const clock = examples.find(
+    (example) => example.result.commands[0]?.at?.phrase === "at 6",
+  );
+  const ambiguousClock = validateResult(
+    normalizeProviderOutput(clock.result),
+    clock.transcript,
+    context,
+  );
+  assert.equal(ambiguousClock.status, "parsed");
+  assert.deepEqual(ambiguousClock.outcomes[0].reasons, ["ambiguous_time"]);
+  assert.equal(ambiguousClock.parsed.commands[0].at.phrase, "at 6");
+  const missingClock = structuredClone(clock.result);
+  delete missingClock.commands[0].at;
+  assert.deepEqual(
+    validateResult(missingClock, "Remind me to stretch", context).outcomes[0]
+      .reasons,
+    ["missing_time"],
+  );
+  const name = examples.find((example) =>
+    example.context?.entities?.some((entity) => entity.name === "Kiran"),
+  );
+  const ambiguousName = validateResult(
+    normalizeProviderOutput(name.result),
+    name.transcript,
+    {
+      ...context,
+      entities: name.context.entities.map((entity) => ({
+        ...entity,
+        visibility: "household",
+      })),
+    },
+  );
+  assert.equal(ambiguousName.status, "parsed");
+  assert.deepEqual(ambiguousName.outcomes[0].reasons, ["ambiguous_entity"]);
+  assert.deepEqual(ambiguousName.parsed.commands[0].query.entities, [
+    { mention: "Kiran" },
+  ]);
+});
+
+test("shopping completion and possessive unshare examples remain supported actions", () => {
+  const base = {
+    occurred_at: "2026-10-07T12:00:00+05:30",
+    speaker_id: "example-member",
+    members: [],
+    entities: [],
+    memories: [],
+    lists: [],
+    operations: [],
+    previous_turns: [],
+  };
+  for (const kind of ["list_complete", "unshare"]) {
+    const example = examples.find(
+      (item) => item.result.commands[0]?.kind === kind,
+    );
+    const result = validateResult(
+      normalizeProviderOutput(example.result),
+      example.transcript,
+      { ...base, ...example.context },
+    );
+    assert.equal(result.status, "parsed");
+    assert.equal(result.outcomes[0].status, "interpreted");
+    assert.deepEqual(result.outcomes[0].reasons, []);
+    if (kind === "unshare")
+      assert.deepEqual(result.parsed.commands[0].target, {
+        memory_id: "example-note",
+      });
+  }
 });

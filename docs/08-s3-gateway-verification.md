@@ -898,3 +898,48 @@ do not tune from held-out content or repeat a frozen run until a lucky pass.
 Preserve the failed comparison against v8 and obtain a qualifying synthetic
 pipeline before any further paid smoke. Hosted latency, model selection and
 family-data ZDR remain unverified.
+
+## October 8 — v10 development fixes and passing frozen regression
+
+Owner authorized the next correctness item. Development evidence identified
+discarded ambiguous clock phrases and inferred types on ambiguous names. Keep a
+stated clock with unresolved time for clarification; leave an unstated type
+null. A first v10 development run scored 46/48, exposing supported shopping
+completion incorrectly marked unsupported and a speaker-note unshare using an
+entity selector. Added explicit shopping command mappings and unique speaker
+subject/note memory lookup for both share and unshare. Clarified Tamil/English
+mixed language using the known development sample. Four independent examples
+and two new tests validate these distinctions with the unchanged validator.
+New tests caught and corrected an incomplete example context before model use.
+
+Both focused development smokes passed 5/5. Revised development scored 47/48:
+`privacy-04` emitted list instead of value answer shape; visibility filtering
+still held. This failure remains recorded alongside the successful comparison.
+No contract, interpreter, scorer, reviewed fixture, model setting, privacy
+control or spend cap changed. All **205 automated tests**, lint, type checking
+and production build passed.
+
+One frozen original-corpus regression scored **59/60**, held-out **11/12**,
+dates **12/12**, privacy **8/8**, schema **58/58** model calls; two sensitive
+inputs were refused locally. Raw extraction scored 57/60 and two cases used
+the unchanged deterministic stage. `memories-11` remains failed. No tool
+activity was observed. These results meet the synthetic gates. The original
+holdout is repeated regression evidence; its transcripts, expected answers
+and raw outputs were not inspected for tuning. Development failures and all
+phase hashes remain in [v10 evidence](../spikes/s1/evals/results/subscription-v10.json).
+
+Frozen prompt SHA-256:
+`9dc9129360a2a07dd6edef5f221279f21a0f619902549b571787ff9f87240f17`.
+Pipeline SHA-256:
+`198926c5ee6af13636a8d29d7f58d58fdf97da6cab1df413c9f62321a8b1b65a`.
+Full report: `71e8a69f-b310-43f7-b1cb-b862399c822b.json`. The static prefix is
+12194 UTF-8 bytes versus v9's 9041; correctness clarifications increased size.
+No latency improvement is claimed from subscription process timing.
+
+This qualifies only for the authorized three-case hosted Nano smoke. Verify
+current catalog rates and managed OpenAI routing before further live work,
+then stop if the smoke fails. Configured-price maximum reservations are
+US$0.0174415 for smoke and US$0.3373537 for one full pass, combined US$0.3547952
+within retained remaining allowance US$0.376071075. No historical reservation
+was removed. Subscription evaluation added no Gateway charge. Hosted acceptance,
+model selection and family-data ZDR remain pending live evidence.

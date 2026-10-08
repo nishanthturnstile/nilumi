@@ -217,5 +217,148 @@
         }
       ]
     }
+  },
+  {
+    "transcript": "Remind me to stretch at 6",
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "reminder_create",
+          "text": "stretch",
+          "targets": [{ "mention": "me" }],
+          "at": { "phrase": "at 6", "resolved": null, "precision": "minute" }
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "Kiran phone number?",
+    "context": {
+      "entities": [
+        {
+          "id": "example-kiran-a",
+          "name": "Kiran",
+          "aliases": [],
+          "type": "person"
+        },
+        {
+          "id": "example-kiran-b",
+          "name": "Kiran",
+          "aliases": [],
+          "type": "person"
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "ask",
+          "query": {
+            "entities": [
+              {
+                "mention": "Kiran",
+                "existing_id": null,
+                "type_hint": null,
+                "relation": null
+              }
+            ],
+            "predicates": ["phone_number"],
+            "answer_shape": "value",
+            "include_history": false
+          }
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "Mark oats bought",
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "list_complete",
+          "list": { "mention": "shopping", "list_id": "example-shopping" },
+          "items": ["oats"]
+        }
+      ]
+    },
+    "context": {
+      "lists": [
+        {
+          "id": "example-shopping",
+          "name": "shopping",
+          "aliases": [],
+          "items": ["oats"]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "Unshare my note",
+    "context": {
+      "speaker_id": "example-member",
+      "entities": [
+        {
+          "id": "example-person",
+          "name": "Dev",
+          "aliases": ["my", "en"],
+          "type": "person",
+          "visibility": "household"
+        },
+        {
+          "id": "example-journal",
+          "name": "journal",
+          "aliases": [],
+          "type": "item",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ],
+      "members": [
+        {
+          "id": "example-member",
+          "entity_id": "example-person",
+          "name": "Dev",
+          "aliases": ["my", "en"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "memories": [
+        {
+          "id": "example-note",
+          "subject_id": "example-person",
+          "predicate": "note",
+          "value": "plan a picnic",
+          "visibility": "shared",
+          "owner_id": "example-member"
+        },
+        {
+          "id": "example-journal-note",
+          "subject_id": "example-journal",
+          "predicate": "note",
+          "value": "practice sketching",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "unshare",
+          "target": {
+            "memory_id": "example-note",
+            "task_id": null,
+            "refers_to_last": null,
+            "entity": null,
+            "predicate": null
+          }
+        }
+      ]
+    }
   }
 ]

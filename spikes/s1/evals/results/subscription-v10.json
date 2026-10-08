@@ -1,0 +1,315 @@
+{
+  "scope": "Subscription synthetic correctness only; hosted acceptance remains pending live gates",
+  "heldOutPolicy": "Repeated original holdout is regression evidence. Prior scores/failed IDs seen; no held-out transcript, expected answer or raw output used for tuning.",
+  "changes": [
+    "Preserve stated ambiguous clock phrases separately from missing time",
+    "Suppress inferred entity types on ambiguous existing-name queries",
+    "Explicit shopping action mapping and unique speaker-note share/unshare selection",
+    "Clarify fully Tamil versus Tamil/English mixed language from development evidence",
+    "Four independently authored examples with validation tests"
+  ],
+  "unchanged": [
+    "Reviewed corpus",
+    "Contracts",
+    "Semantic scoring",
+    "Deterministic interpreter",
+    "Hosted Nano configuration",
+    "Privacy controls",
+    "Five-second hosted deadline",
+    "Cumulative testing cap"
+  ],
+  "checks": {
+    "tests": 205,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed"
+  },
+  "promptBytes": {
+    "v9": 9041,
+    "v10": 12194
+  },
+  "budget": {
+    "capUsd": 0.5,
+    "retainedLedgerUsd": 0.123928925,
+    "remainingUsd": 0.376071075,
+    "ledgerSha256": "b188a6eea794613301e45172fb14b742c7778bb7c3a441a34d429873cd61f3d2",
+    "gatewaySpendDuringSubscriptionEvaluationUsd": 0,
+    "subscriptionChargeUsd": null,
+    "nanoSmokeMaximumUsd": 0.0174415,
+    "nanoFullMaximumUsd": 0.3373537,
+    "prices": "Configured-price reservations; live rates must be reverified"
+  },
+  "isolationLimitation": "No observed tool activity is measured, not proof of an empty catalog. Started events may follow dispatch. CLI is not tools:[] API.",
+  "phases": [
+    {
+      "phase": "initial_focused_smoke",
+      "reportId": "485ca08d-9d33-4e30-8867-71de52b63ad9",
+      "reportSha256": "84d125577b6478524b83b10d0d6cd0e64af9e08241a98a4199148ec0672ab9c4",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "modelVerification": "Explicit Codex CLI model pin; no Gateway routing receipt",
+      "codexVersion": "codex-cli 0.161.0",
+      "reasoningEffort": "low",
+      "promptVersion": "s3-extract-v10",
+      "promptSha256": "983a72566382787128770bc5894d3e2100252199b60aea1e5ea805c3c46d1074",
+      "pipelineSha256": "31b0fbe8e4875dca8952d305dbececcccc4939727febb58c3bce86941a9026ea",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T03:09:13.194Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 5,
+        "attempted": 5,
+        "correct": 5,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 5,
+          "correct": 5
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "privacy": {
+          "attempted": 2,
+          "correct": 2
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": [],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 5
+    },
+    {
+      "phase": "initial_development_failed",
+      "reportId": "a8d8a0b1-e7b8-4d76-adc7-640bc05498ed",
+      "reportSha256": "8c4d3375c3811478781ccdb4dcf2403aad74e107ab9a5541857e98c3b7dfffb7",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "modelVerification": "Explicit Codex CLI model pin; no Gateway routing receipt",
+      "codexVersion": "codex-cli 0.161.0",
+      "reasoningEffort": "low",
+      "promptVersion": "s3-extract-v10",
+      "promptSha256": "983a72566382787128770bc5894d3e2100252199b60aea1e5ea805c3c46d1074",
+      "pipelineSha256": "31b0fbe8e4875dca8952d305dbececcccc4939727febb58c3bce86941a9026ea",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T03:09:46.573Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 46,
+        "accuracy": 0.9583333333333334,
+        "extraction": {
+          "attempted": 48,
+          "correct": 44
+        },
+        "normalizedCases": 2,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 10
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 5
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": ["shopping-05", "privacy-02"],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 47
+    },
+    {
+      "phase": "revised_focused_smoke",
+      "reportId": "11352655-00e1-4ad0-8142-a8c3af4ea306",
+      "reportSha256": "99556ea3912a0238f73a39b23b415400026e28b50ec7cfca05eb31cd31c109dc",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "modelVerification": "Explicit Codex CLI model pin; no Gateway routing receipt",
+      "codexVersion": "codex-cli 0.161.0",
+      "reasoningEffort": "low",
+      "promptVersion": "s3-extract-v10",
+      "promptSha256": "9dc9129360a2a07dd6edef5f221279f21a0f619902549b571787ff9f87240f17",
+      "pipelineSha256": "198926c5ee6af13636a8d29d7f58d58fdf97da6cab1df413c9f62321a8b1b65a",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T03:13:58.353Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 5,
+        "attempted": 5,
+        "correct": 5,
+        "accuracy": 1,
+        "extraction": {
+          "attempted": 5,
+          "correct": 5
+        },
+        "normalizedCases": 0,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "privacy": {
+          "attempted": 1,
+          "correct": 1
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": [],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 5
+    },
+    {
+      "phase": "revised_development",
+      "reportId": "71089ad9-680f-48ea-9526-4355c8e95d1d",
+      "reportSha256": "49fa5b173b200a437ee2c3e3911fc313501f7dc157432969555cad1920f5219e",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "modelVerification": "Explicit Codex CLI model pin; no Gateway routing receipt",
+      "codexVersion": "codex-cli 0.161.0",
+      "reasoningEffort": "low",
+      "promptVersion": "s3-extract-v10",
+      "promptSha256": "9dc9129360a2a07dd6edef5f221279f21a0f619902549b571787ff9f87240f17",
+      "pipelineSha256": "198926c5ee6af13636a8d29d7f58d58fdf97da6cab1df413c9f62321a8b1b65a",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T03:14:36.615Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 48,
+        "attempted": 48,
+        "correct": 47,
+        "accuracy": 0.9791666666666666,
+        "extraction": {
+          "attempted": 48,
+          "correct": 45
+        },
+        "normalizedCases": 2,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 0,
+          "correct": 0
+        },
+        "dates": {
+          "attempted": 10,
+          "correct": 10
+        },
+        "privacy": {
+          "attempted": 6,
+          "correct": 5
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": false,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": ["privacy-04"],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 47
+    },
+    {
+      "phase": "frozen_original_corpus_regression",
+      "reportId": "71e8a69f-b310-43f7-b1cb-b862399c822b",
+      "reportSha256": "03e1df06e3388de159abc6af5b4cd7f946f7228a5c49aa267a372f4d452a8aae",
+      "model": "gpt-6-luna",
+      "authentication": "chatgpt",
+      "modelVerification": "Explicit Codex CLI model pin; no Gateway routing receipt",
+      "codexVersion": "codex-cli 0.161.0",
+      "reasoningEffort": "low",
+      "promptVersion": "s3-extract-v10",
+      "promptSha256": "9dc9129360a2a07dd6edef5f221279f21a0f619902549b571787ff9f87240f17",
+      "pipelineSha256": "198926c5ee6af13636a8d29d7f58d58fdf97da6cab1df413c9f62321a8b1b65a",
+      "fixtureSha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd",
+      "interpretationVersion": "s3-interpret-v4",
+      "createdAt": "2026-10-08T03:17:22.402Z",
+      "abortReason": null,
+      "toolIsolation": {
+        "agentsEnabled": false,
+        "excludedNestedNamespaces": ["collaboration", "clock"],
+        "strictConfig": true,
+        "runtimePolicy": "Stop on the first observed tool/error event; reject output",
+        "limitation": "CLI harness is not a tools:[] API call. Event rejection can follow dispatch; no claim that all tool definitions are absent."
+      },
+      "summary": {
+        "expected": 60,
+        "attempted": 60,
+        "correct": 59,
+        "accuracy": 0.9833333333333333,
+        "extraction": {
+          "attempted": 60,
+          "correct": 57
+        },
+        "normalizedCases": 2,
+        "schemaValidRate": 1,
+        "heldOut": {
+          "attempted": 12,
+          "correct": 11
+        },
+        "dates": {
+          "attempted": 12,
+          "correct": 12
+        },
+        "privacy": {
+          "attempted": 8,
+          "correct": 8
+        },
+        "coverageComplete": true,
+        "syntheticCorrectnessPass": true,
+        "deploymentAcceptance": "pending_live_gates"
+      },
+      "failedCaseIds": ["memories-11"],
+      "observedToolActivity": false,
+      "successfulToolFreeCalls": 58
+    }
+  ]
+}

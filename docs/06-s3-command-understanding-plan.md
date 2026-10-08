@@ -691,3 +691,14 @@ ledger is unchanged. See [v9 verification](08-s3-gateway-verification.md) and
 The simplification experiment is complete; S3 acceptance remains pending a
 qualifying correctness revision, then hosted validation. Do not rerun a frozen
 pipeline to select a favorable score or tune using held-out content.
+
+V10 follow-up uses development evidence to preserve stated unresolved clocks,
+suppress inferred entity types, map shopping completion to its supported command,
+and identify speaker-note share/unshare targets. The first development result
+46/48 informed the latter fixes. Revised development 47/48 retains one note-query
+answer-shape failure. One frozen comparison passed: 59/60 overall, 11/12 held-out,
+12/12 dates, 8/8 privacy, 58/58 valid schemas. The one held-out memory failure
+remains recorded; no held-out content was inspected for tuning. All 205 tests
+and quality checks pass. See [v10 verification](08-s3-gateway-verification.md).
+Next authorized gate is the bounded Nano hosted smoke with unchanged routing,
+privacy, five-second deadline and cumulative budget controls.
