@@ -1,8 +1,8 @@
 # S3 — Command understanding implementation plan
 
-> **Status:** Implementation delivered. Latest subscription regression passes synthetic gates: 59/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy; no observed tool activity under strengthened controls. One semantic failure remains. Hosted S3 acceptance/model selection remain pending; Gateway evaluator disabled. Family-data ZDR remains blocked.
+> **Status:** Core synthetic increment complete. [Live correctness acceptance](13-s3-live-acceptance.md) selects Luna low: 58/60 overall, 11/12 held-out, 12/12 dates, 8/8 privacy, schemas 58/58 and verified managed OpenAI routing. Owner-approved synthetic deadline is 30 seconds; application deadline stays five seconds. Two semantic errors remain. Evaluator disabled; production timing/privacy, shadow/fallback work and classifier experiments remain pending.
 > **Date:** October 7, 2026
-> **Next acceptance work:** Synthetic correctness, then a successful live smoke and budget-bounded deployment comparison. The 60 expected actions are already owner-approved.
+> **Next acceptance work:** Production deadline reliability and verified family-data ZDR, followed by independent acceptance/shadow validation. The approved 60-case synthetic correctness workflow is complete within the cumulative US$0.50 cap.
 > **Prerequisite:** S2 owner approval is recorded; no additional recordings are needed.
 
 ## 1. Objective and agreed decisions

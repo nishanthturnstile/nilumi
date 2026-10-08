@@ -14,6 +14,7 @@
 | 06 | [S3 implementation plan](06-s3-command-understanding-plan.md) | Command contracts, synthetic evaluation, privacy gates and the US$0.50 testing cap within the US$5 monthly budget |
 | 07 | [S3 expected-action review](07-s3-expected-actions.md) | All 60 synthetic transcripts, expected commands, concrete dates and validation outcomes; owner review approved |
 | 08 | [S3 Gateway verification](08-s3-gateway-verification.md) | Owner-supplied dashboard findings, Hobby privacy blocker, budget evidence, approved synthetic-only testing exception and subscription-free provider comparison |
+| 13 | [S3 live acceptance](13-s3-live-acceptance.md) | Regional reliability experiment, preserved failed prompt regressions, model correctness gates, budget and verified shutdown |
 | ADR | [Decision catalogue](adr/README.md) | ADR-001–040 with context, decisions, alternatives, consequences and applied links; D1–D19 and Q1–Q12 mappings; [future-record template](adr/template.md) |
 
 Start with Product for *what* and *why*, then Architecture for *how* and Tech Stack for *with what*. Use the [ADR catalogue](adr/README.md) to understand accepted choices, rationale and the legacy D/Q map; follow its links to Research for detailed evidence. Read the Roadmap for build order and validation ownership.

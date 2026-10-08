@@ -319,6 +319,15 @@ strict elapsed-time enforcement, cleanup, numeric transport diagnostics and a
 56% smaller equivalent wire schema. The new Luna smoke scored 2/3 with one timeout
 waiting for response headers. Paid testing stopped; shutdown is verified and
 live acceptance remains pending.
+The [final correctness acceptance](../../docs/13-s3-live-acceptance.md) selects
+Luna low after owner-approved 30-second synthetic evaluation: **58/60** overall,
+held-out **11/12**, dates **12/12**, privacy **8/8**, schemas **58/58** and every
+managed OpenAI route verified. All **226 tests**, lint, type checking and build
+pass. Two semantic errors remain. Conservative cumulative spend is
+**US$0.277306460 / US$0.50**; evaluator shutdown is verified. The core synthetic
+spike is complete; production timing/ZDR, independent acceptance, fallback/shadow
+validation and classifier experiments remain pending. The application deadline
+stays five seconds; the longer allowance is opt-in and synthetic-only.
 Cloudflare transport remains available only through explicit selection, with no
 automatic fallback. Its gateway and private credential setup are verified, but
 live Cloudflare privacy validation is pending. See the [Cloudflare setup and budget plan](../../docs/09-s3-cloudflare-gateway.md).
