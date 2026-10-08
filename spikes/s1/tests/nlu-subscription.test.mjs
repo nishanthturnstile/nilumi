@@ -15,6 +15,41 @@ import {
   subscriptionSummary,
 } from "../scripts/evaluate-subscription-nlu.mjs";
 
+test("independent extraction examples preserve negation, note scope and explicit references", () => {
+  const revised = examples.slice(-5);
+  assert.equal(revised.length, 5);
+  for (const example of revised) {
+    const context = {
+      occurred_at: "2026-10-08T12:00:00+05:30",
+      lists: [],
+      operations: [],
+      tasks: [],
+      ...example.context,
+    };
+    const result = validateResult(
+      normalizeProviderOutput(example.result),
+      example.transcript,
+      context,
+    );
+    assert.equal(result.status, "parsed");
+    assert.equal(result.parsed.commands.length, 1);
+    assert.equal(
+      result.outcomes[0].status,
+      example.transcript.startsWith("I do not")
+        ? "clarification_required"
+        : "interpreted",
+    );
+  }
+  assert.equal(revised[0].result.commands[0].facts[0].predicate, "prefers");
+  assert.equal(revised[0].result.commands[0].facts[0].polarity, "negated");
+  assert.equal(revised[1].result.commands[0].kind, "remember");
+  assert.equal(revised[1].result.commands[0].facts[0].subject.mention, "I");
+  assert.equal(revised[2].result.commands[0].facts[0].subject.type_hint, null);
+  assert.equal(revised[2].result.commands[0].facts[0].visibility_hint, null);
+  assert.equal(revised[3].result.commands[0].target.memory_id, "example-note");
+  assert.equal(revised[4].result.commands[0].query.answer_shape, "value");
+});
+
 test("evidence hints preserve decoded UTF-16 offsets across Tamil, emoji and clauses", () => {
   const transcript =
     '  I like 🎨; என் மகள் இசை விரும்புவாள் but I dislike rain.\nShe said "yes"';

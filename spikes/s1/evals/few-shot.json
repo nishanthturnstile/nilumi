@@ -213,7 +213,10 @@
             "entity": null,
             "predicate": null
           },
-          "evidence": { "start": 0, "end": 13 }
+          "evidence": {
+            "start": 0,
+            "end": 13
+          }
         }
       ]
     }
@@ -226,8 +229,16 @@
         {
           "kind": "reminder_create",
           "text": "stretch",
-          "targets": [{ "mention": "me" }],
-          "at": { "phrase": "at 6", "resolved": null, "precision": "minute" }
+          "targets": [
+            {
+              "mention": "me"
+            }
+          ],
+          "at": {
+            "phrase": "at 6",
+            "resolved": null,
+            "precision": "minute"
+          }
         }
       ]
     }
@@ -279,7 +290,10 @@
       "commands": [
         {
           "kind": "list_complete",
-          "list": { "mention": "shopping", "list_id": "example-shopping" },
+          "list": {
+            "mention": "shopping",
+            "list_id": "example-shopping"
+          },
           "items": ["oats"]
         }
       ]
@@ -356,6 +370,346 @@
             "refers_to_last": null,
             "entity": null,
             "predicate": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "I do not enjoy hiking",
+    "context": {
+      "speaker_id": "example-member",
+      "members": [
+        {
+          "id": "example-member",
+          "entity_id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "example-note",
+          "subject_id": "example-person",
+          "predicate": "note",
+          "value": "sort the papers",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I have a note sort the papers",
+          "memory_ids": ["example-note"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "remember",
+          "facts": [
+            {
+              "subject": {
+                "mention": "I",
+                "existing_id": "example-person",
+                "type_hint": null,
+                "relation": "self"
+              },
+              "predicate": "prefers",
+              "value": {
+                "type": "text",
+                "value": "hiking"
+              },
+              "visibility_hint": null,
+              "share_intent": null,
+              "evidence": {
+                "start": 0,
+                "end": 21
+              },
+              "polarity": "negated"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "For myself, I have a note book a hotel",
+    "context": {
+      "speaker_id": "example-member",
+      "members": [
+        {
+          "id": "example-member",
+          "entity_id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "example-note",
+          "subject_id": "example-person",
+          "predicate": "note",
+          "value": "sort the papers",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I have a note sort the papers",
+          "memory_ids": ["example-note"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "remember",
+          "facts": [
+            {
+              "subject": {
+                "mention": "I",
+                "existing_id": "example-person",
+                "type_hint": null,
+                "relation": "self"
+              },
+              "predicate": "note",
+              "value": {
+                "type": "text",
+                "value": "book a hotel"
+              },
+              "visibility_hint": null,
+              "share_intent": null,
+              "evidence": {
+                "start": 0,
+                "end": 38
+              },
+              "polarity": "affirmed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "I enjoy gardening",
+    "context": {
+      "speaker_id": "example-member",
+      "members": [
+        {
+          "id": "example-member",
+          "entity_id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "example-note",
+          "subject_id": "example-person",
+          "predicate": "note",
+          "value": "sort the papers",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I have a note sort the papers",
+          "memory_ids": ["example-note"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "remember",
+          "facts": [
+            {
+              "subject": {
+                "mention": "I",
+                "existing_id": "example-person",
+                "type_hint": null,
+                "relation": "self"
+              },
+              "predicate": "prefers",
+              "value": {
+                "type": "text",
+                "value": "gardening"
+              },
+              "visibility_hint": null,
+              "share_intent": null,
+              "evidence": {
+                "start": 0,
+                "end": 17
+              },
+              "polarity": "affirmed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "That was mistaken, I meant sort the receipts",
+    "context": {
+      "speaker_id": "example-member",
+      "members": [
+        {
+          "id": "example-member",
+          "entity_id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "example-note",
+          "subject_id": "example-person",
+          "predicate": "note",
+          "value": "sort the papers",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I have a note sort the papers",
+          "memory_ids": ["example-note"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "correct",
+          "target": {
+            "memory_id": "example-note",
+            "refers_to_last": true,
+            "entity": null,
+            "predicate": null,
+            "task_id": null
+          },
+          "new_value": {
+            "type": "text",
+            "value": "sort the receipts"
+          },
+          "reason": "was_wrong",
+          "evidence": {
+            "start": 0,
+            "end": 44
+          }
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "What is Dev's private note?",
+    "context": {
+      "speaker_id": "example-member",
+      "members": [
+        {
+          "id": "example-member",
+          "entity_id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "example-person",
+          "name": "Dev",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "example-note",
+          "subject_id": "example-person",
+          "predicate": "note",
+          "value": "sort the papers",
+          "visibility": "private",
+          "owner_id": "example-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I have a note sort the papers",
+          "memory_ids": ["example-note"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "ask",
+          "query": {
+            "entities": [
+              {
+                "mention": "Dev",
+                "existing_id": "example-person",
+                "type_hint": null,
+                "relation": null
+              }
+            ],
+            "predicates": ["note"],
+            "answer_shape": "value",
+            "include_history": false
           }
         }
       ]
