@@ -714,5 +714,135 @@
         }
       ]
     }
+  },
+  {
+    "transcript": "I prefer knitting",
+    "context": {
+      "speaker_id": "contrast-member",
+      "members": [
+        {
+          "id": "contrast-member",
+          "entity_id": "contrast-person",
+          "name": "Mira",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "contrast-person",
+          "name": "Mira",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "contrast-preference",
+          "subject_id": "contrast-person",
+          "predicate": "prefers",
+          "value": "ceramics",
+          "visibility": "household",
+          "owner_id": "contrast-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I prefer ceramics",
+          "memory_ids": ["contrast-preference"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "remember",
+          "facts": [
+            {
+              "subject": {
+                "mention": "I",
+                "existing_id": "contrast-person",
+                "relation": "self"
+              },
+              "predicate": "prefers",
+              "value": {
+                "type": "text",
+                "value": "knitting"
+              },
+              "evidence": {
+                "start": 0,
+                "end": 17
+              },
+              "polarity": "affirmed"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "transcript": "I now prefer knitting",
+    "context": {
+      "speaker_id": "contrast-member",
+      "members": [
+        {
+          "id": "contrast-member",
+          "entity_id": "contrast-person",
+          "name": "Mira",
+          "aliases": ["I"],
+          "role": "adult",
+          "relation": "self"
+        }
+      ],
+      "entities": [
+        {
+          "id": "contrast-person",
+          "name": "Mira",
+          "aliases": ["I"],
+          "type": "person",
+          "visibility": "household"
+        }
+      ],
+      "memories": [
+        {
+          "id": "contrast-preference",
+          "subject_id": "contrast-person",
+          "predicate": "prefers",
+          "value": "ceramics",
+          "visibility": "household",
+          "owner_id": "contrast-member"
+        }
+      ],
+      "previous_turns": [
+        {
+          "text": "I prefer ceramics",
+          "memory_ids": ["contrast-preference"]
+        }
+      ]
+    },
+    "result": {
+      "language": "en",
+      "commands": [
+        {
+          "kind": "correct",
+          "target": {
+            "memory_id": "contrast-preference",
+            "refers_to_last": true
+          },
+          "new_value": {
+            "type": "text",
+            "value": "knitting"
+          },
+          "reason": "changed_in_world",
+          "evidence": {
+            "start": 0,
+            "end": 21
+          }
+        }
+      ]
+    }
   }
 ]
