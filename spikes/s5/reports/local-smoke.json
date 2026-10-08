@@ -1,6 +1,6 @@
 {
   "version": "s5-local-v1",
-  "at": "2026-10-08T13:45:40.330Z",
+  "at": "2026-10-08T14:30:57.672Z",
   "environment": "local_docker",
   "syntheticOnly": true,
   "railwayAccepted": false,
@@ -40,7 +40,7 @@
     "dispatched": 200,
     "stale": 0,
     "early": 0,
-    "maximum_lateness_ms": 522.286,
+    "maximum_lateness_ms": 618.931,
     "scenarios": [
       "one_off",
       "recurring_instance",
@@ -54,7 +54,10 @@
     "delivery": "synthetic_database_sink",
     "railwayRedeploy": "pending",
     "calendarRecurrenceExpansion": "not_exercised",
-    "productionRoles": "pending"
+    "runtimeRole": "s5_worker_restricted",
+    "households": 2,
+    "householdReceiptMismatch": 0,
+    "productionMigrationMaintenanceSeparation": "pending"
   },
   "streaming": {
     "passed": true,
@@ -74,7 +77,7 @@
       "policies": 1,
       "forgotten": 0
     },
-    "dumpSha256": "8f8ba7e2b5d983190e998cee91c91b1e7a8f4ccc17862129db659ef57e966622",
+    "dumpSha256": "8f486f2a79185ff378f0dd53a0da4ee5e3eedbca7e53188a872277a15ffaa600",
     "ageEncryption": "pending_recipient_and_cli",
     "r2Upload": "pending",
     "masterKeyRecovery": "pending_shared_document"

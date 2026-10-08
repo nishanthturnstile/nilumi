@@ -1,0 +1,193 @@
+{
+  "at": "2026-10-08T14:20:20.650Z",
+  "syntheticOnly": true,
+  "project": "9acde490-30a2-4452-889a-fa5c67a79271",
+  "environment": "ab1b8903-8615-484e-9410-04481200abbf",
+  "database": {
+    "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+    "datlocprovider": "i",
+    "datlocale": "en-US",
+    "datcollate": "en_US.utf8"
+  },
+  "extensions": [
+    {
+      "extname": "pg_trgm",
+      "extversion": "1.6"
+    },
+    {
+      "extname": "vector",
+      "extversion": "0.8.7"
+    }
+  ],
+  "roles": [
+    {
+      "rolname": "s5_app",
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false
+    },
+    {
+      "rolname": "s5_worker",
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false
+    }
+  ],
+  "rlsPassed": true,
+  "atomicScheduleRollbackPassed": true,
+  "directQueueAndOccurrenceAccessDenied": true,
+  "queuedAt": "2026-10-08T14:20:23.306Z",
+  "dueAt": "2026-10-08T14:21:06.488Z",
+  "worker": {
+    "households": 1,
+    "dispatched": 200,
+    "stale": 0,
+    "early": 0,
+    "maximumlatenessms": 673.375,
+    "cancelledWithoutDelivery": 20,
+    "delivery": "synthetic_database_sink",
+    "calendarExpansion": "not_exercised",
+    "successfulRuns": [
+      {
+        "dispatched": 200,
+        "stale": 0,
+        "early": 0,
+        "maximumLatenessMs": 933.43,
+        "cancelledWithoutDelivery": 20,
+        "queuedAt": "2026-10-08T14:17:45.322Z",
+        "dueAt": "2026-10-08T14:18:28.170Z",
+        "processRestart": true
+      },
+      {
+        "dispatched": 200,
+        "stale": 0,
+        "early": 0,
+        "maximumLatenessMs": 673.375,
+        "cancelledWithoutDelivery": 20,
+        "queuedAt": "2026-10-08T14:20:23.306Z",
+        "dueAt": "2026-10-08T14:21:06.488Z",
+        "railwayRedeploy": {
+          "deploymentId": "b0a7bece-db9f-4f0c-aa44-7369ea9c1510",
+          "createdAt": "2026-10-08T14:20:38.180Z",
+          "finalStatus": "SUCCESS",
+          "triggeredWhileQueued": true
+        }
+      }
+    ],
+    "scenarios": [
+      "one_off",
+      "recurring_instance",
+      "snoozed",
+      "edited",
+      "quiet_hours"
+    ],
+    "occurrencesPerScenario": 40,
+    "externalPush": "not_exercised",
+    "providerInFlightEdits": "not_exercised"
+  },
+  "streaming": {
+    "authenticatedPost": true,
+    "resumePassed": true,
+    "proxyHeartbeatArrivalMs": [24925, 51395],
+    "phoneResume": "pending"
+  },
+  "logicalRestore": {
+    "passed": true,
+    "checks": {
+      "rows": 4,
+      "rls": true,
+      "policies": 1,
+      "forgotten": 0
+    },
+    "restoredRestrictedRolePassed": true,
+    "unjournaledBackupBlocked": true,
+    "postDumpForgetReplayPassed": true,
+    "dumpSha256": "d1419c0751cd60e06ed81b7593ecb4224aa4991fde5eeaec69cb14676957a705",
+    "elapsedMs": 22315,
+    "scope": "s5_schema_on_same_synthetic_cluster",
+    "encryptedOffsiteRecovery": "pending"
+  },
+  "volumeRestore": {
+    "passed": true,
+    "canary": "before-snapshot",
+    "deliveries": 200,
+    "rls": {
+      "relrowsecurity": true,
+      "relforcerowsecurity": true
+    },
+    "snapshotId": "394f9fd3-f2a2-4db9-acf8-193ba7bf87d8"
+  },
+  "databaseOutageReadiness": {
+    "status": 503,
+    "genericBody": true
+  },
+  "version": "s5-live-v1",
+  "liveSyntheticChecksPassed": true,
+  "s5Accepted": false,
+  "window": {
+    "startedAt": "2026-10-08T14:05:24.585Z",
+    "cleanupCompletedAt": "2026-10-08T14:26:30.895Z"
+  },
+  "initialFailure": {
+    "dispatched": 0,
+    "jobAttempts": 0,
+    "code": "42501",
+    "reason": "Graphile private-table RLS blocked worker task registration; grants alone were insufficient",
+    "remediation": "worker-only policies; restarted worker to clear cached task-registration rejection"
+  },
+  "pitr": {
+    "enabled": false,
+    "eligible": false,
+    "source": "railway postgres pitr status",
+    "reason": "Upstream pgvector image unsupported",
+    "supportedSources": [
+      "ghcr.io/railwayapp-templates/postgres-ssl",
+      "ghcr.io/railwayapp-templates/postgres-ha/postgres-patroni"
+    ]
+  },
+  "cost": {
+    "allowanceUsd": 2,
+    "budget": "S5 Railway resources; independent of S3 AI ledger",
+    "reportedServiceChargesUsd": [
+      {
+        "name": "nilumi-s5-postgres",
+        "usd": 0.000686231556266314
+      },
+      {
+        "name": "nilumi-s5-app",
+        "usd": 0.00017958062740740743
+      },
+      {
+        "name": "nilumi-s5-worker",
+        "usd": 0.0001793939237037037
+      }
+    ],
+    "reportedTotalUsd": 0.001045206107377425,
+    "conservativeReservedUsd": 0.1,
+    "reportingLag": true,
+    "reserveBasis": "21.11 minutes at total 1 GB / 1 vCPU limits and two 1 GB volumes, plus $0.05 egress reserve; rounded upward. CLI deleted-service aggregate is not attributed as exact S5 spend.",
+    "pricingSource": "https://docs.railway.com/pricing/plans",
+    "aiCalls": 0
+  },
+  "cleanup": {
+    "verified": true,
+    "temporaryServicesRemoved": 3,
+    "temporaryVolumesRemoved": 2,
+    "snapshotRemovedWithSourceVolume": true,
+    "stagedChanges": 0,
+    "remainingStagingServices": ["nilumi-s1"],
+    "existingDeploymentUnchanged": "a0ca340e-528a-4881-b645-6e33b85ae7c2",
+    "sharedVariablesChanged": false
+  },
+  "pending": [
+    "real-public-recipient age encryption",
+    "isolated R2 upload/hash/retention",
+    "offsite manifest and fresh-cluster role recovery",
+    "shared OneDrive document and both-adult master-key recovery",
+    "both installed PWAs resume and home RTT",
+    "production migration/maintenance credential separation",
+    "production recurrence expansion and provider in-flight dispatch validation"
+  ]
+}

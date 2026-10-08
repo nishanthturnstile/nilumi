@@ -1,3 +1,4 @@
+import { EventEmitter } from "node:events";
 import { pathToFileURL } from "node:url";
 import { Logger, run, runMigrations } from "graphile-worker";
 import { pool } from "./db.mjs";
@@ -26,8 +27,27 @@ export async function enqueue(client, id, revision, dueAt) {
     [JSON.stringify({ id, revision }), dueAt, `s5:${id}:${revision}`],
   );
 }
-export function startWorker(db) {
+export function startWorker(db, options = {}) {
+  const events = options.events ?? new EventEmitter();
+  const reported = new Set();
+  for (const event of [
+    "worker:getJob:error",
+    "job:error",
+    "worker:fatalError",
+  ]) {
+    events.on(event, ({ error }) => {
+      const code = /^[A-Z0-9_]+$/.test(error?.code ?? "")
+        ? error.code
+        : "S5_WORKER_ERROR";
+      if (!reported.has(`${event}:${code}`)) {
+        reported.add(`${event}:${code}`);
+        console.error(JSON.stringify({ event, code }));
+      }
+    });
+  }
   return run({
+    ...options,
+    events,
     pgPool: db,
     concurrency: 4,
     pollInterval: 100,
@@ -45,13 +65,13 @@ export function startWorker(db) {
         try {
           await client.query("begin");
           const claim = await client.query(
-            "update s5.occurrences set status='dispatching' where id=$1 and revision=$2 and status='scheduled' and due_at<=clock_timestamp() returning id",
+            "update s5.occurrences set status='dispatching' where id=$1 and revision=$2 and status='scheduled' and due_at<=clock_timestamp() returning id, household_id",
             [payload.id, payload.revision],
           );
           if (claim.rowCount) {
             await client.query(
-              "insert into s5.deliveries(occurrence_id, revision) values($1,$2) on conflict do nothing",
-              [payload.id, payload.revision],
+              "insert into s5.deliveries(household_id, occurrence_id, revision) values($1,$2,$3) on conflict do nothing",
+              [claim.rows[0].household_id, payload.id, payload.revision],
             );
             await client.query(
               "update s5.occurrences set status='sent' where id=$1 and revision=$2",

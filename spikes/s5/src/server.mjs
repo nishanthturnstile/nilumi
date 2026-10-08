@@ -36,7 +36,10 @@ export function createSmokeServer(db, token) {
       res.writeHead(401).end();
       return;
     }
-    if (req.url !== "/stream" || req.method !== "POST") {
+    if (
+      !["/stream", "/stream/soak"].includes(req.url) ||
+      req.method !== "POST"
+    ) {
       res.writeHead(404).end();
       return;
     }
@@ -56,7 +59,10 @@ export function createSmokeServer(db, token) {
     });
     res.flushHeaders();
     const heartbeat = setInterval(() => res.write(": heartbeat\n\n"), 25_000);
+    const soak = req.url === "/stream/soak";
+    const finish = soak ? setTimeout(() => res.end(), 55_000) : undefined;
     const events = setInterval(() => {
+      if (soak) return;
       cursor++;
       res.write(
         `id: ${cursor}\nevent: invalidate\ndata: {"synthetic":true,"sequence":${cursor}}\n\n`,
@@ -70,11 +76,13 @@ export function createSmokeServer(db, token) {
     if (cursor === 10) {
       clearInterval(events);
       clearInterval(heartbeat);
+      clearTimeout(finish);
       res.end();
     }
     res.on("close", () => {
       clearInterval(events);
       clearInterval(heartbeat);
+      clearTimeout(finish);
     });
   });
 }

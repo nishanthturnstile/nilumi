@@ -1,14 +1,15 @@
 # S5 — Platform validation plan and initial implementation
 
-**Status:** Local harness implemented; Railway acceptance pending. User authorized
+**Status:** Local and bounded Railway synthetic checks passed; full S5 acceptance pending. User authorized
 starting S5 after the S3 correctness spike. The shared OneDrive recovery document
 does not exist yet; prepare the runbook first, as requested. No production/family
 data or AI inference is part of this spike.
 
 ## Scope and gates
 
-Use an isolated Singapore environment with one app, one worker and PostgreSQL 18
-with pgvector. Do not attach S5 to an existing website's database. The current
+Reuse **Website-Thaarei → staging**, as explicitly requested on October 8, with
+separate temporary Singapore app, worker and PostgreSQL 18 services. Create no
+new project or environment. Do not attach S5 to an existing website's database. The current
 Railway project also hosts other applications; existing services were inspected
 read-only. Nilumi staging has an app but no database volume. The local harness
 lives in `spikes/s5/`, separately from the accepted S1/S3 implementation.
@@ -72,12 +73,12 @@ pooled RLS, POST/SSE reconnect, a real dump/restore, restored RLS policies and
 post-dump forget replay. No model API credits are consumed.
 
 The worker cases use prepared recurrence instances and quiet-hour boundaries;
-production calendar expansion, edits while an external send is in flight,
-least-privilege worker credentials and Railway redeploy are not exercised yet.
-The heartbeat is implemented but a long Railway proxy soak is not yet measured.
+production calendar expansion and edits while an external send is in flight
+are not exercised. Separate worker credentials and Railway redeploy were
+subsequently exercised in the live increment below.
 Encryption has not been exercised with the real public recipient; R2 upload,
-master-key recovery, volume restore/PITR, home RTT and live resource cost are
-pending. **Do not mark S5 or Phase 0 complete from these local results.**
+master-key recovery and home RTT remain pending. Live volume restore, PITR
+eligibility and resource cost are recorded below. **Do not mark S5 or Phase 0 complete from these results.**
 
 The pinned app/worker Docker image also builds, and a separate local container
 probe passes public database readiness, unauthenticated stream rejection and
@@ -86,15 +87,59 @@ authenticated Last-Event-ID resume. Its image digest and probe result are in
 are used for this Node script package; no TypeScript check or production app
 integration is claimed.
 
-## Next live increment
+## Live increment — October 8, 2026
 
-The reviewed deployment shape is a new isolated S5 environment/project in
-Singapore, one PostgreSQL volume, and one replica each of app and worker, using
-the pinned images. Keep the environment synthetic-only and retire its compute
-after the validation window. Actual spend must be tracked separately from S3's
-model-testing ledger; S3's accepted evaluator remains disabled.
+The user authorized temporary services in the existing staging environment,
+under the proposed **$2 tracked Railway resource allowance**, separate from S3's
+AI ledger. The three services used one replica each, Singapore, with sleeping
+disabled and total limits of 1 vCPU / 1 GB memory. Database storage was 1 GB;
+the restore temporarily added a second 1 GB volume. Service-scoped credentials
+were generated privately; neither shared variables nor existing services changed.
+Upload used an explicit source-file allowlist, excluding credentials and results.
 
-Before provisioning, agree the temporary resource allowance and isolation target.
+[Live evidence](../spikes/s5/reports/live-smoke.json) records:
+
+- PostgreSQL 18.6, ICU `en-US`, pgvector 0.8.7 and pg_trgm 1.6.
+- Restricted app and worker logins, neither superuser nor BYPASSRLS, pooled
+  household/private visibility, denied direct app queue/occurrence access, and
+  rollback of both occurrence and queue job through scoped SECURITY DEFINER scheduling.
+- Two successful 200-occurrence runs after a worker-role fix; the second repeated
+  a Railway redeploy while jobs were queued. No stale/early/duplicate receipts;
+  20 cancelled jobs per run sent nothing. Maximum delays were 933 ms and 673 ms.
+- Authenticated POST/SSE resume through Railway; incremental 25-second heartbeats
+  arrived at about 25 and 51 seconds during a 55-second soak.
+- Real custom-format schema dump/restore into `s5_restore`, restricted-role/RLS
+  checks, blocked unjournaled backup and replay of a forget created after the dump.
+- Railway volume snapshot/restore recovered a changed canary, all 200 receipts,
+  and FORCE RLS. Real database shutdown made app readiness return generic HTTP 503.
+
+The initial live worker run failed with zero job attempts: Graphile's private
+tables enable RLS, so grants alone were insufficient. Worker-only policies fixed
+this without BYPASSRLS. The local smoke now runs with that same restricted worker
+role to catch this regression. Queue errors emit codes only, without payloads or
+connection strings. Failed timing evidence is retained in the live report.
+The final local regression also splits the 200 occurrences across two households
+and verifies each receipt retains its occurrence's household. The live delivery
+runs used one synthetic household; live visibility checks used both.
+
+All temporary services, both volumes and the snapshot were removed after testing;
+the existing `nilumi-s1` deployment stayed unchanged. Usage reporting can lag;
+the report separates reported S5 service charges from the conservative reserve.
+No AI calls were made and the S3 evaluator remained disabled.
+
+**PITR eligibility:** Railway CLI reports the pinned upstream pgvector image is
+unsupported for built-in PITR. It requires Railway's `postgres-ssl` or
+`postgres-patroni` image. Do not assume an image switch preserves PostgreSQL 18,
+extensions or locale: verify those and PITR recovery in a separate bounded
+increment before deciding the production backup configuration.
+
+**Remaining acceptance:** real-recipient age encryption, isolated R2 upload/hash/
+retention, offsite manifest and role recovery, both-adult master-key recovery,
+installed-PWA resume on both phones and home RTT. Separate migration/maintenance
+credentials and complete production recurrence/provider-send behavior remain
+outside the runtime app/worker proof. The schema-only scratch restore on the same
+cluster does not prove recovery of cluster roles on a fresh provider.
+
 Before encrypted recovery, create the shared OneDrive document, confirm both
 accounts' access/2FA, generate/store the real master key there, and configure only
 its public recipient on the worker. R2 credentials must be entered privately.

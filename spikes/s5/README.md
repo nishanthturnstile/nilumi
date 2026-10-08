@@ -31,9 +31,9 @@ replay. A failed check returns a nonzero exit code and preserves partial evidenc
 The worker scenarios use prepared occurrences, including recurrence instances
 and deferred quiet-hour boundaries. They do not prove the production recurrence
 generator, real push delivery, edits during provider dispatch or Railway redeploy.
-The local harness runs with migration credentials for worker setup; the separate
-least-privilege worker and SECURITY DEFINER scheduling wrapper are still live
-acceptance work. App credentials are restricted and direct queue reads are denied.
+The owner performs schema migrations; the worker runs with a separate restricted
+login and worker-only Graphile RLS policies. Live scheduling uses a scoped
+SECURITY DEFINER wrapper. App credentials cannot access the queue directly.
 
 ## Deployment artifact
 
@@ -44,11 +44,25 @@ only a generic database-ready status. `/stream` requires a private bearer token
 with at least 32 characters. Each service needs its own correctly scoped database
 credential; do not use the local test password on Railway.
 
-The proposed live environment is isolated from Website-Thaarei and the existing
-Nilumi app: a Singapore database named `s5_smoke`, an app and a worker, one replica
-each, no sleeping during the bounded reliability test. See
+The live checks reused **Website-Thaarei → staging**, with separate temporary
+Singapore database/app/worker services, one replica each and no sleeping.
+The user explicitly prohibited creating a new project. All temporary resources
+were removed after the checks; the existing Nilumi service was unchanged. See
 [S5 plan](../../docs/14-s5-platform-validation.md) for remaining configuration and
-acceptance gates. No paid Railway resource is provisioned by these commands.
+acceptance gates and [live results](reports/live-smoke.json). The local commands
+above provision no Railway resources. Live resources used a separate $2 allowance.
+
+`scripts/live.mjs`, `deploy-live.mjs` and `restore-live.mjs` are operator tools for
+already provisioned disposable services. Their ignored `validation-results/live-private.json`
+must contain explicit target/service IDs and privately generated credentials.
+They never create a project. Deployment uploads only the Dockerfile, package
+lockfiles and `src`; credentials/results are excluded. Do not recreate deleted
+services or retry a destructive fixture reset against another database.
+
+`runtime.sql` is installed after owner-run Graphile migrations. It gives the
+worker access only to the queue and synthetic dispatch tables, with no database
+creation, role administration, superuser or BYPASSRLS privileges. A Graphile
+version change needs an explicit owner migration and privilege review.
 
 ## Backup scaffold
 

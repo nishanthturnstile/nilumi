@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { once } from "node:events";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { setTimeout as delay } from "node:timers/promises";
-import { databaseUrl, pool, setup, withMember } from "../src/db.mjs";
+import { databaseUrl, LOCAL_URL, pool, setup, withMember } from "../src/db.mjs";
 import { createSmokeServer } from "../src/server.mjs";
 import { enqueue, prepareWorker } from "../src/worker.mjs";
 import { journalSnapshot, restoreLocal } from "./backup.mjs";
@@ -91,8 +91,8 @@ async function workers(db) {
       const at =
         scenario === "quiet_hours" ? new Date(due.getTime() + 2000) : due;
       await client.query(
-        "insert into s5.occurrences(id,revision,due_at,scenario) values($1,1,$2,$3)",
-        [id, at, scenario],
+        "insert into s5.occurrences(id,revision,due_at,scenario,household_id,owner_id) values($1,1,$2,$3,$4,$5)",
+        [id, at, scenario, i % 2 ? "h2" : "h1", i % 2 ? "adult3" : "adult1"],
       );
       await enqueue(client, id, 1, at);
       if (scenario === "edited" || scenario === "snoozed") {
@@ -125,7 +125,10 @@ async function workers(db) {
     client.release();
   }
   const start = () => {
+    const url = new URL(LOCAL_URL);
+    url.username = "s5_worker";
     const child = spawn(process.execPath, ["src/worker.mjs"], {
+      env: { ...process.env, S5_DATABASE_URL: url.toString() },
       stdio: ["ignore", "ignore", "ignore"],
     });
     child.on("error", () => {});
@@ -163,6 +166,14 @@ async function workers(db) {
     assert.equal(result.rows[0].dispatched, 200);
     assert.equal(result.rows[0].stale, 0);
     assert.equal(result.rows[0].early, 0);
+    assert.equal(
+      (
+        await db.query(
+          "select count(*)::int as n from s5.deliveries d join s5.occurrences o on o.id=d.occurrence_id where d.household_id<>o.household_id",
+        )
+      ).rows[0].n,
+      0,
+    );
     assert.ok(result.rows[0].maximum_lateness_ms <= 60_000);
     assert.equal(
       (
@@ -182,7 +193,10 @@ async function workers(db) {
       delivery: "synthetic_database_sink",
       railwayRedeploy: "pending",
       calendarRecurrenceExpansion: "not_exercised",
-      productionRoles: "pending",
+      runtimeRole: "s5_worker_restricted",
+      households: 2,
+      householdReceiptMismatch: 0,
+      productionMigrationMaintenanceSeparation: "pending",
     };
   } finally {
     await stop(child);
@@ -263,6 +277,7 @@ const report = {
   railwayAccepted: false,
 };
 try {
+  if (databaseUrl() !== LOCAL_URL) throw new Error("s5_local_smoke_only");
   await setup(db);
   const version = await db.query(
     "select current_setting('server_version') as version, current_setting('server_version_num')::integer as number, datlocprovider as locale_provider, datcollate as collate, datctype as ctype, datlocale as icu_locale from pg_database where datname=current_database()",
@@ -284,6 +299,10 @@ try {
   assert.equal(tamil.rows[0].transliteration_similarity, 0);
   report.tamil = tamil.rows[0];
   await prepareWorker(db);
+  await db.query(
+    await readFile(new URL("../sql/runtime.sql", import.meta.url), "utf8"),
+  );
+  await db.query("alter role s5_worker password 's5-local-synthetic-only'");
   report.rls = await rls(db);
   report.worker = await workers(db);
   report.streaming = await streaming(db);
