@@ -226,8 +226,34 @@ manifest publication, verified download and retention dry run (zero candidates,
 zero deletions). The recovery command also downloaded verified ciphertext and
 the merged content-free journal to ignored private storage. The 200-occurrence
 local regression passed; temporary local Docker resources were stopped/removed.
-No Railway resources or AI calls were added. Master-key decryption, recovery by
-each adult, 2FA confirmation and installed-PWA/home RTT remain pending.
+No Railway resources or AI calls were added. The subsequent master-key restore
+is recorded below; independent recovery by each adult, 2FA confirmation and
+installed-PWA/home RTT remain pending.
+
+## Real-key offsite restore — October 8, 2026
+
+The user confirmed successful decryption on their own Windows device. The agent
+never opened the private identity. [Restore evidence](../spikes/s5/reports/offsite-restore.json)
+records a fresh local scratch cluster restored from that decrypted R2 backup.
+All five source counts matched the manifest before forget replay; recreated
+restricted app/worker roles, PostgreSQL 18/extensions/ICU locale, FORCE RLS,
+private visibility, cross-household visibility and queue access boundaries passed.
+The current remote journals were rechecked before acceptance; app/worker runtime
+traffic remained disabled.
+
+A [new post-backup forget](../spikes/s5/reports/post-backup-forget.json) was then
+published for synthetic canary `private2`. Recreating the scratch cluster and
+restoring the same original dump replayed both journals and removed this canary
+before app queries. This closes the encrypted offsite late-forget proof.
+Plaintext dump and scratch container/network were removed; encrypted evidence
+and the private master key remain in their intended locations.
+
+The backup was about 27 minutes old and the final automated restore took ~1.6 s;
+full human recovery timing is not measured. This archive contains `s5`, while
+Graphile queue runtime is reinstalled separately; queue contents and production
+job reconstruction are not restored. Independent both-adult recovery, 2FA,
+home-network/installed-PWA validation and production role/runtime work remain
+pending. **S5 and Phase 0 are still open.**
 
 ## Primary references
 

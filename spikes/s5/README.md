@@ -155,8 +155,11 @@ run `node --env-file=validation-results/offsite.env scripts/restore-offsite.mjs`
 The command verifies the remote backup and current journals again, recreates
 roles in the empty scratch cluster, checks dump counts against the manifest,
 replays forgets before app queries, and validates FORCE RLS and restricted logins.
-It never opens the private identity. This validator is prepared; its real-key
-restore execution remains pending until the operator decrypts the backup.
+It never opens the private identity. Its real-key restore passed after the user
+privately decrypted the backup. A second fresh restore replayed a newly published
+post-backup forget, removing that canary before restricted app queries. See
+[restore evidence](reports/offsite-restore.json). Plaintext and scratch resources
+were removed after validation.
 
 The offsite dump contains `s5` only. Graphile's pinned schema/runtime is
 reinstalled separately; this command does not prove restoration of queue contents

@@ -233,7 +233,8 @@ try {
     graphileQueueRuntimeReinstalled: true,
     graphileQueueContentsRestored: false,
     plaintextDumpSha256: sha256(dump),
-    rpoHours: (Date.now() - Date.parse(verified.manifest.createdAt)) / 3600000,
+    backupAgeHours:
+      (Date.now() - Date.parse(verified.manifest.createdAt)) / 3600000,
     restoreDurationSeconds: (Date.now() - Date.parse(report.at)) / 1000,
     totalHumanRto: "pending_operator_timing",
     restoredRuntimeTrafficEnabled: false,

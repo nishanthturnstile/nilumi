@@ -66,16 +66,17 @@ Fill in dates and outcomes privately; publish only non-secret evidence in S5:
 
 - Both adults independently accessed the recovery document: user confirmed.
 - Real master-key storage: user confirmed; one shared identity for both adults.
-- Both accounts' 2FA and real master-key decryption: pending.
+- Both accounts' 2FA: pending confirmation.
+- Real master-key decryption: user confirmed; automated scratch restore passed.
 - Real master-key encryption and R2 upload/hash verification: passed October 8, 2026.
 - Encrypted recovery download and content-free journal hash verification: passed.
-- Restore to separate scratch with roles/extensions/RLS intact: pending live drill.
-- Post-backup forget canary absent before traffic: pending live drill.
+- Restore to separate scratch with roles/extensions/RLS intact: passed October 8, 2026.
+- Post-backup forget canary absent before traffic: passed; newer journal replayed.
 - Both operators completed recovery within target: pending.
 - Railway volume snapshot restore: passed October 8, 2026.
 - Railway PostgreSQL 18 PITR to a separate service: passed October 8, 2026.
 - Fresh-cluster role recreation and restricted-access restore: passed locally;
-  real-key offsite recovery remains pending.
+  real-key offsite scratch restore also passed.
 
 The automated local test uses a synthetic database dump and verifies policy and
 forget replay. It does not validate OneDrive availability, the real key, R2
@@ -87,6 +88,19 @@ in private bucket `nilumi-backups`. Object credentials are configured privately;
 the test token expires October 15, 2026. The private master identity is not in
 that configuration. Retention was a dry run with no eligible pairs or deletions.
 Recheck the latest forget journals before actual recovery/cutover.
+
+The user privately decrypted this backup successfully. The fresh scratch restore
+matched all five manifest table counts, recreated restricted cluster roles,
+verified extensions/ICU locale, FORCE RLS and both-household visibility, and
+replayed the latest remote journals before restricted app queries. A second run
+recovered the same backup after a new `private2` forget was published, proving
+that later deletion survived recovery. Plaintext and scratch resources were
+removed afterwards. The backup was about 27 minutes old; the automated restore
+took about 1.6 seconds. These are synthetic drill measurements, not acceptance
+of production RPO/RTO or either adult's independent full recovery.
+
+Graphile queue runtime was reinstalled; this schema-only offsite archive does not
+restore queue contents. Production queue reconstruction remains a separate task.
 
 ## Guided OneDrive and key setup
 

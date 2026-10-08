@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-08T16:32:05.984Z",
+  "syntheticOnly": true,
+  "offsiteRestorePassed": true,
+  "operatorMasterKeyDecryption": "user_confirmed",
+  "bothAdultRecoveryAccepted": false,
+  "bucket": "nilumi-backups",
+  "manifestKey": "s5-synthetic/recovery-drill/backups/24b96953-3802-4de1-817e-d88489519d38.manifest.json",
+  "freshClusterRolesRecreated": true,
+  "manifestRowCountsMatched": true,
+  "beforeReplay": {
+    "members": 3,
+    "records": 4,
+    "occurrences": 220,
+    "deliveries": 200,
+    "forget_tombstones": 1
+  },
+  "journalCount": 2,
+  "journalRecheckedBeforeAcceptance": true,
+  "forgottenRecordsAbsent": true,
+  "restrictedVisibilityPassed": true,
+  "restrictedWorkerPassed": true,
+  "forceRls": true,
+  "database": {
+    "version": 180006,
+    "datlocprovider": "i",
+    "datlocale": "en-US"
+  },
+  "extensions": [
+    {
+      "extname": "pg_trgm",
+      "extversion": "1.6"
+    },
+    {
+      "extname": "vector",
+      "extversion": "0.8.7"
+    }
+  ],
+  "graphileQueueRuntimeReinstalled": true,
+  "graphileQueueContentsRestored": false,
+  "plaintextDumpSha256": "0461d12ce2a5e0662e4476b92fc4aa6f7ed3af5111b5c2d0ee9945559affe582",
+  "backupAgeHours": 0.45179694444444446,
+  "restoreDurationSeconds": 1.558,
+  "totalHumanRto": "pending_operator_timing",
+  "restoredRuntimeTrafficEnabled": false,
+  "postBackupForgetCanaryReplayPassed": true,
+  "postBackupForgetCanary": "private2",
+  "postBackupForgetPublishedAt": "2026-10-08T16:32:02.056Z",
+  "plaintextDumpRemoved": true,
+  "scratchDatabaseRemoved": true
+}

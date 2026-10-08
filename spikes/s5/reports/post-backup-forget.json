@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-08T16:32:02.056Z",
+  "syntheticOnly": true,
+  "postBackupForgetPublished": true,
+  "bucket": "nilumi-backups",
+  "household": "h1",
+  "canary": "private2",
+  "journalCount": 2,
+  "journalSha256": "15c107d36a3d52ac21f66bfeee280d6481ba13410f16803ca538b10707aea551"
+}
