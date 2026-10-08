@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const CONTRACT_VERSION = "s3-v1";
+export const PROVIDER_SCHEMA_VERSION = "s3-wire-v2";
 export const EntityType = z.enum([
   "person",
   "household",
@@ -183,6 +184,14 @@ function providerSchema(value: unknown): unknown {
   const node = Object.fromEntries(
     Object.entries(value).map(([key, child]) => [key, providerSchema(child)]),
   );
+  // Zod wraps optional draft-7 references in a one-branch allOf. OpenAI's
+  // supported subset accepts the reference directly; this wrapper adds no rule.
+  if (
+    Array.isArray(node.allOf) &&
+    node.allOf.length === 1 &&
+    Object.keys(node).length === 1
+  )
+    return node.allOf[0];
   if (node.type === "object" && node.properties) {
     const properties = node.properties as Record<string, unknown>;
     const required = new Set((node.required as string[] | undefined) ?? []);
@@ -197,7 +206,11 @@ function providerSchema(value: unknown): unknown {
   }
   return node;
 }
-const parserJsonSchema = z.toJSONSchema(NluResult, { target: "draft-7" });
+// References remove repeated wire definitions without changing parsed contracts.
+const parserJsonSchema = z.toJSONSchema(NluResult, {
+  target: "draft-7",
+  reused: "ref",
+});
 export const PROVIDER_SCHEMA = providerSchema(
   parserJsonSchema,
 ) as typeof parserJsonSchema;

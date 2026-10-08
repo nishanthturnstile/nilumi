@@ -28,10 +28,18 @@ export type Usage = {
   cacheWrite: number;
   reasoning: number;
 };
+// Numeric transport observations only: no URL, headers, body or error text.
+export type TransportTimings = {
+  requestCount: number;
+  requestStartedMs?: number;
+  responseHeadersMs?: number;
+  responseStatus?: number;
+  completedMs?: number;
+};
 export type ModelResponse = {
   raw: unknown;
   latencyMs?: number;
-  metadata?: () => Promise<Partial<ModelResponse>>;
+  metadata?: (signal?: AbortSignal) => Promise<Partial<ModelResponse>>;
   usage?: Usage;
   cost?: number;
   routedProvider?: string;
@@ -46,6 +54,7 @@ export type Adapter = (args: {
   prompt: string;
   signal: AbortSignal;
   evaluationMode?: EvaluationMode;
+  onTransportTiming?: (timings: TransportTimings) => void;
 }) => Promise<ModelResponse>;
 export class SchemaGenerationError extends Error {
   constructor(public usage?: Usage) {
@@ -103,12 +112,26 @@ export async function callGateway(
   args: Parameters<Adapter>[0],
   generate: typeof generateText = generateText,
   create: typeof createGatewayProvider = createGatewayProvider,
+  transportFetch: typeof fetch = fetch,
 ) {
   const { modelId, system, prompt, signal } = args;
-  const gateway = create({
-    apiKey: process.env.AI_GATEWAY_API_KEY,
-  });
   const started = performance.now();
+  const timings: TransportTimings = { requestCount: 0 };
+  const emitTiming = () => args.onTransportTiming?.({ ...timings });
+  const apiKey = process.env.AI_GATEWAY_API_KEY;
+  const gateway = create({
+    apiKey,
+    fetch: async (input, init) => {
+      timings.requestCount++;
+      timings.requestStartedMs ??= performance.now() - started;
+      emitTiming();
+      const response = await transportFetch(input, init);
+      timings.responseHeadersMs = performance.now() - started;
+      timings.responseStatus = response.status;
+      emitTiming();
+      return response;
+    },
+  });
   let result: Awaited<ReturnType<typeof generateText>>;
   try {
     result = await generate({
@@ -140,6 +163,8 @@ export async function callGateway(
     throw error;
   }
   const latencyMs = performance.now() - started;
+  timings.completedMs = latencyMs;
+  emitTiming();
   const u = result.usage;
   const usage =
     u.inputTokens !== undefined && u.outputTokens !== undefined
@@ -156,8 +181,16 @@ export async function callGateway(
   const generationId = gatewayMetadata?.generationId;
   const metadata =
     typeof generationId === "string" && gatewayMetadata?.routing === undefined
-      ? async () => {
-          const g = await gateway.getGenerationInfo({ id: generationId });
+      ? async (metadataSignal?: AbortSignal) => {
+          const lookup = create({
+            apiKey,
+            fetch: (input, init) =>
+              transportFetch(input, {
+                ...init,
+                signal: metadataSignal ?? AbortSignal.timeout(1000),
+              }),
+          });
+          const g = await lookup.getGenerationInfo({ id: generationId });
           return {
             cost: g.totalCost,
             routedProvider: g.providerName,

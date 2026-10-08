@@ -22,9 +22,14 @@ import {
   verifyCloudflarePricing,
 } from "./cloudflare-pricing";
 import { FIXTURE_VERSION, REGISTRY_VERSION } from "./context";
-import { CONTRACT_VERSION } from "./contracts";
+import { CONTRACT_VERSION, PROVIDER_SCHEMA_VERSION } from "./contracts";
 import { type Fixture, loadFixtures } from "./fixtures";
-import { type Adapter, callGateway, SchemaGenerationError } from "./gateway";
+import {
+  type Adapter,
+  callGateway,
+  SchemaGenerationError,
+  type TransportTimings,
+} from "./gateway";
 import { INTERPRETATION_VERSION, interpretResult } from "./interpret";
 import { buildPrompt, PROMPT_VERSION } from "./prompt";
 import { score } from "./scoring";
@@ -137,9 +142,20 @@ export async function evaluateCase(
     };
   }
   const started = performance.now();
-  const timed = AbortSignal.any([signal, AbortSignal.timeout(TIMEOUT_MS)]);
+  const deadline = new AbortController();
+  const timer = setTimeout(() => deadline.abort(), TIMEOUT_MS);
+  timer.unref();
+  const timed = AbortSignal.any([signal, deadline.signal]);
+  let transportTimings: TransportTimings | undefined;
+  let stopWaiting: (() => void) | undefined;
   try {
     if (signal.aborted) throw new Error("cancelled");
+    // Register before calling the adapter, including synchronous cancellation.
+    const aborted = new Promise<never>((_, reject) => {
+      const onAbort = () => reject(new Error("aborted"));
+      timed.addEventListener("abort", onAbort, { once: true });
+      stopWaiting = () => timed.removeEventListener("abort", onAbort);
+    });
     const generated = await Promise.race([
       adapter({
         modelId,
@@ -147,31 +163,44 @@ export async function evaluateCase(
         prompt: prompt.prompt,
         signal: timed,
         evaluationMode: mode,
+        onTransportTiming: (timings) => {
+          transportTimings = { ...timings };
+        },
       }),
-      new Promise<never>((_, reject) => {
-        timed.addEventListener("abort", () => reject(new Error("aborted")), {
-          once: true,
-        });
-      }),
+      aborted,
     ]);
-    const latencyMs = generated.latencyMs ?? performance.now() - started;
+    // A blocked event loop can postpone timer delivery. Never accept a late
+    // completion or trust an adapter's narrower latency measurement.
+    const latencyMs = performance.now() - started;
+    if (latencyMs >= TIMEOUT_MS) deadline.abort();
+    if (timed.aborted) throw new Error("aborted");
+    clearTimeout(timer);
+    stopWaiting?.();
     // Charge/routing lookup is non-generative and outside the five-second NLU deadline.
     // It may take at most one extra second, without changing model latency samples.
     let metadata: Partial<Awaited<ReturnType<Adapter>>> = {};
     if (generated.metadata && !signal.aborted) {
+      const metadataDeadline = new AbortController();
+      const metadataSignal = AbortSignal.any([signal, metadataDeadline.signal]);
+      const metadataTimer = setTimeout(() => metadataDeadline.abort(), 1000);
+      metadataTimer.unref();
+      let stopMetadataWaiting: (() => void) | undefined;
       try {
+        const metadataAborted = new Promise<never>((_, reject) => {
+          const onAbort = () => reject(new Error("metadata_timeout"));
+          metadataSignal.addEventListener("abort", onAbort, { once: true });
+          stopMetadataWaiting = () =>
+            metadataSignal.removeEventListener("abort", onAbort);
+        });
         metadata = await Promise.race([
-          generated.metadata(),
-          new Promise<never>((_, reject) => {
-            const timer = setTimeout(
-              () => reject(new Error("metadata_timeout")),
-              1000,
-            );
-            timer.unref();
-          }),
+          generated.metadata(metadataSignal),
+          metadataAborted,
         ]);
       } catch {
         /* Unknown metadata keeps routing verification pending. */
+      } finally {
+        clearTimeout(metadataTimer);
+        stopMetadataWaiting?.();
       }
     }
     if (signal.aborted) throw new Error("cancelled");
@@ -218,6 +247,7 @@ export async function evaluateCase(
       ...score(fixture, validation),
       ...(routedMismatch ? { correct: false, mismatches: ["routing"] } : {}),
       latencyMs,
+      transportTimings,
       validationMs: performance.now() - validationStart,
       promptBytes: prompt.bytes,
       usage: response.usage,
@@ -250,12 +280,16 @@ export async function evaluateCase(
       schemaValid: false,
       mismatches: ["request_failed"],
       latencyMs: performance.now() - started,
+      transportTimings,
       validationMs: 0,
       promptBytes: prompt.bytes,
       costUsd: null,
       costBasis: "reservation",
       billable: true,
     };
+  } finally {
+    clearTimeout(timer);
+    stopWaiting?.();
   }
 }
 export function schedule(
@@ -411,6 +445,7 @@ export async function handleEvaluation(
             fixtureHash: loaded.hash,
             models: MODEL_CONFIG_VERSION,
             contract: CONTRACT_VERSION,
+            wireSchema: PROVIDER_SCHEMA_VERSION,
             interpretation: INTERPRETATION_VERSION,
           },
         });

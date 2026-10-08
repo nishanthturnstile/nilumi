@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -232,6 +233,7 @@ test("OpenAI wire schema requires every object field, uses nullable optional slo
   function inspect(node) {
     if (!node || typeof node !== "object") return;
     assert.equal(node.oneOf, undefined);
+    assert.equal(node.allOf, undefined);
     if (node.type === "object" && node.properties) {
       assert.deepEqual(
         new Set(node.required),
@@ -269,10 +271,44 @@ test("OpenAI wire schema requires every object field, uses nullable optional slo
     false,
   );
 });
+test("compact wire references expand to the unchanged S3 v1 schema", () => {
+  function expand(node) {
+    if (Array.isArray(node)) return node.map(expand);
+    if (!node || typeof node !== "object") return node;
+    if (node.$ref) {
+      assert.match(node.$ref, /^#\/definitions\/[^/]+$/);
+      const definition = PROVIDER_SCHEMA.definitions[node.$ref.split("/")[2]];
+      assert.ok(definition, "Every reference resolves within this schema");
+      assert.equal(Object.keys(node).length, 1);
+      return expand(definition);
+    }
+    return Object.fromEntries(
+      Object.entries(node)
+        .filter(([key]) => key !== "definitions")
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([key, value]) => [key, expand(value)]),
+    );
+  }
+  // Fingerprint of the expanded, sorted pre-optimization wire schema. Changing
+  // nullability, bounds, branches or required fields requires contract review.
+  assert.equal(
+    createHash("sha256")
+      .update(JSON.stringify(expand(PROVIDER_SCHEMA)))
+      .digest("hex"),
+    "81c44ccba9703586225bd8253c8e01cdb9b99aec4fdd646b69223d2ffa99f592",
+  );
+  assert.ok(Buffer.byteLength(JSON.stringify(PROVIDER_SCHEMA)) < 11000);
+});
 test("provider schema is generated from contract; >5 commands and command+smalltalk fail", () => {
-  assert.equal(PROVIDER_SCHEMA.properties.commands.maxItems, 5);
-  assert.equal(PROVIDER_SCHEMA.properties.commands.items.oneOf, undefined);
-  assert.equal(PROVIDER_SCHEMA.properties.commands.items.anyOf.length, 18);
+  const resolveRef = (node) =>
+    node.$ref
+      ? resolveRef(PROVIDER_SCHEMA.definitions[node.$ref.split("/")[2]])
+      : node;
+  const commandsSchema = resolveRef(PROVIDER_SCHEMA.properties.commands);
+  assert.equal(commandsSchema.maxItems, 5);
+  const commandSchema = resolveRef(commandsSchema.items);
+  assert.equal(commandSchema.oneOf, undefined);
+  assert.equal(commandSchema.anyOf.length, 18);
   const commands = Array(6).fill({ kind: "undo" });
   assert.equal(
     NluResult.safeParse({ language: "en", commands }).success,
@@ -707,6 +743,85 @@ test("five second timeout is bounded with no repair or fallback request", async 
     assert.equal(row.status, "timeout");
     assert.equal(calls, 1);
     assert.ok(row.latencyMs >= 4500 && row.latencyMs < 6000);
+  } finally {
+    clearTimeout(keepAlive);
+  }
+});
+test("late completions fail even when timer delivery is blocked and adapter latency is short", async () => {
+  const row = await evaluateCase(
+    fixture(),
+    "openai/gpt-6-luna",
+    1,
+    async () => {
+      const start = performance.now();
+      while (performance.now() - start < 5050) {
+        // Simulate synchronous SDK work blocking timeout delivery.
+      }
+      return { ...mockResponse(fixture()), latencyMs: 1 };
+    },
+    controller().signal,
+  );
+  assert.equal(row.status, "timeout");
+  assert.equal(row.correct, false);
+  assert.ok(row.latencyMs >= 5000);
+});
+test("synchronous adapter cancellation cannot race past the abort listener", async () => {
+  const c = controller();
+  const row = await evaluateCase(
+    fixture(),
+    "openai/gpt-6-luna",
+    1,
+    () => {
+      c.abort();
+      return new Promise(() => {});
+    },
+    c.signal,
+  );
+  assert.equal(row.status, "cancelled");
+});
+test("failed calls retain a detached transport timing snapshot without provider errors", async () => {
+  const timing = { requestCount: 1, requestStartedMs: 2 };
+  const row = await evaluateCase(
+    fixture(),
+    "openai/gpt-6-luna",
+    1,
+    async ({ onTransportTiming }) => {
+      onTransportTiming(timing);
+      throw new Error("private provider body and secret credential");
+    },
+    controller().signal,
+  );
+  timing.responseStatus = 200;
+  assert.equal(row.status, "model_error");
+  assert.deepEqual(row.transportTimings, {
+    requestCount: 1,
+    requestStartedMs: 2,
+  });
+  assert.doesNotMatch(
+    JSON.stringify(row),
+    /private provider|secret credential/,
+  );
+});
+test("metadata timeout aborts its lookup without changing generation latency", async () => {
+  let lookupSignal;
+  const keepAlive = setTimeout(() => {}, 2000);
+  try {
+    const row = await evaluateCase(
+      fixture(),
+      "openai/gpt-6-luna",
+      1,
+      async () => ({
+        ...mockResponse(fixture()),
+        metadata: (signal) => {
+          lookupSignal = signal;
+          return new Promise(() => {});
+        },
+      }),
+      controller().signal,
+    );
+    assert.equal(lookupSignal.aborted, true);
+    assert.equal(row.status, "ok");
+    assert.ok(row.latencyMs < 1000);
   } finally {
     clearTimeout(keepAlive);
   }
@@ -1584,6 +1699,63 @@ test("Gateway adapter uses the approved Hobby options at the actual SDK call bou
       { response: {}, usage: {}, finishReason: "stop" },
     ),
   );
+});
+test("Gateway timing records numbers only and metadata fetch receives its own abort signal", async () => {
+  const { callGateway } = await import("../lib/nlu/gateway.ts");
+  const snapshots = [];
+  const fetchSignals = [];
+  const inference = controller();
+  const metadata = controller();
+  let generationFetch;
+  let factories = 0;
+  const response = await callGateway(
+    {
+      modelId: "openai/gpt-6-luna",
+      system: "secret system",
+      prompt: "private transcript",
+      signal: inference.signal,
+      onTransportTiming: (timing) => snapshots.push(timing),
+    },
+    async () => {
+      await generationFetch("https://example.test/private-path", {
+        signal: inference.signal,
+        headers: { authorization: "secret credential" },
+        body: "private request",
+      });
+      return {
+        output: byId("shopping-01").expected,
+        usage: {},
+        providerMetadata: { gateway: { generationId: "gen-mock" } },
+      };
+    },
+    (settings) => {
+      factories++;
+      if (factories === 1) generationFetch = settings.fetch;
+      const client = () => ({});
+      client.getGenerationInfo = async () => {
+        await settings.fetch("https://example.test/metadata");
+        return { totalCost: 0, providerName: "openai", isByok: false };
+      };
+      return client;
+    },
+    async (_input, init) => {
+      fetchSignals.push(init.signal);
+      return new Response("private response", { status: 200 });
+    },
+  );
+  inference.abort();
+  await response.metadata(metadata.signal);
+  assert.deepEqual(fetchSignals, [inference.signal, metadata.signal]);
+  assert.equal(metadata.signal.aborted, false);
+  assert.equal(snapshots.length, 3);
+  assert.equal(snapshots[0].responseStatus, undefined);
+  assert.equal(snapshots[2].requestCount, 1);
+  assert.equal(snapshots[2].responseStatus, 200);
+  assert.ok(snapshots[2].completedMs >= snapshots[2].responseHeadersMs);
+  for (const snapshot of snapshots)
+    for (const value of Object.values(snapshot))
+      assert.equal(typeof value, "number");
+  assert.doesNotMatch(JSON.stringify(snapshots), /private|secret|example/);
 });
 test("SDK schema generation failures are tracked as first-attempt schema failures", async () => {
   const { SchemaGenerationError } = await import("../lib/nlu/gateway.ts");
