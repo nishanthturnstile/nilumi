@@ -216,8 +216,9 @@ The browser connection initially became unstable, then recovered. Created
 `nilumi-s5-synthetic-backups`: Object Read & Write, only `nilumi-backups`, one-week
 TTL, dashboard-confirmed expiry October 15, 2026. Credentials were transferred
 privately to the ignored mode-600 configuration without displaying values in
-tool output. A temporary credential download outside the workspace could not be
-removed because automatic policy blocked deletion; operator cleanup is pending.
+tool output. Automatic policy blocked agent deletion of a temporary credential
+download outside the workspace. The user removed it privately; a subsequent
+`Test-Path` check returned false, verifying that the temporary copy is absent.
 
 [Live offsite evidence](../spikes/s5/reports/offsite-smoke.json) records successful
 real-recipient age encryption, journal/ciphertext read-back SHA-256 verification,

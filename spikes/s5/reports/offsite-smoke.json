@@ -36,5 +36,5 @@
     "manualDecryptionAndRestore": "pending"
   },
   "temporaryLocalDatabaseRemoved": true,
-  "temporaryCredentialDownloadCleanup": "blocked_by_policy_outside_workspace; operator_removal_pending"
+  "temporaryCredentialDownloadCleanup": "removed_by_operator; absence_verified_with_Test-Path"
 }
