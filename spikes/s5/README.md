@@ -98,7 +98,9 @@ removed; the reported cost is lagging and the cumulative reserve is $0.20 of $2.
 ## Synthetic R2 offsite commands
 
 `r2-config.example.json` records public configuration only. The identified bucket
-is `nilumi`, prefix `s5-synthetic/recovery-drill/`. Authenticated bucket access has
+is the private bucket `nilumi-backups`, prefix `s5-synthetic/recovery-drill/`. The
+original `nilumi` bucket serves `nilumi.in` publicly and must not receive backups.
+Authenticated bucket access has
 not yet been verified. No bucket creation or lifecycle changes are performed.
 
 Before running, install age locally and complete the real-key setup in the

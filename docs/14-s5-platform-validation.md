@@ -203,6 +203,20 @@ with credential fields empty. The upload command stopped at
 upload/download, both-operator recovery and 2FA confirmation remain pending.
 No Railway resources or AI calls were added in this increment.
 
+## Private R2 bucket configuration — October 8, 2026
+
+Browser inspection found `nilumi` has public access enabled through `nilumi.in`.
+The user chose a separate private bucket, preserving the existing domain.
+Created **`nilumi-backups`**, Asia-Pacific, Standard storage. Settings inspection
+confirmed no custom domains and the public development URL disabled. S5 public
+and ignored private configuration now use this bucket, retaining prefix
+`s5-synthetic/recovery-drill/`. No backup objects were uploaded.
+
+The browser connection became unstable while opening R2 token creation. Bucket
+configuration is complete; credential creation/configuration and authenticated
+upload/download remain pending. Use an Object Read & Write token scoped only to
+`nilumi-backups`; do not reuse existing tokens with access to all buckets.
+
 ## Primary references
 
 [Graphile Worker running jobs](https://worker.graphile.org/docs/library/run),

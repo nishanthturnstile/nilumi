@@ -104,7 +104,7 @@ Retain the following instructions for reference; do not generate a second key.
    be supplied here and configured for the backup worker. Confirm the stored
    identity can decrypt a small synthetic trial before removing the temporary
    local identity copy. Keep the master identity in the recovery document.
-6. Record R2 bucket `nilumi`, account endpoint
+6. Record private R2 bucket `nilumi-backups`, account endpoint
    `https://68876249314ab88c8b5bdb86ba5fd8c8.r2.cloudflarestorage.com`, and test
    prefix `s5-synthetic/recovery-drill/`. Supply scoped R2 credentials through
    private setup when we are ready to run the drill; the endpoint alone does not
