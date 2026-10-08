@@ -9,9 +9,11 @@ accepts `cloudflare` (the new default) or `vercel`. Unknown values block calls.
 There is no automatic cross-gateway fallback. Existing Vercel code, privacy
 evidence and regression tests remain available when Vercel is explicitly selected.
 
-This is locally validated preparation, not live Cloudflare acceptance. The
-Railway evaluator remains disabled on its previously deployed artifact. No new
-deployment, inference, credit purchase or automatic top-up was performed.
+Account setup and read-only runtime-token preflight are now verified; live
+Cloudflare acceptance is pending. Railway staging has the Cloudflare credential
+and gateway variables installed without deployment. The evaluator remains
+disabled on its previously deployed artifact. No inference, credit purchase or
+automatic top-up was performed.
 Prompt v10, the frozen corpus, parser contracts and scoring gates are unchanged.
 The full hosted comparison and model selection remain pending.
 
@@ -19,9 +21,18 @@ The full hosted comparison and model selection remain pending.
 
 The authenticated collaborative browser showed AI Gateway onboarding for account
 `68876249314ab88c8b5bdb86ba5fd8c8`. The credits screen showed **USD 0.00**,
-no usage and no top-up invoices. A gateway creation form was inspected, but no
-creation was submitted. The browser became unavailable during preparation;
-gateway creation and credential installation remain pending.
+no usage and no top-up invoices. After the owner restored the browser connection,
+gateway `nilumi-s3` was created and its saved settings were verified through the
+dashboard and the actual runtime token. The token has account-scoped AI Gateway
+Read/Run and Workers AI Read permissions, expires November 7, and was installed
+privately in an ignored mode-0600 local file and Railway staging. No secret is
+included in the [setup evidence](../spikes/s1/evals/results/cloudflare-account-setup-2026-10-08.json).
+
+Saved settings: authentication on, logs/classification/cache/retries off,
+`zdr:true`, `byok_only:false`, no stored provider keys, Logpush off. A USD 0.35
+spending rule applies to all providers/models over a sliding 30-day window.
+Cloudflare spend enforcement is eventually consistent, so the local cumulative
+ledger remains the primary testing guard. Automatic top-up remains disabled.
 
 Cloudflare's [REST API](https://developers.cloudflare.com/ai-gateway/usage/rest-api/)
 supports Responses requests at `/accounts/{account}/ai/v1/responses`, with a
@@ -35,34 +46,40 @@ requires prepaid inference credits and charges a 5% credit-purchase fee.
 Gateway core features being free does not make OpenAI inference free. ChatGPT
 subscription access does not fund this account. ZDR applies to eligible models
 using Cloudflare-managed credentials; it does not disable gateway logging.
-No model-specific ZDR or upstream no-training verification is recorded as
-complete. Family-data eligibility remains false.
+The authenticated third-party catalog records `zdr:false` for GPT-6 Luna and
+`zdr:true` for GPT-5 nano, GPT-4.1 nano and GPT-4.1 mini; all four list Responses
+support. Luna must not be used with this gateway's ZDR setting. Catalog metadata
+does not establish live authorization, schema compatibility or five-second
+latency. OpenAI's [default API policy](https://developers.openai.com/api/docs/guides/your-data)
+excludes training unless the account explicitly opts in, but Cloudflare-managed
+account opt-in status/route-specific no-training assurance remains unverified.
+The privacy profile continues blocking inference; family-data eligibility remains
+false. GPT-4.1 mini is an already owner-approved candidate for a later three-case
+synthetic smoke, subject to its privacy and fresh pricing gates.
 
-### Pre-payment setup attempt and minimum deposit
+### Pre-payment setup and minimum deposit
 
 The owner subsequently authorized completing account configuration before
-payment. The collaborative browser reopened the creation form, but its host
-disconnected during the settings edit. No creation was submitted or verified.
-No usable local Wrangler credential or Cloudflare environment credential was
-found in the checked Windows/WSL locations. A stable authenticated browser
-connection or privately installed account-scoped credential is still required.
-Do not treat the intended settings below as saved account configuration.
+payment. The first browser connection disconnected during editing. After the
+owner restored it, gateway creation, configuration and credential installation
+succeeded. Read-only preflight returned HTTP 200 for gateway settings and credit
+balance and passed the application's strict route-configuration verification.
 
 Cloudflare's [top-up API reference](https://developers.cloudflare.com/api/resources/ai_gateway/subresources/billing/subresources/topup/methods/create/)
 specifies a minimum of 1,000 cents: **USD 10.00 in credits**. With the documented
 5% purchase fee, the expected payment is **USD 10.50 before applicable taxes,
-foreign exchange or card charges**. The account-specific checkout total has
-not been inspected. Automatic top-up should remain disabled. This deposit is
+foreign exchange or card charges**. The account-specific checkout was inspected
+with an amount of USD 10 and displayed a USD 0.50 fee and USD 10.50 total. It was
+cancelled without submitting payment. Automatic top-up remains disabled. This deposit is
 separate from the unchanged USD 0.50 cumulative inference-testing cap and the
 existing USD 5 monthly usage allowance; it requires more upfront funding than
 that allowance. No purchase or cap increase is authorized or performed.
 
-Complete and verify gateway settings and scoped credential installation before
-recommending payment. The prepared target is `nilumi-s3`, authentication on,
-logs/cache/retries off, no provider keys, managed billing allowed, only the
-approved OpenAI model requested by the application. Model-specific no-training
-and ZDR evidence must be assessed separately; zero credits can block live
-eligibility/latency testing even after non-billable setup succeeds.
+Gateway settings and scoped credential installation are complete. Before payment
+for validation, resolve managed-route no-training assurance and choose a ZDR
+eligible approved challenger with fresh pricing. Adding credits will not resolve
+Luna's catalog ZDR restriction. Zero credits prevents live eligibility/latency
+testing; completed non-billable setup does not imply a successful smoke.
 
 ## Implemented transport and gates
 

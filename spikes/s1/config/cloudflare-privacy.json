@@ -5,7 +5,7 @@
   "verified_by": null,
   "team_zero_data_retention": false,
   "team_no_prompt_training": false,
-  "gateway_managed_credentials_only": false,
+  "gateway_managed_credentials_only": true,
   "approved_providers": ["openai"],
   "approved_models": [
     "openai/gpt-6-luna",
@@ -20,5 +20,5 @@
     "approved_by": "Nishanth Murugan — switch synthetic evaluation to Cloudflare AI Gateway",
     "fixture_sha256": "962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd"
   },
-  "notes": "Pending Cloudflare-specific verification. Dashboard on 2026-10-08 showed credits USD 0.00 and onboarding. Vercel verification is historical and does not authorize Cloudflare. synthetic_hobby remains the legacy wire name for the approved synthetic-only exception; it does not describe a Cloudflare plan. Family-data eligibility is not approved."
+  "notes": "Partial verification on 2026-10-08: nilumi-s3 created; authenticated read-only runtime-token preflight passed with logs/cache/retries off, ZDR on, managed billing allowed and no stored provider keys. Local and staging credentials installed privately; evaluator disabled. Catalog marks Luna ZDR false, GPT-5 nano and GPT-4.1 nano/mini ZDR true. Managed-route no-training assurance remains pending, so verified_at/by and team privacy flags remain unset/false and inference stays blocked. See evals/results/cloudflare-account-setup-2026-10-08.json. Vercel evidence does not authorize Cloudflare. synthetic_hobby is the legacy synthetic-only exception name. Family-data eligibility is not approved."
 }

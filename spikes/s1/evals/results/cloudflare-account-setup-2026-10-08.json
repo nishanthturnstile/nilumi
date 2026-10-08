@@ -1,0 +1,165 @@
+{
+  "version": "s3-cloudflare-account-setup-v1",
+  "account": "68876249314ab88c8b5bdb86ba5fd8c8",
+  "gateway": "nilumi-s3",
+  "checked_at": "2026-10-08T04:37:58.216Z",
+  "evidence": "Authenticated Cloudflare dashboard and read-only runtime-token API preflight; no inference.",
+  "settings": {
+    "authentication": true,
+    "collect_logs": false,
+    "log_classification": false,
+    "cache_ttl": 0,
+    "retries_enabled": false,
+    "zdr": true,
+    "byok_only": false,
+    "stored_provider_key_count": 0,
+    "logpush": false,
+    "spend_limit_usd": 0.35,
+    "spend_limit_window_seconds": 2592000,
+    "spend_limit_scope": "All models/providers; eventually consistent secondary guard"
+  },
+  "credential": {
+    "name": "nilumi-s3-synthetic-runtime",
+    "expires_at": "2026-11-07T04:31:12Z",
+    "permissions": ["AI Gateway Read", "AI Gateway Run", "Workers AI Read"],
+    "account_scoped": true,
+    "local_ignored_file_mode": "0600",
+    "staging_installed": true,
+    "verified_matching_without_secret_output": true
+  },
+  "staging": {
+    "evaluator_enabled": false,
+    "evaluator_allowlist_count": 0,
+    "gateway_variable": "cloudflare",
+    "variables_changed_without_deployment": true,
+    "cloudflare_artifact_deployed": false
+  },
+  "billing": {
+    "balance_usd": 0,
+    "auto_topup_enabled": false,
+    "minimum_credits_usd": 10,
+    "checkout_fee_usd": 0.5,
+    "checkout_total_usd": 10.5,
+    "payment_submitted": false
+  },
+  "catalog": {
+    "source": "Authenticated GET /accounts/{account}/ai/catalog/models",
+    "models": [
+      {
+        "model_id": "openai/gpt-4.1-mini",
+        "pricing": {
+          "Cached input tokens (per 1M)": 0.1,
+          "Input tokens (per 1M)": 0.4,
+          "Output tokens (per 1M)": 1.6
+        },
+        "provider_details": [
+          {
+            "id": "openai",
+            "pricing": {
+              "input_cached_tokens": 0.1,
+              "input_tokens": 0.4,
+              "output_tokens": 1.6
+            }
+          }
+        ],
+        "provider_id": "openai",
+        "request_formats": ["responses", "chat-completions"],
+        "terms": "https://openai.com/policies/",
+        "zdr": true,
+        "zdr_comment": null
+      },
+      {
+        "model_id": "openai/gpt-4.1-nano",
+        "pricing": {
+          "Cached input tokens (per 1M)": 0.025,
+          "Input tokens (per 1M)": 0.1,
+          "Output tokens (per 1M)": 0.4
+        },
+        "provider_details": [
+          {
+            "id": "openai",
+            "pricing": {
+              "input_cached_tokens": 0.025,
+              "input_tokens": 0.1,
+              "output_tokens": 0.4
+            }
+          }
+        ],
+        "provider_id": "openai",
+        "request_formats": ["responses", "chat-completions"],
+        "terms": "https://openai.com/policies/",
+        "zdr": true,
+        "zdr_comment": null
+      },
+      {
+        "model_id": "openai/gpt-5-nano",
+        "pricing": {
+          "Cached input tokens (per 1M)": 0.005,
+          "Input tokens (per 1M)": 0.05,
+          "Output tokens (per 1M)": 0.4
+        },
+        "provider_details": [
+          {
+            "id": "openai",
+            "pricing": {
+              "input_cached_tokens": 0.005,
+              "input_tokens": 0.05,
+              "output_tokens": 0.4
+            }
+          }
+        ],
+        "provider_id": "openai",
+        "request_formats": ["responses", "chat-completions"],
+        "terms": "https://openai.com/policies/",
+        "zdr": true,
+        "zdr_comment": null
+      },
+      {
+        "model_id": "openai/gpt-6-luna",
+        "pricing": {
+          "Long-context cache write (per 1M)": 0.25,
+          "Long-context cached input (per 1M)": 0.02,
+          "Long-context input (per 1M)": 0.2,
+          "Long-context output (per 1M)": 0.75,
+          "Short-context cache write (per 1M)": 0.125,
+          "Short-context cached input (per 1M)": 0.01,
+          "Short-context input (per 1M)": 0.1,
+          "Short-context output (per 1M)": 0.5
+        },
+        "provider_details": [
+          {
+            "id": "openai",
+            "pricing": {
+              "long_context_input_cache_creation_tokens": 0.25,
+              "long_context_input_cached_tokens": 0.02,
+              "long_context_input_tokens": 0.2,
+              "long_context_output_tokens": 0.75,
+              "long_context_threshold_tokens": 272000,
+              "short_context_input_cache_creation_tokens": 0.125,
+              "short_context_input_cached_tokens": 0.01,
+              "short_context_input_tokens": 0.1,
+              "short_context_output_tokens": 0.5
+            }
+          }
+        ],
+        "provider_id": "openai",
+        "request_formats": ["responses", "chat-completions"],
+        "terms": "https://openai.com/policies/",
+        "zdr": false,
+        "zdr_comment": null
+      }
+    ]
+  },
+  "privacy": {
+    "managed_route_no_training_verified": false,
+    "family_data_approved": false,
+    "notes": "OpenAI default API no-training policy documented, but Cloudflare-managed account opt-in status/route-specific commitment is not independently established. Gateway ZDR flag does not make Luna eligible."
+  },
+  "testing": {
+    "inference_calls": 0,
+    "cumulative_cap_usd": 0.5,
+    "retained_usd": 0.126034025,
+    "remaining_usd": 0.373965975,
+    "ledger_sha256": "874982ab82557d820b120ff27b9d525e286f65af283c650d3504e589e74fadab"
+  }
+}
