@@ -44,3 +44,6 @@ next-env.d.ts
 /clips/local/
 /clips/generated/
 /validation-results/
+
+# Generated from the shared design-system specimen before dev/build
+/public/design-system/

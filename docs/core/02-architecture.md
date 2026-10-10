@@ -20,7 +20,7 @@
 ## 1. Context and drivers
 
 ### 1.1 System in one paragraph
-Two adults (later, kids) use Nilumi, an installable Next.js 16 PWA at `https://nilumi.in`, on their phones (one Android, one iPhone) to speak or type. A Railway project in the Southeast Asia (Singapore) region runs the app service (Next.js standalone Node server with the PWA, Hono `/v1` API, Better Auth and SSE), a worker service (graphile-worker jobs and maintenance), and Railway Postgres 18 with pgvector. The API transcribes speech, interprets it with one structured LLM call routed through the in-process AI SDK provider registry, executes deterministic commands against Postgres (memories, lists, tasks, reminders), retrieves evidence for questions, answers with citations, optionally speaks the reply, and streams result cards back to the phone. The worker delivers reminders through Web Push, appends the forget journal, runs maintenance and backups, and performs restore tests. Before the pilot it also assembles each member's daily **Today brief** deterministically under that member's own access context (§13.4) and, for adults who link it, reads their primary Google Calendar read-only for today and tomorrow (§13.5). Postgres is the only stateful authority.
+Two adults (later, kids) use Nilumi, an installable Next.js 16 PWA at `https://app.nilumi.in` ([ADR-055](../adr/adr-055.md)), on their phones (one Android, one iPhone) to speak or type. A Railway project in the Southeast Asia (Singapore) region runs the app service (Next.js standalone Node server with the PWA, Hono `/v1` API, Better Auth and SSE), a worker service (graphile-worker jobs and maintenance), and Railway Postgres 18 with pgvector. The API transcribes speech, interprets it with one structured LLM call routed through the in-process AI SDK provider registry, executes deterministic commands against Postgres (memories, lists, tasks, reminders), retrieves evidence for questions, answers with citations, optionally speaks the reply, and streams result cards back to the phone. The worker delivers reminders through Web Push, appends the forget journal, runs maintenance and backups, and performs restore tests. Before the pilot it also assembles each member's daily **Today brief** deterministically under that member's own access context (§13.4) and, for adults who link it, reads their primary Google Calendar read-only for today and tomorrow (§13.5). Postgres is the only stateful authority.
 
 ### 1.2 Quality attributes (ranked)
 | Rank | Attribute | Meaning here |
@@ -34,7 +34,7 @@ Two adults (later, kids) use Nilumi, an installable Next.js 16 PWA at `https://n
 | 7 | **Cost** | Expected monthly total ≈ ₹1,400–2,700, with AI budget caps still enforced (§17.4) |
 
 ### 1.3 Constraints
-TypeScript end-to-end · Railway Southeast Asia (Singapore) on the owner's existing paid account · Next.js 16 App Router PWA with Turbopack, React 19, Tailwind v4 and Serwist · Vercel usage limited to free open-source libraries (Next.js, Turbopack, AI SDK and optional copy-in UI components) plus one metered exception: Vercel AI Gateway for LLM and embedding routing, funded by purchased credits on Hobby ([ADR-021](../adr/adr-021.md), [ADR-046](../adr/adr-046.md)) · Railway App Sleeping off for `app` and `worker` · Node 24 LTS · PWA on iOS and Android · domain `nilumi.in` bought and attached before installing the app on the phones · English MVP, Tamil-ready · single household · one part-time developer.
+TypeScript end-to-end · Railway Southeast Asia (Singapore) on the owner's existing paid account · Next.js 16 App Router PWA with Turbopack, React 19, Tailwind v4 and Serwist · Vercel usage limited to free open-source libraries (Next.js, Turbopack, AI SDK and optional copy-in UI components) plus one metered exception: Vercel AI Gateway for LLM and embedding routing, funded by purchased credits on Hobby ([ADR-021](../adr/adr-021.md), [ADR-046](../adr/adr-046.md)) · Railway App Sleeping off for `app` and `worker` · Node 24 LTS · PWA on iOS and Android · domain `nilumi.in` bought; app origin `app.nilumi.in` attached before installing the app on the phones; static marketing site on the apex · English MVP, Tamil-ready · single household · one part-time developer.
 
 ---
 
@@ -78,13 +78,13 @@ flowchart LR
     TTS["TTS provider<br/>direct adapter"]
     PUSH["Web Push services<br/>(FCM / APNs web push)"]
     R2[("Cloudflare R2<br/>encrypted backups + forget journal<br/>later Vault originals")]
-    RESEND["Resend<br/>sign-in codes from no-reply@nilumi.in"]
+    RESEND["Resend<br/>sign-in codes and invitations from no-reply@nilumi.in"]
     MON["Uptime monitor"]
     GCAL["Google Calendar API<br/>read-only, per adult (§13.5)"]
     HA["Home Assistant later<br/>(Hey Nilumi · §20.2)"]
   end
 
-  A & B -- "HTTPS same origin · nilumi.in" --> APP
+  A & B -- "HTTPS same origin · app.nilumi.in" --> APP
   APP -- "pg Pool / withMemberTx" --> PG
   WORKER -- "graphile-worker queue + scoped jobs" --> PG
   PG -- "LISTEN/NOTIFY IDs + kinds" --> APP
@@ -101,7 +101,7 @@ flowchart LR
   HA -. "future channel adapter" .-> APP
 ```
 
-**Why this topology:** Railway is the starting host because the owner already has a paid account, wants Singapore hosting and wants the app, worker and database together. The app and API share `nilumi.in`, so cookies, PWA install state, push subscriptions, email sender and optional WebAuthn step-up bind to one final origin. Postgres remains the durable authority for data, vectors, search, jobs, pub/sub and RLS. R2 is off-platform durability for encrypted backups, the forget journal and later Vault originals. Google Calendar is a read-only data source for adults who link it; its event text is untrusted data, never instructions (§13.5). Home Assistant returns later as a **channel adapter** (§20.2) that calls the same turn contract.
+**Why this topology:** Railway is the starting host because the owner already has a paid account, wants Singapore hosting and wants the app, worker and database together. The app and API share `app.nilumi.in`, so host-only cookies, PWA install state, push subscriptions, email sender and optional WebAuthn step-up bind to one final origin. Postgres remains the durable authority for data, vectors, search, jobs, pub/sub and RLS. R2 is off-platform durability for encrypted backups, the forget journal and later Vault originals. Google Calendar is a read-only data source for adults who link it; its event text is untrusted data, never instructions (§13.5). Home Assistant returns later as a **channel adapter** (§20.2) that calls the same turn contract.
 
 ---
 
@@ -117,7 +117,7 @@ The production unit is one Docker image deployed as two Railway services plus Ra
 | External services | Provider APIs | LLM/STT/TTS, Web Push, Resend, Cloudflare R2, uptime monitoring, Google Calendar (read-only, §13.5) | Enabled only after provider gate (§15.4); family data minimized per provider |
 
 - **One image, two commands:** the multi-stage Dockerfile uses Node 24 slim and includes `postgresql-client-18` for `pg_dump`/`pg_restore`; it does **not** include ffmpeg. The same image and `docker-compose.yml` also support local parity and the Dokploy-VM exit path.
-- **Same origin:** `https://nilumi.in` serves the PWA, API and auth routes. There is no CORS surface for first-party calls, and server-set `SameSite` cookies stay simple.
+- **Same origin:** `https://app.nilumi.in` serves the PWA, API and auth routes; staging is `https://staging-app.nilumi.in` with its own database and synthetic data; the apex `https://nilumi.in` is a static marketing site with no app cookies ([ADR-055](../adr/adr-055.md)). There is no CORS surface for first-party calls, and server-set `SameSite` cookies stay simple.
 - **Private networking and region:** `app`, `worker` and `postgres` communicate over Railway private networking in Singapore. External egress is only to approved providers.
 - **Always-on:** App Sleeping/serverless mode stays off for both `app` and `worker`, because reminders and SSE require live processes.
 - **Portability and exit:** if Railway operations become a burden, either run the same image + `docker-compose.yml` on the Dokploy VM, or move only Postgres to a managed Postgres provider while keeping the app/worker contract. RTO target stays ≤ 2 h via the runbook (§17.2).
@@ -127,8 +127,16 @@ The production unit is one Docker image deployed as two Railway services plus Ra
 ## 5. Code structure
 
 ### 5.1 Monorepo (pnpm workspaces)
+
+Extend this existing Nilumi repository in Phase 1. `packages/ui` (`@nilumi/ui`)
+is the production design-system package: retain its tokens/helpers and add
+reusable components to `src/` in place. Its `specimen/` stays a review reference;
+screens, routes and feature data wiring belong in `apps/web`. The spike projects
+remain references rather than becoming the production app. No new repository
+or replacement UI package is planned.
+
 ```
-family-assistant/
+nilumi/
 ├── apps/
 │   ├── web/                         # Next.js 16 App Router PWA + Turbopack
 │   │   ├── app/                     # pages, layouts, route handlers
@@ -140,6 +148,7 @@ family-assistant/
 │   └── worker/                      # graphile-worker entrypoint, tasks and crontab
 ├── packages/
 │   ├── contracts/                   # Zod schemas: API DTOs, NLU command union, cards, events, nilumi-ui/1 catalog
+│   ├── ui/                          # Design system "Pastel Rooms": globals.css tokens, shadcn/ui (Base UI) primitives, Nilumi composites (ADR-056)
 │   ├── db/                          # Drizzle schema, migrations, RLS policies (SQL), seed
 │   ├── ai/                          # provider registry, role aliases, prompts, adapters
 │   └── domain/                      # pure logic: dates, detectors, normalization, scoring
@@ -1465,7 +1474,7 @@ Before the NLU call, the transcript's n-grams are matched (trigram + phonetic, ~
 - Delivery is initiated by the worker. Notification actions (Done/Snooze) are supported on Android. On iOS, tapping opens the reminder in the app.
 
 ### 13.4 Today brief
-**Pre-pilot.** Each member gets one brief per household date. It is assembled deterministically by a worker job, not an agent run ([ADR-041](../adr/adr-041.md), [ADR-043](../adr/adr-043.md)), and Today becomes the PWA's default landing screen. Tables are in §9; the API is `GET /v1/briefs/today` (§19).
+**Pre-pilot.** Each member gets one brief per household date. It is assembled deterministically by a worker job, not an agent run ([ADR-041](../adr/adr-041.md), [ADR-043](../adr/adr-043.md)). Today is the PWA's default landing screen from Phase 1 as a placeholder; the brief replaces the placeholder in Phase 6A. Tables are in §9; the API is `GET /v1/briefs/today` (§19).
 
 **Sources.** Every source is read under the brief member's own RLS visibility, and every item carries an evidence link (`source_kind`, `source_id`) rendered as an `evidence-chip` (§6.8).
 
@@ -1712,12 +1721,12 @@ Bypass tests cover every ingress path, not only Talk.
   - **Household acknowledgement** ([ADR-046](../adr/adr-046.md)). The owner records one acknowledgement in `privacy_acknowledgements` (§9) on behalf of both adults, confirming he explained it to the other adult. Settings → Privacy shows every adult the same notice, who recorded it and when.
     - **Active only when complete.** The household counts as acknowledged only while the active row matches the current notice version and covers exactly the household's current adults. A new notice version, processor or adult supersedes it.
     - **Withdrawal is a veto.** Any covered adult can withdraw. After a withdrawal, only the adult who withdrew can record the next acknowledgement; the owner cannot override it.
-    - **Effect.** Without an active acknowledgement, the gateway wrapper fails closed: no new or queued LLM or embedding call leaves it (jobs re-check when they run, not when queued), and the household is in hard-cap degraded mode (§17.4). New calendar links are refused; an existing link keeps syncing events for display, but no calendar text reaches a model. Lists, tasks, reminders and the inbox keep working.
+    - **Effect.** Without an active acknowledgement, **no AI provider call of any kind** is made ([ADR-054](../adr/adr-054.md)): the gateway wrapper and the STT and TTS adapters fail closed, so no new or queued LLM, embedding, speech-to-text or text-to-speech call leaves Nilumi (jobs re-check when they run, not when queued; calls already sent can't be recalled), and the household is in hard-cap degraded mode (§17.4). Voice input and spoken replies are paused; typed text uses the deterministic grammar. New calendar links are refused; an existing link keeps syncing events for display, but no calendar text reaches a model. Lists, tasks, reminders and the inbox keep working.
   - **Production privacy gate:** ZDR on every LLM and embedding request, before any user outside the founding household, helper access, kid mode or commercial use.
 - **Sent to STT/TTS:** audio goes only to the STT provider (Sarvam default; ElevenLabs only as the validated fallback); sentence text goes only to the TTS provider. STT/TTS do not route through an LLM intermediary.
 - **Sent to Railway:** runtime logs with IDs only, deploy metadata, service health and Postgres volume metadata. Database rows stay behind RLS and private networking.
 - **Sent to R2:** encrypted backup objects, content-free forget journal entries, phrase-cache audio and later Vault originals.
-- **Sent to Resend:** email address and one-time code metadata from `no-reply@nilumi.in`.
+- **Sent to Resend:** email address and one-time code metadata, and for invitations the invitee's and inviter's display names, from `no-reply@nilumi.in` ([ADR-053](../adr/adr-053.md)).
 - **Sent to GitHub:** code, CI logs and eval datasets with consent; no family data in ordinary repository history.
 - **Sent for the Today brief summary (optional, §13.4):** only that member's composed brief item text, with calendar text in a delimited data block, through the AI Gateway route ([ADR-046](../adr/adr-046.md)) and subject to the provider gate below. Nothing is sent when the summary is skipped.
 - **Sent to Google (pre-pilot, behind S-GCAL):** OAuth requests and `events.list` calls for the primary calendar's today-and-tomorrow window. No Nilumi family data is sent. Only title, location, times and status are kept from responses (§13.5). Google is listed as a data provider in [03 Tech Stack §7](03-tech-stack.md#7-provider-eligibility-and-data-policies-release-gate) ([ADR-045](../adr/adr-045.md)).
@@ -1732,13 +1741,13 @@ Bypass tests cover every ingress path, not only Talk.
 
 ### 15.5 Authentication, sessions and recovery
 - **Better Auth ≥ 1.7.7** with `emailOTP` and `multiSession`. Magic links and device authorization are not enabled.
-- **Profiles are invite-only:** an adult with the admin capability creates a member profile and allowlists the member's email. Open sign-up is disabled.
-- **Admin capability lifecycle.** The founding adult gets the capability when the household is created. Only an existing admin can grant or remove it, through an audited server function; nobody can grant it to themselves, and the last admin cannot be removed. Admin actions re-read `members.is_admin` inside their transaction.
+- **Profiles are invite-only:** an adult with the admin capability creates a member profile and allowlists the member's email. Open sign-up is disabled. Adding an adult sends an invitation email with install and sign-in instructions and a plain link to `https://app.nilumi.in`; it carries no sign-in link or token, and the admin can resend it until first sign-in ([ADR-053](../adr/adr-053.md)).
+- **Admin capability lifecycle.** The founding adult gets the capability when the household is created by the owner-only bootstrap script, which refuses to run if a household exists and is not reachable over HTTP ([ADR-053](../adr/adr-053.md)). Only an existing admin can grant or remove it, through an audited server function; nobody can grant it to themselves, and the last admin cannot be removed. Admin actions re-read `members.is_admin` inside their transaction.
 - **First sign-in, new device and recovery:** enter email inside the installed app → 6-digit code (10-minute expiry, rate-limited, generic responses so nobody can probe which emails exist) → type the code in the app.
 - **Session:** server-set Secure, HttpOnly, SameSite cookie, 90-day sliding expiry. If iOS drops the cookie, the app prompts for email-code re-sign-in and preserves queued list/task/inbox mutations.
 - **Devices:** each member sees sessions with device names and can revoke them. Lost phone response is revoke session first, then rotate any exposed push subscription.
 - **Email change:** requires codes to the old and new address and notifies both. Admins cannot change another adult's email after first sign-in or add credentials to another adult's account. Better Auth admin impersonation is disabled.
-- **Optional step-up:** Face ID / fingerprint (WebAuthn platform authenticator) before export, viewing private items after inactivity and forget-all, enabled once `nilumi.in` is stable; fallback is a fresh email code. The Vault (H1) re-decides whether viewing unmasked originals needs mandatory biometric step-up.
+- **Optional step-up:** Face ID / fingerprint (WebAuthn platform authenticator) before export, viewing private items after inactivity and forget-all, with relying-party ID `app.nilumi.in`, enabled once that origin is stable; fallback is a fresh email code. The Vault (H1) re-decides whether viewing unmasked originals needs mandatory biometric step-up.
 - **Email sender:** Resend free tier on `nilumi.in`, sending from `no-reply@nilumi.in`. Whoever controls a member's mailbox can sign in as that member, so both email accounts need MFA.
 
 ### 15.6 Retention
@@ -1997,7 +2006,7 @@ Scale is not expected during the pilot. Triggers:
 - A second `app` instance is needed for availability or concurrency → each instance keeps its own Postgres `LISTEN` connection and fans out SSE only to its local clients; events remain IDs/kinds only and RLS-checked per member.
 - Worker queue latency or backup runtime approaches SLOs → increase worker resources first, then split maintenance and reminder workers if needed.
 - Operating Railway Postgres becomes a burden → move only the database to managed Postgres behind the same `pg` adapter and restore from the encrypted backup + forget journal.
-- The Dokploy VM becomes preferable for cost/control → run the same image + `docker-compose.yml` with managed DNS and the same `nilumi.in` origin.
+- The Dokploy VM becomes preferable for cost/control → run the same image + `docker-compose.yml` with managed DNS and the same `app.nilumi.in` origin.
 - > 50k embeddings or slow hybrid search → add per-config HNSW indexes.
 - iOS PWA mic/push friction fails S1 → Capacitor escape hatch ([ADR-015](../adr/adr-015.md)).
 

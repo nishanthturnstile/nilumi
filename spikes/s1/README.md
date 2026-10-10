@@ -39,6 +39,24 @@ accepted evidence, membership, cap or schema; synthetic withdrawal tests roll ba
 
 ## Local smoke test
 
+### Design-system review
+
+Install the shared workspace dependencies from the repository root with
+`pnpm install --frozen-lockfile`, then install this spike's dependencies as below.
+`pnpm dev` and `pnpm build` prepare the full catalogue from `packages/ui/specimen`;
+the generated `public/design-system/` directory is ignored.
+
+On Home, **Design system** opens the room and component catalogue. Theme, text
+size and tray-phase controls apply to the examples; **Open full screen** opens
+each room at your desktop or mobile browser width. **Design check** remains the
+separate interactive shell used for the phone QA matrix. The references await
+owner review and do not yet cover every application flow.
+
+For a clean Railway build, install both dependency sets before building:
+`pnpm --dir ../.. install --frozen-lockfile` and
+`pnpm install --frozen-lockfile`, then `pnpm build` from `spikes/s1`.
+This remains the review spike; Phase 1 application workspaces are not created by it.
+
 ```sh
 pnpm install --frozen-lockfile
 pnpm dev
@@ -74,10 +92,14 @@ The existing Next.js ESLint rules check React and framework-specific behavior.
 ## Railway staging
 
 Use the existing Website-Thaarei project, an empty Staging environment, and a
-service for this spike. Set the service root directory to `/spikes/s1`, build
-command to `pnpm build`, start command to `pnpm start --hostname 0.0.0.0`, and
-healthcheck path to `/`. Railway's config-file settings are deprecated; configure
-these directly on the service. Run one replica in Singapore
+service for this spike. Set the service root directory to `/` so the build can
+read the shared `packages/ui` source. Set the build command to
+`pnpm install --frozen-lockfile && pnpm --dir spikes/s1 install --frozen-lockfile && pnpm --dir spikes/s1 build`,
+the start command to `pnpm --dir spikes/s1 start --hostname 0.0.0.0`, and the
+healthcheck path to `/`. Watch `/spikes/s1/**`, `/packages/ui/**`, `/package.json`,
+`/pnpm-lock.yaml` and `/pnpm-workspace.yaml` for automatic deployment changes.
+Keep the existing `/verification` volume mounted. Configure these settings
+directly on the service. Run one replica in Singapore
 (`asia-southeast1-eqsg3a`), with sleeping disabled: sign-in codes are in memory
 and cannot be shared between replicas or survive a restart.
 

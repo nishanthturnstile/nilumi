@@ -1,7 +1,7 @@
 # 01 — Product Plan: Nilumi (MVP)
 
-> **Status:** Revised after the October 8, 2026 reference-architecture review (revision 3: Today brief, read-only calendar, reserved agentic contracts) · **Date:** October 2026 · Product name: **Nilumi** · Domain: **nilumi.in**
-> **Related:** [ADR catalogue](../adr/README.md) · [02 Architecture](02-architecture.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research](../research/04-research.md) · [05 Implementation Roadmap](05-implementation-roadmap.md)
+> **Status:** Revised after the October 8, 2026 reference-architecture review (revision 3: Today brief, read-only calendar, reserved agentic contracts) · **Date:** October 2026 · Product name: **Nilumi** · Domain: **nilumi.in** (app at **app.nilumi.in**, [ADR-055](../adr/adr-055.md))
+> **Related:** [ADR catalogue](../adr/README.md) · [02 Architecture](02-architecture.md) · [03 Tech Stack](03-tech-stack.md) · [04 Research](../research/04-research.md) · [05 Implementation Roadmap](05-implementation-roadmap.md) · [28 Application Flows](28-application-flows.md)
 
 ---
 
@@ -52,7 +52,7 @@ Generic assistants (Google Assistant, Alexa, ChatGPT) don't hold **structured, p
 | External people (plumber Ravi, Dr. Meena, cook) | **Entities**, not users | n/a | Stored as contacts and service providers |
 | Grandparents / household help | Possible later users | No | May need Tamil, a limited role, or shared-list-only access |
 
-Membership is invite-only: an admin creates each member profile and allowlists the sign-in email. Both adults can hold `admin`, but after an adult's first sign-in, no admin can change that adult's email or take over the account.
+Membership is invite-only: an admin creates each member profile and allowlists the sign-in email, and Nilumi emails the new adult an invitation with install and sign-in instructions ([ADR-053](../adr/adr-053.md)). Both adults can hold `admin`, but after an adult's first sign-in, no admin can change that adult's email or take over the account.
 
 **Ready for more households later ([ADR-048](../adr/adr-048.md)).**
 - Roles stay generic: `admin` is a capability; member kinds are `adult` and `child`; `helper` comes later.
@@ -116,15 +116,17 @@ Smart-home device control · room speakers and the "Hey Nilumi" wake phrase (H2)
 
 ## 7. Experience overview (PWA)
 
+Screen-by-screen workflows, sign-in, permissions and scenarios are in [28 Application Flows](28-application-flows.md).
+
 | Tab | Purpose |
 |---|---|
-| **Today** (landing screen) | The member's own daily brief in two tiers, **Needs attention now** and **Later this week**. It shows reminders due, shopping-list highlights, today's and tomorrow's calendar events (if connected), pending suggestions, and renewals and bills. Each item has an evidence chip; suggestions appear as approval cards. An optional one-line summary sits on top. A **Reconnect** chip or a stale marker appears when the calendar can't be read; the brief still works without it |
+| **Today** (landing screen) | A minimal placeholder from Phase 1 so the landing screen never changes; from Phase 6A, the member's own daily brief in two tiers, **Needs attention now** and **Later this week**. It shows reminders due, shopping-list highlights, today's and tomorrow's calendar events (if connected), pending suggestions, and renewals and bills. Each item has an evidence chip; suggestions appear as approval cards. An optional one-line summary sits on top. A **Reconnect** chip or a stale marker appears when the calendar can't be read; the brief still works without it |
 | **Talk** | Voice-first with Nilumi: the mic is primary, with a text box always available. Conversation thread with transcript bubbles and result cards (memory saved/updated/forgotten, list changes, tasks, answers with evidence chips). Voice-reply modes: auto default (voice in → spoken + screen; text in → text only), always, never |
 | **Lists** | Shopping list (default) plus custom lists. Tap to tick off, swipe to remove, works offline, syncs in realtime between phones while open, and shows who added each item |
 | **Tasks** | Upcoming and overdue tasks and reminders; mine / ours filter; done, snooze, reschedule |
 | **Memory** | "What we know": online-only browse by entity (Appliances, People & contacts, Kids, Home, Vehicles, Preferences). Each entity page shows facts, history (X → Y), source ("you said on 5 Oct, 7:30 pm"), visibility badge, and owner-only Share / Un-share, Edit and Forget on cards. Search box |
 | **Inbox** | Delivered reminders and anything that needs attention (pending clarifications, pending suggestions, failed deliveries) |
-| **Settings** | Profile, email and signed-in devices, optional Face ID step-up, notifications (incl. per-device health check), voice choice, quiet hours, Today brief time, **Connections** (Google Calendar: connect, last sync, disconnect), privacy defaults and limits, export |
+| **Settings** | Profile, email (change in Phase 1) and signed-in devices, optional Face ID step-up, notifications (incl. per-device health check), voice choice, quiet hours, Today brief time, **Connections** (Google Calendar: connect, last sync, disconnect), privacy defaults and limits, export |
 | **Admin** (Nishanth) | Turn traces, eval runs, costs, predicate registry, entity merge, backup status |
 
 **Card anatomy (memory saved):**
@@ -226,7 +228,7 @@ Model and prompt changes must meet **absolute floors and regression limits** (Ar
 | Railway Postgres is unmanaged (we operate it) | Medium | High | We operate minor updates, extension updates, config, disk monitoring and recovery; monthly ops checklist; Railway volume backups; encrypted off-platform backups + restore test; exit to managed Postgres if operations become a burden |
 | Railway cost creep | Medium | Medium | Measure in S5; Railway budget alerts; per-turn cost in traces; monthly AI budget with soft and hard caps |
 | Scope creep (builder bias) | High | Medium | [Roadmap completion outcomes and pilot rule](05-implementation-roadmap.md#2-mvp-phases); "Later horizons" list |
-| Domain change after install forces reinstall and push re-subscription | Medium | Medium | Buy `nilumi.in` before installing on the phones |
+| Domain change after install forces reinstall and push re-subscription | Medium | Medium | Buy `nilumi.in` and attach the app origin `app.nilumi.in` before installing on the phones ([ADR-055](../adr/adr-055.md)) |
 | Mailbox takeover = account takeover | Medium | High | Both email accounts use two-factor sign-in; optional step-up for export, private items after inactivity and forget-all |
 | **AI provider terms don't permit household or minor-adjacent use, or a provider retains or trains on family data** | Medium | High | S0 eligibility and data-terms gate before any family clip or data is uploaded; opt-outs recorded; default to an eligible provider ([ADR-017](../adr/adr-017.md)); no-training routing enforced on every LLM and embedding call; re-check before kid mode |
 | **A model provider keeps pilot prompts under its published retention terms** (zero data retention is not used during the founding-household pilot) | High | Medium | The owner records one informed household acknowledgement for both adults before real use, after explaining it to the other adult; either adult can withdraw it, which pauses every AI call for the household. It covers the processors, their published retention, children's facts, calendar titles and the fact that deleting in Nilumi can't erase provider copies. The sensitive-input scanner refuses or masks secrets on every input. Settings → Privacy states the limits plainly. ZDR becomes mandatory at the production privacy gate, before anyone outside the household, helpers, kid mode or commercial use ([ADR-046](../adr/adr-046.md)) |

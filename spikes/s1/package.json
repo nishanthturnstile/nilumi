@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "pnpm design:prepare && next dev",
+    "build": "pnpm design:prepare && next build",
+    "design:prepare": "pnpm --dir ../.. ui:specimen && node scripts/prepare-design-system.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.mjs",
@@ -23,6 +24,8 @@
   },
   "dependencies": {
     "@ai-sdk/gateway": "4.0.106",
+    "@base-ui/react": "1.9.0",
+    "@phosphor-icons/react": "2.1.10",
     "ai": "7.0.130",
     "chrono-node": "2.10.2",
     "luxon": "3.7.2",

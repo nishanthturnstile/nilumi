@@ -18,7 +18,7 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 - **S-VGW and the household acknowledgement, recorded by the owner for both adults, precede the first family LLM or embedding call** ([ADR-046](../adr/adr-046.md)). Until then, NLU and embeddings run on synthetic or seeded data only.
 - **S-GCAL precedes any calendar link** on a family account ([ADR-045](../adr/adr-045.md)).
 - **The pilot stays inside the founding household.** Anyone outside it, helper access (H6), kid mode (H5), a second household or commercial use first needs the production privacy gate in §5.
-- **S6 precedes S1 phone installation**: the installed origin, sign-in sender and push subscriptions must use the final domain. S0–S6 are stable identifiers, not the order in which spikes must run.
+- **S6 precedes S1 phone installation**: the installed origin, sign-in sender and push subscriptions must use the final domain. The production app origin is `app.nilumi.in` and staging is `staging-app.nilumi.in` ([ADR-055](../adr/adr-055.md)); both need DNS and TLS before either phone installs the Phase 1 app. S0–S6 are stable identifiers, not the order in which spikes must run.
 - Create the shared OneDrive recovery document before the S5 manual restore; its contents and key handling follow [Architecture §17.2](02-architecture.md#172-backups-and-restore-drill).
 - Complete the Phase 0 platform gates before Phase 1. S5 is a feasibility proof; Phase 1 establishes production safety and recovery, and Phase 5 repeats reminder validation against the implemented feature.
 - Follow Phase 1–8 in order, with Phase 6A between Phase 6 and the Phase 7 pilot. Foundation privacy, receipts and provenance precede real-memory writes; memory precedes retrieval; reliable scheduling precedes the brief; the brief precedes the pilot.
@@ -54,7 +54,7 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 **Purpose:** establish a thin, safe end-to-end system on both phones.
 
-**Features:** pnpm monorepo, CI and Railway deployment/migrations; invite-only adult sign-in, household/member relations, session revoke and optional step-up; PWA Talk shell with recording and text input; STT-to-transcript/echo cards; sensitive-input boundary on every available ingress; member-scoped transactions, sharing-ready RLS and privacy harness; resumable turn ledger; provenance, traces/admin viewer; worker backups, forget-journal support and recovery/rollback rehearsal. Reserve Vault provenance/masking interfaces without creating the document feature.
+**Features:** extend this existing pnpm monorepo with `apps/web`, `apps/worker` and the required shared packages, reusing `packages/ui` (`@nilumi/ui`, [ADR-056](../adr/adr-056.md)); CI and Railway deployment/migrations; production and staging on `app.nilumi.in` and `staging-app.nilumi.in` ([ADR-055](../adr/adr-055.md)); owner-only household bootstrap script and invitation emails ([ADR-053](../adr/adr-053.md)); invite-only adult sign-in, email change, household/member relations, session revoke and optional step-up; a minimal Today placeholder as the landing screen; PWA Talk shell with recording and text input; STT-to-transcript/echo cards; sensitive-input boundary on every available ingress; member-scoped transactions, sharing-ready RLS and privacy harness; resumable turn ledger; provenance, traces/admin viewer; worker backups, forget-journal support and recovery/rollback rehearsal. Reserve Vault provenance/masking interfaces without creating the document feature. The spikes remain reference projects; no new application repository or replacement UI package is planned.
 
 **October 8 additions:**
 - `household_id not null` on every household-owned table, taken from the session or job, never the client, with composite household foreign keys, trigger checks for ID arrays and polymorphic references, and a CI schema test ([ADR-048](../adr/adr-048.md), [Architecture §9](02-architecture.md#9-data-model)).
@@ -64,7 +64,7 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 - Stored-content injection fixtures and the rule that every write cites the member's own words in the current turn ([Architecture §7.2](02-architecture.md#72-validation-after-the-llm-deterministic), [§16.2](02-architecture.md#162-evaluation-harness-and-gates)).
 - Run, artifact, delegation and consent contracts reserved as schemas in `packages/contracts` and in Architecture only; their tables are created later ([ADR-041](../adr/adr-041.md)–[ADR-044](../adr/adr-044.md)).
 
-**Complete when:** both adults can sign in and submit voice/text turns after the owner records the household acknowledgement; withdrawing it stops every AI call; crash/retry resumes correctly; secret, privacy and second-household isolation tests pass; stage timings are visible; restore and compatible deployment rollback are rehearsed. [Architecture §5–§6](02-architecture.md#5-code-structure), [§15](02-architecture.md#15-privacy-and-security), [§17](02-architecture.md#17-reliability-and-operations)
+**Complete when:** both adults can sign in and submit voice/text turns after the owner records the household acknowledgement; withdrawing it stops every AI provider call, including speech-to-text and text-to-speech ([ADR-054](../adr/adr-054.md)); crash/retry resumes correctly; secret, privacy and second-household isolation tests pass; stage timings are visible; restore and compatible deployment rollback are rehearsed. [Architecture §5–§6](02-architecture.md#5-code-structure), [§15](02-architecture.md#15-privacy-and-security), [§17](02-architecture.md#17-reliability-and-operations)
 
 ### Phase 2 — First real-memory release and shopping list
 
@@ -114,7 +114,7 @@ Each phase ends with a demo to your wife and a go/no-go against its completion o
 
 **Features:**
 - **Brief tables and job.** `daily_briefs` and `brief_items`; a per-member graphile-worker job in Asia/Kolkata, run under the member's own RLS context and idempotent per member and date.
-- **Today screen.** Today becomes the landing screen with attention, today, tomorrow and ahead sections. Each item renders as a server-built `nilumi-ui/1` card with an evidence chip ([ADR-044](../adr/adr-044.md)).
+- **Today screen.** The full brief replaces the Phase 1 Today placeholder on the landing screen, with attention, today, tomorrow and ahead sections. Each item renders as a server-built `nilumi-ui/1` card with an evidence chip ([ADR-044](../adr/adr-044.md)).
 - **One push a day.** At most one brief push per member per day, through `notification_deliveries`, at the chosen time and outside quiet hours, with a generic lock-screen preview.
 - **Optional summary.** At most one LLM call per brief, under a budget reservation. The brief is complete without it.
 - **Approvals.** The `approvals` table and approval cards for internal actions only (J20), with an immutable, single-use approval and a recheck before execution. The approved effect, its `tool_invocations` row and `content_refs` commit in one transaction ([ADR-042](../adr/adr-042.md), [Architecture §6.6](02-architecture.md#66-tool-broker-policy-and-approvals)).
@@ -169,7 +169,7 @@ H2–H7 retain their identifiers as later horizons; feature planning and commitm
 
 **More households.** Contracts are ready ([Architecture §20.8](02-architecture.md#208-multi-household-readiness)). Onboarding anyone outside the founding household needs the legal gate ([ADR-048](../adr/adr-048.md)) and the production privacy gate ([ADR-046](../adr/adr-046.md)).
 
-**Could backlog:** custom lists, notification Done/Snooze actions, weekly household digest and Tamil UI strings. These do not become phase completion requirements. Existing [non-goals](01-product-plan.md#52-non-goals-mvp) and [scope exclusions](01-product-plan.md#9-scope) continue to apply.
+**Could backlog:** custom lists, notification Done/Snooze actions, weekly household digest and Tamil UI strings. **Accepted limitation to revisit:** an adult who permanently loses access to their mailbox can't recover their account in the MVP ([28 Application Flows SEC-E4](28-application-flows.md#54-sec--devices-lost-phone-email-change-and-step-up)). These do not become phase completion requirements. Existing [non-goals](01-product-plan.md#52-non-goals-mvp) and [scope exclusions](01-product-plan.md#9-scope) continue to apply.
 
 ## 4. Journey coverage and project board
 

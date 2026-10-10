@@ -1,0 +1,1003 @@
+/*
+ * Nilumi Design System v1 — "Pastel Rooms"
+ * Single source of truth for tokens and theme. Spec: docs/design/29-design-system.md · Decision: ADR-056.
+ *
+ * Architecture (read before editing):
+ *   1. Primitives   — every room's palette (floor, tint, strong, ink, surface) plus ink, voice, semantic,
+ *                     visibility, member and chart colours, defined once per theme on :root / :root.dark.
+ *   2. Room scope   — <html data-room="today|lists|talk|tasks|memory|linen"> points the --room-* tokens at
+ *                     one palette. Set on <html> (before paint) so portalled sheets, toasts and dialogs
+ *                     inherit it, and so the page background (which iOS uses for the status bar) is the floor.
+ *   3. shadcn map   — shadcn's semantic variables keep their names. --background/--card/--popover are the
+ *                     white component surface; the page floor is the separate --room-floor (bg-room-floor).
+ *   4. @theme       — Tailwind utilities. Default palette is removed: components may only use tokens.
+ *
+ * Contrast: every text/non-text/focus pair is enforced by `pnpm ui:contrast` (scripts/check-contrast.mjs)
+ * across 6 rooms × light/dark. Change a colour here, then run the gate.
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+/* shadcn's data-attribute variants (data-open:, data-checked:…) used by Base UI components. Never accept the
+   CSS patch `shadcn init/add` proposes for this file: it adds a white body and a translucent outline. */
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant compact (&:is([data-density="compact"], [data-density="compact"] *));
+@custom-variant standalone (@media (display-mode: standalone));
+@custom-variant touch (@media (any-pointer: coarse));
+
+/* The room floor glides between rooms instead of snapping (works on every target; no View Transitions needed). */
+@property --room {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: oklch(0.96 0.006 59.7);
+}
+
+/* ───────────────────────────── 1. Primitives — light ───────────────────────────── */
+:root {
+  /* Ink (navy) and surfaces */
+  --ink: oklch(0.296 0.041 291.6);
+  --ink-2: oklch(0.462 0.042 295.3);
+  --ink-inverse: oklch(1 0 0);
+  --hairline: oklch(0.296 0.041 291.6 / 0.1);
+  --control-border: oklch(0.57 0.04 295.7);
+  --focus: oklch(0.296 0.041 291.6);
+  --focus-inverse: oklch(1 0 0);
+  --scrim: oklch(0.296 0.041 291.6 / 0.45);
+  --surface-neutral: oklch(0.97 0.004 325);
+
+  /* Action: calm navy primary */
+  --action: oklch(0.296 0.041 291.6);
+  --action-foreground: oklch(1 0 0);
+
+  /* Voice: coral is Nilumi's voice (record controls, listening, speaking). Glyph stays navy (5.3:1). */
+  --voice: oklch(0.723 0.174 34.1);
+  --voice-foreground: oklch(0.296 0.041 291.6);
+  --voice-soft: oklch(0.934 0.034 38);
+  --voice-on-action: oklch(0.834 0.094 36.1);
+
+  /* Semantic triples: fill (icons, glyph backgrounds) · soft (backgrounds, white surfaces only) · ink (text) */
+  --success: oklch(0.589 0.126 157.7);
+  --success-soft: oklch(0.945 0.028 162.1);
+  --success-ink: oklch(0.493 0.106 158.4);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.613 0.132 70.8);
+  --warning-soft: oklch(0.958 0.05 88.1);
+  --warning-ink: oklch(0.487 0.104 72.1);
+  --warning-foreground: oklch(1 0 0);
+  --danger: oklch(0.571 0.187 29.7);
+  --danger-soft: oklch(0.942 0.029 28.1);
+  --danger-ink: oklch(0.481 0.163 30);
+  --danger-foreground: oklch(1 0 0);
+  --info: oklch(0.553 0.164 258.8);
+  --info-soft: oklch(0.941 0.028 261.5);
+  --info-ink: oklch(0.462 0.129 257.4);
+  --info-foreground: oklch(1 0 0);
+
+  /* Visibility — shape-coded in ink tones, never room hues.
+     Household = soft neutral fill · Shared = solid outline · Private = dashed outline. Always icon + label. */
+  --visibility-household: oklch(0.95 0.007 325.6);
+  --visibility-household-foreground: oklch(0.296 0.041 291.6);
+  --visibility-outline: oklch(0.462 0.042 295.3);
+  --visibility-outline-foreground: oklch(0.296 0.041 291.6);
+
+  /* Member hues ("who added" initials) — outside the room palette */
+  --member-a: oklch(0.469 0.176 4.1);
+  --member-a-soft: oklch(0.935 0.033 351.2);
+  --member-b: oklch(0.465 0.079 216.6);
+  --member-b-soft: oklch(0.936 0.031 209.1);
+
+  /* Charts (Admin) — mid-chroma, ≥ 3:1 on white; always paired with labels or patterns */
+  --chart-1: oklch(0.603 0.165 38.2);
+  --chart-2: oklch(0.567 0.111 159.8);
+  --chart-3: oklch(0.54 0.191 285.8);
+  --chart-4: oklch(0.593 0.125 76);
+  --chart-5: oklch(0.553 0.164 258.8);
+
+  /* Room palettes — floor (page), tint (pill, hover, chips), strong (decorative), ink (tinted text/icons), surface (cards) */
+  --today-floor: oklch(0.944 0.032 52.3);
+  --today-tint: oklch(0.899 0.058 48.1);
+  --today-strong: oklch(0.824 0.106 46.5);
+  --today-ink: oklch(0.479 0.136 39.3);
+  --today-surface: oklch(1 0 0);
+  --today-shadow: oklch(0.479 0.136 39.3);
+
+  --lists-floor: oklch(0.94 0.031 165.3);
+  --lists-tint: oklch(0.893 0.051 164.2);
+  --lists-strong: oklch(0.813 0.088 162.5);
+  --lists-ink: oklch(0.468 0.094 160.4);
+  --lists-surface: oklch(1 0 0);
+  --lists-shadow: oklch(0.468 0.094 160.4);
+
+  --talk-floor: oklch(0.932 0.037 295.9);
+  --talk-tint: oklch(0.875 0.068 294.3);
+  --talk-strong: oklch(0.776 0.125 292.1);
+  --talk-ink: oklch(0.47 0.189 282.8);
+  --talk-surface: oklch(1 0 0);
+  --talk-shadow: oklch(0.47 0.189 282.8);
+
+  --tasks-floor: oklch(0.958 0.06 92.8);
+  --tasks-tint: oklch(0.921 0.106 91.3);
+  --tasks-strong: oklch(0.877 0.144 87.2);
+  --tasks-ink: oklch(0.468 0.097 80.4);
+  --tasks-surface: oklch(1 0 0);
+  --tasks-shadow: oklch(0.468 0.097 80.4);
+
+  --memory-floor: oklch(0.938 0.03 256);
+  --memory-tint: oklch(0.889 0.054 258.7);
+  --memory-strong: oklch(0.802 0.1 258.8);
+  --memory-ink: oklch(0.467 0.126 257.2);
+  --memory-surface: oklch(1 0 0);
+  --memory-shadow: oklch(0.467 0.126 257.2);
+
+  --linen-floor: oklch(0.96 0.006 59.7);
+  --linen-tint: oklch(0.92 0.01 58.2);
+  --linen-strong: oklch(0.849 0.017 58.6);
+  --linen-ink: oklch(0.451 0.015 63.6);
+  --linen-surface: oklch(1 0 0);
+  --linen-shadow: oklch(0.451 0.015 63.6);
+}
+/* ───────────────────────────── 1b. Primitives — dark ("dusky rooms") ───────────────────────────── */
+:root.dark {
+  --ink: oklch(0.974 0.014 50.8);
+  --ink-2: oklch(0.85 0.017 337.7);
+  --ink-inverse: oklch(0.296 0.041 291.6);
+  --hairline: oklch(1 0 0 / 0.1);
+  --control-border: oklch(0.7 0.021 320.6);
+  --focus: oklch(0.974 0.014 50.8);
+  --focus-inverse: oklch(0.296 0.041 291.6);
+  --scrim: oklch(0.12 0.02 300 / 0.62);
+  --surface-neutral: oklch(0.34 0.01 320);
+
+  --action: oklch(0.967 0.019 55.2);
+  --action-foreground: oklch(0.296 0.041 291.6);
+
+  --voice: oklch(0.763 0.143 34.9);
+  --voice-foreground: oklch(0.243 0.025 357.4);
+  --voice-soft: oklch(0.34 0.05 35);
+  --voice-on-action: oklch(0.52 0.16 33);
+
+  --success: oklch(0.745 0.142 158.3);
+  --success-soft: oklch(0.32 0.045 160.5);
+  --success-ink: oklch(0.84 0.104 160.5);
+  --success-foreground: oklch(0.22 0.03 160);
+  --warning: oklch(0.801 0.151 80.5);
+  --warning-soft: oklch(0.317 0.047 84.6);
+  --warning-ink: oklch(0.885 0.118 82.9);
+  --warning-foreground: oklch(0.22 0.03 80);
+  --danger: oklch(0.732 0.165 28.7);
+  --danger-soft: oklch(0.296 0.059 27.4);
+  --danger-ink: oklch(0.845 0.092 27.4);
+  --danger-foreground: oklch(0.22 0.04 28);
+  --info: oklch(0.736 0.136 261.1);
+  --info-soft: oklch(0.295 0.059 262.1);
+  --info-ink: oklch(0.83 0.085 261.7);
+  --info-foreground: oklch(0.22 0.04 261);
+
+  --visibility-household: oklch(0.405 0.02 305.9);
+  --visibility-household-foreground: oklch(0.974 0.014 50.8);
+  --visibility-outline: oklch(0.85 0.017 337.7);
+  --visibility-outline-foreground: oklch(0.974 0.014 50.8);
+
+  --member-a: oklch(0.83 0.09 355);
+  --member-a-soft: oklch(0.34 0.06 355);
+  --member-b: oklch(0.84 0.07 210);
+  --member-b-soft: oklch(0.33 0.04 210);
+
+  --chart-1: oklch(0.76 0.13 38);
+  --chart-2: oklch(0.76 0.12 160);
+  --chart-3: oklch(0.74 0.13 286);
+  --chart-4: oklch(0.8 0.13 80);
+  --chart-5: oklch(0.74 0.12 259);
+
+  --today-floor: oklch(0.262 0.022 40);
+  --today-tint: oklch(0.368 0.036 40);
+  --today-strong: oklch(0.45 0.06 42);
+  --today-ink: oklch(0.841 0.095 46.6);
+  --today-surface: oklch(0.313 0.026 40);
+  --today-shadow: oklch(0 0 0);
+
+  --lists-floor: oklch(0.274 0.022 166.5);
+  --lists-tint: oklch(0.404 0.041 164.7);
+  --lists-strong: oklch(0.48 0.06 163);
+  --lists-ink: oklch(0.837 0.094 163);
+  --lists-surface: oklch(0.33 0.027 165.6);
+  --lists-shadow: oklch(0 0 0);
+
+  --talk-floor: oklch(0.257 0.039 289.9);
+  --talk-tint: oklch(0.37 0.069 289.3);
+  --talk-strong: oklch(0.46 0.09 290);
+  --talk-ink: oklch(0.817 0.099 291.1);
+  --talk-surface: oklch(0.306 0.046 290.4);
+  --talk-shadow: oklch(0 0 0);
+
+  --tasks-floor: oklch(0.269 0.023 93);
+  --tasks-tint: oklch(0.389 0.043 91.7);
+  --tasks-strong: oklch(0.47 0.06 90);
+  --tasks-ink: oklch(0.875 0.126 91.6);
+  --tasks-surface: oklch(0.319 0.026 88.8);
+  --tasks-shadow: oklch(0 0 0);
+
+  --memory-floor: oklch(0.263 0.029 259.1);
+  --memory-tint: oklch(0.384 0.05 258.7);
+  --memory-strong: oklch(0.47 0.07 259);
+  --memory-ink: oklch(0.822 0.089 260);
+  --memory-surface: oklch(0.315 0.036 260.1);
+  --memory-shadow: oklch(0 0 0);
+
+  --linen-floor: oklch(0.255 0.006 60);
+  --linen-tint: oklch(0.369 0.01 60);
+  --linen-strong: oklch(0.45 0.012 60);
+  --linen-ink: oklch(0.864 0.013 60);
+  --linen-surface: oklch(0.305 0.008 60);
+  --linen-shadow: oklch(0 0 0);
+}
+
+/* ───────────────────────────── 2. Room scope ───────────────────────────── */
+/* Default room is linen (Inbox, Settings, Admin, sign-in). Rooms are wayfinding only — never status. */
+:root,
+:root[data-room="linen"] {
+  --room: var(--linen-floor);
+  --room-tint: var(--linen-tint);
+  --room-strong: var(--linen-strong);
+  --room-ink: var(--linen-ink);
+  --room-surface: var(--linen-surface);
+  --room-shadow: var(--linen-shadow);
+}
+:root[data-room="today"] {
+  --room: var(--today-floor);
+  --room-tint: var(--today-tint);
+  --room-strong: var(--today-strong);
+  --room-ink: var(--today-ink);
+  --room-surface: var(--today-surface);
+  --room-shadow: var(--today-shadow);
+}
+:root[data-room="lists"] {
+  --room: var(--lists-floor);
+  --room-tint: var(--lists-tint);
+  --room-strong: var(--lists-strong);
+  --room-ink: var(--lists-ink);
+  --room-surface: var(--lists-surface);
+  --room-shadow: var(--lists-shadow);
+}
+:root[data-room="talk"] {
+  --room: var(--talk-floor);
+  --room-tint: var(--talk-tint);
+  --room-strong: var(--talk-strong);
+  --room-ink: var(--talk-ink);
+  --room-surface: var(--talk-surface);
+  --room-shadow: var(--talk-shadow);
+}
+:root[data-room="tasks"] {
+  --room: var(--tasks-floor);
+  --room-tint: var(--tasks-tint);
+  --room-strong: var(--tasks-strong);
+  --room-ink: var(--tasks-ink);
+  --room-surface: var(--tasks-surface);
+  --room-shadow: var(--tasks-shadow);
+}
+:root[data-room="memory"] {
+  --room: var(--memory-floor);
+  --room-tint: var(--memory-tint);
+  --room-strong: var(--memory-strong);
+  --room-ink: var(--memory-ink);
+  --room-surface: var(--memory-surface);
+  --room-shadow: var(--memory-shadow);
+}
+
+/* ───────────────────────────── 3. shadcn mapping + system tokens ───────────────────────────── */
+:root {
+  --room-floor: var(--room);
+
+  /* shadcn/ui semantic variables (names unchanged so stock components work) */
+  --background: var(--room-surface);
+  --foreground: var(--ink);
+  --card: var(--room-surface);
+  --card-foreground: var(--ink);
+  --popover: var(--room-surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--action);
+  --primary-foreground: var(--action-foreground);
+  /* Explicit hover so the gate can check it (desktop only; touch uses the pressed scale) */
+  --primary-hover: color-mix(in oklab, var(--action) 88%, var(--action-foreground));
+  --secondary: var(--room-surface);
+  --secondary-foreground: var(--ink);
+  --muted: var(--room-tint);
+  --muted-foreground: var(--ink-2);
+  --accent: var(--room-tint);
+  --accent-foreground: var(--ink);
+  /* Text-safe danger: stock components use text-destructive and bg-destructive/10 washes */
+  --destructive: var(--danger-ink);
+  --destructive-foreground: var(--danger-foreground);
+  --border: var(--hairline);
+  --input: var(--control-border);
+  --ring: var(--focus);
+  --surface: var(--surface-neutral);
+  --surface-foreground: var(--ink);
+  --selection: var(--room-strong);
+  --selection-foreground: var(--ink);
+  --sidebar: var(--room-surface);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--action);
+  --sidebar-primary-foreground: var(--action-foreground);
+  --sidebar-accent: var(--room-tint);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--hairline);
+  --sidebar-ring: var(--focus);
+
+  /* Elevation — shadows are tinted from the room, never grey */
+  --elevation-1: 0 1px 2px color-mix(in oklab, var(--room-shadow) 8%, transparent),
+    0 12px 28px -18px color-mix(in oklab, var(--room-shadow) 42%, transparent);
+  --elevation-2: 0 2px 6px color-mix(in oklab, var(--room-shadow) 10%, transparent),
+    0 18px 40px -20px color-mix(in oklab, var(--room-shadow) 52%, transparent);
+  --elevation-3: 0 -10px 44px -14px color-mix(in oklab, var(--room-shadow) 40%, transparent);
+
+  /* Shape — shadcn derives sm…4xl from --radius: 12 · 16 · 20 · 28 · 36 · 44 · 52 px */
+  --radius: 1.25rem;
+
+  /* Text scale — set by the in-app Text size setting (html[data-text-scale]); multiplies type only */
+  --text-scale: 1;
+
+  /* Fonts — apps/web sets --font-nunito / --font-noto-tamil via next/font; names are fallbacks */
+  --font-ui: var(--font-nunito, "Nunito"), var(--font-noto-tamil, "Noto Sans Tamil"), ui-sans-serif, system-ui,
+    sans-serif;
+  --font-code: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", monospace;
+
+  /* Layout. Header and tray heights follow the text they contain, so scroll-padding and pb-tray reserve
+     the right space at every text size (tab labels cap at 1.25× and may wrap to two lines). */
+  --gutter: 1.25rem;
+  --header-height: calc(2.25rem + 1.0625rem * var(--text-scale) * 1.41);
+  --tray-height: calc(3rem + 2 * 0.75rem * min(var(--text-scale), 1.25) * 1.25);
+  /* The raised Talk tab protrudes this far above the tray (3+ tabs); <html data-tray="flat"> zeroes it */
+  --tray-overhang: 1.75rem;
+  --capture-height: max(3.25rem, calc(1rem * var(--text-scale) * 1.5 + 1.75rem));
+  /* A fixed bottom dock above the tray (e.g. the Talk composer) sets this to its full height, including any
+     tray overhang it covers: at least var(--capture-height) */
+  --bottom-dock: 0px;
+  /* Written on <html> by the visualViewport hook while the software keyboard is open (Safari has no
+     interactive-widget); docked UI uses max(its normal bottom, var(--keyboard-inset)) */
+  --keyboard-inset: 0px;
+  --content-max: 45rem;
+  --sheet-max: 40rem;
+  --side-sheet-width: 26.25rem;
+
+  /* Controls (min sizes — controls grow with text, never clip) */
+  --target-min: 2.75rem;
+  --control-height: 3rem;
+  --control-height-lg: 3.25rem;
+  --control-height-sm: 2.25rem;
+  --row-height: 4rem;
+
+  /* Motion */
+  --duration-instant: 100ms;
+  --duration-quick: 160ms;
+  --duration-base: 240ms;
+  --duration-gentle: 320ms;
+  --duration-slow: 480ms;
+
+  /* Layers */
+  --z-header: 30;
+  --z-tray: 40;
+  --z-overlay: 50;
+  --z-toast: 60;
+}
+
+:root[data-text-scale="115"] {
+  --text-scale: 1.15;
+}
+:root[data-text-scale="130"] {
+  --text-scale: 1.3;
+}
+:root[data-text-scale="150"] {
+  --text-scale: 1.5;
+}
+:root[data-text-scale="175"] {
+  --text-scale: 1.75;
+}
+:root[data-text-scale="200"] {
+  --text-scale: 2;
+}
+
+/* Fewer than 3 tabs: no raised Talk tab */
+:root[data-tray="flat"] {
+  --tray-overhang: 0px;
+}
+
+@media (min-width: 37.5rem) {
+  :root {
+    --gutter: 1.5rem;
+  }
+}
+@media (min-width: 64rem) {
+  :root {
+    --gutter: 2rem;
+  }
+  /* Large pastel areas feel loud on desktop: lighten the floor slightly toward the card surface
+     (85/15 keeps the floor-vs-card separation ≥ 1.1 for every room; checked by the contrast gate). */
+  :root:not(.dark) {
+    --room-floor: color-mix(in oklab, var(--room) 85%, var(--room-surface));
+  }
+}
+
+/* Admin and other dense desktop surfaces. On touch screens targets never drop below 44px. */
+[data-density="compact"] {
+  --radius: 0.625rem;
+  --control-height: 2.25rem;
+  --control-height-lg: 2.5rem;
+  --control-height-sm: 2.25rem;
+  --row-height: 2.5rem;
+  --gutter: 1rem;
+}
+@media (any-pointer: coarse) {
+  [data-density="compact"] {
+    --control-height: 2.75rem;
+    --control-height-lg: 2.75rem;
+    --control-height-sm: 2.75rem;
+    --row-height: 2.75rem;
+  }
+}
+
+/* Theme switch: the app sets data-theme-switching for one frame so the floor doesn't glide between themes. */
+:root[data-theme-switching],
+:root[data-theme-switching] * {
+  transition: none !important;
+}
+/* ───────────────────────────── 4. Tailwind theme ───────────────────────────── */
+@theme inline {
+  /* Only tokens. The default Tailwind palette is removed so `bg-blue-500` cannot creep in. */
+  --color-*: initial;
+  --color-white: oklch(1 0 0);
+  --color-black: oklch(0 0 0);
+
+  /* shadcn semantic colours */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-selection: var(--selection);
+  --color-selection-foreground: var(--selection-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Nilumi: ink, room (current), voice */
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-hairline: var(--hairline);
+  --color-control: var(--control-border);
+  --color-focus: var(--focus);
+  --color-focus-inverse: var(--focus-inverse);
+  --color-scrim: var(--scrim);
+  --color-room: var(--room);
+  --color-room-floor: var(--room-floor);
+  --color-room-tint: var(--room-tint);
+  --color-room-strong: var(--room-strong);
+  --color-room-ink: var(--room-ink);
+  --color-room-surface: var(--room-surface);
+  --color-voice: var(--voice);
+  --color-voice-foreground: var(--voice-foreground);
+  --color-voice-soft: var(--voice-soft);
+  --color-voice-on-action: var(--voice-on-action);
+
+  /* Nilumi: every room by name (source-room tinting, e.g. a Lists item shown on Today) */
+  --color-today: var(--today-floor);
+  --color-today-tint: var(--today-tint);
+  --color-today-strong: var(--today-strong);
+  --color-today-ink: var(--today-ink);
+  --color-lists: var(--lists-floor);
+  --color-lists-tint: var(--lists-tint);
+  --color-lists-strong: var(--lists-strong);
+  --color-lists-ink: var(--lists-ink);
+  --color-talk: var(--talk-floor);
+  --color-talk-tint: var(--talk-tint);
+  --color-talk-strong: var(--talk-strong);
+  --color-talk-ink: var(--talk-ink);
+  --color-tasks: var(--tasks-floor);
+  --color-tasks-tint: var(--tasks-tint);
+  --color-tasks-strong: var(--tasks-strong);
+  --color-tasks-ink: var(--tasks-ink);
+  --color-memory: var(--memory-floor);
+  --color-memory-tint: var(--memory-tint);
+  --color-memory-strong: var(--memory-strong);
+  --color-memory-ink: var(--memory-ink);
+  --color-linen: var(--linen-floor);
+  --color-linen-tint: var(--linen-tint);
+  --color-linen-strong: var(--linen-strong);
+  --color-linen-ink: var(--linen-ink);
+
+  /* Nilumi: semantic triples */
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-success-ink: var(--success-ink);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-warning-ink: var(--warning-ink);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-ink: var(--danger-ink);
+  --color-danger-foreground: var(--danger-foreground);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-info-ink: var(--info-ink);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Nilumi: visibility and members */
+  --color-household: var(--visibility-household);
+  --color-household-foreground: var(--visibility-household-foreground);
+  --color-visibility-outline: var(--visibility-outline);
+  --color-visibility-foreground: var(--visibility-outline-foreground);
+  --color-member-a: var(--member-a);
+  --color-member-a-soft: var(--member-a-soft);
+  --color-member-b: var(--member-b);
+  --color-member-b-soft: var(--member-b-soft);
+
+  /* Fonts — one family (Nunito) with Noto Sans Tamil for Tamil runs */
+  --font-sans: var(--font-ui);
+  --font-heading: var(--font-ui);
+  --font-mono: var(--font-code);
+
+  /* Radius scale (shadcn convention), concentric: inner = outer − padding */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Elevation. Stock shadow steps are re-pointed at the room-tinted elevations, so installed shadcn components
+     never cast grey shadows (xs/sm → card, md/lg → float, xl/2xl → overlay). */
+  --shadow-*: initial;
+  --shadow-card: var(--elevation-1);
+  --shadow-float: var(--elevation-2);
+  --shadow-overlay: var(--elevation-3);
+  --shadow-2xs: var(--elevation-1);
+  --shadow-xs: var(--elevation-1);
+  --shadow-sm: var(--elevation-1);
+  --shadow-md: var(--elevation-2);
+  --shadow-lg: var(--elevation-2);
+  --shadow-xl: var(--elevation-3);
+  --shadow-2xl: var(--elevation-3);
+
+  /* Type — fixed steps × the in-app text scale. Every step ≥ 1.4 line-height for Tamil vowel signs. */
+  --text-caption: calc(0.75rem * var(--text-scale));
+  --text-caption--line-height: 1.5;
+  --text-caption--font-weight: 700;
+  --text-footnote: calc(0.8125rem * var(--text-scale));
+  --text-footnote--line-height: 1.54;
+  --text-footnote--font-weight: 600;
+  --text-subhead: calc(0.875rem * var(--text-scale));
+  --text-subhead--line-height: 1.5;
+  --text-subhead--font-weight: 600;
+  --text-callout: calc(0.9375rem * var(--text-scale));
+  --text-callout--line-height: 1.53;
+  --text-body: calc(1rem * var(--text-scale));
+  --text-body--line-height: 1.5;
+  --text-headline: calc(1.0625rem * var(--text-scale));
+  --text-headline--line-height: 1.41;
+  --text-headline--font-weight: 700;
+  --text-title-2: calc(1.25rem * var(--text-scale));
+  --text-title-2--line-height: 1.4;
+  --text-title-2--font-weight: 750;
+  --text-title-1: calc(1.625rem * var(--text-scale));
+  --text-title-1--line-height: 1.4;
+  --text-title-1--font-weight: 800;
+  --text-title-1--letter-spacing: -0.01em;
+  --text-display: calc(2rem * var(--text-scale));
+  --text-display--line-height: 1.4;
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -0.015em;
+  /* Tab labels cap at 1.25× and may wrap to two lines */
+  --text-tab: calc(0.75rem * min(var(--text-scale), 1.25));
+  --text-tab--line-height: 1.25;
+  --text-tab--font-weight: 700;
+
+  /* Tailwind's default steps, re-based on the text scale so stock shadcn components scale too */
+  --text-xs: calc(0.75rem * var(--text-scale));
+  --text-xs--line-height: 1.5;
+  --text-sm: calc(0.875rem * var(--text-scale));
+  --text-sm--line-height: 1.5;
+  --text-base: calc(1rem * var(--text-scale));
+  --text-base--line-height: 1.5;
+  --text-lg: calc(1.125rem * var(--text-scale));
+  --text-lg--line-height: 1.5;
+  --text-xl: calc(1.25rem * var(--text-scale));
+  --text-xl--line-height: 1.4;
+  --text-2xl: calc(1.5rem * var(--text-scale));
+  --text-2xl--line-height: 1.4;
+  --text-3xl: calc(1.875rem * var(--text-scale));
+  --text-3xl--line-height: 1.4;
+  --text-4xl: calc(2.25rem * var(--text-scale));
+  --text-4xl--line-height: 1.4;
+}
+
+@theme {
+  /* Window classes: compact < 600 · medium 600–1023 · expanded ≥ 1024 · wide ≥ 1440. Stock breakpoints are
+     aliased to them so installed shadcn components switch at the same widths (sm/md → medium, lg → expanded,
+     xl/2xl → wide). New code uses medium:/expanded:/wide:. */
+  --breakpoint-medium: 37.5rem;
+  --breakpoint-expanded: 64rem;
+  --breakpoint-wide: 90rem;
+  --breakpoint-sm: 37.5rem;
+  --breakpoint-md: 37.5rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 90rem;
+  --breakpoint-2xl: 90rem;
+
+  /* Easing. spring-soft (light overshoot) is reserved for tick, toggle and press-release only. */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --ease-spring-soft: cubic-bezier(0.34, 1.35, 0.64, 1);
+
+  /* Signature motion */
+  --animate-rise: rise 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-in: fade-in 160ms cubic-bezier(0.2, 0, 0, 1) both;
+  --animate-tick-ripple: tick-ripple 480ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-check-draw: check-draw 320ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-listen-ring: listen-ring 1.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  --animate-level-bar: level-bar 900ms ease-in-out infinite;
+  --animate-thinking: thinking 1.2s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-highlight: highlight 1.6s cubic-bezier(0.2, 0, 0, 1);
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes tick-ripple {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--success) 45%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 0.75rem transparent;
+    }
+  }
+  @keyframes check-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes listen-ring {
+    from {
+      box-shadow: 0 0 0 0 color-mix(in oklab, var(--voice) 55%, transparent);
+    }
+    to {
+      box-shadow: 0 0 0 1.125rem transparent;
+    }
+  }
+  @keyframes level-bar {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+    }
+    50% {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes thinking {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: translateY(0);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-0.1875rem);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: 150% 0;
+    }
+    to {
+      background-position: -50% 0;
+    }
+  }
+  @keyframes highlight {
+    from {
+      background-color: var(--room-tint);
+    }
+  }
+}
+
+/* ───────────────────────────── 5. Base ───────────────────────────── */
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  html {
+    color-scheme: light;
+    background-color: var(--room-floor);
+    color: var(--foreground);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+    /* Fixed header, tray and capture bar never hide the focused element (WCAG 2.4.11) */
+    scroll-padding-top: calc(var(--header-height) + env(safe-area-inset-top));
+    scroll-padding-bottom: calc(
+      var(--tray-height) + max(var(--bottom-dock), var(--tray-overhang)) + env(safe-area-inset-bottom) + 1rem
+    );
+    transition: --room var(--duration-gentle) var(--ease-standard);
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--room-floor);
+    color: var(--foreground);
+    font-family: var(--font-ui);
+    font-size: calc(1rem * var(--text-scale));
+    line-height: 1.5;
+    font-weight: 500;
+    /* A long single word (common in Tamil, which only breaks at spaces) wraps instead of overflowing at 200% */
+    overflow-wrap: anywhere;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p,
+  li {
+    text-wrap: pretty;
+  }
+
+  /* Preflight's placeholder is 50% currentColor (~2.5:1); Nilumi uses secondary ink (≥ 4.5:1). */
+  ::placeholder {
+    color: var(--muted-foreground);
+    opacity: 1;
+  }
+
+  ::selection {
+    background-color: var(--selection);
+    color: var(--selection-foreground);
+  }
+
+  /* Tamil runs (renderers wrap U+0B80–U+0BFF in <span lang="ta">): roomier lines, no tracking, no caps. */
+  :lang(ta) {
+    line-height: 1.6;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  a,
+  button,
+  input,
+  label,
+  select,
+  summary,
+  textarea,
+  [role="button"],
+  [role="tab"],
+  [role="switch"],
+  [role="checkbox"] {
+    touch-action: manipulation;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+/* ───────────────────────────── 6. Utilities ───────────────────────────── */
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+@utility pl-safe {
+  padding-left: env(safe-area-inset-left);
+}
+@utility pr-safe {
+  padding-right: env(safe-area-inset-right);
+}
+/* Horizontal gutter that also clears landscape notches */
+@utility px-gutter {
+  padding-left: max(var(--gutter), env(safe-area-inset-left));
+  padding-right: max(var(--gutter), env(safe-area-inset-right));
+}
+/* Bottom space so content clears the tab tray, any bottom dock and the home indicator */
+@utility pb-tray {
+  padding-bottom: calc(
+    var(--tray-height) + max(var(--bottom-dock), var(--tray-overhang)) + env(safe-area-inset-bottom) + 1.5rem
+  );
+}
+@utility content-column {
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+}
+/* Extends the hit area to ≥ 44px without changing the visual size */
+@utility touch-target {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, var(--target-min));
+    height: max(100%, var(--target-min));
+    transform: translate(-50%, -50%);
+  }
+}
+/* For swipe rows and record controls: no iOS callout, no text selection on long-press */
+@utility no-callout {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+@utility scroll-contain {
+  overscroll-behavior: contain;
+}
+/* Focus contract: always an opaque 2px outline (the unlayered rule in section 7 enforces it even over
+   `outline-none`). Never add translucent rings such as ring-ring/50 — they fail 3:1. */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}
+/* Inverted surfaces (navy toasts, primary-filled containers): descendants focus in the inverse ink */
+@utility focus-inverse {
+  --focus: var(--focus-inverse);
+  --ring: var(--focus-inverse);
+}
+/* Opacity-only transition that survives reduced motion */
+@utility motion-fade {
+  transition-property: opacity;
+  transition-duration: var(--duration-quick);
+  transition-timing-function: var(--ease-standard);
+}
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+/* Phosphor duotone: the second tone takes the (source-)room's strong colour, which stays visible on a
+   tint badge (Phosphor's default is 20% currentColor). Override per badge with --duotone. */
+@utility icon-duotone-tint {
+  & [opacity="0.2"] {
+    fill: var(--duotone, var(--room-strong));
+    opacity: 1;
+  }
+}
+@utility skeleton {
+  background-image: linear-gradient(
+    90deg,
+    var(--room-tint) 0%,
+    color-mix(in oklab, var(--room-tint) 45%, var(--room-surface)) 50%,
+    var(--room-tint) 100%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
+}
+
+/* ───────────────────────────── 7. Platform guards (unlayered on purpose) ───────────────────────────── */
+/* Focus: unlayered, so it wins over component utilities like `outline-none` (cascade layers lose to
+   unlayered styles). Inverted surfaces switch to the inverse ink; forced-colors uses the system colour.
+   Wrapped fields (shadcn input groups, the capture bar): the inner control opts out with data-focus-delegate
+   (or shadcn's data-slot="input-group-control") and the wrapper draws the same outline. */
+:focus-visible:where(:not([data-focus-delegate], [data-slot="input-group-control"])),
+:where([data-slot="input-group"], [data-focus-ring-within]):has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+:where(.bg-primary, .bg-action, [data-surface="inverse"]) :focus-visible {
+  outline-color: var(--focus-inverse);
+}
+@media (forced-colors: active) {
+  :focus-visible,
+  :where([data-slot="input-group"], [data-focus-ring-within]):has(:focus-visible) {
+    outline-color: Highlight;
+  }
+}
+
+/* iOS zooms into inputs below 16px. On any touch-capable device, inputs given a small text utility (including
+   responsive variants such as stock shadcn's md:text-sm) are lifted to the body size; larger ones are left alone. */
+@media (any-pointer: coarse) {
+  :is(input:not([type="checkbox"], [type="radio"], [type="range"]), select, textarea):is(
+      [class*="text-xs"],
+      [class*="text-sm"],
+      [class*="text-caption"],
+      [class*="text-footnote"],
+      [class*="text-subhead"],
+      [class*="text-callout"]
+    ) {
+    font-size: calc(1rem * var(--text-scale)) !important;
+  }
+}
+
+@keyframes loading-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* Reduced motion: movement becomes near-instant; functional states stay visible as static cues. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  html {
+    transition: none;
+  }
+  .motion-fade {
+    transition-property: opacity !important;
+    transition-duration: var(--duration-quick) !important;
+  }
+  .animate-listen-ring {
+    animation: none !important;
+    box-shadow: 0 0 0 0.25rem color-mix(in oklab, var(--voice) 45%, transparent);
+  }
+  .animate-level-bar {
+    animation: none !important;
+    transform: scaleY(0.6);
+  }
+  .animate-thinking {
+    animation: none !important;
+    opacity: 0.7;
+  }
+  .animate-shimmer,
+  .skeleton {
+    animation: none !important;
+  }
+  /* A frozen spinner looks broken: pulse its opacity instead (no movement) */
+  .animate-spin {
+    animation: loading-pulse 1.6s ease-in-out infinite !important;
+  }
+}

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-room="linen">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Nilumi · Pastel Rooms specimen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&family=Noto+Sans+Tamil:wght@100..900&display=swap"
+    />
+    <link rel="stylesheet" href="dist/specimen.css" />
+    <script src="icons.js"></script>
+  </head>
+  <body>
+    <header class="sticky top-0 z-(--z-header) border-b border-border bg-room-floor">
+      <div class="sp-page flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
+        <a href="/" class="inline-flex min-h-(--control-height) items-center rounded-full px-3 text-subhead underline">Home</a>
+        <p class="text-headline">Nilumi · Pastel Rooms <span class="text-muted-foreground">v1 specimen</span></p>
+        <div id="controls" class="flex flex-wrap items-center gap-x-5 gap-y-2"></div>
+      </div>
+    </header>
+    <main id="specimen" class="sp-page"></main>
+    <div role="status" aria-live="polite" class="toast-host pointer-events-none fixed inset-x-3 bottom-6 z-(--z-toast) mx-auto max-w-md"></div>
+    <script src="kit.js"></script>
+    <script src="specimen.js"></script>
+  </body>
+</html>
