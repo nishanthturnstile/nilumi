@@ -3,7 +3,7 @@
 **Closed with owner acceptance October 8, 2026.** The owner completed private
 master-key decryption; real offsite scratch restore and late-forget replay passed.
 One recovery operator is accepted; the second-adult drill is waived for S5.
-[Acceptance scope and production follow-ups](../../docs/16-s5-acceptance.md).
+[Acceptance scope and production follow-ups](../../docs/validation/s5/16-s5-acceptance.md).
 
 This isolated package validates infrastructure using disposable synthetic data.
 It makes no AI calls and sends no real notifications. Local acceptance is not
@@ -53,7 +53,7 @@ The live checks reused **Website-Thaarei → staging**, with separate temporary
 Singapore database/app/worker services, one replica each and no sleeping.
 The user explicitly prohibited creating a new project. All temporary resources
 were removed after the checks; the existing Nilumi service was unchanged. See
-[S5 plan](../../docs/14-s5-platform-validation.md) for remaining configuration and
+[S5 plan](../../docs/validation/s5/14-s5-platform-validation.md) for remaining configuration and
 acceptance gates and [live results](reports/live-smoke.json). The local commands
 above provision no Railway resources. Live resources used a separate $2 allowance.
 
@@ -78,7 +78,7 @@ recipient belongs in worker configuration. Plaintext is piped directly into age;
 no plaintext temporary dump file is created. Output is an ignored `.age` file. R2 tooling is implemented
 below; real-key offsite upload/download passed, and manual recovery remains pending.
 
-[Recovery runbook](../../docs/15-s5-recovery-runbook.md) must be reviewed and copied
+[Recovery runbook](../../docs/operations/s5/15-s5-recovery-runbook.md) must be reviewed and copied
 into the shared OneDrive document. Never commit or paste the private key.
 
 ## Fresh-cluster recovery and PITR

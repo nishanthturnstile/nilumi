@@ -1,0 +1,27 @@
+{
+  "version": 3,
+  "checkedAt": null,
+  "teamId": null,
+  "purchasedCredits": true,
+  "creditBalanceUsd": null,
+  "paidCreditValidThrough": null,
+  "creditExpiryEvidence": null,
+  "autoTopUpOff": true,
+  "noTeamByok": true,
+  "fixtureHash": null,
+  "teamBudget": {
+    "limitUsd": 10,
+    "refresh": "monthly",
+    "alerts": [50, 75, 100]
+  },
+  "runtimeBudget": null,
+  "evaluationBudget": null,
+  "s3CountedUsd": 0.27730646,
+  "s3LedgerEvidence": null,
+  "canaryBudget": null,
+  "canaryBudgetVerified": false,
+  "negativeRouteVerified": true,
+  "quotaReadback": null,
+  "storageForwardingEvidence": null,
+  "status": "pending-account-preflight"
+}

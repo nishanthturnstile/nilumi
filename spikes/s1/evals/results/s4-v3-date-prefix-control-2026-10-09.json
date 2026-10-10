@@ -1,0 +1,27 @@
+{
+  "kind": "s4-existing-synthetic-audio-prefix-control",
+  "sourceVersion": "s4-bulbul-v3-stream-3",
+  "sourceAttemptId": "319ddbcc-2af2-4d04-bfa3-c83c57a7b38d",
+  "fixture": "date",
+  "sampleRate": 22050,
+  "pcmBytes": 135476,
+  "pcmSha256": "611fad1cfcd8e2aec57a65e73699d49a3a49d5589399310fe8a7b79eac9d021f",
+  "sourceHashVerified": true,
+  "providerMeasuredLeadingSilenceMs": 331.6553287981859,
+  "thresholdOnsetMs": {
+    "1": 110.02267573696145,
+    "2": 113.15192743764173,
+    "4": 132.6077097505669,
+    "8": 137.91383219954648,
+    "16": 143.44671201814057,
+    "32": 201.22448979591837,
+    "64": 328.25396825396825,
+    "128": 330.29478458049886,
+    "164": 331.6553287981859
+  },
+  "digitalZeroPrefixFrames": 2426,
+  "audioFramesRemoved": 0,
+  "paidProviderCalls": 0,
+  "method": "Read-only existing Railway volume clip; PCM unchanged. Temporary access key removed.",
+  "decision": "Retain original audio in v4. Exact digital zero prefix is shorter than the measured amplitude-threshold prefix; quiet nonzero samples require quality verification before trimming."
+}

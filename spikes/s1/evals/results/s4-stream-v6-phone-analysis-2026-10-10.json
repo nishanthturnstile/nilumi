@@ -1,0 +1,1057 @@
+{
+  "schema": "s4-v6-phone-analysis-1",
+  "createdAt": "2026-10-10T03:01:37.693197+00:00",
+  "version": "s4-bulbul-v3-stream-6",
+  "voice": "ritu",
+  "sources": [
+    {
+      "phone": "android",
+      "sourceType": "Original attachment, copied byte-for-byte to ignored local storage",
+      "path": "spikes/s1/validation-results/s4/v6/android-phone-2026-10-10.json",
+      "sha256": "5eceded5b6b4c923da2df131fe7a3f5dc98651397f83a05ef1964acb0eec8593",
+      "exportedAt": "2026-10-10T02:49:07.054Z",
+      "reservedInr": 29.466,
+      "audibleOnsetVerified": true,
+      "deviceNote": " pixel 8, latest version of Android"
+    },
+    {
+      "phone": "iphone",
+      "sourceType": "Selected fields transcribed from owner chat; no complete original export or original-file hash claimed",
+      "exportedAt": "2026-10-10T02:55:54.007Z",
+      "reservedInr": 30.0312,
+      "audibleOnsetVerified": true,
+      "deviceNote": "iPhone 18 latest version of os"
+    }
+  ],
+  "counts": {
+    "paidSmoke": 6,
+    "benchmark": 0,
+    "freeDiagnostics": 6,
+    "completedPaidSmoke": 6,
+    "paidAtOrBelow700Ms": 3,
+    "allReportedUnderruns": 0,
+    "providerSocketCold": 3,
+    "providerSocketReused": 3
+  },
+  "phoneRows": [
+    {
+      "id": "deffbcd0-517c-431d-bd0c-c8f45638e3ea",
+      "fixture": "short",
+      "combination": "android/mobile",
+      "status": "ok",
+      "firstAudioMs": 1190.6969931972853,
+      "transferFirstChunkMs": 1115.6999999997206,
+      "audioBytes": 52684,
+      "underruns": 0,
+      "at": "2026-10-10T02:47:51.703Z",
+      "purpose": "smoke",
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 4.300000000279397,
+        "maxProcessingMs": 4.300000000279397,
+        "maxArrivalGapMs": 0,
+        "chunks": 1,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 24,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 3.3999999999068677,
+        "responseHeadersMs": 1110.5,
+        "leadingSilenceMs": 27.482993197278912,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 1190.6969931972853,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 1116.6999999997206,
+            "contextTimeMs": 38800,
+            "scheduledContextMs": 38847.482993197285,
+            "sampleOffsetMs": 27.482993197278912
+          },
+          "firstSchedule": {
+            "atMs": 1120.1000000000931,
+            "contextTimeMs": 38805.33333333333,
+            "state": "running",
+            "sourceStartContextMs": 38820,
+            "frames": 26342
+          },
+          "outputMapping": {
+            "capturedAtMs": 1180.5,
+            "contextTimeMs": 38866.666666666664,
+            "state": "running",
+            "scheduledContextMs": 38847.482993197285,
+            "timestampContextMs": 38836.286,
+            "timestampPerformanceMs": 1179.5,
+            "mappedOnsetMs": 1190.6969931972853
+          }
+        },
+        "resource": {
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "requestToHeadersMs": 1098.7999999998137,
+          "protocol": "h3",
+          "startMs": 3.7999999998137355,
+          "fetchStartMs": 5.699999999720603,
+          "workerStartMs": 5.399999999906868,
+          "requestStartMs": 8.399999999906868,
+          "responseStartMs": 1107.1999999997206,
+          "finalResponseHeadersStartMs": 1107.1999999997206,
+          "responseEndMs": 1110,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 5,
+          "afterHeadersMs": 3.3000000002793968
+        }
+      },
+      "server": {
+        "responseReadyMs": 498.6638699993491,
+        "providerDispatchMs": 26.962850004434586,
+        "ledgerMs": 24.007252998650074,
+        "providerEofMs": 620.8090279996395,
+        "connection": {
+          "socketId": 1,
+          "reused": false,
+          "idleBeforeMs": null,
+          "requestToSocketMs": 148.7526199966669,
+          "socketToHeadersMs": 171.77484600245953,
+          "protocol": "http/1.1"
+        },
+        "decoderFirstPcmProcessingMs": 0.8030120059847832
+      },
+      "providerFirstAudioMs": 470.1987090036273,
+      "providerMs": 588.8410660028458,
+      "decomposition": {
+        "beforeNetworkRequestMs": 8.399999999906868,
+        "serverReadyMs": 498.6638699993491,
+        "networkAndInfrastructureResidualMs": 600.1361300004646,
+        "headersToFirstPcmMs": 8.5,
+        "recordedPrefixMs": 27.482993197278912,
+        "postPcmResidualMs": 47.51400000028582
+      }
+    },
+    {
+      "id": "33b90b0d-2cc6-4d7d-81d0-40d7dba1db55",
+      "fixture": "shopping",
+      "combination": "android/mobile",
+      "status": "ok",
+      "firstAudioMs": 502.2644829931087,
+      "transferFirstChunkMs": 425.1999999997206,
+      "audioBytes": 105370,
+      "underruns": 0,
+      "at": "2026-10-10T02:48:00.473Z",
+      "purpose": "smoke",
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 11.100000001024455,
+        "maxProcessingMs": 1,
+        "maxArrivalGapMs": 61.299999999813735,
+        "chunks": 32,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 24,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 0.19999999972060323,
+        "responseHeadersMs": 424.79999999981374,
+        "leadingSilenceMs": 28.707482993197278,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 502.2644829931087,
+          "truncated": false
+        },
+        "audio": {
+          "firstSchedule": {
+            "atMs": 425.6999999997206,
+            "contextTimeMs": 46880,
+            "state": "running",
+            "sourceStartContextMs": 46900.00000000001,
+            "frames": 586
+          },
+          "onsetDetection": {
+            "atMs": 427.09999999962747,
+            "contextTimeMs": 46880,
+            "scheduledContextMs": 46928.7074829932,
+            "sampleOffsetMs": 2.131519274376417
+          },
+          "outputMapping": {
+            "capturedAtMs": 476.5,
+            "contextTimeMs": 46930.666666666664,
+            "state": "running",
+            "scheduledContextMs": 46928.7074829932,
+            "timestampContextMs": 46899.34299999999,
+            "timestampPerformanceMs": 472.89999999990687,
+            "mappedOnsetMs": 502.2644829931087
+          }
+        },
+        "resource": {
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "requestToHeadersMs": 416.29999999981374,
+          "protocol": "h3",
+          "startMs": 0.39999999990686774,
+          "fetchStartMs": 1.8999999999068677,
+          "workerStartMs": 1.5,
+          "requestStartMs": 3.8999999999068677,
+          "responseStartMs": 420.1999999997206,
+          "finalResponseHeadersStartMs": 420.1999999997206,
+          "responseEndMs": 828.5,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 3.7000000001862645,
+          "afterHeadersMs": 4.600000000093132
+        }
+      },
+      "server": {
+        "responseReadyMs": 283.96772599965334,
+        "providerDispatchMs": 29.06113900244236,
+        "ledgerMs": 28.059937000274658,
+        "providerEofMs": 617.8664159998298,
+        "connection": {
+          "socketId": 1,
+          "reused": true,
+          "idleBeforeMs": 8141.992486000061,
+          "requestToSocketMs": 2.2556730061769485,
+          "socketToHeadersMs": 101.5882049947977,
+          "protocol": "http/1.1"
+        },
+        "decoderFirstPcmProcessingMs": 0.4053960070014
+      },
+      "providerFirstAudioMs": 254.74567399919033,
+      "providerMs": 588.7560699954629,
+      "decomposition": {
+        "beforeNetworkRequestMs": 3.8999999999068677,
+        "serverReadyMs": 283.96772599965334,
+        "networkAndInfrastructureResidualMs": 132.3322740001604,
+        "headersToFirstPcmMs": 5.0,
+        "recordedPrefixMs": 28.707482993197278,
+        "postPcmResidualMs": 48.35700000019081
+      }
+    },
+    {
+      "id": "2b693da9-b183-4419-b41b-11086720cb9f",
+      "fixture": "short",
+      "combination": "android/wifi",
+      "status": "ok",
+      "firstAudioMs": 733.2174829932046,
+      "transferFirstChunkMs": 650.6999999997206,
+      "audioBytes": 63974,
+      "underruns": 0,
+      "at": "2026-10-10T02:48:50.028Z",
+      "purpose": "smoke",
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 4.400000000372529,
+        "maxProcessingMs": 3.1000000000931323,
+        "maxArrivalGapMs": 16.5,
+        "chunks": 2,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 22,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 0.2999999998137355,
+        "responseHeadersMs": 649,
+        "leadingSilenceMs": 42.04081632653061,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 733.2174829932046,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 652.6999999997206,
+            "contextTimeMs": 96400,
+            "scheduledContextMs": 96456.7074829932,
+            "sampleOffsetMs": 42.04081632653061
+          },
+          "firstSchedule": {
+            "atMs": 653.7999999998137,
+            "contextTimeMs": 96400,
+            "state": "running",
+            "sourceStartContextMs": 96414.66666666666,
+            "frames": 17662
+          },
+          "outputMapping": {
+            "capturedAtMs": 727.5,
+            "contextTimeMs": 96474.66666666666,
+            "state": "running",
+            "scheduledContextMs": 96456.7074829932,
+            "timestampContextMs": 96447.99,
+            "timestampPerformanceMs": 724.5,
+            "mappedOnsetMs": 733.2174829932046
+          }
+        },
+        "resource": {
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "requestToHeadersMs": 640,
+          "protocol": "h3",
+          "startMs": 0.5,
+          "fetchStartMs": 1.2999999998137355,
+          "workerStartMs": 1.099999999627471,
+          "requestStartMs": 3.7999999998137355,
+          "responseStartMs": 643.7999999998137,
+          "finalResponseHeadersStartMs": 643.7999999998137,
+          "responseEndMs": 682.5,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 3.5,
+          "afterHeadersMs": 5.2000000001862645
+        }
+      },
+      "server": {
+        "responseReadyMs": 447.201573997736,
+        "providerDispatchMs": 25.46188499778509,
+        "ledgerMs": 24.28143599629402,
+        "providerEofMs": 547.9469579979777,
+        "connection": {
+          "socketId": 2,
+          "reused": false,
+          "idleBeforeMs": null,
+          "requestToSocketMs": 120.56576400250196,
+          "socketToHeadersMs": 87.44319999963045,
+          "protocol": "http/1.1"
+        },
+        "decoderFirstPcmProcessingMs": 0.4185989946126938
+      },
+      "providerFirstAudioMs": 421.55611399561167,
+      "providerMs": 522.4301119968295,
+      "decomposition": {
+        "beforeNetworkRequestMs": 3.7999999998137355,
+        "serverReadyMs": 447.201573997736,
+        "networkAndInfrastructureResidualMs": 192.79842600226402,
+        "headersToFirstPcmMs": 6.899999999906868,
+        "recordedPrefixMs": 42.04081632653061,
+        "postPcmResidualMs": 40.4766666669534
+      }
+    },
+    {
+      "id": "796e4541-6deb-43fe-9ae7-7adc6cdad4d1",
+      "fixture": "shopping",
+      "combination": "android/wifi",
+      "status": "ok",
+      "firstAudioMs": 521.3672131521744,
+      "transferFirstChunkMs": 448.20000000018626,
+      "audioBytes": 105370,
+      "underruns": 0,
+      "at": "2026-10-10T02:48:58.430Z",
+      "purpose": "smoke",
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 9.899999999906868,
+        "maxProcessingMs": 3.1999999997206032,
+        "maxArrivalGapMs": 71.70000000018626,
+        "chunks": 5,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 21,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 0.5,
+        "responseHeadersMs": 445,
+        "leadingSilenceMs": 32.19954648526077,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 521.3672131521744,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 448.89999999990687,
+            "contextTimeMs": 104594.66666666667,
+            "scheduledContextMs": 104646.86621315192,
+            "sampleOffsetMs": 32.19954648526077
+          },
+          "firstSchedule": {
+            "atMs": 451.39999999990687,
+            "contextTimeMs": 104600,
+            "state": "running",
+            "sourceStartContextMs": 104614.66666666667,
+            "frames": 17662
+          },
+          "outputMapping": {
+            "capturedAtMs": 515.3999999999069,
+            "contextTimeMs": 104666.66666666667,
+            "state": "running",
+            "scheduledContextMs": 104646.86621315192,
+            "timestampContextMs": 104638.299,
+            "timestampPerformanceMs": 512.8000000002794,
+            "mappedOnsetMs": 521.3672131521744
+          }
+        },
+        "resource": {
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "requestToHeadersMs": 429.1999999997206,
+          "protocol": "h3",
+          "startMs": 1.2000000001862645,
+          "fetchStartMs": 3.1000000000931323,
+          "workerStartMs": 2.1000000000931323,
+          "requestStartMs": 8.800000000279397,
+          "responseStartMs": 438,
+          "finalResponseHeadersStartMs": 438,
+          "responseEndMs": 749.1000000000931,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 8.300000000279397,
+          "afterHeadersMs": 7
+        }
+      },
+      "server": {
+        "responseReadyMs": 257.4278469979763,
+        "providerDispatchMs": 30.067570999264717,
+        "ledgerMs": 29.252264998853207,
+        "providerEofMs": 596.376654997468,
+        "connection": {
+          "socketId": 2,
+          "reused": true,
+          "idleBeforeMs": 7889.869479000568,
+          "requestToSocketMs": 1.160350002348423,
+          "socketToHeadersMs": 74.70518999546766,
+          "protocol": "http/1.1"
+        },
+        "decoderFirstPcmProcessingMs": 0.08422700315713882
+      },
+      "providerFirstAudioMs": 227.18379700183868,
+      "providerMs": 566.2523889988661,
+      "decomposition": {
+        "beforeNetworkRequestMs": 8.800000000279397,
+        "serverReadyMs": 257.4278469979763,
+        "networkAndInfrastructureResidualMs": 171.7721530017443,
+        "headersToFirstPcmMs": 10.200000000186265,
+        "recordedPrefixMs": 32.19954648526077,
+        "postPcmResidualMs": 40.96766666672734
+      }
+    },
+    {
+      "id": "49696d8d-8141-4100-bd53-24c09f2b16ab",
+      "fixture": "short",
+      "combination": "iphone/wifi",
+      "purpose": "smoke",
+      "status": "ok",
+      "firstAudioMs": 1501.8276643990976,
+      "transferFirstChunkMs": 1434,
+      "audioBytes": 56448,
+      "underruns": 0,
+      "at": "2026-10-10T02:55:31.557Z",
+      "clientTrace": {
+        "fetchStartMs": 0,
+        "responseHeadersMs": 1433,
+        "leadingSilenceMs": 49.1609977324263,
+        "processingMs": 0,
+        "maxProcessingMs": 0,
+        "resource": {
+          "startMs": 803,
+          "fetchStartMs": 803,
+          "workerStartMs": 1,
+          "requestStartMs": 806,
+          "responseStartMs": 1432,
+          "requestToHeadersMs": 626,
+          "beforeRequestMs": 806,
+          "afterHeadersMs": 1,
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "protocol": "h3"
+        },
+        "longTasks": {
+          "status": "unsupported",
+          "count": null,
+          "overlapMs": null
+        },
+        "audio": {
+          "outputMapping": {
+            "timestampContextMs": 45317.33333333333,
+            "timestampPerformanceMs": 1518,
+            "scheduledContextMs": 45301.16099773243,
+            "mappedOnsetMs": 1501.8276643990976
+          }
+        }
+      },
+      "server": {
+        "responseReadyMs": 445.7452379986644,
+        "providerDispatchMs": 25.32491099834442,
+        "ledgerMs": 24.40090399980545,
+        "connection": {
+          "requestToSocketMs": 126.03512400388718,
+          "reused": false
+        }
+      },
+      "providerFirstAudioMs": 420.25947999954224,
+      "providerMs": 485.24748799949884,
+      "decomposition": {
+        "beforeNetworkRequestMs": 806,
+        "serverReadyMs": 445.7452379986644,
+        "networkAndInfrastructureResidualMs": 180.25476200133562,
+        "headersToFirstPcmMs": 2,
+        "recordedPrefixMs": 49.1609977324263,
+        "postPcmResidualMs": 18.666666666671254
+      }
+    },
+    {
+      "id": "48403211-6952-436f-a467-f4ac0fd959d2",
+      "fixture": "shopping",
+      "combination": "iphone/wifi",
+      "purpose": "smoke",
+      "status": "ok",
+      "firstAudioMs": 468.401360544216,
+      "transferFirstChunkMs": 414,
+      "audioBytes": 109132,
+      "underruns": 0,
+      "at": "2026-10-10T02:55:40.569Z",
+      "clientTrace": {
+        "fetchStartMs": 0,
+        "responseHeadersMs": 412,
+        "leadingSilenceMs": 36.734693877551024,
+        "processingMs": 2,
+        "maxProcessingMs": 1,
+        "resource": {
+          "startMs": 2.000000000014552,
+          "fetchStartMs": 2.000000000014552,
+          "workerStartMs": 1,
+          "requestStartMs": 4,
+          "responseStartMs": 408,
+          "requestToHeadersMs": 404,
+          "beforeRequestMs": 4,
+          "afterHeadersMs": 4,
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "protocol": "h3"
+        },
+        "longTasks": {
+          "status": "unsupported",
+          "count": null,
+          "overlapMs": null
+        },
+        "audio": {
+          "outputMapping": {
+            "timestampContextMs": 53285.333333333336,
+            "timestampPerformanceMs": 473,
+            "scheduledContextMs": 53280.734693877544,
+            "mappedOnsetMs": 468.401360544216
+          }
+        }
+      },
+      "server": {
+        "responseReadyMs": 270.66551499813795,
+        "providerDispatchMs": 22.351195998489857,
+        "ledgerMs": 21.669304005801678,
+        "connection": {
+          "requestToSocketMs": 2.550495006144047,
+          "reused": true
+        }
+      },
+      "providerFirstAudioMs": 248.1561089977622,
+      "providerMs": 598.968805000186,
+      "decomposition": {
+        "beforeNetworkRequestMs": 4,
+        "serverReadyMs": 270.66551499813795,
+        "networkAndInfrastructureResidualMs": 133.33448500186205,
+        "headersToFirstPcmMs": 6,
+        "recordedPrefixMs": 36.734693877551024,
+        "postPcmResidualMs": 17.66666666666498
+      }
+    }
+  ],
+  "freeDiagnostics": [
+    {
+      "id": "530f0e5c-9a05-48db-8a52-4997322f09a0",
+      "fixture": "diagnostic",
+      "combination": "android/mobile",
+      "status": "ok",
+      "firstAudioMs": 1250.5956848073401,
+      "transferFirstChunkMs": 1199.8999999999069,
+      "audioBytes": 61740,
+      "underruns": 0,
+      "at": "2026-10-10T02:47:13.836Z",
+      "purpose": null,
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 5.600000000093132,
+        "maxProcessingMs": 4.100000000093132,
+        "maxArrivalGapMs": 448.10000000009313,
+        "chunks": 4,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 0,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 8.899999999906868,
+        "responseHeadersMs": 1194.2999999998137,
+        "leadingSilenceMs": 0.045351473922902494,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 1,
+          "overlapMs": 23.100000000093132,
+          "maxDurationMs": 91,
+          "beforeFirstChunkMs": 23.100000000093132,
+          "afterFirstChunkMs": 0,
+          "throughMs": 1250.5956848073401,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 1201.1999999997206,
+            "contextTimeMs": 1021.3333333333334,
+            "scheduledContextMs": 1041.3786848072564,
+            "sampleOffsetMs": 0.045351473922902494
+          },
+          "firstSchedule": {
+            "atMs": 1203.6000000000931,
+            "contextTimeMs": 1021.3333333333334,
+            "state": "running",
+            "sourceStartContextMs": 1041.3333333333335,
+            "frames": 12900
+          },
+          "outputMapping": {
+            "capturedAtMs": 1242.5,
+            "contextTimeMs": 1061.3333333333333,
+            "state": "running",
+            "scheduledContextMs": 1041.3786848072564,
+            "timestampContextMs": 1030.383,
+            "timestampPerformanceMs": 1239.6000000000931,
+            "mappedOnsetMs": 1250.5956848073401
+          }
+        },
+        "resource": {
+          "dnsMs": 796.3000000002794,
+          "connectMs": 126.89999999990687,
+          "tlsMs": 117.29999999981374,
+          "requestToHeadersMs": 167.5,
+          "protocol": "h3",
+          "startMs": 14.600000000093132,
+          "fetchStartMs": 75.79999999981374,
+          "workerStartMs": 20.600000000093132,
+          "requestStartMs": 1017.2999999998137,
+          "responseStartMs": 1184.7999999998137,
+          "finalResponseHeadersStartMs": 1184.7999999998137,
+          "responseEndMs": 1692.1000000000931,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 1008.3999999999069,
+          "afterHeadersMs": 9.5
+        }
+      },
+      "server": {
+        "responseReadyMs": null,
+        "providerDispatchMs": null,
+        "ledgerMs": null,
+        "providerEofMs": null,
+        "connection": null,
+        "decoderFirstPcmProcessingMs": null
+      },
+      "providerFirstAudioMs": 0,
+      "providerMs": 0
+    },
+    {
+      "id": "cc870f8c-5bb7-4f5e-a3f9-d49eb6d3ba91",
+      "fixture": "diagnostic",
+      "combination": "android/mobile",
+      "status": "ok",
+      "firstAudioMs": 223.9473514740239,
+      "transferFirstChunkMs": 177.29999999981374,
+      "audioBytes": 61740,
+      "underruns": 0,
+      "at": "2026-10-10T02:47:28.538Z",
+      "purpose": null,
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 4.300000000279397,
+        "maxProcessingMs": 1.6000000000931323,
+        "maxArrivalGapMs": 479,
+        "chunks": 5,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 25,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 0.8999999999068677,
+        "responseHeadersMs": 176.70000000018626,
+        "leadingSilenceMs": 0.045351473922902494,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 223.9473514740239,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 177.60000000009313,
+            "contextTimeMs": 14696,
+            "scheduledContextMs": 14716.045351473922,
+            "sampleOffsetMs": 0.045351473922902494
+          },
+          "firstSchedule": {
+            "atMs": 178.10000000009313,
+            "contextTimeMs": 14696,
+            "state": "running",
+            "sourceStartContextMs": 14716,
+            "frames": 2350
+          },
+          "outputMapping": {
+            "capturedAtMs": 201,
+            "contextTimeMs": 14720,
+            "state": "running",
+            "scheduledContextMs": 14716.045351473922,
+            "timestampContextMs": 14690.198,
+            "timestampPerformanceMs": 198.10000000009313,
+            "mappedOnsetMs": 223.9473514740239
+          }
+        },
+        "resource": {
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "requestToHeadersMs": 168.8000000002794,
+          "protocol": "h3",
+          "startMs": 1.2000000001862645,
+          "fetchStartMs": 3.2999999998137355,
+          "workerStartMs": 2.7999999998137355,
+          "requestStartMs": 4.899999999906868,
+          "responseStartMs": 173.70000000018626,
+          "finalResponseHeadersStartMs": 173.70000000018626,
+          "responseEndMs": 698.7999999998137,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 4,
+          "afterHeadersMs": 3
+        }
+      },
+      "server": {
+        "responseReadyMs": null,
+        "providerDispatchMs": null,
+        "ledgerMs": null,
+        "providerEofMs": null,
+        "connection": null,
+        "decoderFirstPcmProcessingMs": null
+      },
+      "providerFirstAudioMs": 0,
+      "providerMs": 0
+    },
+    {
+      "id": "cdf940b1-8940-4a2b-a7df-729452c0fceb",
+      "fixture": "diagnostic",
+      "combination": "android/wifi",
+      "status": "ok",
+      "firstAudioMs": 308.8543514738558,
+      "transferFirstChunkMs": 263,
+      "audioBytes": 61740,
+      "underruns": 0,
+      "at": "2026-10-10T02:48:40.384Z",
+      "purpose": null,
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 2.3000000002793968,
+        "maxProcessingMs": 0.7000000001862645,
+        "maxArrivalGapMs": 394.89999999990687,
+        "chunks": 5,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 24,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 0.20000000018626451,
+        "responseHeadersMs": 164.70000000018626,
+        "leadingSilenceMs": 0.045351473922902494,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 308.8543514738558,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 263.20000000018626,
+            "contextTimeMs": 86480,
+            "scheduledContextMs": 86500.04535147393,
+            "sampleOffsetMs": 0.045351473922902494
+          },
+          "firstSchedule": {
+            "atMs": 263.60000000009313,
+            "contextTimeMs": 86480,
+            "state": "running",
+            "sourceStartContextMs": 86500,
+            "frames": 1174
+          },
+          "outputMapping": {
+            "capturedAtMs": 301.20000000018626,
+            "contextTimeMs": 86512,
+            "state": "running",
+            "scheduledContextMs": 86500.04535147393,
+            "timestampContextMs": 86481.09099999999,
+            "timestampPerformanceMs": 289.89999999990687,
+            "mappedOnsetMs": 308.8543514738558
+          }
+        },
+        "resource": {
+          "dnsMs": 8.799999999813735,
+          "connectMs": 29.100000000093132,
+          "tlsMs": 26.699999999720603,
+          "requestToHeadersMs": 94.60000000009313,
+          "protocol": "h3",
+          "startMs": 0.5,
+          "fetchStartMs": 23.899999999906868,
+          "workerStartMs": 1.1000000000931323,
+          "requestStartMs": 64.89999999990687,
+          "responseStartMs": 159.5,
+          "finalResponseHeadersStartMs": 159.5,
+          "responseEndMs": 663.2000000001863,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 64.6999999997206,
+          "afterHeadersMs": 5.2000000001862645
+        }
+      },
+      "server": {
+        "responseReadyMs": null,
+        "providerDispatchMs": null,
+        "ledgerMs": null,
+        "providerEofMs": null,
+        "connection": null,
+        "decoderFirstPcmProcessingMs": null
+      },
+      "providerFirstAudioMs": 0,
+      "providerMs": 0
+    },
+    {
+      "id": "65ac8512-01e8-4d68-8393-6a793c8b5357",
+      "fixture": "diagnostic",
+      "combination": "android/wifi",
+      "status": "ok",
+      "firstAudioMs": 150.7043514738325,
+      "transferFirstChunkMs": 104.20000000018626,
+      "audioBytes": 61740,
+      "underruns": 0,
+      "at": "2026-10-10T02:48:44.230Z",
+      "purpose": null,
+      "clientTrace": {
+        "schema": "s4-latency-1",
+        "processingMs": 2.299999999348074,
+        "maxProcessingMs": 0.8999999999068677,
+        "maxArrivalGapMs": 479.10000000009313,
+        "chunks": 4,
+        "startupBufferMs": 20,
+        "contextSampleRate": 48000,
+        "baseLatencyMs": 5,
+        "outputLatencyMs": 21,
+        "diagnosticsVersion": "s4-client-timing-1",
+        "fetchStartMs": 0.10000000009313226,
+        "responseHeadersMs": 85.39999999990687,
+        "leadingSilenceMs": 0.045351473922902494,
+        "onsetEstimator": "output-timestamp",
+        "longTasks": {
+          "status": "recorded",
+          "count": 0,
+          "overlapMs": 0,
+          "maxDurationMs": 0,
+          "beforeFirstChunkMs": 0,
+          "afterFirstChunkMs": 0,
+          "throughMs": 150.7043514738325,
+          "truncated": false
+        },
+        "audio": {
+          "onsetDetection": {
+            "atMs": 104.3000000002794,
+            "contextTimeMs": 90056,
+            "scheduledContextMs": 90076.04535147392,
+            "sampleOffsetMs": 0.045351473922902494
+          },
+          "firstSchedule": {
+            "atMs": 104.5,
+            "contextTimeMs": 90056,
+            "state": "running",
+            "sourceStartContextMs": 90076,
+            "frames": 7030
+          },
+          "outputMapping": {
+            "capturedAtMs": 141.8000000002794,
+            "contextTimeMs": 90090.66666666666,
+            "state": "running",
+            "scheduledContextMs": 90076.04535147392,
+            "timestampContextMs": 90064.241,
+            "timestampPerformanceMs": 138.89999999990687,
+            "mappedOnsetMs": 150.7043514738325
+          }
+        },
+        "resource": {
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0,
+          "requestToHeadersMs": 76,
+          "protocol": "h3",
+          "startMs": 0.39999999990686774,
+          "fetchStartMs": 1.8000000002793968,
+          "workerStartMs": 1.3999999999068677,
+          "requestStartMs": 4.800000000279397,
+          "responseStartMs": 80.8000000002794,
+          "finalResponseHeadersStartMs": 80.8000000002794,
+          "responseEndMs": 586.1000000000931,
+          "finalResponseHeadersSupported": true,
+          "headersTimestampSource": "final-response",
+          "beforeRequestMs": 4.7000000001862645,
+          "afterHeadersMs": 4.599999999627471
+        }
+      },
+      "server": {
+        "responseReadyMs": null,
+        "providerDispatchMs": null,
+        "ledgerMs": null,
+        "providerEofMs": null,
+        "connection": null,
+        "decoderFirstPcmProcessingMs": null
+      },
+      "providerFirstAudioMs": 0,
+      "providerMs": 0
+    },
+    {
+      "id": "eacb6b33-fb81-4cd0-a561-ecc130098881",
+      "fixture": "diagnostic",
+      "combination": "iphone/wifi",
+      "status": "ok",
+      "firstAudioMs": 137.04535147392744,
+      "transferFirstChunkMs": 118,
+      "audioBytes": 61740,
+      "underruns": 0,
+      "at": "2026-10-10T02:55:01.065Z",
+      "clientTrace": {
+        "leadingSilenceMs": 0.045351473922902494,
+        "resource": {
+          "beforeRequestMs": 6,
+          "requestToHeadersMs": 78.00000000000728,
+          "afterHeadersMs": 1.999999999992724,
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0
+        },
+        "longTasks": {
+          "status": "unsupported",
+          "count": null,
+          "overlapMs": null
+        }
+      }
+    },
+    {
+      "id": "e6506f57-0397-43c1-baa2-44988f6bb488",
+      "fixture": "diagnostic",
+      "combination": "iphone/wifi",
+      "status": "ok",
+      "firstAudioMs": 237.71201814059168,
+      "transferFirstChunkMs": 218,
+      "audioBytes": 61740,
+      "underruns": 0,
+      "at": "2026-10-10T02:55:09.529Z",
+      "clientTrace": {
+        "leadingSilenceMs": 0.045351473922902494,
+        "resource": {
+          "beforeRequestMs": 3,
+          "requestToHeadersMs": 213,
+          "afterHeadersMs": 2,
+          "dnsMs": 0,
+          "connectMs": 0,
+          "tlsMs": 0
+        },
+        "longTasks": {
+          "status": "unsupported",
+          "count": null,
+          "overlapMs": null
+        }
+      }
+    }
+  ],
+  "interpretation": {
+    "iphoneSlowReply": "806 ms before request, including ~802 ms between workerStart and resource fetchStart; cause remains unproven. Header-to-JavaScript resumption 1 ms. No evidence of delayed fetch continuation.",
+    "androidMobileFreeFirst": "796.3 ms DNS and 126.9 ms connection setup are part of 1008.4 ms pre-request time; TLS is inside connection time, not additive. Long-task overlap23.1 ms does not account for DNS delay.",
+    "androidMobileShort": "1098.8 ms request-to-headers versus 498.664 ms server ready; mixed infrastructure/network residual600.136 ms. All PCM delivered in one client chunk, a possible delivery/coalescing symptom, not proof of application buffering.",
+    "audio": "Output timestamp arithmetic reconstructs all six smoke onsets. Post-PCM remainder17.667–48.357 ms, excluding prefix. No recurrence of prior209 ms remainder.",
+    "notEstablished": [
+      "service worker causes entire iPhone gap",
+      "precise mobile path buffering layer",
+      "iPhone mobile v6 behavior",
+      "50-trial p95 acceptance"
+    ]
+  },
+  "budget": {
+    "snapshotReservedInr": 30.0312,
+    "capInr": 50,
+    "remainingInr": 19.9688,
+    "snapshotNotFreshLiveRead": true,
+    "sixReportedSmokeMaximumInr": 0.702,
+    "increaseSinceV6DeployInr": 1.0332,
+    "unexplainedBySuppliedSixRowsInr": 0.3312,
+    "fresh200TrialMaximumInr": 32.832,
+    "fresh200TrialFunded": false
+  },
+  "proposedNextChange": {
+    "runtimeChangedThisReview": false,
+    "target": "Feature-detected same-origin static network routing for /api/voice and /api/voice/*, retaining existing fallback, shell cache, push, authenticated server controls and audio math",
+    "sources": [
+      "https://developer.chrome.com/blog/service-worker-static-routing",
+      "https://webkit.org/blog/17967/news-from-wwdc26-webkit-in-safari-27-beta/",
+      "https://www.w3.org/TR/resource-timing/"
+    ],
+    "validation": [
+      "Exact route boundary and origin controls",
+      "Supported/unsupported/rejected installation paths",
+      "Worker upgrade, offline shell and push regression",
+      "Free cold/warm checks first; route-match evidence where available",
+      "Missing iPhone mobile smoke coverage only after free checks; no Run50 until funding and tails resolved"
+    ]
+  },
+  "validation": {
+    "arithmeticAndUniqueIds": "pass",
+    "actualReportCli": "parsed, exit 1 for empty/unaccepted benchmark slices; no parser refusal",
+    "lint": "pass",
+    "typecheck": "pass",
+    "tests": {
+      "pass": 311,
+      "fail": 0
+    },
+    "productionBuild": "pass",
+    "runtimeChanged": false,
+    "deployedThisReview": false,
+    "agentPaidSpeechCalls": 0
+  }
+}

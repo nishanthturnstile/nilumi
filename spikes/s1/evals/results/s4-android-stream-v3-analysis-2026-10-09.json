@@ -1,0 +1,333 @@
+{
+  "kind": "s4-owner-retest-analysis",
+  "version": "s4-bulbul-v3-stream-3",
+  "source": "s4-android-stream-v3-2026-10-09.json",
+  "sourceAttachmentSha256": "44c0b3b6537b16eb5a914393d9d6971400b22da3e6861917cfbb3de98c7501d3",
+  "sourceSavedSha256": "065f189f0ed8d2eb951d66c2b3690ad6f19757c6b6dd9dd53b525166608e79b2",
+  "sourceFormatting": "Line endings normalized by Biome; JSON values unchanged.",
+  "exportedAt": "2026-10-09T08:27:02.827Z",
+  "reportedAudibleOnsetVerified": true,
+  "physicalAcceptance": false,
+  "manualStops": {
+    "confirmation": "Owner confirmed both cancellations were caused by tapping Stop.",
+    "ids": [
+      "343b1e27-f468-4978-8953-453888087734",
+      "53e594ae-0555-4ff9-84b4-2058bbb4309d"
+    ]
+  },
+  "slices": [
+    {
+      "combination": "android/wifi",
+      "attemptedBenchmark": 9,
+      "completedBenchmark": 8,
+      "manualStops": 1,
+      "smoke": 3,
+      "completedAtOrBelow700Ms": 7,
+      "p50Ms": 583.4316417591181,
+      "p95Ms": 760.1412199546467,
+      "underruns": 0,
+      "stages": {
+        "onsetMs": {
+          "p50Ms": 583.4316417591181,
+          "maxMs": 760.1412199546467
+        },
+        "preDispatchMs": {
+          "p50Ms": 34.99822099972516,
+          "maxMs": 75.49873200058937
+        },
+        "ledgerMs": {
+          "p50Ms": 34.43061500042677,
+          "maxMs": 75.00153500027955
+        },
+        "reservationSaveMs": {
+          "p50Ms": 22.14039499964565,
+          "maxMs": 59.40326000005007
+        },
+        "authMs": {
+          "p50Ms": 0.22778200078755617,
+          "maxMs": 0.5106759993359447
+        },
+        "descriptorMs": {
+          "p50Ms": 0.009105999954044819,
+          "maxMs": 0.011772999539971352
+        },
+        "socketAssignmentMs": {
+          "p50Ms": 0.901940000243485,
+          "maxMs": 126.65951299946755
+        },
+        "socketToHeadersMs": {
+          "p50Ms": 93.30183000024408,
+          "maxMs": 142.93211800046265
+        },
+        "providerHeadersMs": {
+          "p50Ms": 102.53155700024217,
+          "maxMs": 212.32596599962562
+        },
+        "rawBodyToFirstPcmMs": {
+          "p50Ms": 169.65631700027734,
+          "maxMs": 219.59523500036448
+        },
+        "providerFirstPcmMs": {
+          "p50Ms": 270.3761910004541,
+          "maxMs": 432.49368700012565
+        },
+        "pcmToResponseMs": {
+          "p50Ms": 0.07578600011765957,
+          "maxMs": 0.09754499979317188
+        },
+        "mixedTransitDeliveryRemainderMs": {
+          "p50Ms": 157.577215035446,
+          "maxMs": 196.08828604780138
+        },
+        "clientHeadersToPcmMs": {
+          "p50Ms": 1.7999999523162842,
+          "maxMs": 6.0
+        },
+        "clientPcmToOnsetMs": {
+          "p50Ms": 86.63164174719714,
+          "maxMs": 97.87731747224461
+        },
+        "leadingSilenceMs": {
+          "p50Ms": 40.770975056689345,
+          "maxMs": 50.79365079365079
+        },
+        "clientPcmToOnsetExcludingSilenceMs": {
+          "p50Ms": 46.69466667859676,
+          "maxMs": 48.9246666666648
+        },
+        "maxChunkProcessingMs": {
+          "p50Ms": 2.099999964237213,
+          "maxMs": 5.5
+        }
+      }
+    },
+    {
+      "combination": "android/mobile",
+      "attemptedBenchmark": 9,
+      "completedBenchmark": 8,
+      "manualStops": 1,
+      "smoke": 0,
+      "completedAtOrBelow700Ms": 6,
+      "p50Ms": 593.7273333571793,
+      "p95Ms": 772.3339955125412,
+      "underruns": 0,
+      "stages": {
+        "onsetMs": {
+          "p50Ms": 593.7273333571793,
+          "maxMs": 772.3339955125412
+        },
+        "preDispatchMs": {
+          "p50Ms": 34.843208000063896,
+          "maxMs": 163.09679000079632
+        },
+        "ledgerMs": {
+          "p50Ms": 34.329966000281274,
+          "maxMs": 162.5301660001278
+        },
+        "reservationSaveMs": {
+          "p50Ms": 16.937219999730587,
+          "maxMs": 55.7119349995628
+        },
+        "authMs": {
+          "p50Ms": 0.2599379997700453,
+          "maxMs": 1.781297999434173
+        },
+        "descriptorMs": {
+          "p50Ms": 0.01065600011497736,
+          "maxMs": 0.015103000216186047
+        },
+        "socketAssignmentMs": {
+          "p50Ms": 1.3495430005714297,
+          "maxMs": 130.59993600007147
+        },
+        "socketToHeadersMs": {
+          "p50Ms": 87.06944799982011,
+          "maxMs": 130.20660099945962
+        },
+        "providerHeadersMs": {
+          "p50Ms": 88.54340200033039,
+          "maxMs": 228.22065600007772
+        },
+        "rawBodyToFirstPcmMs": {
+          "p50Ms": 171.4387310007587,
+          "maxMs": 217.35658599995077
+        },
+        "providerFirstPcmMs": {
+          "p50Ms": 267.809018000029,
+          "maxMs": 445.82314500026405
+        },
+        "pcmToResponseMs": {
+          "p50Ms": 0.06548000033944845,
+          "maxMs": 0.16481999959796667
+        },
+        "mixedTransitDeliveryRemainderMs": {
+          "p50Ms": 183.5926740001887,
+          "maxMs": 209.3752670120448
+        },
+        "clientHeadersToPcmMs": {
+          "p50Ms": 1.899999976158142,
+          "maxMs": 4.800000011920929
+        },
+        "clientPcmToOnsetMs": {
+          "p50Ms": 84.4278617137461,
+          "maxMs": 376.7339954886993
+        },
+        "leadingSilenceMs": {
+          "p50Ms": 38.82086167800453,
+          "maxMs": 331.6553287981859
+        },
+        "clientPcmToOnsetExcludingSilenceMs": {
+          "p50Ms": 45.607000035741564,
+          "maxMs": 50.02533335716466
+        },
+        "maxChunkProcessingMs": {
+          "p50Ms": 2.200000047683716,
+          "maxMs": 2.899999976158142
+        }
+      }
+    }
+  ],
+  "coldConnections": [
+    {
+      "id": "fb614302-461e-4d3e-9d06-9224f50e60f0",
+      "fixture": "short",
+      "purpose": "smoke",
+      "combination": "android/wifi",
+      "previousCompletionGapMs": 26585.232595000416,
+      "socketId": 3,
+      "reused": false,
+      "idleBeforeMs": null,
+      "requestToSocketMs": 136.59053299948573,
+      "socketToHeadersMs": 109.43595000077039,
+      "protocol": "http/1.1"
+    },
+    {
+      "id": "95012c54-824c-438e-a1ef-083587a9d5a7",
+      "fixture": "shopping",
+      "purpose": "benchmark",
+      "combination": "android/wifi",
+      "previousCompletionGapMs": 5372.877658000216,
+      "socketId": 4,
+      "reused": false,
+      "idleBeforeMs": null,
+      "requestToSocketMs": 126.65951299946755,
+      "socketToHeadersMs": 84.98283900041133,
+      "protocol": "http/1.1"
+    },
+    {
+      "id": "a1cd3b1d-9a4c-48ab-956e-fef9e594807f",
+      "fixture": "shopping",
+      "purpose": "benchmark",
+      "combination": "android/mobile",
+      "previousCompletionGapMs": 12646.352084999904,
+      "socketId": 5,
+      "reused": false,
+      "idleBeforeMs": null,
+      "requestToSocketMs": 130.59993600007147,
+      "socketToHeadersMs": 97.22405599988997,
+      "protocol": "http/1.1"
+    }
+  ],
+  "slowCompletedBenchmarks": [
+    {
+      "id": "95012c54-824c-438e-a1ef-083587a9d5a7",
+      "fixture": "shopping",
+      "combination": "android/wifi",
+      "onsetMs": 760.1412199546467,
+      "preDispatchMs": 40.33610699977726,
+      "ledgerMs": 39.60337200015783,
+      "reservationSaveMs": 13.676042000763118,
+      "authMs": 0.3209450002759695,
+      "descriptorMs": 0.010106000117957592,
+      "socketAssignmentMs": 126.65951299946755,
+      "socketToHeadersMs": 84.98283900041133,
+      "providerHeadersMs": 212.32596599962562,
+      "rawBodyToFirstPcmMs": 219.59523500036448,
+      "providerFirstPcmMs": 432.49368700012565,
+      "pcmToResponseMs": 0.07977800071239471,
+      "mixedTransitDeliveryRemainderMs": 193.3104680115357,
+      "clientHeadersToPcmMs": 3.099999964237213,
+      "clientPcmToOnsetMs": 93.64121995464666,
+      "leadingSilenceMs": 44.71655328798186,
+      "clientPcmToOnsetExcludingSilenceMs": 48.9246666666648,
+      "maxChunkProcessingMs": 2.099999964237213
+    },
+    {
+      "id": "319ddbcc-2af2-4d04-bfa3-c83c57a7b38d",
+      "fixture": "date",
+      "combination": "android/mobile",
+      "onsetMs": 772.3339955125412,
+      "preDispatchMs": 28.098589999601245,
+      "ledgerMs": 27.489037999883294,
+      "reservationSaveMs": 16.937219999730587,
+      "authMs": 0.30507699958980083,
+      "descriptorMs": 0.01003200002014637,
+      "socketAssignmentMs": 0.7504909997805953,
+      "socketToHeadersMs": 85.12471400015056,
+      "providerHeadersMs": 86.58752200007439,
+      "rawBodyToFirstPcmMs": 165.5789210004732,
+      "providerFirstPcmMs": 252.41536400001496,
+      "pcmToResponseMs": 0.06173799932003021,
+      "mixedTransitDeliveryRemainderMs": 114.69782801251858,
+      "clientHeadersToPcmMs": 1.600000023841858,
+      "clientPcmToOnsetMs": 376.7339954886993,
+      "leadingSilenceMs": 331.6553287981859,
+      "clientPcmToOnsetExcludingSilenceMs": 45.07866669051339,
+      "maxChunkProcessingMs": 2.199999988079071
+    },
+    {
+      "id": "303cf43c-2536-4ca1-b7c7-b21652e474d8",
+      "fixture": "answer",
+      "combination": "android/mobile",
+      "onsetMs": 735.6278617018252,
+      "preDispatchMs": 163.09679000079632,
+      "ledgerMs": 162.5301660001278,
+      "reservationSaveMs": 18.602917999960482,
+      "authMs": 0.2369640003889799,
+      "descriptorMs": 0.01065600011497736,
+      "socketAssignmentMs": 1.3495430005714297,
+      "socketToHeadersMs": 130.20660099945962,
+      "providerHeadersMs": 132.1265770001337,
+      "rawBodyToFirstPcmMs": 161.63507799990475,
+      "providerFirstPcmMs": 294.2190530002117,
+      "pcmToResponseMs": 0.06548000033944845,
+      "mixedTransitDeliveryRemainderMs": 193.4891779758036,
+      "clientHeadersToPcmMs": 3.300000011920929,
+      "clientPcmToOnsetMs": 84.4278617137461,
+      "leadingSilenceMs": 38.82086167800453,
+      "clientPcmToOnsetExcludingSilenceMs": 45.607000035741564,
+      "maxChunkProcessingMs": 2.200000047683716
+    }
+  ],
+  "limitations": [
+    "Eight completed benchmarks per Android slice; nearest-rank p95 is the maximum.",
+    "No iPhone data.",
+    "Sequential before/after runs are not a controlled A/B comparison.",
+    "Raw-body-to-PCM elapsed time includes provider delivery and decoder work; CPU not isolated.",
+    "Mixed transit remainder is a difference of elapsed durations, not synchronized wall clocks.",
+    "A new socket after a pause does not identify which peer closed it."
+  ],
+  "budgetSnapshot": {
+    "reservedInr": 16.0416,
+    "remainingInr": 33.9584,
+    "protectedFull200TrialMaximumInr": 32.832,
+    "remainingAfterFullMaximumInr": 1.1264,
+    "representedRowsConservativeReservationInr": 3.3264,
+    "priorAgentFinalSnapshotInr": 12.0636,
+    "snapshotIncreaseNotRepresentedByRowsInr": 0.6516,
+    "note": "Snapshot difference alone cannot attribute other activity; no live ledger was read or mutated for this analysis."
+  },
+  "offlineValidation": {
+    "summaryMatchesPhone": true,
+    "uniqueIds": true,
+    "traceOrdering": true,
+    "manualStopLifecycleConsistent": true,
+    "lint": "pass",
+    "typecheck": "pass",
+    "tests": 285,
+    "build": "pass",
+    "reportTool": "Optional versioned trace diagnostics accepted; acceptance gates unchanged.",
+    "deployedRuntimeChanged": false,
+    "paidCallsDuringAnalysis": 0
+  }
+}

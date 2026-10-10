@@ -1,0 +1,42 @@
+{
+  "measuredAt": "2026-10-09T05:25:44.852Z",
+  "deploymentId": "d37b6bdd-fb4a-4ef7-a554-3314b9912400",
+  "kind": "post-deploy-zero-synthesis-public-http",
+  "anonymousStatus": 401,
+  "ownerStatus": 200,
+  "version": "s4-bulbul-v3-stream-2",
+  "selection": {
+    "voice": "ritu",
+    "selectedBy": "wife",
+    "version": "s4-bulbul-v3-1",
+    "at": "2026-10-09T04:19:53.061Z"
+  },
+  "reservedBeforeInr": 6.4944,
+  "capInr": 50,
+  "invalidFixtureStatus": 400,
+  "prepareStatus": 200,
+  "headStatus": 405,
+  "freshMetadataStatus": 409,
+  "cancelStatus": 200,
+  "diagnosticStatus": 200,
+  "audioFormat": "pcm16le",
+  "sampleRate": "22050",
+  "streamVersion": "s4-bulbul-v3-stream-2",
+  "firstChunkMs": 98.139,
+  "completeMs": 598.15,
+  "chunkBytes": [
+    1363, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369,
+    1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369,
+    1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369, 1369,
+    1369, 1369, 904, 4223, 4229, 368
+  ],
+  "audioBytes": 61740,
+  "progressive": true,
+  "disabledS3Status": 404,
+  "reservedAfterInr": 6.4944,
+  "ledgerUnchanged": true,
+  "selectionUnchanged": true,
+  "providerDispatches": 0,
+  "passed": true,
+  "phoneAcceptanceEvidence": false
+}

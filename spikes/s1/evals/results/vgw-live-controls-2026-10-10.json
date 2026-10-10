@@ -1,0 +1,307 @@
+{
+  "version": "vgw-controls-v3",
+  "status": "pending-negative-policy-and-live-quota",
+  "ownerCanaryAllowanceUsd": 1,
+  "sdk": {
+    "ai": "7.0.130",
+    "gateway": "4.0.106"
+  },
+  "account": {
+    "at": "2026-10-10T05:40:36.505Z",
+    "budgets": [
+      {
+        "active": true,
+        "alertThresholds": [50, 75, 100],
+        "archived": false,
+        "createdAt": 1791517064346,
+        "currentByokSpend": 0,
+        "currentSpend": 0,
+        "includeByokInQuota": false,
+        "limitAmount": 10,
+        "quotaEntityId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+        "refreshPeriod": "monthly",
+        "scopeId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+        "scopeType": "team",
+        "updatedAt": 1791517064346
+      },
+      {
+        "active": true,
+        "alertThresholds": [],
+        "archived": false,
+        "createdAt": 1791372708176,
+        "currentByokSpend": 0,
+        "currentSpend": 0.11254246,
+        "includeByokInQuota": false,
+        "limitAmount": 5,
+        "quotaEntityId": "api_key_id_1AbQFOoLvbKMyeFZT4TQkcYT1c7oUPbLAqVoEGvKmfzUk1cV",
+        "refreshPeriod": "none",
+        "scopeId": "1AbQFOoLvbKMyeFZT4TQkcYT1c7oUPbLAqVoEGvKmfzUk1cV",
+        "scopeType": "api-key",
+        "updatedAt": 1791443679125
+      },
+      {
+        "active": true,
+        "alertThresholds": [50, 75, 100],
+        "archived": false,
+        "createdAt": 1791610361507,
+        "currentByokSpend": 0,
+        "currentSpend": 0,
+        "includeByokInQuota": false,
+        "limitAmount": 1,
+        "quotaEntityId": "api_key_id_RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+        "refreshPeriod": "none",
+        "scopeId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+        "scopeType": "api-key",
+        "updatedAt": 1791610361507
+      },
+      {
+        "active": true,
+        "alertThresholds": [50, 75, 100],
+        "archived": false,
+        "createdAt": 1791610791618,
+        "currentByokSpend": 0,
+        "currentSpend": 0,
+        "includeByokInQuota": false,
+        "limitAmount": 1.72269354,
+        "quotaEntityId": "api_key_id_gx84fMm5A5sYVzb6bTDSl5rKNd1dDwTui5FIjrZA5JDBp2J1",
+        "refreshPeriod": "none",
+        "scopeId": "gx84fMm5A5sYVzb6bTDSl5rKNd1dDwTui5FIjrZA5JDBp2J1",
+        "scopeType": "api-key",
+        "updatedAt": 1791610806815
+      },
+      {
+        "active": true,
+        "alertThresholds": [50, 75, 100],
+        "archived": false,
+        "createdAt": 1791610680996,
+        "currentByokSpend": 0,
+        "currentSpend": 0,
+        "includeByokInQuota": false,
+        "limitAmount": 8,
+        "quotaEntityId": "api_key_id_mN64ZFPdtwHtkuZBRCtuOC50ZRqysDEBGAA6qAhYO4KbgErF",
+        "refreshPeriod": "monthly",
+        "scopeId": "mN64ZFPdtwHtkuZBRCtuOC50ZRqysDEBGAA6qAhYO4KbgErF",
+        "scopeType": "api-key",
+        "updatedAt": 1791610680996
+      }
+    ],
+    "keys": [
+      {
+        "id": "mN64ZFPdtwHtkuZBRCtuOC50ZRqysDEBGAA6qAhYO4KbgErF",
+        "metadata": {
+          "spendAttribution": "team"
+        },
+        "name": "Nilumi Runtime 2026-10-10",
+        "status": 200,
+        "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh"
+      },
+      {
+        "id": "gx84fMm5A5sYVzb6bTDSl5rKNd1dDwTui5FIjrZA5JDBp2J1",
+        "metadata": {
+          "spendAttribution": "team"
+        },
+        "name": "Nilumi S3 Evaluation 2026-10-10",
+        "status": 200,
+        "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh"
+      },
+      {
+        "id": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+        "metadata": {
+          "spendAttribution": "team"
+        },
+        "name": "Nilumi S-VGW budget compatibility 2026-10-10",
+        "status": 200,
+        "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh"
+      }
+    ],
+    "noTeamByokReadback": {
+      "at": "2026-10-10T05:51:09.465Z",
+      "credentialCount": 0,
+      "status": 200
+    }
+  },
+  "quotaCompatibility": {
+    "at": "2026-10-10T05:36:07.966Z",
+    "error": {
+      "code": "bad_request",
+      "message": "Invalid request: `limitAmount` should be >= 1."
+    },
+    "quota": null,
+    "status": 400
+  },
+  "spend": {
+    "at": "2026-10-10T05:42:55.263Z",
+    "budget": {
+      "active": true,
+      "alertThresholds": [50, 75, 100],
+      "archived": false,
+      "createdAt": 1791610361507,
+      "currentByokSpend": 0,
+      "currentSpend": 0.00000398,
+      "includeByokInQuota": false,
+      "limitAmount": 1,
+      "quotaEntityId": "api_key_id_RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+      "refreshPeriod": "none",
+      "scopeId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+      "scopeType": "api-key",
+      "updatedAt": 1791610929031
+    },
+    "credits": {
+      "cumulativeBalance": "24.88745356",
+      "hasEverPaid": true,
+      "hasFreeCredit": true,
+      "hasVerifiedPaymentMethod": true,
+      "isFlexibleCommitment": false
+    }
+  },
+  "deletion": {
+    "at": "2026-10-10T05:42:56.224Z",
+    "deleteStatus": 204,
+    "keyId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+    "readbackStatus": 404
+  },
+  "inference": {
+    "at": "2026-10-10T05:43:22.650Z",
+    "records": [
+      {
+        "aiGatewayModelId": "arcee-ai:trinity-large-thinking",
+        "aiModel": "arcee-ai/trinity-large-thinking",
+        "aiProvider": "arcee-ai",
+        "contentCaptureStatus": "",
+        "cost": 0,
+        "gatewayRequestId": "gw_152a44e1-89d3-4adf-9077-25c890ae5b86",
+        "httpStatus": 500,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 05:42:17",
+        "transcriptStatus": ""
+      },
+      {
+        "aiGatewayModelId": "openai:text-embedding-3-small",
+        "aiModel": "openai/text-embedding-3-small",
+        "aiProvider": "openai",
+        "contentCaptureStatus": "",
+        "cost": 1.8e-7,
+        "gatewayRequestId": "gw_4a466457-d318-44c5-b3d1-098efaf39001",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 05:41:58",
+        "transcriptStatus": ""
+      },
+      {
+        "aiGatewayModelId": "openai:gpt-6-luna",
+        "aiModel": "openai/gpt-6-luna",
+        "aiProvider": "openai",
+        "contentCaptureStatus": "",
+        "cost": 0.0000038,
+        "gatewayRequestId": "gw_c259ecf7-4cdf-4515-9afc-6cd5c891e8e7",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 05:41:21",
+        "transcriptStatus": ""
+      }
+    ],
+    "status": 200
+  },
+  "probes": [
+    {
+      "id": "chat:6e7ab320-a0a6-4539-acbe-8c62b1a7e862",
+      "probe": "chat",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/gpt-6-luna",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 0.0000038
+      },
+      "latencyMs": 3248.153395,
+      "countedUsd": 0.000004,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+      "at": "2026-10-10T05:41:22.275Z",
+      "shutdownRequired": true
+    },
+    {
+      "id": "embedding:77318a92-cfb5-44fa-be95-8f84981be8bf",
+      "probe": "embedding",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/text-embedding-3-small",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 1.8e-7
+      },
+      "latencyMs": 705.6198950000002,
+      "countedUsd": 0.000005,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+      "at": "2026-10-10T05:41:59.040Z",
+      "shutdownRequired": true
+    },
+    {
+      "id": "negative:d3ea56f8-e377-4431-b690-1a67f7a6f9ee",
+      "probe": "negative",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "failed",
+      "reason": "gateway_request_failed",
+      "countedUsd": 0.001063,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+      "at": "2026-10-10T05:42:17.124Z",
+      "shutdownRequired": true
+    }
+  ],
+  "shutdown": {
+    "version": "vgw-controls-v3",
+    "keyId": "RfrPNS2brjACWjPO1XrHOWwByPO5kMHE0i96srbjzRZdFWnS",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "at": "2026-10-10T05:42:57.198Z",
+    "httpStatus": 401,
+    "previouslySucceeded": true,
+    "status": "revocation_verified",
+    "countedUsd": 0.001063,
+    "temporaryAccessRemoval": "operator-evidence-required"
+  },
+  "temporaryAccessRemoval": {
+    "at": "2026-10-10T05:43:10.821Z",
+    "canaryEnvRemoved": true,
+    "capturePrivateKeyRemoved": true
+  },
+  "s3LedgerPreserved": {
+    "entries": 289,
+    "countedUsd": 0.27730646,
+    "sha256": "efeea19451ce7dda99191ce15a77877f17fd59d81e29777b827d69aa26850b0e"
+  },
+  "storageForwarding": {
+    "basis": "pinned-SDK-serialization-and-published-model-contract",
+    "providerObserved": false,
+    "checkedOn": "2026-10-10",
+    "sources": [
+      "https://vercel.com/ai-gateway/models/gpt-6-luna",
+      "https://vercel.com/docs/ai-gateway/models-and-providers/provider-options",
+      "https://ai-sdk.dev/providers/ai-sdk-providers/openai"
+    ]
+  },
+  "localValidation": {
+    "tests": 347,
+    "testResult": "passed",
+    "productionBuild": "passed",
+    "node": "24.21.0",
+    "pnpm": "12.9.1",
+    "lint": "passed",
+    "typecheck": "passed"
+  }
+}

@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { rootPushRegistration } from "@/lib/voice/routing";
 
 function urlBase64ToUint8Array(value: string) {
   const base64 = (value + "=".repeat((4 - value.length % 4) % 4)).replace(/-/g, "+").replace(/_/g, "/");
@@ -22,7 +23,7 @@ export function PushManager() {
       // Request permission before any other await, preserving the iOS tap.
       const permission = await Notification.requestPermission();
       if (permission !== "granted") throw new Error("Notifications denied — allow them in device settings and retry");
-      const reg = await navigator.serviceWorker.ready;
+      const reg = await rootPushRegistration(navigator.serviceWorker, location.origin);
       const applicationServerKey = urlBase64ToUint8Array(key);
       let sub = await reg.pushManager.getSubscription();
       const oldKey = sub?.options.applicationServerKey;

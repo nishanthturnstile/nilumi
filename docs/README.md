@@ -1,47 +1,64 @@
-# Nilumi: Planning Docs
+# Nilumi documentation index
 
-> **Nilumi** (NI-lu-mi, from the Tamil *nila*, "moon") is a private household assistant on both our phones. Say or type what matters, see exactly what it understood, and trust that it will remember, remind, and admit when it doesn't know.
->
-> **Domain:** [nilumi.in](https://nilumi.in) · **Hosting:** Railway (Singapore)
+Nilumi is a private household assistant for remembering, reminding, and following through with clear evidence and member-level privacy.
 
-| # | Document | What's inside |
-|---|---|---|
-| 01 | [Product Plan](01-product-plan.md) | Problem, users and roles, goals and success metrics, trust-UX principles, journeys with acceptance criteria (including the Today brief, calendar connection and approvals), scope and horizons, memory categories and sharing, evaluation sets, risks, links to resolved decisions |
-| 02 | [Architecture](02-architecture.md) | Topology, turn pipeline and execution ledger, the two execution paths (commands and bounded runs), tool broker and approvals, durable runs and the `nilumi-ui/1` catalog, NLU contract, memory model (incl. sharing), data model (DDL), retrieval and answerability, Today brief and read-only calendar, identity, dates, reminders (occurrence model), voice, privacy (RLS matrix, forget, provider retention), observability and evals, operations and backups, latency budget, API, evolution (Family Records Vault first, multi-household readiness, agentic horizon), link to decision catalogue |
-| 03 | [Tech Stack](03-tech-stack.md) | Every layer's choice with rationale and rejected alternatives, the Vercel usage rule (AI Gateway credits are the one metered exception), AI model roles and bake-off candidates, LLM routing layer, classifier stance, cost model, provider eligibility and data policies (pilot vs production), sources |
-| 04 | [Research](04-research.md) | The October 2026 evidence snapshot: comparisons, sources, dated findings and revision history, including the October 8 reference-architecture and gateway review and clearly superseded revision-1 platform analysis; links to accepted ADRs |
-| 05 | [Implementation Roadmap](05-implementation-roadmap.md) | Phase 0–8 features and outcomes (including Phase 6A, the Today brief), spike prerequisites (S-VGW, S-GCAL, S-AGENT), journey coverage, project board, post-MVP and agentic horizons and pending validations |
-| 06 | [S3 implementation plan](06-s3-command-understanding-plan.md) | Command contracts, synthetic evaluation, privacy gates, Luna low synthetic correctness acceptance, the US$2.00 owner cap, the runner's effective US$0.50 hard stop and pending production gates |
-| 07 | [S3 expected-action review](07-s3-expected-actions.md) | All 60 synthetic transcripts, expected commands, concrete dates and validation outcomes; owner review approved |
-| 08 | [S3 Gateway verification](08-s3-gateway-verification.md) | Owner-supplied dashboard findings, Hobby privacy blocker, budget evidence, synthetic-only testing exception, gateway alternatives, preserved S3 rounds and the S-VGW evidence table |
-| 09 | [S3 Cloudflare adapter](09-s3-cloudflare-gateway.md) | The explicitly selected, unfunded Cloudflare transport for synthetic S3 tests: account setup, privacy and pricing gates, minimum deposit and blockers |
-| 10 | [S3 paid Vercel validation](10-s3-paid-vercel-validation.md) | First paid-credit hosted run: Luna 54/60 on v10, failed privacy and held-out gates, stopped mini smoke, costs and shutdown |
-| 11 | [S3 V11 validation](11-s3-v11-validation.md) | Development-only V11 fixes, frozen regression, hosted Luna 56/60 with deadline timeouts, costs and shutdown |
-| 12 | [S3 deadline reliability](12-s3-deadline-reliability.md) | Deadline enforcement, `s3-wire-v2` schema, transport timing, failed Luna smoke, ledger and shutdown |
-| 13 | [S3 live acceptance](13-s3-live-acceptance.md) | Regional reliability experiment, preserved failed prompt regressions, Luna low synthetic correctness acceptance, budget and verified shutdown |
-| 14 | [S5 platform validation](14-s5-platform-validation.md) | Local database/RLS/worker/stream/restore harness, evidence, proposed live isolation and pending Railway gates |
-| 15 | [S5 recovery runbook](15-s5-recovery-runbook.md) | Template for the private shared OneDrive document; real-key, R2 and manual restore steps still to rehearse |
-| — | [Product analysis summary](producct-analysis-summary.md) | Owner's comparison of open-source assistants that informed the October 8 review |
-| ADR | [Decision catalogue](adr/README.md) | ADR-001–049 with context, decisions, alternatives, consequences and applied links; D1–D19 and Q1–Q12 mappings; [future-record template](adr/template.md) |
+## Start here
 
-Start with Product for *what* and *why*, then Architecture for *how* and Tech Stack for *with what*. Use the [ADR catalogue](adr/README.md) to understand accepted choices, rationale and the legacy D/Q map; follow its links to Research for detailed evidence. Read the Roadmap for build order and validation ownership.
+| Document | Use it for |
+|---|---|
+| [Product plan](core/01-product-plan.md) | Product goals, users, journeys, requirements, and acceptance criteria |
+| [Architecture](core/02-architecture.md) | System design, data model, APIs, privacy boundaries, and operations |
+| [Tech stack](core/03-tech-stack.md) | Technology choices, provider status, versions, and alternatives |
+| [Research overview](research/04-research.md) | Dated comparisons, sources, findings, and historical review context |
+| [Implementation roadmap](core/05-implementation-roadmap.md) | Delivery order, phases, prerequisites, outcomes, and pending validations |
+| [ADR catalogue](adr/README.md) | Accepted decisions, rationale, consequences, and decision history |
 
-Product owns requirements; Architecture owns technical design, schemas, contracts and operational procedures; Tech Stack owns technology selections, dependency versions and provider status; ADRs own accepted choices and rationale; Research owns dated findings, comparison evidence, sources and historical review context; Roadmap owns delivery order and completion outcomes. Acceptance is distinct from approval, benchmarking and implementation. New decisions append ADR IDs; superseding records link to predecessors, preserving history.
+Read the Product Plan for what Nilumi should do, then Architecture and Tech Stack for how it is designed. Use the Roadmap for delivery sequence. ADRs record accepted decisions; research and validation records preserve supporting evidence and outcomes.
 
-## The decisions in one screen
+## Research
 
-- **Shape:** a channel-agnostic "brain" with the **installable PWA first** (Android + iPhone). The MVP is memory-first, plus a **Today brief** (one push a day) that can include each adult's **read-only Google Calendar**. The **Family Records Vault** (scanned medical, insurance and school records you can ask questions about) is the first horizon after the MVP; a room speaker via Home Assistant ("Hey Nilumi") comes after that. **No WhatsApp channel** (Meta bans general AI assistants); Nilumi works alongside it ([ADR-049](adr/adr-049.md)).
-- **Core pattern:** **LLM as parser, code as executor.** One structured NLU call, then deterministic validation, entity resolution, policy and writes, recorded in a crash-safe execution ledger. Templated confirmations. **Deterministic answers** for single-fact questions; LLM synthesis only when needed, validated sentence by sentence against cited evidence. A deterministic answerability gate produces "I don't know". No agent framework, and no classifier model in the MVP (instrumented experiments instead). Bounded agent runs are a **post-pilot** second path behind a tool broker, fail-closed policy and single-use approvals ([ADR-041](adr/adr-041.md)–[ADR-044](adr/adr-044.md)).
-- **Trust UX:** every turn shows *what I heard* and *what I did*, with **Undo/Edit** cards instead of confidence thresholds. Forget means **redact everywhere**. Voice-first: speak and Nilumi answers aloud; type and it answers in text only.
-- **Memory:** subject → predicate (from a **registry** with type and cardinality) → value/object. Separate who it's about, who said it and who can see it. Provenance to the exact transcript span (and, later, the document page).
-- **Privacy:** Postgres **row-level security** between members, covering *existence* as well as content. Three visibilities: **household**, **shared** (an owner explicitly shares a private memory with the other adult and stays its only editor) and **private**. One sensitive-input boundary on every ingress; no admin takeover of another adult's account.
-- **Stack:** TypeScript end-to-end. **Next.js 16 PWA (Turbopack)** with **Hono mounted inside Next.js** and **TanStack Query**; **PostgreSQL 18** (pgvector, pg_trgm, FTS, RLS) as the **only stateful service**, including jobs and realtime events; **graphile-worker** for reminders, backups and maintenance; server-sent events for instant list sync. Better Auth with **email codes** and optional Face ID step-up. **From Vercel we use free open-source libraries** (Next.js, Turbopack, AI SDK) plus **AI Gateway funded by purchased credits** on Hobby (no paid Vercel plan, auto top-up off; [ADR-046](adr/adr-046.md)); model choice sits behind an in-process **model-role registry** and one gateway wrapper, so switching providers is a config change.
-- **Hosting:** **Railway, Singapore** (existing account): `app`, `worker` and `postgres` (we operate the Postgres). Nightly encrypted, restore-tested backups to Cloudflare R2 with a forget journal; the master key and runbook live in a shared OneDrive document.
-- **AI defaults:** S3 synthetic correctness selects OpenAI **GPT-6 Luna** with low reasoning for NLU ([doc 13](13-s3-live-acceptance.md)); production deadline reliability, fallback validation and the complete two-model comparison remain pending. Luna is also the synthesis candidate; Claude Haiku 4.5 remains a challenger. Embeddings use `text-embedding-3-small` @ 768 · STT uses **Sarvam Saaras v4** · **Sarvam Bulbul v3** is the TTS candidate your wife picks. **Gemini is excluded** because its API terms restrict consumer use and apps likely used by under-18s. LLM/embeddings route through Vercel AI Gateway with no-training and `only` routing on every request. **ZDR is not required for the founding-household pilot** (after spike S-VGW and the household acknowledgement, which the owner records for both adults); it is part of the **production privacy gate** before anyone outside the household, kid mode, helper access or commercial use ([ADR-046](adr/adr-046.md)).
-- **Cost:** about **₹1,400–2,700/month** (Railway is the main cost; AI ≈ ₹300–600, plus the Today summary). Target ≤ ₹3,000; pilot ceiling ≤ ₹5,000 ([ADR-047](adr/adr-047.md)). Gateway backstop: US$20 of credits bought, about US$10 a month; team budget US$10 and runtime key US$8 a month, with no low-balance alert, so the owner checks the balance monthly.
-- **Multi-household:** family-first, with `household_id` on every household-owned row and reserved grant and consent contracts; a legal gate before any external household ([ADR-048](adr/adr-048.md)).
-- **Delivery:** [Implementation Roadmap](05-implementation-roadmap.md) — the single home for build sequence, phase features, completion outcomes and later horizons.
+- [Research overview](research/04-research.md) — product and platform comparisons, dated findings, sources, and decision links.
+- [Product analysis summary](research/product-analysis-summary.md) — open-source assistant comparisons that informed the October review.
+- [S4 Sarvam latency research](research/19-s4-sarvam-latency-research.md) — provider and playback findings with bounded experiment recommendations.
 
-## Delivery prerequisites
+## Plans
 
-See the [roadmap prerequisites](05-implementation-roadmap.md#prerequisites-and-dependencies) and [Phase 0 spikes](05-implementation-roadmap.md#phase-0--spikes-and-decisions). Accepted choices still need their validation gates; current unresolved items are in the [pending-validation register](05-implementation-roadmap.md#5-pending-validations-and-decisions).
+- [S3 command understanding plan](plans/06-s3-command-understanding-plan.md) — command contracts, synthetic evaluation, privacy gates, and cost limits.
+- [Phase 1 gateway and voice plan](plans/17-phase-1-gateway-and-voice-plan.md) — S-VGW and S4 evidence, completion gates, and app foundation handoff.
+- [S4 low-level latency plan](plans/21-s4-low-level-latency-plan.md) — evidence-based latency experiments and implementation sequence.
+- [S-VGW completion plan](plans/26-s-vgw-completion-plan.md) — restricted-pilot closure, quota and revocation evidence, and activation checklist.
+
+## Validation and implementation records
+
+### S3 command understanding
+
+- [Expected-action review](validation/s3/07-s3-expected-actions.md)
+- [Gateway verification](validation/s3/08-s3-gateway-verification.md)
+- [Cloudflare gateway setup](validation/s3/09-s3-cloudflare-gateway.md)
+- [Paid Vercel validation](validation/s3/10-s3-paid-vercel-validation.md)
+- [V11 validation](validation/s3/11-s3-v11-validation.md)
+- [Deadline reliability](validation/s3/12-s3-deadline-reliability.md)
+- [Live acceptance](validation/s3/13-s3-live-acceptance.md)
+
+### S4 voice and latency
+
+- [Voice verification baseline](validation/s4/18-s4-voice-verification.md)
+- [Streaming validation](validation/s4/20-s4-streaming-validation.md)
+- [Application optimization validation](validation/s4/22-s4-application-optimization-validation.md)
+- [V3 phone retest analysis](validation/s4/23-s4-v3-phone-retest-analysis.md)
+- [V4 connection and ledger validation](validation/s4/24-s4-v4-connection-and-ledger-validation.md)
+- [Phone analysis and optimization closure](validation/s4/25-s4-v4-both-phone-analysis.md)
+
+### S5 platform and recovery
+
+- [Platform validation](validation/s5/14-s5-platform-validation.md)
+- [S5 acceptance](validation/s5/16-s5-acceptance.md)
+- [Recovery runbook template](operations/s5/15-s5-recovery-runbook.md)
+
+### S-VGW policy
+
+- [Policy rejection reproduction](validation/s-vgw/27-s-vgw-policy-reproduction.md) — local reproduction notes; the report was not sent to the vendor.
+
+## Document ownership
+
+Product Plan owns requirements and acceptance criteria. Architecture owns technical design and contracts. Tech Stack owns technology and provider selections. The Roadmap owns delivery sequence and outcomes. ADRs own accepted decisions. Research owns dated comparison evidence. Validation records own experiment procedures, results, and acceptance status.

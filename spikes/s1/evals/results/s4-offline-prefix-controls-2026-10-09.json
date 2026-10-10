@@ -1,0 +1,49 @@
+{
+  "schema": "s4-offline-prefix-controls-1",
+  "paidCalls": 0,
+  "runtimeChanged": false,
+  "controls": [
+    {
+      "trialId": "902e05bd-48c7-4b22-860b-048e3e5ed1a8",
+      "combination": "android/mobile",
+      "fixture": "date",
+      "originalPcmSha256": "44031d8b82bf82095c0619c0beb497ddaf40eb1b2b967d18ce7596a609743420",
+      "trimmedPcmSha256": "221d288ca6b7d62a102b6489b301253f015f671887ec08e2cd33df7bd18cf5c6",
+      "sampleRate": 22050,
+      "initialZeroFrames": 3379,
+      "removedFrames": 2646,
+      "removedMs": 120.0,
+      "guardFrames": 441,
+      "maxRemovalFrames": 2646,
+      "nonzeroSamplesRemoved": 0,
+      "retainedPcmByteIdentical": true,
+      "originalReportedOnsetMs": 1196.8788072681346,
+      "hypotheticalOnsetMs": 1076.8788072681346,
+      "listeningApproved": false,
+      "phoneBenchmark": false
+    },
+    {
+      "trialId": "9cfcaace-c5e3-4bc0-a57d-8101d24f291e",
+      "combination": "iphone/mobile",
+      "fixture": "short",
+      "originalPcmSha256": "8e689d2250f168797c91eaf53cb8424beb75bff80cfe1a5ef789a0bb40092fbd",
+      "trimmedPcmSha256": "8484db44be79d68c5cba5f323f7f8152337686279e9e566546c4bbd54d8825a3",
+      "sampleRate": 22050,
+      "initialZeroFrames": 1968,
+      "removedFrames": 1527,
+      "removedMs": 69.25170068027211,
+      "guardFrames": 441,
+      "maxRemovalFrames": 2646,
+      "nonzeroSamplesRemoved": 0,
+      "retainedPcmByteIdentical": true,
+      "originalReportedOnsetMs": 761.7324263038463,
+      "hypotheticalOnsetMs": 692.4807256235742,
+      "listeningApproved": false,
+      "phoneBenchmark": false
+    }
+  ],
+  "sourceArtifact": "s4-stream-v4-phone-analysis-2026-10-09.json",
+  "privateListeningPage": "validation-results/s4/prefix-controls/listen.html",
+  "guardMs": 20,
+  "maxRemovalMs": 120
+}

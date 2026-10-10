@@ -1,0 +1,233 @@
+{
+  "kind": "deployed-http-contract-checks-not-phone-acceptance",
+  "version": "s4-bulbul-v3-stream-3",
+  "initialDeploymentId": "1ee38c88-0782-4c9b-bcc3-c9224f1a9785",
+  "finalDeploymentId": "ca85d071-1901-4274-8953-40456103e084",
+  "finalDeploymentStatus": "SUCCESS",
+  "localChecks": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "tests": 284,
+    "build": "pass"
+  },
+  "initialFreeCheck": {
+    "budget": {
+      "afterInr": 11.8908,
+      "beforeInr": 11.8908,
+      "capInr": 50
+    },
+    "checkedAt": "2026-10-09T06:45:37.045Z",
+    "checks": {
+      "anonymousBudget": 401,
+      "anonymousDiagnostic": 401,
+      "head": 405,
+      "invalidPayload": 400
+    },
+    "freeStream": {
+      "bytes": 61740,
+      "eofMs": 843.2000000029802,
+      "firstChunkMs": 374.6000000089407,
+      "format": "pcm16le",
+      "fragments": 38,
+      "status": 200,
+      "version": "s4-bulbul-v3-stream-3"
+    },
+    "freeUiStatus": "Audio check passed. Estimated onset: 598 ms. No speech credits used.",
+    "profile": "http-pcm-coordinator-20ms",
+    "selection": {
+      "at": "2026-10-09T04:19:53.061Z",
+      "selectedBy": "wife",
+      "version": "s4-bulbul-v3-1",
+      "voice": "ritu"
+    },
+    "startupBufferMs": 20,
+    "version": "s4-bulbul-v3-stream-3"
+  },
+  "initialProviderCheck": {
+    "budget": {
+      "afterInr": 11.9772,
+      "beforeInr": 11.8908,
+      "capInr": 50,
+      "deltaInr": 0.0864,
+      "remainingInr": 38.0228
+    },
+    "checkedAt": "2026-10-09T06:46:55.048Z",
+    "fixture": "short",
+    "id": "750b457d-b180-4da1-a276-b784173d5b66",
+    "metadata": {
+      "leadingSilenceMs": 146.12244897959184,
+      "pcmBytes": 67738,
+      "providerFirstAudioMs": 504.2240790000069,
+      "providerHeadersMs": 263.5873090000241,
+      "providerMs": 658.7839440000243,
+      "sha256": "82bc2a767fa8cdf4ad400a29a054bf205456bd91e491574e4ef72e62f0a34a9b",
+      "version": "s4-bulbul-v3-stream-3"
+    },
+    "metadataStatus": 200,
+    "physicalOnsetVerified": false,
+    "plannedMaximumReservationInr": 0.0864,
+    "providerRequestsRequested": 1,
+    "pureReads": {
+      "head": 405,
+      "metadataBeforeAudio": 409,
+      "traceBeforeAudio": 409
+    },
+    "purpose": "agent-deployed-provider-smoke-not-phone-acceptance",
+    "stream": {
+      "bytes": 67738,
+      "cached": "false",
+      "eofMs": 1100.4000000059605,
+      "firstChunkMs": 912.7999999970198,
+      "format": "pcm16le",
+      "fragments": 50,
+      "rate": "22050",
+      "serverTiming": "auth;dur=0.23, descriptor;dur=0.01, ready;dur=543.99, cfExtPri",
+      "status": 200
+    },
+    "trace": {
+      "authMs": 0.22875700000440702,
+      "descriptorCancelled": false,
+      "descriptorMs": 0.012737999961245805,
+      "descriptorSource": "prepared",
+      "firstPcmMs": 543.1319169999915,
+      "ledgerMs": 36.42832599999383,
+      "outcome": "complete",
+      "persistenceMs": 38.237839000008535,
+      "provider": {
+        "connection": {
+          "idleBeforeMs": null,
+          "protocol": "http/1.1",
+          "requestToSocketMs": 156.14306600001873,
+          "reused": false,
+          "socketId": 1,
+          "socketToHeadersMs": 105.19074799999362
+        },
+        "firstBodyMs": 264.99703000002773,
+        "requestId": "20261009_f7f46d0b-e827-4910-b042-3f6f13a3fe6a"
+      },
+      "providerDispatchMs": 38.3693000000203,
+      "providerEofMs": 698.095204000012,
+      "queueWaitMs": 0.005585000035353005,
+      "reservationMs": 15.182772999978624,
+      "responseReadyMs": 543.9851379999891,
+      "schema": "s4-latency-1",
+      "sharedProducer": false
+    },
+    "traceStatus": 200,
+    "version": "s4-bulbul-v3-stream-3",
+    "voice": "ritu"
+  },
+  "physicalPhoneAcceptance": false,
+  "limitations": "Collaborative desktop browser and HTTP/server checks, not a physical iPhone/Android benchmark. Initial provider probe ran before the replay-trace-only correction. Later account activity is reconciled separately.",
+  "finalSourceSha256": {
+    "config/voice.ts": "6b4d61bd08b23e9b4b144ae7f036edd580aef90901e45918008548427ac51ed9",
+    "lib/voice/attempts.ts": "34e8400ba15840f14bfb57d2cdc8650be1ec1a51f901c60b2c5886336c9974e3",
+    "lib/voice/timing.ts": "3d8f98882b3d7cc9319e673e4752de1211035a8a3e28fa1ee90da34dcda8e87b",
+    "lib/voice/service.ts": "2cc7b2ff4f031a4ccf7d1fc535366622eb48e1515ef2090049db00621658f946",
+    "lib/voice/sarvam.ts": "988cc711a6950ca40cd7b29d9f4e36078ba46b392959ef200a26517a7e249e26",
+    "lib/voice/playback.ts": "11bd6c41d60a0cc043f3799281e73de0d02ade07b478d444793daebc95bcc776",
+    "lib/voice/report.ts": "ee03e4757f6c6a43f69f2ff7140d09cc4a5c85b05753ff10f88d58c5705f8d71",
+    "app/voice/page.tsx": "74ea06c99771bc76dd18dfc69c7cc7d05ceab5cd2ea9fbfd0a29c7e566a513b1",
+    "app/api/voice/[id]/route.ts": "762f2f5d16bfe248a6a40067d5a9647a3400238933e9962d0a9e0fafa2b2b9cc",
+    "tests/verification-streaming.test.mjs": "8e3607bc114ecfae0ed6332612803d732e54d92850fc062b60bab081efa8a950"
+  },
+  "finalReplayAndCancellationCheck": {
+    "budgetAfterInr": 11.9772,
+    "budgetBeforeInr": 11.9772,
+    "cancelledTraceStatus": 200,
+    "checkedAt": "2026-10-09T06:57:08.691Z",
+    "deleteStatus": 200,
+    "descriptorCancelled": true,
+    "originalDispatchMs": 38.3693000000203,
+    "originalFirstPcmMs": 543.1319169999915,
+    "replayBytes": 2,
+    "replayDispatchMs": 38.3693000000203,
+    "replayFirstPcmMs": 543.1319169999915,
+    "replayStatus": 206,
+    "revokedGetStatus": 404,
+    "tracePreserved": true,
+    "version": "s4-bulbul-v3-stream-3"
+  },
+  "finalProviderCheck": {
+    "budget": {
+      "afterInr": 12.0636,
+      "beforeInr": 11.9772,
+      "capInr": 50,
+      "deltaInr": 0.0864,
+      "remainingInr": 37.9364
+    },
+    "checkedAt": "2026-10-09T06:57:48.824Z",
+    "deploymentId": "ca85d071-1901-4274-8953-40456103e084",
+    "fixture": "short",
+    "id": "80f412f3-61c0-4f0d-b44b-d3cb2fcbb48b",
+    "metadata": {
+      "leadingSilenceMs": 26.984126984126984,
+      "pcmBytes": 56448,
+      "providerFirstAudioMs": 459.4054879999894,
+      "providerHeadersMs": 272.619761000009,
+      "providerMs": 638.204276000004,
+      "sha256": "12279fa16717b16e9e6d9bd399d0c595783453cd5100d3211318ba59821c1d79",
+      "version": "s4-bulbul-v3-stream-3"
+    },
+    "metadataStatus": 200,
+    "physicalOnsetVerified": false,
+    "plannedMaximumReservationInr": 0.0864,
+    "providerRequestsRequested": 1,
+    "purpose": "agent-final-deployed-provider-smoke-not-phone-acceptance",
+    "stream": {
+      "bytes": 56448,
+      "cached": "false",
+      "eofMs": 868.2000000029802,
+      "firstChunkMs": 671.6000000089407,
+      "format": "pcm16le",
+      "fragments": 35,
+      "rate": "22050",
+      "serverTiming": "auth;dur=0.32, descriptor;dur=0.05, ready;dur=487.02, cfExtPri",
+      "status": 200
+    },
+    "trace": {
+      "authMs": 0.31589500000700355,
+      "descriptorCancelled": false,
+      "descriptorMs": 0.04975800000829622,
+      "descriptorSource": "prepared",
+      "firstPcmMs": 486.9050480000151,
+      "ledgerMs": 25.699814999999944,
+      "outcome": "complete",
+      "persistenceMs": 43.792742999998154,
+      "provider": {
+        "connection": {
+          "idleBeforeMs": null,
+          "protocol": "http/1.1",
+          "requestToSocketMs": 153.8249829999986,
+          "reused": false,
+          "socketId": 1,
+          "socketToHeadersMs": 116.78744300000835
+        },
+        "firstBodyMs": 274.4296599999943,
+        "requestId": "20261009_7e24a3f0-3ea9-446b-8900-145b49188c88"
+      },
+      "providerDispatchMs": 26.980097000021487,
+      "providerEofMs": 666.330919,
+      "queueWaitMs": 0.004318999999668449,
+      "reservationMs": 13.890523000009125,
+      "responseReadyMs": 487.016735000012,
+      "schema": "s4-latency-1",
+      "sharedProducer": false
+    },
+    "traceStatus": 200,
+    "version": "s4-bulbul-v3-stream-3",
+    "voice": "ritu"
+  },
+  "agentPaidChecks": 2,
+  "agentMaximumAndActualReservationInr": 0.1728,
+  "budgetReconciliation": {
+    "initialSnapshotInr": 11.5596,
+    "liveBeforeAgentChecksInr": 11.8908,
+    "outsideAgentChecksIncreaseInr": 0.3312,
+    "note": "The initial-to-live snapshot movement is outside these two agent checks; snapshots alone do not attribute it.",
+    "finalReservedInr": 12.0636,
+    "capInr": 50,
+    "remainingInr": 37.9364,
+    "protectedFullBenchmarkInr": 32.832
+  }
+}

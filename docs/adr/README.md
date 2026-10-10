@@ -2,7 +2,7 @@
 
 This catalogue owns accepted choices and their rationale. Product owns requirements; Architecture owns implementation design, schemas, contracts and operational procedures; Tech Stack owns technology selections, dependency versions and provider status; Research owns dated evidence, comparisons, sources and review history; Roadmap owns sequencing and pending validations.
 
-All 49 records describe the accepted baseline and scoped exceptions. ADR-001–026 keep their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 added the Vercel AI Gateway decision from S0 and partly superseded ADR-022. ADR-041–049 record the October 8 reference-architecture review:
+All 52 records describe the accepted baseline and scoped exceptions. ADR-050 records the initial US$1 S-VGW allocation; ADR-051 records the owner's US$1.05 aggregate amendment for a bounded live quota proof; ADR-052 records the validated restricted-pilot acceptance and remaining activation requirements. ADR-001–026 keep their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 added the Vercel AI Gateway decision from S0 and partly superseded ADR-022. ADR-041–049 record the October 8 reference-architecture review:
 - execution paths, policy and approvals, durable runs and the UI catalog
 - read-only Google Calendar
 - staying on Vercel AI Gateway with purchased credits, with ZDR moved to a production privacy gate; this partially supersedes ADR-038
@@ -10,9 +10,9 @@ All 49 records describe the accepted baseline and scoped exceptions. ADR-001–0
 - multi-household-ready contracts
 - the WhatsApp rejection
 
-**Accepted does not mean implemented, approved or benchmarked.** Provider eligibility, model/voice bake-offs, phone/platform proofs, the October 8 spikes (S-VGW, S-GCAL, S-AGENT) and future Vault choices remain in the [pending-validation register](../05-implementation-roadmap.md#5-pending-validations-and-decisions).
+**Accepted does not mean implemented, approved or benchmarked.** Provider eligibility, model/voice bake-offs, phone/platform proofs, the October 8 spikes (S-VGW, S-GCAL, S-AGENT) and future Vault choices remain in the [pending-validation register](../core/05-implementation-roadmap.md#5-pending-validations-and-decisions).
 
-Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHub Actions backups and AI Gateway. Revision 2 restored/adopted Railway, graphile-worker, SSE, worker backups and direct in-process routing. The [dated review history](../04-research.md) and [superseded platform analysis](../04-research.md#62-revision-1-analysis-vercel-hobby--neon-kept-for-reference) remain explicit. They are not allocated retrospective IDs. [ADR-020](adr-020.md) refines [ADR-001](adr-001.md) and [ADR-015](adr-015.md); these records remain accepted together, as do [ADR-007](adr-007.md) with [ADR-031](adr-031.md), and [ADR-014](adr-014.md) with [ADR-032](adr-032.md).
+Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHub Actions backups and AI Gateway. Revision 2 restored/adopted Railway, graphile-worker, SSE, worker backups and direct in-process routing. The [dated review history](../research/04-research.md) and [superseded platform analysis](../research/04-research.md#62-revision-1-analysis-vercel-hobby--neon-kept-for-reference) remain explicit. They are not allocated retrospective IDs. [ADR-020](adr-020.md) refines [ADR-001](adr-001.md) and [ADR-015](adr-015.md); these records remain accepted together, as do [ADR-007](adr-007.md) with [ADR-031](adr-031.md), and [ADR-014](adr-014.md) with [ADR-032](adr-032.md).
 
 ## Catalogue
 
@@ -67,6 +67,10 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-047](adr-047.md) | Pilot cost allowance up to ₹5,000/month; ₹3,000 target and ₹800 AI default unchanged; amends ADR-036 |
 | [ADR-048](adr-048.md) | Multi-household-ready contracts while staying family-first; legal gate before any external household |
 | [ADR-049](adr-049.md) | No WhatsApp channel (Meta AI-provider ban); work alongside WhatsApp |
+| [ADR-050](adr-050.md) | US$1 isolated S-VGW canary allocation; exact live quota proof remains pending after backend minimum-budget rejection |
+| [ADR-051](adr-051.md) | US$1.05 total across S-VGW rounds, preserving prior charges; bounded synthetic live quota exhaustion authorized |
+
+| [ADR-052](adr-052.md) | S-VGW restricted founding-pilot acceptance: independent live quota, documentary storage evidence and a primary-only negative-test exception with durable controls |
 
 ## D decision map
 

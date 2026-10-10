@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Playback } from "@/components/playback";
 import { PushManager } from "@/components/push-manager";
 import { Recorder } from "@/components/recorder";
+import { SessionStatus } from "@/components/session-status";
 
 export default function Home() {
   return (
@@ -20,11 +21,19 @@ export default function Home() {
         >
           STT bakeoff
         </Link>
+        {/* A new document selects the /voice worker; SPA navigation retains the root controller. */}
+        <a
+          className="flex min-h-11 items-center rounded border px-4"
+          href="/voice"
+        >
+          Voice selection
+        </a>
+        <SessionStatus />
         <Link
           className="flex min-h-11 items-center px-4 underline"
-          href="/auth/sign-in"
+          href="/settings/privacy"
         >
-          Sign in
+          Privacy settings
         </Link>
         <Link
           className="flex min-h-11 items-center px-4 underline"

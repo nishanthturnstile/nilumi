@@ -1,0 +1,217 @@
+{
+  "version": "vgw-stream-controls-v1",
+  "status": "pending-policy-and-live-quota",
+  "aggregateCapUsd": 1.05,
+  "aggregateCountedUsd": 0.002564,
+  "priorCountedUsd": 0.002345,
+  "negativeProfile": "schematron",
+  "negativeMode": "streaming",
+  "accountBefore": {
+    "autoReloadCount": 0,
+    "budgets": [
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 10,
+        "refresh": "monthly",
+        "scopeId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+        "scopeType": "team",
+        "spend": 0.00001194
+      },
+      {
+        "active": true,
+        "alerts": [],
+        "limit": 5,
+        "refresh": "none",
+        "scopeId": "1AbQFOoLvbKMyeFZT4TQkcYT1c7oUPbLAqVoEGvKmfzUk1cV",
+        "scopeType": "api-key",
+        "spend": 0.11254246
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 1,
+        "refresh": "none",
+        "scopeId": "HVctCAD1MuTWPXaAl7PIDetXv41uXwCsILZKwvWAyLAzOIg7",
+        "scopeType": "api-key",
+        "spend": 0
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 1.72269354,
+        "refresh": "none",
+        "scopeId": "gx84fMm5A5sYVzb6bTDSl5rKNd1dDwTui5FIjrZA5JDBp2J1",
+        "scopeType": "api-key",
+        "spend": 0
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 8,
+        "refresh": "monthly",
+        "scopeId": "mN64ZFPdtwHtkuZBRCtuOC50ZRqysDEBGAA6qAhYO4KbgErF",
+        "scopeType": "api-key",
+        "spend": 0
+      }
+    ],
+    "byokCount": 0,
+    "checkedAt": "2026-10-10T06:29:03.517Z",
+    "credit": {
+      "balance": "24.8874456",
+      "hasEverPaid": true
+    },
+    "key": {
+      "id": "HVctCAD1MuTWPXaAl7PIDetXv41uXwCsILZKwvWAyLAzOIg7",
+      "metadata": {
+        "spendAttribution": "team"
+      },
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh"
+    },
+    "statuses": [200, 200, 200, 200, 200]
+  },
+  "prior": {
+    "hash": "cd2ebf44ebf38e0ad72372fe3793250f67809e7f0ca65ba00928ea98c198fb16",
+    "counted": 2345
+  },
+  "probes": [
+    {
+      "id": "chat:0123162a-84e8-4872-ba3d-4f59f8b50353",
+      "probe": "chat",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/gpt-6-luna",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 0.0000038
+      },
+      "latencyMs": 2811.771239,
+      "countedUsd": 0.000004,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "HVctCAD1MuTWPXaAl7PIDetXv41uXwCsILZKwvWAyLAzOIg7",
+      "negativeProfile": "schematron",
+      "negativeMode": "streaming",
+      "at": "2026-10-10T06:30:39.962Z",
+      "shutdownRequired": true
+    },
+    {
+      "id": "embedding:b1cfcfff-0471-411b-a71b-2429be6f3c32",
+      "probe": "embedding",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/text-embedding-3-small",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 1.8e-7
+      },
+      "dimensions": 768,
+      "latencyMs": 1091.7294880000004,
+      "countedUsd": 0.000005,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "HVctCAD1MuTWPXaAl7PIDetXv41uXwCsILZKwvWAyLAzOIg7",
+      "negativeProfile": "schematron",
+      "negativeMode": "streaming",
+      "at": "2026-10-10T06:33:49.552Z",
+      "shutdownRequired": true
+    },
+    {
+      "id": "negative:9ad187b7-c398-47d4-b29e-45f96c96483b",
+      "probe": "negative",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "failed",
+      "reason": "gateway_request_failed",
+      "failure": {
+        "reason": "gateway_request_failed",
+        "httpStatus": 500
+      },
+      "countedUsd": 0.000219,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "HVctCAD1MuTWPXaAl7PIDetXv41uXwCsILZKwvWAyLAzOIg7",
+      "negativeProfile": "schematron",
+      "negativeMode": "streaming",
+      "at": "2026-10-10T06:34:00.794Z",
+      "shutdownRequired": true
+    }
+  ],
+  "gatewayLogs": {
+    "at": "2026-10-10T06:34:28.564Z",
+    "balanceStatus": 200,
+    "hasEverPaid": true,
+    "logs": [
+      {
+        "aiModel": "inference-net/schematron-v2-small",
+        "aiProvider": "inference-net",
+        "cost": 0,
+        "gatewayRequestId": "gw_56f7fdd9-f7fc-40ee-a550-8bffb897abc7",
+        "httpStatus": 500,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:33:59"
+      },
+      {
+        "aiModel": "openai/text-embedding-3-small",
+        "aiProvider": "openai",
+        "cost": 1.8e-7,
+        "gatewayRequestId": "gw_6aa50ce4-be8f-4793-b1f2-345b07164e93",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:33:49"
+      },
+      {
+        "aiModel": "openai/gpt-6-luna",
+        "aiProvider": "openai",
+        "cost": 0.0000038,
+        "gatewayRequestId": "gw_e4baff60-4092-484b-92c2-56b19a5afd61",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:30:39"
+      }
+    ],
+    "logsStatus": 200
+  },
+  "meteredSpendUsd": 0.00000398,
+  "totalMeteredSpendUsd": 0.00001592,
+  "deletion": {
+    "deleteStatus": 204,
+    "readbackStatus": 404,
+    "at": "2026-10-10T06:34:07.360Z"
+  },
+  "shutdown": {
+    "version": "vgw-controls-v3",
+    "keyId": "HVctCAD1MuTWPXaAl7PIDetXv41uXwCsILZKwvWAyLAzOIg7",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "at": "2026-10-10T06:34:11.742Z",
+    "httpStatus": 401,
+    "previouslySucceeded": true,
+    "status": "revocation_verified",
+    "countedUsd": 0.000219,
+    "temporaryAccessRemoval": "operator-evidence-required"
+  },
+  "removal": {
+    "at": "2026-10-10T06:34:27.502Z",
+    "credentialRemoved": true,
+    "capturePrivateKeyRemoved": true,
+    "deleteStatus": 204,
+    "readStatus": 404,
+    "deletedAt": "2026-10-10T06:34:07.360Z"
+  },
+  "quota": {
+    "dispatched": false,
+    "reason": "negative_policy_failed",
+    "implementation": "complete-local-tests-passed"
+  },
+  "familyCallsEnabled": false
+}

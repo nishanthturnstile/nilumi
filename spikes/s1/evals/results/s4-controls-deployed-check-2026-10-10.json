@@ -1,0 +1,102 @@
+{
+  "kind": "s4-test-convenience-deployed-validation",
+  "version": "s4-bulbul-v3-stream-6",
+  "harnessRevision": "s4-controls-1",
+  "deploymentId": "9e9a128e-8352-4632-9b20-deadf1cd8760",
+  "deploymentStatus": "SUCCESS",
+  "deploymentSucceededAt": "2026-10-10T03:25:32.386Z",
+  "localChecks": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "tests": 320,
+    "build": "pass",
+    "sourceFilesMatchedArchive": 130,
+    "homePrerenderedGeneric": true
+  },
+  "liveChecks": {
+    "savedSessionSurvivedRedeployment": true,
+    "signedInDefaultSigninRedirectsToHome": true,
+    "explicitSwitchAccountShowsForm": true,
+    "homeRecognizesSessionWithClientOnlyNotice": true,
+    "anonymousVoice": 401,
+    "anonymousDiagnostic": 401,
+    "reservedInrBefore": 30.0312,
+    "reservedInrAfter": 30.0312,
+    "capInr": 50,
+    "agentPaidDispatches": 0
+  },
+  "pixel": {
+    "physical": true,
+    "standalone": true,
+    "instrumented": true,
+    "screenLockActive": true,
+    "heldBeyondOriginal30SecondTimeout": true,
+    "usbStayAwakeOverrideRestored": 0,
+    "toggleOffAndOn": "pass",
+    "closedAndReopenedInstalledApp": "pass",
+    "savedSessionAfterReopen": true,
+    "lockReacquiredAfterReopen": true,
+    "reportRevisionAndScreenStateVerified": true,
+    "freeChecks": [
+      {
+        "purpose": "diagnostic-control-final",
+        "id": "61937392-2fa7-442a-b63f-fab7b8c6d96f",
+        "status": "ok",
+        "firstAudioMs": 374.9676848078161,
+        "underruns": 0,
+        "standalone": true
+      },
+      {
+        "purpose": "diagnostic-control-stop",
+        "id": "15aa4ee4-1a6f-40fb-9d2c-c7ccd2da98b2",
+        "status": "cancelled",
+        "firstAudioMs": null,
+        "underruns": 0,
+        "standalone": true
+      },
+      {
+        "purpose": "diagnostic-control-recovery",
+        "id": "241ea90d-aa14-4429-82c2-7662b4da6ff8",
+        "status": "ok",
+        "firstAudioMs": 260.12235147465253,
+        "underruns": 0,
+        "standalone": true
+      }
+    ]
+  },
+  "iphone": {
+    "appleDevicesInstalled": true,
+    "appleDevicesVersion": "1.1540.24088.0",
+    "usbTransportDetected": true,
+    "inspectorBridgeRunning": true,
+    "physicalValidation": "free-playback, wake-lock Retry, signed session reload, and owner-confirmed close/reopen pass",
+    "inspectionBridgeVersion": "11.26.0",
+    "physical": true,
+    "standalone": true,
+    "instrumented": true,
+    "savedSessionAfterReload": true,
+    "initialWakeRequest": "unavailable",
+    "userGestureRetry": "active",
+    "freePlayback": "pass",
+    "freeChecks": [
+      {
+        "id": "7dea7998-a6d7-4cbc-be1e-968f7dd4ba0e",
+        "status": "ok",
+        "firstAudioMs": 189.04535147392016,
+        "underruns": 0,
+        "standalone": true
+      }
+    ],
+    "reportRevisionAndScreenStateVerified": true,
+    "closedAndReopenedInstalledApp": "owner-confirmed pass: no email code",
+    "savedSessionVerifiedAfterOwnerReopen": true,
+    "screenLockActiveAfterOwnerReopen": true,
+    "budgetAfterControlsInr": 30.0312
+  },
+  "limits": [
+    "Physical controls attach a debugger and do not establish latency acceptance.",
+    "No paid benchmark or new speech synthesis was performed.",
+    "Old trials and diagnoses remain in the phone report."
+  ],
+  "checkedAt": "2026-10-10T03:38:33.297929+00:00"
+}

@@ -1,0 +1,249 @@
+{
+  "version": "vgw-pilot-acceptance-v1",
+  "status": "accepted-restricted-founding-pilot",
+  "decision": "ADR-052",
+  "evidenceVersion": "s-vgw-adr052-pilot-v1",
+  "acceptedAt": "2026-10-10T07:08:46.124Z",
+  "scope": "founding-household-only",
+  "accountBefore": {
+    "autoReloadCount": 0,
+    "budgets": [
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 10,
+        "refresh": "monthly",
+        "scopeId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+        "scopeType": "team",
+        "spend": 1.592e-5
+      },
+      {
+        "active": true,
+        "alerts": [],
+        "limit": 5,
+        "refresh": "none",
+        "scopeId": "1AbQFOoLvbKMyeFZT4TQkcYT1c7oUPbLAqVoEGvKmfzUk1cV",
+        "scopeType": "api-key",
+        "spend": 0.11254246
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 1,
+        "refresh": "none",
+        "scopeId": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+        "scopeType": "api-key",
+        "spend": 0
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 1.72269354,
+        "refresh": "none",
+        "scopeId": "gx84fMm5A5sYVzb6bTDSl5rKNd1dDwTui5FIjrZA5JDBp2J1",
+        "scopeType": "api-key",
+        "spend": 0
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 8,
+        "refresh": "monthly",
+        "scopeId": "mN64ZFPdtwHtkuZBRCtuOC50ZRqysDEBGAA6qAhYO4KbgErF",
+        "scopeType": "api-key",
+        "spend": 0
+      }
+    ],
+    "byokCount": 0,
+    "checkedAt": "2026-10-10T06:49:41.240Z",
+    "credit": {
+      "balance": "24.88744162",
+      "hasEverPaid": true
+    },
+    "key": {
+      "id": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+      "metadata": {
+        "spendAttribution": "team"
+      },
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh"
+    },
+    "statuses": [200, 200, 200, 200, 200]
+  },
+  "positiveControls": [
+    {
+      "id": "chat:094b51a4-96b1-4e15-a55e-8adc94f612a8",
+      "probe": "chat",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/gpt-6-luna",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 3.8e-6
+      },
+      "latencyMs": 2424.1309499999998,
+      "countedUsd": 4e-6,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+      "at": "2026-10-10T06:51:42.804Z",
+      "shutdownRequired": true
+    },
+    {
+      "id": "embedding:12fca571-fed7-4dad-a55e-71f934b2e75a",
+      "probe": "embedding",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/text-embedding-3-small",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 1.8e-7
+      },
+      "dimensions": 768,
+      "latencyMs": 698.1429750000001,
+      "countedUsd": 5e-6,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+      "at": "2026-10-10T06:53:12.554Z",
+      "shutdownRequired": true
+    }
+  ],
+  "prior": {
+    "source": "/home/dev/dev/projects/nishanth/nilumi/spikes/s1/validation-results/vgw-stream-2026-10-10/state/vgw-followup-budget.json",
+    "hash": "4d4744f2d902c1c62a471a283c4b48c8f7d677336f187f60509d16b77d979b0c",
+    "counted": 2564
+  },
+  "warmup": {
+    "calls": 318,
+    "model": "openai/gpt-5.5",
+    "maximumCalls": 400,
+    "maximumDurationMs": 2700000,
+    "maximumReservationUsd": 0.00928,
+    "fixtureHash": "892e0df394f8832798bd5abd160422887031f81d5176db480e366756bf1c00b5",
+    "allManagedOpenAiNoTrainingSingleAttempt": true,
+    "firstAt": "2026-10-10T06:53:42.046Z",
+    "lastAt": "2026-10-10T07:05:11.878Z"
+  },
+  "exhaustionReadback": {
+    "budgets": [
+      {
+        "active": true,
+        "keyId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+        "limitUsd": 10,
+        "refresh": "monthly",
+        "spendUsd": 1.0007299
+      },
+      {
+        "keyId": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+        "limitUsd": 1,
+        "refresh": "none",
+        "spendUsd": 1.00071398,
+        "checkedAt": "2026-10-10T07:05:51.668Z"
+      }
+    ],
+    "checkedAt": "2026-10-10T07:05:51.668Z",
+    "creditBalanceUsd": 23.88672764,
+    "creditStatus": 200,
+    "status": 200
+  },
+  "quota": {
+    "status": "degraded_probe_observed",
+    "failure": {
+      "reason": "gateway_budget_or_credit_exhausted",
+      "httpStatus": 402,
+      "providerCode": "quota_for_entity_exceeded"
+    },
+    "reason": "gateway_budget_or_credit_exhausted",
+    "id": "quota:9cb4a3a6-83e7-4701-9db2-055d77f114c3",
+    "probe": "quota",
+    "version": "vgw-quota-v4",
+    "keyId": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+    "at": "2026-10-10T07:06:09.186Z",
+    "aggregateCountedUsd": 1.00428,
+    "keyCountedUsd": 1.000716,
+    "shutdownRequired": true
+  },
+  "quotaLogs": {
+    "checkedAt": "2026-10-10T07:07:41.609Z",
+    "logs": [],
+    "status": 200
+  },
+  "deletion": {
+    "at": "2026-10-10T07:06:22.029Z",
+    "deleteStatus": 204,
+    "readbackStatus": 404
+  },
+  "shutdown": {
+    "version": "vgw-controls-v3",
+    "keyId": "5GYLwmUexEy4da0tYgucQLaFil78v2ZQMwdqTgdvKGn9wwn9",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "at": "2026-10-10T07:06:22.815Z",
+    "httpStatus": 401,
+    "previouslySucceeded": true,
+    "status": "revocation_verified",
+    "countedUsd": 5e-6,
+    "temporaryAccessRemoval": "operator-evidence-required"
+  },
+  "removal": {
+    "at": "2026-10-10T07:06:22.843Z",
+    "credentialRemoved": true,
+    "capturePrivateKeyRemoved": true
+  },
+  "spend": {
+    "aggregateCapUsd": 1.05,
+    "aggregateCountedUsd": 1.00428,
+    "priorCountedUsd": 0.002564,
+    "thisKeyMeteredUsd": 1.00071398,
+    "totalMeteredUsd": 1.0007299,
+    "creditDeltaUsd": 1.00071398,
+    "ledgerSha256": "1f6ad2b2174ca2a5a4ce48cbe755d0354983b877d27ebe0c0883391f066f7f01"
+  },
+  "negativePolicy": {
+    "originalProof": "failed-http500-four-rounds",
+    "pilotExceptionAccepted": true,
+    "compensatingControls": "verified-primary-only; local fresh catalog guard; no-training and allowlist; no fallback; receipt checks; terminal errors",
+    "residualUncertainty": "gateway pre-provider rejection behavior unverified",
+    "supportReportSent": false
+  },
+  "storage": {
+    "acceptedEvidence": "published contract plus pinned SDK serialization",
+    "directProviderObservation": false,
+    "zdrClaimed": false
+  },
+  "localControlsValidated": true,
+  "validation": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "tests": 371,
+    "build": "passed",
+    "postgresIntegration": "13 tests with embedded PostgreSQL; restart and restricted-role checks; not a deployed PostgreSQL 18 proof"
+  },
+  "durableControls": {
+    "implemented": true,
+    "deployed": true,
+    "householdConfigured": true,
+    "acknowledgementRecorded": true,
+    "householdConfigurationPrepared": true,
+    "deploymentEvidence": "vgw-pilot-deployment-2026-10-10.json"
+  },
+  "familyCallsEnabled": true,
+  "deploymentValidation": {
+    "validatedAt": "2026-10-10T07:40:22.582368Z",
+    "tests": 372,
+    "deployedPostgresCases": 13,
+    "httpChecks": 15,
+    "status": "passed",
+    "additionalPaidRequests": 0
+  },
+  "activationEvidence": "vgw-household-activation-2026-10-10.json"
+}

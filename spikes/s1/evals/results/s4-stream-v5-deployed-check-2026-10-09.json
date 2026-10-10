@@ -1,0 +1,89 @@
+{
+  "kind": "s4-v5-deployed-validation",
+  "version": "s4-bulbul-v3-stream-5",
+  "profile": "http-pcm-pool15s-diagnostic-lock-20ms",
+  "deploymentId": "cc893a09-b614-489b-a7e6-9363b7dca082",
+  "deploymentStatus": "SUCCESS",
+  "deploymentCreatedAt": "2026-10-09T11:32:35.580Z",
+  "checkedAt": "2026-10-09T11:36:54.926Z",
+  "localChecks": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "tests": 301,
+    "build": "pass",
+    "clientAssetsExcludeServerMarkers": true,
+    "ledgerFaultControls": 9
+  },
+  "review": {
+    "scope": "Only S4 diagnostic lock contents skip fsync; exclusive creation, reservation file sync, rename and directory sync remain before provider dispatch.",
+    "canaryLockFlushUnchanged": true,
+    "playbackProviderPoolingAndGatewaySourcesUnchanged": true,
+    "processTerminationAndCrossProcessExclusivityVerified": true,
+    "physicalPowerLossNotTested": true,
+    "priorSelectionVersionsSupported": [1, 2, 3, 4, 5]
+  },
+  "live": {
+    "anonymous": 401,
+    "budgetAfterInr": 27.288,
+    "budgetBeforeInr": 27.288,
+    "capInr": 50,
+    "checkedAt": "2026-10-09T11:36:54.926Z",
+    "diagnosticAnonymous": 401,
+    "extraField": 400,
+    "head": 405,
+    "metadata": 409,
+    "paidDispatches": 0,
+    "prepare": 200,
+    "preparedId": "507fe823-4eb2-48be-9e13-7c35dc213ae2",
+    "profile": "http-pcm-pool15s-diagnostic-lock-20ms",
+    "revoke": 200,
+    "revoked": 404,
+    "trace": 409,
+    "uiFreeCheck": "Audio check passed. Estimated onset: 596 ms. No speech credits used.",
+    "version": "s4-bulbul-v3-stream-5",
+    "voice": "ritu"
+  },
+  "offlinePrefixControls": {
+    "allEmbedded": true,
+    "durations": [3.413333, 3.293333, 1.621315, 1.552063],
+    "externalResourceRequests": 0,
+    "players": 4,
+    "artifact": "s4-offline-prefix-controls-2026-10-09.json",
+    "runtimeAudioAltered": false,
+    "phoneListeningApprovalPending": true
+  },
+  "budget": {
+    "capInr": 50,
+    "reservedInr": 27.288,
+    "remainingInr": 22.712,
+    "paidAgentDispatches": 0,
+    "nextFourTwoSentenceChecksMaxInr": 0.936,
+    "remainingAfterThoseChecksInr": 21.776,
+    "fresh200TrialMaxInr": 32.832,
+    "fullRunFunded": false
+  },
+  "flash": {
+    "enabled": false,
+    "priceVerified": false,
+    "voiceSelectionApproved": false,
+    "paidCalls": 0
+  },
+  "phoneAcceptance": false,
+  "sourceArchiveFiles": 144,
+  "sourceSha256": {
+    "README.md": "21a40c68cdbaea3fdaf58cba807d7f8b0f744f0152e6232fffd96700ecf09901",
+    "config/voice.ts": "c3209b97d311e12f3f67d2878ef4c84b18471f6be65158725ba475564f777319",
+    "lib/gateway/client.ts": "3d03d697f446eac03a5d40b04799e57dd7aafb84c08f80255774969667ce6e04",
+    "lib/verification/ledger.ts": "63dc60bb17a064d721835838e75467946f0d922bcbd80c60cbdc94bc5da91dcf",
+    "lib/voice/playback.ts": "11bd6c41d60a0cc043f3799281e73de0d02ade07b478d444793daebc95bcc776",
+    "lib/voice/sarvam.ts": "a1160fcdcdd78f8aad1acbe6cd803247e46b4283ab983e1310a8f9f617250a7c",
+    "lib/voice/service.ts": "ac85eabb17aab3c03fa8a03b4b80686e6e11f8df19bfd24b666b909fa3a18c43",
+    "lib/voice/transport.ts": "650cb36afb3974c049926762aed369955138cd106a4e7a958e1bf18eb768df35",
+    "package.json": "5b0d8fcbca96e1c76de9b53210b47e9061d9830a65cf9e0c16d3ff4011ba9838",
+    "pnpm-lock.yaml": "6fee411654a327f5b9c5d7954bf0a25e7ed9400886eb204bfdc981ca0a64c295",
+    "scripts/voice-prefix-controls.py": "177b5692c5aaa66fbbbccfd8e3646c7037de6e8bc34e612d2cddb1b0042e9693",
+    "tests/verification-ledger.test.mjs": "34410c983627a56231d54104d3866865a64dd3687463bd59fcd4519b0d9f8789",
+    "tests/verification-pool.test.mjs": "431aa1a7c342ea48c57d2e9709742b1f7d47b3363d34e030b9377f4916a14a11",
+    "tests/verification-streaming.test.mjs": "5c46581f447b7f4ee483461c5118a1ab46dcec3e5dda3abb33e401322277dcbf"
+  }
+}
