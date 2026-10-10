@@ -127,8 +127,16 @@ The production unit is one Docker image deployed as two Railway services plus Ra
 ## 5. Code structure
 
 ### 5.1 Monorepo (pnpm workspaces)
+
+Extend this existing Nilumi repository in Phase 1. `packages/ui` (`@nilumi/ui`)
+is the production design-system package: retain its tokens/helpers and add
+reusable components to `src/` in place. Its `specimen/` stays a review reference;
+screens, routes and feature data wiring belong in `apps/web`. The spike projects
+remain references rather than becoming the production app. No new repository
+or replacement UI package is planned.
+
 ```
-family-assistant/
+nilumi/
 ├── apps/
 │   ├── web/                         # Next.js 16 App Router PWA + Turbopack
 │   │   ├── app/                     # pages, layouts, route handlers

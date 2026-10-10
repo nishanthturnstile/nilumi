@@ -29,6 +29,12 @@ export default function Home() {
           Voice selection
         </a>
         <SessionStatus />
+        <a
+          className="flex min-h-11 items-center rounded border px-4"
+          href="/design-system/index.html"
+        >
+          Design system
+        </a>
         {/* A new document, so the route's own head (no status-bar meta, theme-color per room) is what iOS reads. */}
         <a
           className="flex min-h-11 items-center rounded border px-4"

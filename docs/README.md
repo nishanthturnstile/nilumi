@@ -17,6 +17,12 @@ Nilumi is a private household assistant for remembering, reminding, and followin
 
 Read the Product Plan for what Nilumi should do, then Architecture and Tech Stack for how it is designed. Use the Roadmap for delivery sequence. ADRs record accepted decisions; research and validation records preserve supporting evidence and outcomes.
 
+Phase 1 extends this existing monorepo with `apps/web` and `apps/worker`.
+The existing `packages/ui` (`@nilumi/ui`) becomes the shared production component
+library, keeping its tokens and helpers; `specimen/` stays the review reference.
+Spikes remain reference projects. No new application repository or replacement
+UI package is planned.
+
 ## Research
 
 - [Research overview](research/04-research.md) — product and platform comparisons, dated findings, sources, and decision links.
@@ -34,6 +40,7 @@ Read the Product Plan for what Nilumi should do, then Architecture and Tech Stac
 
 ## Plans
 
+- [Phase 1 readiness and UI review plan](plans/32-phase-1-readiness-plan.md) — validation of the last two commits, pending owner review, setup gaps, and changes to carry into Phase 1.
 - [S3 command understanding plan](plans/06-s3-command-understanding-plan.md) — command contracts, synthetic evaluation, privacy gates, and cost limits.
 - [Phase 1 gateway and voice plan](plans/17-phase-1-gateway-and-voice-plan.md) — S-VGW and S4 evidence, completion gates, and app foundation handoff.
 - [S4 low-level latency plan](plans/21-s4-low-level-latency-plan.md) — evidence-based latency experiments and implementation sequence.

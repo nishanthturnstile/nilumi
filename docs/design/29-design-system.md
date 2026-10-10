@@ -487,7 +487,7 @@ Unknown parts render as plain text.
 
 ## 9. Component library decision
 
-**Keep shadcn/ui, initialised on Base UI primitives** (`components.json`: `"base": "base"`, `"style": "maia"`, `"iconLibrary": "phosphor"`). Recorded in [ADR-056](../adr/adr-056.md).
+**Keep shadcn/ui, initialised on Base UI primitives** (`components.json`: `"style": "base-maia"`, `"iconLibrary": "phosphor"`). The pinned CLI derives Base UI from the style prefix; a separate `base` field is invalid, and plain `maia` would select Radix. Recorded in [ADR-056](../adr/adr-056.md); configuration syntax matches the [official schema](https://ui.shadcn.com/schema.json).
 
 | Option | Verdict | Why |
 |---|---|---|
@@ -598,6 +598,7 @@ docs/design/explorations/           the six rendered directions (decision record
 ```
 
 **Using it in apps/web (Phase 1):**
+- Reuse this existing `packages/ui` as the production UI package. Keep the specimens as review references and add reusable React components to `src/`; screen compositions and data wiring live in `apps/web` in this same monorepo.
 - Load fonts in `app/fonts.ts` with `next/font`.
 - In `app/globals.css`, add `@import "@nilumi/ui/globals.css";` and `@source "../../../packages/ui/src";`. Tailwind v4 skips symlinked `node_modules`, and `@source` belongs in CSS, not in `layout.tsx`.
 - Import that CSS in `app/layout.tsx` and inline `themeBootScript` in `<head>`.
@@ -624,7 +625,7 @@ Version the system with this document's title. v1 is this release.
 |---|---|---|
 | Contrast | `pnpm ui:contrast`: 69 pairs × 6 rooms × 2 themes × phone and desktop, alpha composited, plus a check that every `@theme` variable resolves; failing pairs exit 1 | Passing (1,656/1,656) |
 | Class lint | `pnpm ui:lint-classes`: no default-palette classes, raw white/black, backdrop blur, translucent focus rings or raw radius variables, across `packages/ui`, `apps/*` and the device-check route | Passing |
-| Visual specimen | `pnpm ui:specimen`, then open `packages/ui/specimen/index.html`: every room, component and state, light/dark, Tamil, 100/150/200% text, Admin | Reviewed with the owner |
+| Visual specimen | `pnpm ui:specimen`, then open `packages/ui/specimen/index.html`: room, component and state references, light/dark, Tamil, 100/150/200% text, Admin | Built; screen-by-screen and component-by-component owner review pending (owner clarification, October 10) |
 | Device check | `/design-check` in the S1 spike plus [31 Device QA](31-device-qa.md), run on the iPhone and Android phones | Route built and verified in a desktop browser; owner to run the matrix on both phones |
 | Design detector | The impeccable detector over the specimen and CSS | Clean, with intentional findings classified (Appendix A) |
 | Independent review | Three models (GPT-5.5, Claude Sonnet 5.5, Gemini 3.8 Flash) at plan, at the token checkpoint and on the finished build | Complete: all approve with changes, changes applied (Appendix A.1–A.3) |
@@ -634,7 +635,7 @@ Version the system with this document's title. v1 is this release.
 ## 14. Assumptions, risks and open questions
 
 **Assumptions**
-- The Phase 1 app lives in this repository as `apps/web`.
+- The Phase 1 app lives in this repository as `apps/web`, alongside `apps/worker`, and consumes the existing `packages/ui`; no replacement UI package is created.
 - Kids are subjects, not users, in the MVP; kid mode (H5) gets its own pass.
 - No logo exists yet; a Nunito wordmark stands in on splash screens.
 

@@ -936,7 +936,7 @@ Owner decisions of October 10, 2026. IDs are kept so earlier references still wo
 | OQ-1 | How are the destinations arranged in navigation? | Researched and decided for development: bottom bar Today, Lists, Talk (centre), Tasks, Memory; Inbox as a header bell; Settings and Admin in a profile menu; tabs appear as phases ship. Revisit after real use | [§4.1](#41-navigation) |
 | OQ-2 | What does the Phase 1 Today placeholder show? | Researched and decided: greeting, AI status when not normal, "Say or type something", what's coming, getting-started items, and live list/task counts as phases ship. Wording and layout left to the Phase 1 implementation | [§5.6](#56-today--landing-screen-and-daily-brief) |
 | OQ-3 | Does withdrawing the acknowledgement also stop speech-to-text and text-to-speech? | **Yes.** After withdrawal, every AI provider call stops: language models, embeddings, speech-to-text and text-to-speech | [ADR-054](../adr/adr-054.md) |
-| OQ-4 | Where does the Phase 1 app run? | No application repository exists yet; the spike was for experiments. Production app at `https://app.nilumi.in`, staging at `https://staging-app.nilumi.in`, marketing site at `https://nilumi.in`. Both phones install fresh from `app.nilumi.in` | [ADR-055](../adr/adr-055.md) |
+| OQ-4 | Where does the Phase 1 app run? | Add `apps/web` and `apps/worker` to this existing monorepo, reusing `packages/ui`; the spike stays as reference. Production app at `https://app.nilumi.in`, staging at `https://staging-app.nilumi.in`, marketing site at `https://nilumi.in`. Both phones install fresh from `app.nilumi.in` | [ADR-055](../adr/adr-055.md), [ADR-056](../adr/adr-056.md) |
 | OQ-5 | How does an invited adult learn they can sign in? | Nilumi emails an invitation with install and sign-in instructions; it contains no sign-in link | [ADR-053](../adr/adr-053.md), [BOOT](#51-boot--household-bootstrap-and-member-administration) |
 | OQ-7 | Is "no recovery without mailbox access" acceptable? | Accepted for the MVP; a better recovery path is backlog | [SEC-E4](#54-sec--devices-lost-phone-email-change-and-step-up), [Roadmap §3](05-implementation-roadmap.md#3-post-mvp-horizons-and-optional-backlog) |
 | OQ-8 | Which phase delivers email change? | Phase 1 | [Roadmap Phase 1](05-implementation-roadmap.md#phase-1--walking-skeleton-with-safety-rails) |
@@ -979,6 +979,6 @@ Each question has a recommendation and the phase it blocks.
 | DEP-6 | iPhone push requires the installed app (proved in S1) | NOTIF, ONB |
 | DEP-7 | S-GCAL before any family calendar link | CAL, calendar parts of TODAY |
 | DEP-8 | ElevenLabs S0 verification before it is used as a speech fallback | TALK-X1 fallback (none in the pilot) |
-| DEP-9 | A new application repository for Phase 1; the spike stays as reference code | Everything in P1 |
+| DEP-9 | Phase 1 application workspaces (`apps/web`, `apps/worker`) in this existing monorepo, consuming and extending `packages/ui`; the spike stays as reference code | Everything in P1 |
 | DEP-10 | Marketing site with homepage and privacy policy on `nilumi.in` ([OQ-26](#93-open-questions)) | CAL (Google consent screen) |
 

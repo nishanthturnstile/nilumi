@@ -2,6 +2,13 @@
 
 Tokens, theme and components for Nilumi. The spec is [docs/design/29-design-system.md](../../docs/design/29-design-system.md), and the decision is [ADR-056](../../docs/adr/adr-056.md).
 
+This is the production UI package for the existing Nilumi monorepo. Phase 1
+extends it in place and adds `apps/web` and `apps/worker` alongside it; it does not
+create another repository or a replacement UI package. `src/` holds the shared
+tokens, helpers and reusable components. `specimen/` holds the review references;
+its sample screens are not application routes. Feature screens and data wiring
+belong in `apps/web`.
+
 ## What's here
 
 | Path | Purpose |
@@ -15,7 +22,7 @@ Tokens, theme and components for Nilumi. The spec is [docs/design/29-design-syst
 | `scripts/check-contrast.mjs` | Contrast gate: 69 pairs × 6 rooms × light/dark × phone/desktop |
 | `scripts/check-classes.mjs` | Class lint: default palette, translucent focus rings, raw radius vars |
 | `specimen/` | Static visual specimen built from the real `globals.css` |
-| `components.json` | shadcn config: `base: base`, `style: maia` (fork), `iconLibrary: phosphor` |
+| `components.json` | shadcn config: `style: base-maia` (Base UI + Maia fork), `iconLibrary: phosphor` |
 
 ## Commands (from the repo root)
 
@@ -24,7 +31,14 @@ npx pnpm@12.9.1 install
 npx pnpm@12.9.1 ui:check        # contrast gate + class lint + typecheck — must pass before any token change
 npx pnpm@12.9.1 ui:contrast     # contrast gate only (1,656 checks)
 npx pnpm@12.9.1 ui:specimen     # builds specimen/dist/specimen.css; open specimen/index.html
+pnpm --dir packages/ui exec shadcn info --json  # validates config and shows Base UI + resolved paths
+pnpm --dir packages/ui exec shadcn add @shadcn/button --dry-run # previews generation only
 ```
+
+Use the locally pinned shadcn CLI (`pnpm exec shadcn`) for reproducible generation.
+Its config encodes the primitive library in `style: "base-maia"`; there is no
+separate `base` field. Plain `"maia"` selects Radix in this CLI, so it is not an
+equivalent replacement. This matches the [official schema](https://ui.shadcn.com/schema.json).
 
 ## Using it in apps/web (Phase 1)
 
@@ -59,11 +73,25 @@ npx pnpm@12.9.1 ui:specimen     # builds specimen/dist/specimen.css; open specim
 
 5. **Shell** — paint the page with `bg-room-floor` (already on `html` and `body`), and keep components on `bg-background` / `bg-card` (white).
 
-6. **`components.json`** in apps/web — point the aliases at `@nilumi/ui/...` so `shadcn add` writes into this package.
+6. **`components.json`** in apps/web — use the same `style: "base-maia"` and Phosphor configuration. Point the shared UI/utils aliases at `@nilumi/ui/...`, while screen/component aliases remain local to the app. Preview each addition to verify reusable primitives land here and feature compositions land in the app ([monorepo guidance](https://ui.shadcn.com/docs/monorepo)).
+
+## Reviewing the references
+
+The S1 homepage's **Design system** link opens the full catalogue at
+`/design-system/index.html`; **Design check** opens the separate real-device shell
+harness. Each room has an **Open full screen** link for reviewing at the actual
+desktop or mobile browser width, retaining theme, text size and tray phase.
+Screens and component examples await owner review. The six room examples are not
+the complete application screen inventory.
+
+The spike's dev/build commands compile and copy the catalogue from this package
+into ignored public assets. Install the root workspace and spike dependencies
+before starting it; see [the spike README](../../spikes/s1/README.md).
 
 ## Rules for components
 
 - **Never accept the CSS patch** that `shadcn init` or `shadcn add` proposes for `globals.css`. It adds a white `body` and a translucent outline; `shadcn/tailwind.css` is already imported.
+- Inspect generated imports and dependencies before applying them. Registry previews may import `cn` from the `cn` package; use the existing `@nilumi/ui/lib/utils` helper instead of adding a duplicate utility dependency.
 - Tokens only. Tailwind's default palette is removed (`--color-*: initial`) and `pnpm ui:lint-classes` rejects default-palette classes. Need a colour? Add a token to `globals.css` and run the contrast gate.
 - Focus is the global opaque outline. Remove Maia's `focus-visible:ring-*`, `outline-ring/50` and focus border-colour changes. Wrapped fields: mark the inner control `data-focus-delegate` and the wrapper `data-focus-ring-within` (shadcn's `data-slot="input-group"`/`"input-group-control"` are already recognised). Inside navy surfaces (toasts), the inverse ink applies automatically (`.bg-primary`, `[data-surface="inverse"]`, or the `focus-inverse` utility).
 - Replace Maia's `bg-black/*` overlays with `bg-scrim`, white/black text with semantic foregrounds, and delete any `backdrop-blur` (the class lint flags all three). Stock `shadow-*` steps and `sm:`/`md:`/`lg:` breakpoints are already aliased to the system, but prefer `shadow-card|float|overlay` and `medium:`/`expanded:`/`wide:` in edited files.

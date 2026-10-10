@@ -34,7 +34,8 @@
       "tests/verification*.mjs",
       "scripts/gateway-*.mjs",
       "scripts/verification-*.mjs",
-      "scripts/voice-*.mjs"
+      "scripts/voice-*.mjs",
+      "scripts/prepare-design-system.mjs"
     ]
   },
   "formatter": {

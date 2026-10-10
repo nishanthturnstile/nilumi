@@ -35,7 +35,7 @@
   const phones = () =>
     `<div class="flex gap-6 overflow-x-auto px-2 pb-4 no-scrollbar">${ROOMS.map(
       (r) =>
-        `<figure class="shrink-0"><div class="sp-device sp-device-sm"><div class="sp-clip"><iframe title="${ROOM_NAMES[r]} room" loading="lazy" src="phone.html?room=${r}&theme=${state.theme}&scale=${state.scale}&tabs=${state.tabs}"></iframe></div></div><figcaption class="mt-3 text-center text-subhead text-muted-foreground">${ROOM_NAMES[r]}</figcaption></figure>`,
+        `<figure class="shrink-0"><div class="sp-device sp-device-sm"><div class="sp-clip"><iframe title="${ROOM_NAMES[r]} room" loading="lazy" src="phone.html?room=${r}&theme=${state.theme}&scale=${state.scale}&tabs=${state.tabs}"></iframe></div></div><figcaption class="mt-3 text-center text-subhead text-muted-foreground">${ROOM_NAMES[r]}<br><a class="mt-2 inline-flex min-h-(--control-height) items-center rounded-full px-3 underline" href="phone.html?room=${r}&theme=${state.theme}&scale=${state.scale}&tabs=${state.tabs}">Open full screen</a></figcaption></figure>`,
     ).join("")}</div>`;
 
   const roomsColour = () => `
@@ -146,7 +146,7 @@
     else html.dataset.textScale = state.scale;
     document.getElementById("specimen").innerHTML = [
       `<section class="pt-4"><h1 class="text-display">Pastel Rooms</h1><p class="mt-2 max-w-[70ch] text-body text-muted-foreground">Nilumi’s design system, rendered from the real <code class="font-mono text-subhead">globals.css</code>. Each phone below is a separate page with its own <code class="font-mono text-subhead">data-room</code>, exactly as the app scopes rooms. Use the controls to change the catalog’s room, the theme, the text size and the tab-tray phase. All names and items are made up.</p></section>`,
-      sec("rooms-live", "Six rooms, live", "Tap ticks, hold the mic, approve the suggestion, open “Rice” in Lists, or tap Undo to see the motion.", phones()),
+      sec("rooms-live", "Six rooms, live", "These screens and components are references awaiting review. Open a screen full size to review it at your desktop or mobile browser width. Tap ticks, hold the mic, approve the suggestion, open “Rice” in Lists, or tap Undo to see the motion.", phones()),
       sec("colour", "Colour", "Rooms are wayfinding only. Status uses semantic colours on white. Visibility is shape-coded — Household (soft fill), Shared (outline), Private (dashed) — and reads the same on every floor.", roomsColour()),
       sec("type", "Typography", "Nunito for Latin, Noto Sans Tamil for Tamil. Fixed steps × the in-app text scale; every step at least 1.4 line-height.", type()),
       sec("components", "Components", `Rendered in the ${ROOM_NAMES[state.room]} room. Switch “Page room” to see tints and focus in every room.`, components()),
