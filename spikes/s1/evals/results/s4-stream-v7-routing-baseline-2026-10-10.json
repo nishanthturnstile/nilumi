@@ -1,0 +1,206 @@
+{
+  "kind": "s4-v7-routing-baseline",
+  "version": "s4-bulbul-v3-stream-6",
+  "instrumentedPhysicalPhones": true,
+  "network": "home-wifi (page labels; no network transition requested)",
+  "notAudiblePlayback": true,
+  "paidCalls": 0,
+  "budgetReservedInr": 30.0312,
+  "browsers": {
+    "android": "Chrome 154; routing timing supported",
+    "iphone": "Safari 26.6.1; static routing and routing timing not present"
+  },
+  "probes": {
+    "pixel": {
+      "kind": "free-network-probe-not-playback",
+      "standalone": true,
+      "hidden": false,
+      "rows": [
+        {
+          "index": 0,
+          "status": 200,
+          "headersMs": 479.09999999962747,
+          "firstChunkMs": 489.70000000018626,
+          "bytes": 61740,
+          "chunks": 2,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 35.799999999813735,
+            "startMs": 23.399999999441206,
+            "fetchStartMs": 206.5,
+            "beforeRequestMs": 358.3999999994412,
+            "requestToHeadersMs": 92.40000000037253,
+            "afterHeadersMs": 28.299999999813735,
+            "dnsMs": 33.799999999813735,
+            "connectMs": 75.70000000018626,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "headersMs": 169.90000000037253,
+          "firstChunkMs": 171.29999999981374,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 0.599999999627471,
+            "startMs": 0.20000000018626451,
+            "fetchStartMs": 0.7999999998137355,
+            "beforeRequestMs": 2.599999999627471,
+            "requestToHeadersMs": 158.5,
+            "afterHeadersMs": 8.800000000745058,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "headersMs": 100.1000000005588,
+          "firstChunkMs": 101.30000000074506,
+          "bytes": 61740,
+          "chunks": 5,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 0.7000000001862645,
+            "startMs": 0.30000000074505806,
+            "fetchStartMs": 1,
+            "beforeRequestMs": 4,
+            "requestToHeadersMs": 88.80000000074506,
+            "afterHeadersMs": 7.2999999998137355,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "headersMs": 204.59999999962747,
+          "firstChunkMs": 204.90000000037253,
+          "bytes": 61740,
+          "chunks": 5,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 1.400000000372529,
+            "startMs": 0.5,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 5.2000000001862645,
+            "requestToHeadersMs": 191,
+            "afterHeadersMs": 8.399999999441206,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        }
+      ]
+    },
+    "iphone": {
+      "kind": "free-network-probe-not-playback",
+      "standalone": true,
+      "hidden": false,
+      "rows": [
+        {
+          "index": 0,
+          "status": 200,
+          "headersMs": 80,
+          "firstChunkMs": 106.0000000000291,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 2,
+            "startMs": 3,
+            "fetchStartMs": 3,
+            "beforeRequestMs": 6,
+            "requestToHeadersMs": 63,
+            "afterHeadersMs": 11,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "headersMs": 91,
+          "firstChunkMs": 127,
+          "bytes": 61740,
+          "chunks": 5,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 1,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 4,
+            "requestToHeadersMs": 75,
+            "afterHeadersMs": 12,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "headersMs": 86,
+          "firstChunkMs": 89,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 1,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 4,
+            "requestToHeadersMs": 70,
+            "afterHeadersMs": 12,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "headersMs": 79,
+          "firstChunkMs": 86,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": 1.0000000000291038,
+            "startMs": 3,
+            "fetchStartMs": 3,
+            "beforeRequestMs": 5,
+            "requestToHeadersMs": 63,
+            "afterHeadersMs": 11,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        }
+      ]
+    }
+  },
+  "finding": "Android first probe includes a workerStart-to-fetchStart gap, DNS and connection setup; this is separate from provider synthesis. No 806 ms iPhone tail recurred in these four free probes."
+}

@@ -21,7 +21,7 @@ import {
   estimateCloudflareReservation,
   verifyCloudflarePricing,
 } from "../lib/nlu/cloudflare-pricing.ts";
-import { schedule } from "../lib/nlu/evaluate.ts";
+import { evaluationDeadlineMs, schedule } from "../lib/nlu/evaluate.ts";
 import { loadFixtures } from "../lib/nlu/fixtures.ts";
 import { buildPrompt } from "../lib/nlu/prompt.ts";
 import { summarize } from "../lib/nlu/scoring.ts";
@@ -116,7 +116,9 @@ export async function runComparison({
   verifyPricing = true,
   mode = "zdr",
   gateway = "vercel",
+  purpose = "deadline_reliability",
 }) {
+  const generationDeadlineMs = evaluationDeadlineMs(mode, purpose);
   if (gatewayTransport(gateway) !== gateway) throw new Error("invalid_gateway");
   const estimate =
     gateway === "cloudflare"
@@ -145,6 +147,8 @@ export async function runComparison({
   const report = () => ({
     runId,
     gateway,
+    evaluationPurpose: purpose,
+    generationDeadlineMs,
     fixtureHash,
     ...evaluationDisclosure(mode),
     rows,
@@ -195,8 +199,9 @@ export async function runComparison({
             caseIds: [job.caseId],
             modelIds: [job.modelId],
             passes: 1,
+            ...(purpose === "synthetic_correctness" ? { purpose } : {}),
           }),
-          signal: AbortSignal.timeout(10000),
+          signal: AbortSignal.timeout(generationDeadlineMs + 5000),
         });
         if (!response.ok) throw new Error("endpoint_rejected");
         let result,
@@ -223,6 +228,9 @@ export async function runComparison({
           versions?.fixtureHash !== fixtureHash ||
           serverMode !== mode ||
           serverGateway !== gateway ||
+          (purpose === "synthetic_correctness" &&
+            (result.evaluationPurpose !== purpose ||
+              result.generationDeadlineMs !== generationDeadlineMs)) ||
           result.caseId !== job.caseId ||
           result.modelId !== job.modelId
         )
@@ -284,13 +292,15 @@ async function main() {
       (x) =>
         x !== "--live" &&
         x !== "--" &&
-        !/^--(?:cases|models|passes|origin|mode|gateway)=/.test(x),
+        !/^--(?:cases|models|passes|origin|mode|gateway|purpose)=/.test(x),
     )
   )
     throw new Error("unknown_argument");
   const loaded = await loadFixtures();
   const mode = evaluationMode(option("mode"));
   if (!mode) throw new Error("invalid_evaluation_mode");
+  const purpose = option("purpose") ?? "deadline_reliability";
+  const generationDeadlineMs = evaluationDeadlineMs(mode, purpose);
   const gateway = gatewayTransport(option("gateway"));
   if (!gateway) throw new Error("invalid_gateway");
   const reserveEstimate =
@@ -329,6 +339,8 @@ async function main() {
       JSON.stringify({
         mode: "dry_run",
         gateway,
+        evaluationPurpose: purpose,
+        generationDeadlineMs,
         ...evaluationDisclosure(mode),
         calls: caseIds.length * modelIds.length * passes,
         maximumReservationUsd: estimate,
@@ -353,6 +365,7 @@ async function main() {
     directory: resolve("validation-results"),
     mode,
     gateway,
+    purpose,
   });
   console.log(`Synthetic report saved: ${result.reportPath}`);
 }

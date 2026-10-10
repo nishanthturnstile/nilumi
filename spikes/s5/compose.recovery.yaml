@@ -1,0 +1,19 @@
+name: nilumi-s5-fresh-recovery
+services:
+  postgres:
+    image: ghcr.io/railwayapp-templates/postgres-ssl:18@sha256:57311072102a147982142c8398deab4c52727a2a474a7230810910a5710ca005
+    environment:
+      POSTGRES_DB: s5_smoke
+      POSTGRES_USER: s5_owner
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_PASSWORD: s5-local-synthetic-only
+      POSTGRES_INITDB_ARGS: --locale-provider=icu --icu-locale=en-US --encoding=UTF8
+    ports:
+      - "127.0.0.1:55436:5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U s5_owner -d s5_smoke"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

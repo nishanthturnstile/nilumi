@@ -1,0 +1,10 @@
+{
+  "S5_R2_ACCOUNT_ID": "68876249314ab88c8b5bdb86ba5fd8c8",
+  "S5_R2_BUCKET": "nilumi-backups",
+  "S5_R2_PREFIX": "s5-synthetic/recovery-drill/",
+  "S5_R2_ACCESS_KEY_ID": "",
+  "S5_R2_SECRET_ACCESS_KEY": "",
+  "S5_AGE_RECIPIENT": "age1xpktwyl7yfswh3mah3zqctalgwgsvqsyhlzattk5aukj2aks9qdqv962ce",
+  "S5_MASTER_KEY_CONFIRMED": "false",
+  "S5_APPLY_RETENTION": "false"
+}

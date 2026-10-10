@@ -1,0 +1,740 @@
+{
+  "schema": "s4-v4-phone-analysis-1",
+  "createdAt": "2026-10-09T11:11:00.169173+00:00",
+  "version": "s4-bulbul-v3-stream-4",
+  "profile": "http-pcm-pool15s-ledger-20ms",
+  "voice": "ritu",
+  "sources": [
+    {
+      "phone": "android",
+      "originalSha256": "d1f026a81c4b933bd88473f590a31b5268cc6b4e4ca005038d5b21275a12b501",
+      "exportedAt": "2026-10-09T10:56:52.038Z",
+      "reservedInr": 20.9628,
+      "audibleOnsetVerified": false,
+      "privateSourceCopy": "validation-results/s4/v4/s4-android-stream-v4-2026-10-09.json"
+    },
+    {
+      "phone": "iphone",
+      "originalSha256": "407034f38cd33b1fbf863753e0dd98a9c7bef52fd04483620461bc2a4cc916ca",
+      "exportedAt": "2026-10-09T11:01:39.475Z",
+      "reservedInr": 27.288,
+      "audibleOnsetVerified": false,
+      "privateSourceCopy": "validation-results/s4/v4/s4-iphone-stream-v4-2026-10-09.json"
+    }
+  ],
+  "totalRows": 55,
+  "smokeRows": 6,
+  "benchmarkRows": 49,
+  "completedBenchmarks": 45,
+  "completedBenchmarksAtOrBelow700Ms": 43,
+  "underruns": 0,
+  "slices": [
+    {
+      "combination": "iphone/wifi",
+      "summary": {
+        "combination": "iphone/wifi",
+        "attempted": 10,
+        "successful": 9,
+        "failed": 1,
+        "p50Ms": 499.31065759639023,
+        "p95Ms": 625.433106575947,
+        "accepted": false,
+        "audibleOnsetVerified": true
+      },
+      "completedAtOrBelow700Ms": 9,
+      "fixtureAttempts": {
+        "shopping": 1,
+        "reminder": 1,
+        "date": 1,
+        "number": 1,
+        "name": 1,
+        "answer": 1,
+        "short": 1,
+        "undo": 1,
+        "clarify": 1,
+        "unknown": 1
+      },
+      "stageStats": {
+        "auth": {
+          "count": 9,
+          "p50Ms": 0.29548799991607666,
+          "p95Ms": 0.6543370001018047,
+          "maxMs": 0.6543370001018047
+        },
+        "descriptor": {
+          "count": 9,
+          "p50Ms": 0.012410999275743961,
+          "p95Ms": 0.018391999416053295,
+          "maxMs": 0.018391999416053295
+        },
+        "preDispatch": {
+          "count": 9,
+          "p50Ms": 31.986370000056922,
+          "p95Ms": 115.79365399945527,
+          "maxMs": 115.79365399945527
+        },
+        "ledger": {
+          "count": 9,
+          "p50Ms": 31.142982000485063,
+          "p95Ms": 115.1478930003941,
+          "maxMs": 115.1478930003941
+        },
+        "lockSync": {
+          "count": 9,
+          "p50Ms": 6.545738999731839,
+          "p95Ms": 32.884513000026345,
+          "maxMs": 32.884513000026345
+        },
+        "reservationSave": {
+          "count": 9,
+          "p50Ms": 17.55854200012982,
+          "p95Ms": 77.4918569996953,
+          "maxMs": 77.4918569996953
+        },
+        "saveFileSync": {
+          "count": 9,
+          "p50Ms": 7.90824900008738,
+          "p95Ms": 52.284527000039816,
+          "maxMs": 52.284527000039816
+        },
+        "saveDirectorySync": {
+          "count": 9,
+          "p50Ms": 7.545606999658048,
+          "p95Ms": 16.86764100007713,
+          "maxMs": 16.86764100007713
+        },
+        "providerFirstPcm": {
+          "count": 9,
+          "p50Ms": 271.16090899985284,
+          "p95Ms": 320.74963499978185,
+          "maxMs": 320.74963499978185
+        },
+        "rawBodyToFirstPcm": {
+          "count": 9,
+          "p50Ms": 165.46589700039476,
+          "p95Ms": 183.45254299975932,
+          "maxMs": 183.45254299975932
+        },
+        "decoderCpu": {
+          "count": 9,
+          "p50Ms": 0.34255700185894966,
+          "p95Ms": 0.6134430011734366,
+          "maxMs": 0.6134430011734366
+        },
+        "decoderFirstPcmCpu": {
+          "count": 9,
+          "p50Ms": 0.06423500087112188,
+          "p95Ms": 0.07467299979180098,
+          "maxMs": 0.07467299979180098
+        },
+        "phoneFirstPcm": {
+          "count": 9,
+          "p50Ms": 443,
+          "p95Ms": 580,
+          "maxMs": 580
+        },
+        "leadingThresholdPrefix": {
+          "count": 9,
+          "p50Ms": 43.31065759637188,
+          "p95Ms": 70.70294784580499,
+          "maxMs": 70.70294784580499
+        },
+        "phonePcmToOnsetExcludingPrefix": {
+          "count": 9,
+          "p50Ms": 15.999999999983302,
+          "p95Ms": 17.999999999993932,
+          "maxMs": 17.999999999993932
+        },
+        "clientMaxChunkCpu": {
+          "count": 9,
+          "p50Ms": 1,
+          "p95Ms": 1.0000000000291038,
+          "maxMs": 1.0000000000291038
+        },
+        "mixedDeliveryRemainder": {
+          "count": 9,
+          "p50Ms": 139.75259300041944,
+          "p95Ms": 221.5817449996248,
+          "maxMs": 221.5817449996248
+        }
+      }
+    },
+    {
+      "combination": "iphone/mobile",
+      "summary": {
+        "combination": "iphone/mobile",
+        "attempted": 16,
+        "successful": 15,
+        "failed": 1,
+        "p50Ms": 545.7709750566864,
+        "p95Ms": 761.7324263038463,
+        "accepted": false,
+        "audibleOnsetVerified": true
+      },
+      "completedAtOrBelow700Ms": 14,
+      "fixtureAttempts": {
+        "shopping": 2,
+        "reminder": 2,
+        "date": 2,
+        "number": 2,
+        "name": 2,
+        "answer": 2,
+        "short": 1,
+        "undo": 1,
+        "clarify": 1,
+        "unknown": 1
+      },
+      "stageStats": {
+        "auth": {
+          "count": 15,
+          "p50Ms": 0.27678600046783686,
+          "p95Ms": 0.5531029999256134,
+          "maxMs": 0.5531029999256134
+        },
+        "descriptor": {
+          "count": 15,
+          "p50Ms": 0.014666999690234661,
+          "p95Ms": 0.04053100012242794,
+          "maxMs": 0.04053100012242794
+        },
+        "preDispatch": {
+          "count": 15,
+          "p50Ms": 54.57385100051761,
+          "p95Ms": 102.63454400002956,
+          "maxMs": 102.63454400002956
+        },
+        "ledger": {
+          "count": 15,
+          "p50Ms": 53.16907399985939,
+          "p95Ms": 99.5678880000487,
+          "maxMs": 99.5678880000487
+        },
+        "lockSync": {
+          "count": 15,
+          "p50Ms": 9.657623999752104,
+          "p95Ms": 39.88241899944842,
+          "maxMs": 39.88241899944842
+        },
+        "reservationSave": {
+          "count": 15,
+          "p50Ms": 34.359870000742376,
+          "p95Ms": 70.06540399976075,
+          "maxMs": 70.06540399976075
+        },
+        "saveFileSync": {
+          "count": 15,
+          "p50Ms": 16.68946300074458,
+          "p95Ms": 58.321632999926805,
+          "maxMs": 58.321632999926805
+        },
+        "saveDirectorySync": {
+          "count": 15,
+          "p50Ms": 9.3583779996261,
+          "p95Ms": 18.700639999471605,
+          "maxMs": 18.700639999471605
+        },
+        "providerFirstPcm": {
+          "count": 15,
+          "p50Ms": 258.2353010000661,
+          "p95Ms": 407.0515639996156,
+          "maxMs": 407.0515639996156
+        },
+        "rawBodyToFirstPcm": {
+          "count": 15,
+          "p50Ms": 163.14481399953365,
+          "p95Ms": 173.4343889998272,
+          "maxMs": 173.4343889998272
+        },
+        "decoderCpu": {
+          "count": 15,
+          "p50Ms": 0.32139700185507536,
+          "p95Ms": 0.9564609993249178,
+          "maxMs": 0.9564609993249178
+        },
+        "decoderFirstPcmCpu": {
+          "count": 15,
+          "p50Ms": 0.06254900060594082,
+          "p95Ms": 0.21087499987334013,
+          "maxMs": 0.21087499987334013
+        },
+        "phoneFirstPcm": {
+          "count": 15,
+          "p50Ms": 470,
+          "p95Ms": 615.9999999999709,
+          "maxMs": 615.9999999999709
+        },
+        "leadingThresholdPrefix": {
+          "count": 15,
+          "p50Ms": 48.29931972789116,
+          "p95Ms": 277.7324263038549,
+          "maxMs": 277.7324263038549
+        },
+        "phonePcmToOnsetExcludingPrefix": {
+          "count": 15,
+          "p50Ms": 15.999999999991417,
+          "p95Ms": 21.000000000009237,
+          "maxMs": 21.000000000009237
+        },
+        "clientMaxChunkCpu": {
+          "count": 15,
+          "p50Ms": 1,
+          "p95Ms": 1.0000000000582077,
+          "maxMs": 1.0000000000582077
+        },
+        "mixedDeliveryRemainder": {
+          "count": 15,
+          "p50Ms": 134.90688499991666,
+          "p95Ms": 246.2064119996503,
+          "maxMs": 246.2064119996503
+        }
+      }
+    },
+    {
+      "combination": "android/wifi",
+      "summary": {
+        "combination": "android/wifi",
+        "attempted": 13,
+        "successful": 12,
+        "failed": 1,
+        "p50Ms": 571.5366372120334,
+        "p95Ms": 690.579904761893,
+        "accepted": false,
+        "audibleOnsetVerified": true
+      },
+      "completedAtOrBelow700Ms": 12,
+      "fixtureAttempts": {
+        "shopping": 2,
+        "reminder": 2,
+        "date": 2,
+        "number": 1,
+        "name": 1,
+        "answer": 1,
+        "short": 1,
+        "undo": 1,
+        "clarify": 1,
+        "unknown": 1
+      },
+      "stageStats": {
+        "auth": {
+          "count": 12,
+          "p50Ms": 0.31099400017410517,
+          "p95Ms": 0.7593989996239543,
+          "maxMs": 0.7593989996239543
+        },
+        "descriptor": {
+          "count": 12,
+          "p50Ms": 0.01323499996215105,
+          "p95Ms": 0.05626800004392862,
+          "maxMs": 0.05626800004392862
+        },
+        "preDispatch": {
+          "count": 12,
+          "p50Ms": 50.76126000005752,
+          "p95Ms": 71.71653200034052,
+          "maxMs": 71.71653200034052
+        },
+        "ledger": {
+          "count": 12,
+          "p50Ms": 49.18101099971682,
+          "p95Ms": 69.80048399977386,
+          "maxMs": 69.80048399977386
+        },
+        "lockSync": {
+          "count": 12,
+          "p50Ms": 12.932137999683619,
+          "p95Ms": 35.91626000031829,
+          "maxMs": 35.91626000031829
+        },
+        "reservationSave": {
+          "count": 12,
+          "p50Ms": 28.94737899955362,
+          "p95Ms": 40.63314600009471,
+          "maxMs": 40.63314600009471
+        },
+        "saveFileSync": {
+          "count": 12,
+          "p50Ms": 10.998199999332428,
+          "p95Ms": 27.562052000313997,
+          "maxMs": 27.562052000313997
+        },
+        "saveDirectorySync": {
+          "count": 12,
+          "p50Ms": 11.795756000094116,
+          "p95Ms": 19.18575199972838,
+          "maxMs": 19.18575199972838
+        },
+        "providerFirstPcm": {
+          "count": 12,
+          "p50Ms": 257.54762899968773,
+          "p95Ms": 311.04275999963284,
+          "maxMs": 311.04275999963284
+        },
+        "rawBodyToFirstPcm": {
+          "count": 12,
+          "p50Ms": 163.47682799957693,
+          "p95Ms": 196.52044699992985,
+          "maxMs": 196.52044699992985
+        },
+        "decoderCpu": {
+          "count": 12,
+          "p50Ms": 0.3888650005683303,
+          "p95Ms": 1.3087759986519814,
+          "maxMs": 1.3087759986519814
+        },
+        "decoderFirstPcmCpu": {
+          "count": 12,
+          "p50Ms": 0.059884000569581985,
+          "p95Ms": 0.8066140003502369,
+          "maxMs": 0.8066140003502369
+        },
+        "phoneFirstPcm": {
+          "count": 12,
+          "p50Ms": 491.60000002384186,
+          "p95Ms": 600.5,
+          "maxMs": 600.5
+        },
+        "leadingThresholdPrefix": {
+          "count": 12,
+          "p50Ms": 39.09297052154195,
+          "p95Ms": 54.64852607709751,
+          "maxMs": 54.64852607709751
+        },
+        "phonePcmToOnsetExcludingPrefix": {
+          "count": 12,
+          "p50Ms": 46.92299999997724,
+          "p95Ms": 49.70866665475781,
+          "maxMs": 49.70866665475781
+        },
+        "clientMaxChunkCpu": {
+          "count": 12,
+          "p50Ms": 1.5,
+          "p95Ms": 2.699999988079071,
+          "maxMs": 2.699999988079071
+        },
+        "mixedDeliveryRemainder": {
+          "count": 12,
+          "p50Ms": 166.59212995227426,
+          "p95Ms": 229.7425559880212,
+          "maxMs": 229.7425559880212
+        }
+      }
+    },
+    {
+      "combination": "android/mobile",
+      "summary": {
+        "combination": "android/mobile",
+        "attempted": 10,
+        "successful": 9,
+        "failed": 1,
+        "p50Ms": 549.7419659982843,
+        "p95Ms": 1196.8788072681346,
+        "accepted": false,
+        "audibleOnsetVerified": true
+      },
+      "completedAtOrBelow700Ms": 8,
+      "fixtureAttempts": {
+        "shopping": 1,
+        "reminder": 1,
+        "date": 1,
+        "number": 1,
+        "name": 1,
+        "answer": 1,
+        "short": 1,
+        "undo": 1,
+        "clarify": 1,
+        "unknown": 1
+      },
+      "stageStats": {
+        "auth": {
+          "count": 9,
+          "p50Ms": 0.4293240001425147,
+          "p95Ms": 2.709460999816656,
+          "maxMs": 2.709460999816656
+        },
+        "descriptor": {
+          "count": 9,
+          "p50Ms": 0.012354000471532345,
+          "p95Ms": 0.02002600021660328,
+          "maxMs": 0.02002600021660328
+        },
+        "preDispatch": {
+          "count": 9,
+          "p50Ms": 36.368861000053585,
+          "p95Ms": 177.82972699962556,
+          "maxMs": 177.82972699962556
+        },
+        "ledger": {
+          "count": 9,
+          "p50Ms": 35.68699000030756,
+          "p95Ms": 174.36632400006056,
+          "maxMs": 174.36632400006056
+        },
+        "lockSync": {
+          "count": 9,
+          "p50Ms": 7.611716000363231,
+          "p95Ms": 145.97799800056964,
+          "maxMs": 145.97799800056964
+        },
+        "reservationSave": {
+          "count": 9,
+          "p50Ms": 20.447971999645233,
+          "p95Ms": 28.36624199990183,
+          "maxMs": 28.36624199990183
+        },
+        "saveFileSync": {
+          "count": 9,
+          "p50Ms": 11.173905999399722,
+          "p95Ms": 18.26427600067109,
+          "maxMs": 18.26427600067109
+        },
+        "saveDirectorySync": {
+          "count": 9,
+          "p50Ms": 6.414907000027597,
+          "p95Ms": 10.917259000241756,
+          "maxMs": 10.917259000241756
+        },
+        "providerFirstPcm": {
+          "count": 9,
+          "p50Ms": 275.21820699982345,
+          "p95Ms": 342.69719099998474,
+          "maxMs": 342.69719099998474
+        },
+        "rawBodyToFirstPcm": {
+          "count": 9,
+          "p50Ms": 167.37311900034547,
+          "p95Ms": 189.4280160004273,
+          "maxMs": 189.4280160004273
+        },
+        "decoderCpu": {
+          "count": 9,
+          "p50Ms": 0.4103679982945323,
+          "p95Ms": 0.8153969999402761,
+          "maxMs": 0.8153969999402761
+        },
+        "decoderFirstPcmCpu": {
+          "count": 9,
+          "p50Ms": 0.07223400007933378,
+          "p95Ms": 0.6501219999045134,
+          "maxMs": 0.6501219999045134
+        },
+        "phoneFirstPcm": {
+          "count": 9,
+          "p50Ms": 458.5,
+          "p95Ms": 558.1000000238419,
+          "maxMs": 558.1000000238419
+        },
+        "leadingThresholdPrefix": {
+          "count": 9,
+          "p50Ms": 42.53968253968254,
+          "p95Ms": 598.6848072562359,
+          "maxMs": 598.6848072562359
+        },
+        "phonePcmToOnsetExcludingPrefix": {
+          "count": 9,
+          "p50Ms": 47.46866664283367,
+          "p95Ms": 49.35466661897808,
+          "maxMs": 49.35466661897808
+        },
+        "clientMaxChunkCpu": {
+          "count": 9,
+          "p50Ms": 1.899999976158142,
+          "p95Ms": 7.5,
+          "maxMs": 7.5
+        },
+        "mixedDeliveryRemainder": {
+          "count": 9,
+          "p50Ms": 129.43719903565943,
+          "p95Ms": 220.02728101145476,
+          "maxMs": 220.02728101145476
+        }
+      }
+    }
+  ],
+  "nonSuccessfulRows": [
+    {
+      "id": "d06f9202-deed-451e-96a3-1e214a597386",
+      "combination": "android/wifi",
+      "fixture": "date",
+      "status": "interrupted",
+      "manualCauseConfirmed": true,
+      "ownerConfirmedCause": "phone locked"
+    },
+    {
+      "id": "9fa7801a-20a6-4bcf-9d3d-74ac41ee812e",
+      "combination": "android/mobile",
+      "fixture": "unknown",
+      "status": "cancelled",
+      "manualCauseConfirmed": true,
+      "ownerConfirmedCause": "tapped Stop"
+    },
+    {
+      "id": "055d5bdd-ffd4-49c1-a687-8ddfa16a7a21",
+      "combination": "iphone/wifi",
+      "fixture": "unknown",
+      "status": "cancelled",
+      "manualCauseConfirmed": true,
+      "ownerConfirmedCause": "tapped Stop"
+    },
+    {
+      "id": "bbebf6d6-a2ed-495a-8a8b-1c6adaabd3bc",
+      "combination": "iphone/mobile",
+      "fixture": "answer",
+      "status": "cancelled",
+      "manualCauseConfirmed": true,
+      "ownerConfirmedCause": "tapped Stop"
+    }
+  ],
+  "connectionEvidence": {
+    "tracedRows": 54,
+    "reused": 52,
+    "cold": 2,
+    "smokeIdleGapsMs": [
+      7916.476737000048, 8303.534318000078, 7825.797903000377,
+      7402.325830999762, 7733.755281999707
+    ],
+    "reportedEffectiveIdleMs": [15000],
+    "serverHintObserved": false,
+    "serverExplicitCloseObserved": false,
+    "previousOriginDisconnectReasons": ["local-idle-timeout"],
+    "originDisconnectNotAssignedSocketProof": true
+  },
+  "decoderEvidence": {
+    "firstRawHeaderOnlyRows": 53,
+    "maxTotalCpuMs": 1.7208800008520484,
+    "maxFirstPcmCpuMs": 0.8066140003502369
+  },
+  "prefixControls": [
+    {
+      "trialId": "902e05bd-48c7-4b22-860b-048e3e5ed1a8",
+      "combination": "android/mobile",
+      "fixture": "date",
+      "source": "authenticated completed clip replay after metadata availability; byte count and SHA-256 match persisted metadata",
+      "sampleRate": 22050,
+      "pcmBytes": 150528,
+      "sha256": "44031d8b82bf82095c0619c0beb497ddaf40eb1b2b967d18ce7596a609743420",
+      "originalFirstAudioMs": 1196.8788072681346,
+      "phoneFirstPcmMs": 549.6000000238419,
+      "thresholdOnsets": [
+        {
+          "absoluteAmplitude": 1,
+          "frame": 3379,
+          "ms": 153.24263038548753
+        },
+        {
+          "absoluteAmplitude": 16,
+          "frame": 5766,
+          "ms": 261.4965986394558
+        },
+        {
+          "absoluteAmplitude": 32,
+          "frame": 6244,
+          "ms": 283.1746031746032
+        },
+        {
+          "absoluteAmplitude": 64,
+          "frame": 6749,
+          "ms": 306.0770975056689
+        },
+        {
+          "absoluteAmplitude": 164,
+          "frame": 13201,
+          "ms": 598.6848072562359
+        }
+      ],
+      "boundedExactZeroHypothesis": {
+        "guardMs": 20,
+        "maxRemovalMs": 133.24263038548753,
+        "hypotheticalOnsetMs": 1063.636176882647,
+        "notAPlayedOrAcceptedResult": true
+      },
+      "physicalOrListeningVerification": false,
+      "rawAudioCommitted": false
+    },
+    {
+      "trialId": "9cfcaace-c5e3-4bc0-a57d-8101d24f291e",
+      "combination": "iphone/mobile",
+      "fixture": "short",
+      "source": "authenticated completed clip replay after metadata availability; byte count and SHA-256 match persisted metadata",
+      "sampleRate": 22050,
+      "pcmBytes": 71500,
+      "sha256": "8e689d2250f168797c91eaf53cb8424beb75bff80cfe1a5ef789a0bb40092fbd",
+      "originalFirstAudioMs": 761.7324263038463,
+      "phoneFirstPcmMs": 468,
+      "thresholdOnsets": [
+        {
+          "absoluteAmplitude": 1,
+          "frame": 1968,
+          "ms": 89.25170068027211
+        },
+        {
+          "absoluteAmplitude": 16,
+          "frame": 2530,
+          "ms": 114.73922902494331
+        },
+        {
+          "absoluteAmplitude": 32,
+          "frame": 3181,
+          "ms": 144.26303854875283
+        },
+        {
+          "absoluteAmplitude": 64,
+          "frame": 5950,
+          "ms": 269.8412698412698
+        },
+        {
+          "absoluteAmplitude": 164,
+          "frame": 6124,
+          "ms": 277.7324263038549
+        }
+      ],
+      "boundedExactZeroHypothesis": {
+        "guardMs": 20,
+        "maxRemovalMs": 69.25170068027211,
+        "hypotheticalOnsetMs": 692.4807256235742,
+        "notAPlayedOrAcceptedResult": true
+      },
+      "physicalOrListeningVerification": false,
+      "rawAudioCommitted": false
+    }
+  ],
+  "budget": {
+    "capInr": 50,
+    "liveReservedInrBeforeAndAfterReadOnlyReplay": 27.288,
+    "remainingInr": 22.712,
+    "fresh200TrialMaxInr": 32.832,
+    "shortfallInr": 10.12,
+    "paidDispatchesDuringAnalysis": 0,
+    "rawAllowanceRepresentedBy55RowsInr": 8.7984,
+    "increaseSinceDeploymentInr": 11.2464,
+    "increaseNotRepresentedByTheseRowsInr": 2.448,
+    "otherAccountActivityNotAttributableFromSnapshots": true
+  },
+  "accepted": false,
+  "acceptanceBlockers": [
+    "each slice has fewer than 50 attempts and fewer than five successes per frozen fixture",
+    "each slice contains a retained manual cancellation or phone-lock interruption",
+    "both mobile slices have observed nearest-rank p95 above 700 ms"
+  ],
+  "runtimeChanged": false,
+  "ownerConfirmation": {
+    "audibleOnsetVerifiedOnBothPhones": true,
+    "sourceCheckboxesLeftUnchanged": true,
+    "cancelledTrialsAllManualStops": true,
+    "androidInterruption": "phone locked",
+    "confirmedOn": "2026-10-09"
+  },
+  "researchFollowup": {
+    "checkedOn": "2026-10-09",
+    "candidateModel": "bulbul:v4-flash",
+    "providerDescribesLowLatencyTier": true,
+    "notMeasuredInThesePhoneReports": true,
+    "selectedV3RituNotAssumedCompatible": true,
+    "priceNotSeparatelyListedInCurrentOfficialTable": true,
+    "sources": [
+      "https://docs.sarvam.ai/api/getting-started/models/bulbul",
+      "https://docs.sarvam.ai/api/api-guides-tutorials/text-to-speech/best-practice-guide-for-bulbul-v-4-flash",
+      "https://docs.sarvam.ai/api/api-guides-tutorials/text-to-speech/voices",
+      "https://docs.sarvam.ai/api/getting-started/pricing"
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "voice": "ritu",
+  "version": "s4-bulbul-v3-stream-4",
+  "summary": [
+    {
+      "combination": "iphone/wifi",
+      "attempted": 10,
+      "successful": 9,
+      "failed": 1,
+      "p50Ms": 499.31065759639023,
+      "p95Ms": 625.433106575947,
+      "accepted": false,
+      "audibleOnsetVerified": true
+    },
+    {
+      "combination": "iphone/mobile",
+      "attempted": 16,
+      "successful": 15,
+      "failed": 1,
+      "p50Ms": 545.7709750566864,
+      "p95Ms": 761.7324263038463,
+      "accepted": false,
+      "audibleOnsetVerified": true
+    },
+    {
+      "combination": "android/wifi",
+      "attempted": 13,
+      "successful": 12,
+      "failed": 1,
+      "p50Ms": 571.5366372120334,
+      "p95Ms": 690.579904761893,
+      "accepted": false,
+      "audibleOnsetVerified": true
+    },
+    {
+      "combination": "android/mobile",
+      "attempted": 10,
+      "successful": 9,
+      "failed": 1,
+      "p50Ms": 549.7419659982843,
+      "p95Ms": 1196.8788072681346,
+      "accepted": false,
+      "audibleOnsetVerified": true
+    }
+  ],
+  "accepted": false
+}

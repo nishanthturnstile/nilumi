@@ -4,9 +4,38 @@ M1/M2 cover installability, email-code sessions, a ten-minute step-up window,
 and microphone capture. Uploads currently return `spike-noop`; they do not
 transcribe or store audio. M3 adds a canned SSE turn and two synthetic audio
 clips; M4 adds Web Push subscription and immediate/delayed test notifications.
-Real speech synthesis and durable push storage are outside this spike.
+The S4 verification harness adds real Sarvam sentence synthesis. Durable push storage remains outside this spike.
 
 Use Node.js 24 and pnpm 12.9.1 (pinned in `package.json`).
+
+## S-VGW pilot closure and privacy controls
+
+S-VGW is accepted for the restricted founding household under [ADR-052](../../docs/adr/adr-052.md).
+Privacy controls and PostgreSQL 18.6 are deployed and validated at
+[staging Settings → Privacy](https://staging.nilumi.in/settings/privacy).
+Both supplied adults are configured; the owner recorded the current notice,
+which survived redeployment. The bounded route is enabled and one authenticated
+fixed-input smoke passed. [Activation evidence](evals/results/vgw-household-activation-2026-10-10.json). [Deployment evidence](evals/results/vgw-pilot-deployment-2026-10-10.json) records 15 live HTTP checks.
+Live HTTP 402 `quota_for_entity_exceeded` and used-key 401 passed. Conservative
+all-round spend is US$1.00428 / US$1.05. The historical negative-policy tests remain
+failed under the accepted exception; only verified OpenAI roles are eligible.
+Published forwarding/retention plus pinned SDK serialization are accepted pilot
+storage evidence; no ZDR or downstream observation is claimed.
+
+`/settings/privacy` provides explicit owner acknowledgement and either adult's
+withdrawal veto. PostgreSQL persists the accepted evidence, member set, notice,
+reservations and halts; queued dispatch rechecks all controls. The bounded
+`/api/gateway` route defaults disabled and requires production sign-in, a restricted
+`GATEWAY_DATABASE_URL`, dedicated `VGW_RUNTIME_API_KEY`, and
+`GATEWAY_PILOT_ENABLED=true`, and the canonical HTTPS
+`GATEWAY_PILOT_ORIGIN` (staging: `https://staging.nilumi.in`). Local development sign-in never enables family calls.
+No acknowledgement is recorded by configuration or deployment.
+
+Lint, type-check, all 372 tests and production build pass. Fourteen control cases
+use embedded PostgreSQL and proxy-origin checks. Thirteen control cases also pass
+on deployed PostgreSQL 18.6, including real concurrent reservations, client/worker
+reconnection and restricted SQL roles. The actual deployed app login cannot change
+accepted evidence, membership, cap or schema; synthetic withdrawal tests roll back. See the [activation checklist](../../docs/plans/26-s-vgw-completion-plan.md#current-activation-work).
 
 ## Local smoke test
 
@@ -18,13 +47,18 @@ pnpm dev
 Open the URL printed by Next.js, usually http://localhost:3000. Without a
 Resend key, both sign-in and step-up show the local development code.
 
-1. Sign in, open `/sensitive` twice, and confirm neither fresh visit asks for
+1. Sign in once in the installed app. A signed, HttpOnly cookie lasts 90 days
+   with the existing stable `AUTH_SECRET`, including app closure and redeployment.
+   Home shows the saved session, and visiting Sign in reuses it unless you select
+   **Switch account**. Browser tabs and installed iPhone apps may have separate
+   storage; do not clear site data or reinstall between tests.
+2. Open `/sensitive` twice, and confirm neither fresh visit asks for
    step-up. After ten minutes, request and verify a fresh code. Clearing cookies
    instead returns you to sign-in, rather than triggering step-up.
-2. Hold Talk for a second and release: recording should upload and return to
+3. Hold Talk for a second and release: recording should upload and return to
    idle. Tap Talk and then Stop: exactly one recording should upload, and the
    microphone indicator should turn off.
-3. Try sliding away, cancelling a pointer, denying microphone access, and
+4. Try sliding away, cancelling a pointer, denying microphone access, and
    releasing a hold while the permission prompt is still open. Cancelled
    recordings should release the microphone and should not upload.
 
@@ -261,7 +295,7 @@ not save memories, change shopping lists, schedule reminders, or answer queries.
 It parses and scores proposed commands and policy outcomes. The 60 synthetic
 cases include 23 Tamil/Tanglish cases, 10 multi-command cases, and a stratified
 48 development / 12 held-out split. The owner approved all 60 cases in
-[the expected-action review](../../docs/07-s3-expected-actions.md).
+[the expected-action review](../../docs/validation/s3/07-s3-expected-actions.md).
 
 Run from `spikes/s1`:
 
@@ -294,7 +328,7 @@ verified OpenAI-managed responses within five seconds. No full-corpus run or
 model selection followed. Inline Gateway receipts now verify routing without
 requiring an immediately available generation lookup. The final code passed
 181 tests, lint, type checking and build. See the
-[follow-up evidence](../../docs/08-s3-gateway-verification.md) for reports,
+[follow-up evidence](../../docs/validation/s3/08-s3-gateway-verification.md) for reports,
 accounting and shutdown verification.
 
 ### Live evaluation gates
@@ -308,20 +342,33 @@ Railway uses the inspected “Nilumi's Key”. Live probe results are recorded b
 
 Vercel is the default gateway. The owner added paid Vercel credits on October 8
 and requested live synthetic validation within the unchanged USD 0.50 cap.
-The [paid validation report](../../docs/10-s3-paid-vercel-validation.md) records
+An October 8 owner amendment raises the cumulative cap to USD 2.00; it takes
+effect only after a reviewed change to `config/models.ts`, `lib/nlu/budget.ts` and
+the ledger that keeps every counted entry ([ADR-040](../../docs/adr/adr-040.md)).
+Until then the runner enforces USD 0.50.
+The [paid validation report](../../docs/validation/s3/10-s3-paid-vercel-validation.md) records
 Luna's complete 60-case run (54/60), failed privacy/held-out gates and mini's
 failed smoke. No model is selected; S3 acceptance remains pending.
-The [V11 follow-up](../../docs/11-s3-v11-validation.md) fixes development failures
+The [V11 follow-up](../../docs/validation/s3/11-s3-v11-validation.md) fixes development failures
 and improves hosted Luna to 56/60 with privacy 8/8. Three deadline failures and
 mini's failed smoke keep selection pending; evaluator shutdown is verified.
-The [deadline investigation](../../docs/12-s3-deadline-reliability.md) delivers
+The [deadline investigation](../../docs/validation/s3/12-s3-deadline-reliability.md) delivers
 strict elapsed-time enforcement, cleanup, numeric transport diagnostics and a
 56% smaller equivalent wire schema. The new Luna smoke scored 2/3 with one timeout
 waiting for response headers. Paid testing stopped; shutdown is verified and
 live acceptance remains pending.
+The [final correctness acceptance](../../docs/validation/s3/13-s3-live-acceptance.md) selects
+Luna low after owner-approved 30-second synthetic evaluation: **58/60** overall,
+held-out **11/12**, dates **12/12**, privacy **8/8**, schemas **58/58** and every
+managed OpenAI route verified. All **226 tests**, lint, type checking and build
+pass. Two semantic errors remain. Conservative cumulative spend is
+**US$0.277306460 / US$0.50**; evaluator shutdown is verified. The core synthetic
+spike is complete; production timing/ZDR, independent acceptance, fallback/shadow
+validation and classifier experiments remain pending. The application deadline
+stays five seconds; the longer allowance is opt-in and synthetic-only.
 Cloudflare transport remains available only through explicit selection, with no
 automatic fallback. Its gateway and private credential setup are verified, but
-live Cloudflare privacy validation is pending. See the [Cloudflare setup and budget plan](../../docs/09-s3-cloudflare-gateway.md).
+live Cloudflare privacy validation is pending. See the [Cloudflare setup and budget plan](../../docs/validation/s3/09-s3-cloudflare-gateway.md).
 Production needs acceptance on its actual paid model and verified privacy route.
 
 The `POST /api/nlu/evaluate` route is disabled by default. Before enabling it:
@@ -437,7 +484,7 @@ staging. Live validation found Luna unavailable under the approved routing
 restrictions and a provider schema incompatibility affecting Nano. The schema
 fix uses nested `anyOf`, required nullable optional fields, and SDK normalization
 before semantic validation. All three staging development probes with this fix exceeded the five-second
-Nano deadline. Evaluation was disabled and its allowlist cleared afterward. See [live results and budget accounting](../../docs/08-s3-gateway-verification.md)
+Nano deadline. Evaluation was disabled and its allowlist cleared afterward. See [live results and budget accounting](../../docs/validation/s3/08-s3-gateway-verification.md)
 for the final smoke result, retained allowances and actual Gateway balance.
 The full comparison and model selection remain incomplete. Family-data ZDR,
 classifier experiments and production shadow validation remain deferred.
@@ -479,7 +526,7 @@ review. Subscription results establish synthetic correctness only. They do
 not verify Gateway routing, prices, latency, no-training or ZDR, and cannot
 select a deployment model. Subscription rate limits stop new dispatch without
 an API-key fallback. See [ADR-040](../../docs/adr/adr-040.md) for scope and
-[validation evidence](../../docs/08-s3-gateway-verification.md) for outcomes.
+[validation evidence](../../docs/validation/s3/08-s3-gateway-verification.md) for outcomes.
 
 Completed subscription benchmark: frozen `s3-extract-v5` reached **57/60 correct
 (95%)**, **100% schema validity**, **11/12 held-out**, **11/12 dates**, and
@@ -505,7 +552,7 @@ held-out **10/12**, privacy **7/8**. It **fails synthetic acceptance**: two
 held-out semantic failures and a rejected collaboration-tool call remain.
 Disabling both CLI multi-agent flags did not establish tool-free isolation.
 See [compact checked-in evidence](evals/results/subscription-v7.json) and
-[the complete verification notes](../../docs/08-s3-gateway-verification.md).
+[the complete verification notes](../../docs/validation/s3/08-s3-gateway-verification.md).
 No paid Gateway calls or deployment followed this failed gate.
 
 October 8 follow-up passes synthetic regression gates: prompt v8 development
@@ -533,7 +580,7 @@ The memory intent case failed, so the full run and further paid tests stopped.
 Reported smoke spend US$0.0010442; retained ledger US$0.123928925; remaining cap
 US$0.376071075. No model selection or hosted S3 acceptance. See
 [smoke evidence](evals/results/gateway-v8-nano-smoke.json) and
-[verification/shutdown notes](../../docs/08-s3-gateway-verification.md).
+[verification/shutdown notes](../../docs/validation/s3/08-s3-gateway-verification.md).
 
 The local v9 prompt simplification is an **unaccepted candidate**: development
 47/48, frozen regression 54/60, held-out 8/12, dates 11/12, privacy 7/8. Schema
@@ -555,3 +602,285 @@ five seconds. Full hosted testing stopped. The evaluator is verified disabled;
 remaining retained allowance is **US$0.373965975** after US$0.0021051 smoke spend.
 See [hosted v10 evidence](evals/results/gateway-v10-nano-smoke.json). Hosted S3
 acceptance and model selection remain pending.
+
+
+## S4 voice comparison and phone benchmark
+
+Open `/voice` in the installed staging app and sign in with the configured
+`S4_EVALUATOR_EMAILS` account. Listen to six fixed synthetic samples per candidate,
+let the wife choose **This is my preferred voice**, and then measure the selected
+voice on iPhone and Android, separately on home Wi-Fi and mobile data. Each run
+makes 50 uncached attempts using ten frozen sentences, five times each. Keep the
+app in the foreground. Download the report on each phone after both networks;
+keep those files outside Git. A desktop browser cannot qualify a phone run.
+
+Current candidate: `s4-bulbul-v3-stream-6`, preserving the selected Ritu voice
+and 22,050 Hz settings. Sarvam HTTP streaming WAV is validated incrementally and
+forwarded as PCM16 to one gesture-unlocked AudioContext. Start with **Play free
+audio check**, then **Check 2 sentences with a pause** on each phone/network.
+This runs short/shopping with a six-second gap and reserves at most ₹0.234 per
+check (₹0.936 for all four combinations). Exploratory rows are exported but
+excluded from acceptance. Old v1/v2/v3/v4/v5 results remain separate.
+The player uses a 20 ms startup cushion. A bounded process-wide coordinator
+shares attempt/cancellation state across Next route bundles, skips fresh-trial
+cache misses and forwards first PCM without another descriptor read. The durable
+reservation still precedes provider dispatch. V4 uses one Sarvam-only Undici
+7.29.1 pool, two connections, pipelining one and a 15-second idle limit subject
+to server hints. It does not change the global dispatcher, synthesize to warm
+connections, or trim leading audio. Fine ledger lock/read/validation/save/cleanup
+timings, provider idle policy, previous origin disconnect classification and
+decoder CPU/first raw-body sizes distinguish the remaining tails. An origin
+disconnect is not proof that it belongs to the next request's socket.
+V5 preserves exclusive lock creation and skips flushing only S4's diagnostic
+PID/timestamp lock contents. `ledgerStages.lockDurability` identifies this policy;
+`lockSyncMs` is absent for S4. Reservation file sync, atomic rename and parent
+directory sync still finish before provider dispatch. Gateway canary lock
+flushing is unchanged. Previous voice selections remain readable across versions.
+
+V6 adds bounded browser resource offsets, first source/onset scheduling and the
+output-timestamp mapping used by the unchanged estimator. Resource traces split
+time before network dispatch from time after final response headers (falling
+back to the first response timestamp when final-header timing is unavailable).
+Long-task observation retains at most 128 numeric intervals, exports aggregates
+only and clips overlap to first audible onset. Unsupported/failed observation
+is unknown, not zero. No task names, attribution, samples or URLs are exported.
+The latest ten free tone checks are stored locally by version and included in
+the download's separate `diagnostics` array; they never populate `trials` or
+benchmark acceptance. Use the current network selector for these checks too.
+
+The latest owner reports are partial: all eight v5 Wi-Fi smoke replies completed,
+five within 700 ms. Cold connections and unexplained client/output tails remain;
+v4 also had two mobile replies with long quiet prefixes. See the
+[phone analysis and next implementation](../../docs/validation/s4/25-s4-v4-both-phone-analysis.md).
+The latest export's ₹21.002 remaining cannot cover a fresh 200-trial acceptance run;
+hold full paid benchmarks until the exact allowance is reconciled.
+
+Build a free, self-contained listening comparison from the two saved PCM clips:
+
+```sh
+python3 scripts/voice-prefix-controls.py \
+  --report evals/results/s4-stream-v4-phone-analysis-2026-10-09.json \
+  --pcm-dir /private/saved-pcm \
+  --output validation-results/s4/prefix-controls
+```
+
+Open the generated `listen.html` on each phone. It embeds original and bounded
+exact-zero controls, makes no network request, preserves a 20 ms guard and never
+removes quiet nonzero samples. This is an offline quality comparison, not a
+phone latency benchmark. Runtime audio remains unmodified. Bulbul v4 Flash
+remains a separate feasibility candidate with unverified pricing/voice approval.
+
+Exports include content-free `serverTrace` and `clientTrace` records: authorization,
+descriptor source, reservation/queue waits, provider dispatch/first bytes,
+socket reuse, transfer, conversion, leading silence and output-estimator source.
+The owner-only `?trace=1` read cannot dispatch; cancelled attempts remain readable.
+Onset is frozen near first sound rather than remapped at completion. Reverify
+physical onset on both phones. An optional phone/OS/output note describes the
+test conditions. These traces and free desktop checks do not establish phone p95.
+
+The timer starts immediately after the validated sentence reaches the phone,
+before the speech fetch. The estimate ends at the scheduled first non-silent PCM
+sample, mapped to output timestamps or estimated output latency. Verify actual
+audible onset again on sample trials on
+both phones before asserting acceptance. Failures, blocked playback, background
+interruptions, underruns and cancellations remain failed attempts. Continue recovers listening
+playback; it does not repair a failed benchmark trial.
+
+The four slices each require at least 50 uncached successes, complete corpus
+coverage, zero failed attempts and nearest-rank p95 ≤700 ms. Combine the two
+non-overlapping exports locally, after audible-onset verification:
+
+```sh
+pnpm voice:report --audible-onset-verified /private/iphone.json /private/android.json
+```
+
+This flag records a human observation; automated browser events cannot verify
+physical audible onset. The merged report does not itself pass the listening,
+functional playback or reconciled-cost checks.
+
+S4 uses a separate cumulative ₹50 ledger. The frozen four-voice listening set
+plus 200 trials reserves ₹37.2096 at ₹3/1,000 characters with 20% billing headroom
+and conservative UTF-8 byte counting. Errors keep their full reservation. Listening
+clips reuse only fixed template audio; benchmark clips synthesize once per unique
+trial. At most two synthesis operations run concurrently; repeated readers join
+a bounded spool. Completed range requests and replays cannot cause another synthesis.
+Late or uncertain failures retain reservations and the same ID cannot redispatch.
+HEAD and metadata requests cannot dispatch. No arbitrary
+text or household recording is accepted by this API.
+
+Use one replica and a persistent volume at `/verification`. Configure
+`S4_ENABLED=true`, `S4_STATE_DIR=/verification/s4`, `S4_ORIGIN` to the exact staging
+origin, `S4_EVALUATOR_EMAILS` to the approved sign-in email, `S4_PRICE_VERIFIED_AT`
+to `2026-10-09`, and `S4_BILLING_MAX_MULTIPLIER=1.2`. Reuse the existing server-only
+`SARVAM_API_KEY` and `AUTH_SECRET`; do not place keys in the client. Initialize once:
+
+```sh
+pnpm verification:init --scope=s4 --directory=/verification/s4
+```
+
+Paid paths never initialize a missing ledger. Initialization refuses an existing
+ledger. Preserve the volume, budget files and uncertain reservations across
+redeploys. A leftover exclusive lock after a process crash requires an operator
+to verify that no writer remains before removing only the lock; never reset the
+budget to recover access. Reverify price and billing bounds before changing them.
+
+## S-VGW synthetic controls canary
+
+The workflow below preserves the original diagnostic method. Current acceptance
+is recorded above; ADR-052 permits independent quota validation and keeps all
+historical failed rounds closed. No canary should be replayed or ledger reset.
+
+The shared gateway wrapper pins approved models/providers, no-training and
+supported storage options, validates managed routing receipts, stops a role on
+terminal control errors, and checks accepted S-VGW evidence plus current household
+acknowledgement before runtime dispatch and again after reservation. The application
+now has an opt-in bounded family model endpoint backed by durable PostgreSQL
+privacy and spending controls. Deployment, live database control checks, current owner acknowledgement and
+bounded route smoke pass. Full structured NLU integration belongs to Phase 2.
+
+```sh
+pnpm gateway:guard
+pnpm gateway:preflight
+pnpm gateway:preflight --catalog
+pnpm gateway:canary --dry
+```
+
+The dry run sends no model requests. Preflight is offline by default;
+`--catalog` reads public pricing without credentials or inference. Live execution
+requires dated version-3 budget/key readbacks in `config/gateway-canary.json`
+(or an ignored working config selected with `--config`), an explicitly initialized durable
+US$1.00 ledger, and a separate ignored-local `VGW_CANARY_API_KEY`. Never reuse the
+S3/runtime key or reset the S3 ledger. The manifest permits at most four attempted
+requests: chat, embedding, a no-training-ineligible Arcee route, and final quota
+rejection. Each probe can dispatch once; failure or crash retains its allowance.
+Probes must run in that order; the session binds the credential, team/key identity
+and reviewed fixture hash. Fallback remains disabled.
+
+```sh
+pnpm verification:init --scope=vgw --directory=/private/durable/vgw
+VGW_STATE_DIR=/private/durable/vgw pnpm gateway:canary --live --probe=chat
+```
+
+The owner's October 10 US$1 amendment is recorded in ADR-050. Backend readbacks
+confirm separate Team-attributed runtime, evaluation and canary budgets.
+The quota API rejects limits below US$1, so lowering the canary to its tiny
+metered spend is unsupported. A quota probe requires a supported edit and
+readback at least five minutes later. Account spend differs from conservative
+rejection reservations.
+Only HTTP 402 plus `quota_for_entity_exceeded` passes the quota proof;
+credit exhaustion halts dispatch but does not pass. Dashboard input accepting a
+sub-dollar number does not establish backend support. The harness fails closed
+until preflight is complete. It does not administer or automatically revoke
+Vercel keys: the operator must revoke the canary key in every exit path and record
+shutdown. After account deletion, `pnpm gateway:canary --verify-revocation`
+checks the used credential through read-only `GET /v1/credits` and fences further
+dispatch. Only HTTP 401 after a successful positive probe verifies rejection;
+record actual account deletion and remove local temporary access separately.
+SDK serialization tests prove `store:false` reaches the gateway; the exact Luna
+model's published provider-option contract documents forwarding. This is
+documentary evidence, not direct provider observation. The October 10 live run
+passed chat, embedding and used-key revocation; negative policy returned HTTP
+500 and quota was not dispatched. Its state is closed and must not be reset.
+See [the implementation plan](../../docs/plans/17-phase-1-gateway-and-voice-plan.md)
+and [gateway evidence](../../docs/validation/s3/08-s3-gateway-verification.md) before live work.
+The [S-VGW completion plan](../../docs/plans/26-s-vgw-completion-plan.md) has the complete
+readback, live-probe, shutdown and remaining-evidence workflow.
+
+October 10 follow-up: ADR-051 authorizes **US$1.05 total across all rounds**.
+`scripts/gateway-followup.mjs` carries the predecessor ledger's digest and counted
+charges into a separate aggregate ledger; historical halted runs are never reset.
+`scripts/gateway-quota.mjs` implements bounded sequential US$1 key exhaustion with
+a fixed quota-only OpenAI profile, <=512-byte complete SDK payload, <=US$0.01
+reservation per request and fresh authenticated exhaustion readback before the
+tiny final quota probe. It requires all three preceding diagnostic proofs to pass.
+Its default command is dry and makes no model calls:
+
+```sh
+node --import tsx scripts/gateway-quota.mjs
+```
+
+All four live diagnostic rounds are closed. Chat, embedding and used-key
+revocation passed; both Arcee and Schematron negative controls returned HTTP 500,
+including the Schematron streaming path. Counted spend is US$0.002564, including
+retained failed reservations. No quota workload was dispatched and family calls
+remain gated. The [Vercel reproduction packet](../../docs/validation/s-vgw/27-s-vgw-policy-reproduction.md)
+is retained locally at the owner's request.
+
+
+## S4 test convenience controls — October 10
+
+The v6 speech settings and timing remain frozen. Harness revision
+`s4-controls-1` adds **Keep screen awake on this test page**, enabled initially.
+The visible state distinguishes held, pending, unsupported/denied and OS-released
+locks. Leaving/hiding the page releases the lock; visible return requests it
+again, and Retry permits an explicit user gesture. Turning it off or navigating
+away releases both current and late-granted locks. A wake-lock failure does not
+alter playback, Stop handling or acceptance. Manual power-button locks remain
+interruptions. If the OS refuses a lock, temporarily extend Screen timeout on
+Android or Auto-Lock on iPhone, then restore the previous setting after testing.
+
+Sign-in already had a 90-day signed cookie. Home and Sign in now recognize a
+valid cookie instead of always offering another email-code flow. The explicit
+Switch account link retains that flow. Authentication, paid caller allowlists,
+the stable deployment secret and sensitive-view ten-minute step-up remain in
+force. A cached authentication boolean is not used as authorization, and secrets
+are not copied into localStorage. Keep the installed app and origin consistent
+between runs; old reports remain in their existing versioned local storage.
+
+## S4 v7 network path — October 10
+
+`s4-bulbul-v3-stream-7` keeps Ritu, provider HTTP streaming, the 15-second
+connection pool, durable reservations, 20 ms audio startup and audible-onset
+arithmetic. It registers `/voice-sw.js?revision=s4-network-1` with scope `/voice`.
+This worker has no fetch listener: voice-page requests use the network without
+service-worker fetch dispatch, including Safari without static routing support.
+The existing root worker owns the generic offline home shell and notifications.
+Push enrollment explicitly selects the root registration, including after SPA
+navigation from Voice to Home. The voice page remains online-only.
+
+Exports contain `routing.policy`, registration state, current controller and
+`clientTrace.requestRoute` at each attempt. Registration failure retains the old
+route and reports it; it never retries audio, duplicates synthesis or blocks the
+measured path. V6 reports remain in their old local-storage keys and are not
+mixed into v7 acceptance. Previously saved voice selection is retained.
+
+Reload both installed apps online. First verify the free check and exported
+routing state, then compare launch/idle and warm speech checks. A zero
+resource `workerStart` plus `requestRoute: "voice-network"` verifies the worker
+fetch-dispatch bypass; it does not establish provider/network p95 acceptance.
+Keep both cold and slow rows. Use Mobile only with Wi-Fi actually off.
+
+For rollback, restore the old deployment and unregister only the `/voice`
+registration before reloading the voice page. Keep root registration,
+subscriptions, cookies, local reports and the verification volume intact.
+
+## S4 v8 exact-zero prefix — October 10
+
+`s4-bulbul-v3-stream-8` retains the v7 network worker and adds conservative
+playback trimming. Only exact zero-valued PCM samples at the start of the first
+complete chunk are eligible. Keep 10 ms of that prefix, remove at most 200 ms,
+and preserve at least 80 ms of playable first-chunk data. All-zero first chunks
+are scheduled immediately without trimming; later chunks and internal pauses
+are untouched. Every non-zero sample, including quiet speech, is preserved.
+The transformation introduces no additional network read or buffering wait.
+
+Exports include `zeroPrefixPolicy` and per-attempt `trimmedZeroPrefixMs`,
+`originalLeadingSilenceMs` and the remaining `leadingSilenceMs`. The latency
+clock still starts before the speech GET and uses the actual scheduled non-silent
+output timestamp. Received byte counts and provider metadata describe the
+original stream. Voice selection migrates; old versioned reports stay separate.
+
+A physical Android check found that `resume()` can resolve while the audio
+clock remains at zero. This cold output startup is retained in measured latency;
+no synthetic warm-up wait is moved outside the timing window. Initialize audio
+from the user's Talk gesture when integrating recording with reply playback,
+and measure readiness alongside release-to-reply latency. That integration is
+future app work, not a claimed fix in this speech-only spike.
+
+The Home **Voice selection** entry uses document navigation rather than an SPA
+transition. A service-worker controller belongs to the loaded document; simply
+changing its URL through the client router can retain the root worker even when
+`/voice` already has an active worker. Loading the voice document selects its
+scope before speech. No automatic page reload, repeated registration, changed
+speech timing, new sign-in flow or report migration is introduced by this entry
+fix. Direct `/voice` visits continue to work.

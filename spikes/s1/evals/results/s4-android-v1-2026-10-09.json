@@ -1,0 +1,287 @@
+{
+  "provenance": "Derived from owner-provided JSON export in implementation chat; original export is not a repository file.",
+  "exportedAt": "2026-10-09T04:22:44.695Z",
+  "version": "s4-bulbul-v3-1",
+  "selectedVoice": "ritu",
+  "selectedBy": "wife",
+  "selectionRecordedAt": "2026-10-09T04:19:53.061Z",
+  "audibleOnsetVerified": true,
+  "audibleVerificationProvenance": "Export checkbox asserted by owner; no independent physical-onset evidence attached.",
+  "metric": "sentence-available-to-audible-playback",
+  "onsetMethod": "media-playing-plus-measured-leading-silence",
+  "budgetSnapshot": {
+    "capInr": 50,
+    "reservedInr": 6.408,
+    "remainingInr": 43.592
+  },
+  "allTrialsStandalone": true,
+  "allTrialsCached": false,
+  "trialColumns": [
+    "id",
+    "fixture",
+    "androidNetwork",
+    "status",
+    "firstAudioMs",
+    "providerMs"
+  ],
+  "trials": [
+    [
+      "3f33eda5-4a13-4dde-b666-d69c50bf74ed",
+      "shopping",
+      "mobile",
+      "ok",
+      1355.6136054660187,
+      912.59923599998
+    ],
+    [
+      "59e068c6-9b52-4c09-b504-fcce32cdd851",
+      "reminder",
+      "mobile",
+      "ok",
+      1270.8514739229024,
+      903.5928060000297
+    ],
+    [
+      "cd7ce033-1d2f-4682-a1be-ccb92a2714f2",
+      "date",
+      "mobile",
+      "ok",
+      1273.3356009070294,
+      744.3383959999774
+    ],
+    [
+      "0ebe5743-61e2-4cb3-b743-dd8510dddb74",
+      "number",
+      "mobile",
+      "ok",
+      1033.8319728248784,
+      708.2376400000649
+    ],
+    [
+      "bc906fa5-d542-434e-916e-6abffdb97e6b",
+      "name",
+      "mobile",
+      "ok",
+      1144.7272108724328,
+      672.5679340000497
+    ],
+    [
+      "7e8b73d5-9e82-4d49-b1e8-652cfcec7a6e",
+      "answer",
+      "mobile",
+      "ok",
+      947.0764172812438,
+      660.311936999904
+    ],
+    [
+      "b1315a84-a4af-4e95-a36b-d91967903099",
+      "short",
+      "mobile",
+      "ok",
+      1108.6852608186587,
+      424.25868999992963
+    ],
+    [
+      "6604d9bf-7fcf-4dbf-8efe-9f445a585658",
+      "undo",
+      "mobile",
+      "ok",
+      1567.5598639217365,
+      708.5598800000735
+    ],
+    [
+      "5aa7e12f-df92-4ec7-abc1-50bcfeadefe0",
+      "clarify",
+      "mobile",
+      "ok",
+      1591.0154195130547,
+      1004.7813569999998
+    ],
+    [
+      "1191e05a-2b96-4efc-b5fc-e83ffd714be7",
+      "unknown",
+      "mobile",
+      "ok",
+      1288.4573696621962,
+      844.2695250000106
+    ],
+    [
+      "14fdf6d5-6259-4012-a3e5-8bb8be90435d",
+      "shopping",
+      "mobile",
+      "ok",
+      1319.953514739229,
+      1000.3471770000178
+    ],
+    [
+      "7f5e803c-18af-4c3b-b859-67046a65e25a",
+      "reminder",
+      "mobile",
+      "ok",
+      1527.1514739348233,
+      787.4376130000455
+    ],
+    [
+      "302d8926-708b-4e51-bc00-5d92c645d235",
+      "date",
+      "mobile",
+      "ok",
+      1399.595238095238,
+      694.3893660000758
+    ],
+    [
+      "0bfaa21c-ef77-40f8-b551-586a2a733f1f",
+      "number",
+      "mobile",
+      "ok",
+      1523.3814058837706,
+      1020.8129760000156
+    ],
+    [
+      "cbddbbbf-5e70-42fa-b70e-3b23718ac806",
+      "name",
+      "mobile",
+      "cancelled",
+      1164.2047619166829,
+      706.0346249999711
+    ],
+    [
+      "cdb99112-967c-4cc2-9ce3-e1cb4cfbb6f5",
+      "shopping",
+      "wifi",
+      "ok",
+      1867.2922902851958,
+      1076.226384999929
+    ],
+    [
+      "f7849e83-8931-41ea-9583-9f1858ad7473",
+      "reminder",
+      "wifi",
+      "ok",
+      1497.1632653061224,
+      724.2282970000524
+    ],
+    [
+      "dfbf6262-dfff-45c8-a569-dd89e65af04c",
+      "date",
+      "wifi",
+      "ok",
+      1308.961904749984,
+      767.942677999963
+    ],
+    [
+      "589cc4ec-ef39-4810-9acc-52788b6b27eb",
+      "number",
+      "wifi",
+      "ok",
+      1098.9337868599935,
+      700.1551040000049
+    ],
+    [
+      "8fa3b125-22ac-4126-bc8b-d77197ad816a",
+      "name",
+      "wifi",
+      "ok",
+      1270.608843537415,
+      639.9288200000301
+    ],
+    [
+      "dd089f43-3f52-4157-846e-b5a813a398db",
+      "answer",
+      "wifi",
+      "ok",
+      1288.0625850578554,
+      747.4842369999969
+    ],
+    [
+      "bf0d09db-bb86-4add-a812-0a01e580757a",
+      "short",
+      "wifi",
+      "ok",
+      882.1870748299319,
+      519.2513380000601
+    ],
+    [
+      "a1642410-4fcd-4a60-8fc0-6452121bccd3",
+      "undo",
+      "wifi",
+      "ok",
+      1220.0589569160998,
+      726.9870729999384
+    ],
+    [
+      "b5e73438-2428-4177-9fde-7c8ec61c3d72",
+      "clarify",
+      "wifi",
+      "ok",
+      1049.5832199427275,
+      727.263057999895
+    ],
+    [
+      "fef80999-a89b-43a3-a51d-06cfbc11e908",
+      "unknown",
+      "wifi",
+      "ok",
+      1087.426077073664,
+      722.3219879999524
+    ],
+    [
+      "e6d08ff5-71bb-47df-8260-9a8a5d6598b4",
+      "shopping",
+      "wifi",
+      "ok",
+      988.5938775271785,
+      609.802510999958
+    ],
+    [
+      "7b34b7cd-c6c5-4a8a-8fe6-296d69651f07",
+      "reminder",
+      "wifi",
+      "ok",
+      1233.3217687432457,
+      637.4297129999613
+    ],
+    [
+      "2f0b3b6b-9fc1-48d7-bd95-e247fe7544df",
+      "date",
+      "wifi",
+      "ok",
+      4500.290022651895,
+      4086.8488160000416
+    ],
+    [
+      "d9338965-02b6-43c1-ad29-ca8cd2d4119f",
+      "number",
+      "wifi",
+      "ok",
+      1171.815192743764,
+      738.6481810000259
+    ],
+    [
+      "5a101c15-d876-4a0a-a5cc-29a998d73fb0",
+      "name",
+      "wifi",
+      "ok",
+      1032.5167800215097,
+      650.3767300000181
+    ],
+    [
+      "1cf8af33-5538-4bf0-aa2f-f1d02c039305",
+      "answer",
+      "wifi",
+      "cancelled",
+      null,
+      null
+    ]
+  ],
+  "status": "partial-runs-above-latency-target",
+  "iphoneEvidence": "not-supplied",
+  "settings": {
+    "model": "bulbul:v3",
+    "language_code": "en-IN",
+    "pace": 1,
+    "temperature": 0.6,
+    "speech_sample_rate": 22050,
+    "output_audio_codec": "wav"
+  }
+}

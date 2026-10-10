@@ -1,0 +1,56 @@
+{
+  "measuredAt": "2026-10-09T05:43:17.115Z",
+  "kind": "local-desktop-offline-cpu-control",
+  "node": "v24.21.0",
+  "undici": "7.29.1",
+  "platform": "linux",
+  "arch": "x64",
+  "syntheticPcmBytes": 109132,
+  "chunkBytes": 16384,
+  "measurements": [
+    {
+      "name": "parse-and-spool-entire-109132-byte-clip",
+      "samples": 200,
+      "p50Ms": 0.30928299999999354,
+      "p95Ms": 0.6303080000000136,
+      "maxMs": 2.4672349999999597
+    },
+    {
+      "name": "pcm16-to-float32-entire-109132-byte-clip",
+      "samples": 200,
+      "p50Ms": 0.06253499999996848,
+      "p95Ms": 0.07942499999995789,
+      "maxMs": 0.3462680000000091
+    },
+    {
+      "name": "json-and-zod-validate-70-entry-ledger",
+      "samples": 200,
+      "p50Ms": 0.0876580000000331,
+      "p95Ms": 0.2184949999999617,
+      "maxMs": 0.8417349999999715
+    },
+    {
+      "name": "json-and-zod-validate-1000-entry-ledger",
+      "samples": 200,
+      "p50Ms": 1.0758470000000102,
+      "p95Ms": 2.2940459999999803,
+      "maxMs": 2.911433000000102
+    },
+    {
+      "name": "two-hmac-small-json-auth-approximation",
+      "samples": 200,
+      "p50Ms": 0.007916000000022905,
+      "p95Ms": 0.013303000000064458,
+      "maxMs": 0.05878400000005968
+    }
+  ],
+  "sourceSha256": {
+    "lib/voice/wav-stream.ts": "a13105f9164ba2dd4ad8fcd57a4d03e2520004e5031c84255624dd74270444e3",
+    "lib/voice/stream-buffer.ts": "4698646a7c43502a31826cd8b3a978b934abb8103cb722463c794ba16448c584",
+    "lib/voice/playback.ts": "e9903e7ebd7ff4417aa9e862644e0a98da76da69e936f85a62c186ff3b45031b",
+    "lib/verification/ledger.ts": "5cfcf7b73d34264185879a5a78b03eefdde789e5a8ca406b544a0a7df22f54fb"
+  },
+  "providerDispatches": 0,
+  "liveLedgerAccess": false,
+  "limitations": "Warm local Node CPU only; not phone Web Audio/DOM/render timing, Railway filesystem latency, cold-start latency or an end-to-end benchmark. Timings are diagnostic, not expected savings."
+}

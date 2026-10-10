@@ -1,0 +1,180 @@
+{
+  "version": "vgw-followup-evidence-v1",
+  "status": "pending-policy-and-live-quota",
+  "allowanceDecision": "ADR-051",
+  "aggregateCapUsd": 1.05,
+  "priorCountedUsd": 0.001063,
+  "aggregateCountedUsd": 0.002126,
+  "sourceLedgerSha256": "0dcc209d19ae9d83b6f99aecd8340621516e79019d9b71ba1b36ae7982049d83",
+  "sourceLedgerPreserved": true,
+  "keyCreation": {
+    "status": 200,
+    "id": "PX7dcYiPyYTMriiqRJlLkNtyizospUBTC5SqwpN4t2Waru3C",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "createdAt": 1791612232675,
+    "capturePrivateKeyRemoved": true
+  },
+  "budget": {
+    "limitUsd": 1,
+    "refresh": "none",
+    "attribution": "team",
+    "alerts": [50, 75, 100]
+  },
+  "probes": [
+    {
+      "id": "chat:72ddc026-6b3b-469d-867a-d244feee5f7e",
+      "probe": "chat",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/gpt-6-luna",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 0.0000038
+      },
+      "latencyMs": 2227.446467,
+      "countedUsd": 0.000004,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "PX7dcYiPyYTMriiqRJlLkNtyizospUBTC5SqwpN4t2Waru3C",
+      "at": "2026-10-10T06:06:18.831Z",
+      "shutdownRequired": true,
+      "aggregateCountedUsd": 0.001067,
+      "aggregateCapUsd": 1.05,
+      "priorHash": "0dcc209d19ae9d83b6f99aecd8340621516e79019d9b71ba1b36ae7982049d83"
+    },
+    {
+      "id": "embedding:e5ccf21a-ef2a-4f28-8557-12c5ed5a583f",
+      "probe": "embedding",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/text-embedding-3-small",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 1.8e-7
+      },
+      "dimensions": 768,
+      "latencyMs": 623.720312,
+      "countedUsd": 0.000005,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "PX7dcYiPyYTMriiqRJlLkNtyizospUBTC5SqwpN4t2Waru3C",
+      "at": "2026-10-10T06:06:27.019Z",
+      "shutdownRequired": true,
+      "aggregateCountedUsd": 0.001068,
+      "aggregateCapUsd": 1.05,
+      "priorHash": "0dcc209d19ae9d83b6f99aecd8340621516e79019d9b71ba1b36ae7982049d83"
+    },
+    {
+      "id": "negative:58da9e1d-4618-49f3-b8bd-be468d6bc276",
+      "probe": "negative",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "failed",
+      "reason": "gateway_request_failed",
+      "failure": {
+        "reason": "gateway_request_failed",
+        "httpStatus": 500
+      },
+      "countedUsd": 0.001063,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "PX7dcYiPyYTMriiqRJlLkNtyizospUBTC5SqwpN4t2Waru3C",
+      "at": "2026-10-10T06:06:34.769Z",
+      "shutdownRequired": true,
+      "aggregateCountedUsd": 0.002126,
+      "aggregateCapUsd": 1.05,
+      "priorHash": "0dcc209d19ae9d83b6f99aecd8340621516e79019d9b71ba1b36ae7982049d83",
+      "transportFailure": {
+        "reason": "gateway_request_failed",
+        "httpStatus": 500
+      }
+    }
+  ],
+  "accountLogReadback": {
+    "balance": "24.88744958",
+    "checkedAt": "2026-10-10T06:07:17.825Z",
+    "logStatus": 200,
+    "logs": [
+      {
+        "aiModel": "arcee-ai/trinity-large-thinking",
+        "aiProvider": "arcee-ai",
+        "contentCaptureStatus": "",
+        "cost": 0,
+        "gatewayRequestId": "gw_87ff6341-da05-4b8f-9b10-becb89252eea",
+        "httpStatus": 500,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:06:34",
+        "transcriptStatus": ""
+      },
+      {
+        "aiModel": "openai/text-embedding-3-small",
+        "aiProvider": "openai",
+        "contentCaptureStatus": "",
+        "cost": 1.8e-7,
+        "gatewayRequestId": "gw_b16faf1e-dea3-45bc-a034-cdf0063d60ef",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:06:26",
+        "transcriptStatus": ""
+      },
+      {
+        "aiModel": "openai/gpt-6-luna",
+        "aiProvider": "openai",
+        "contentCaptureStatus": "",
+        "cost": 0.0000038,
+        "gatewayRequestId": "gw_c0997c10-9ed3-47dc-acee-22ff59fdeeba",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:06:17",
+        "transcriptStatus": ""
+      }
+    ]
+  },
+  "meteredSpendUsd": 0.00000398,
+  "totalMeteredSpendBothRoundsUsd": 0.00000796,
+  "quota": {
+    "dispatched": false,
+    "reason": "negative-policy-proof-failed-before-warmup"
+  },
+  "deletion": {
+    "status": 204,
+    "readbackStatus": 404,
+    "at": "2026-10-10T06:06:58.801Z"
+  },
+  "shutdown": {
+    "version": "vgw-controls-v3",
+    "keyId": "PX7dcYiPyYTMriiqRJlLkNtyizospUBTC5SqwpN4t2Waru3C",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "at": "2026-10-10T06:06:59.330Z",
+    "httpStatus": 401,
+    "previouslySucceeded": true,
+    "status": "revocation_verified",
+    "countedUsd": 0.001063,
+    "temporaryAccessRemoval": "operator-evidence-required"
+  },
+  "temporaryAccessRemoval": {
+    "at": "2026-10-10T06:07:18.198Z",
+    "canaryEnvironmentRemoved": true,
+    "capturePrivateKeyRemoved": true
+  },
+  "localValidation": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "tests": {
+      "passed": 349,
+      "failed": 0
+    },
+    "build": "passed"
+  },
+  "familyCallsEnabled": false
+}

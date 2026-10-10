@@ -7,6 +7,10 @@
       "lib/keyterms.ts",
       "lib/stt/**",
       "app/page.tsx",
+      "app/auth/sign-in/page.tsx",
+      "components/sign-in-form.tsx",
+      "components/session-status.tsx",
+      "public/voice-sw.js",
       "app/bakeoff/**",
       "app/api/bakeoff/**",
       "tests/bakeoff.test.mjs",
@@ -17,7 +21,20 @@
       "evals/**",
       "app/api/nlu/**",
       "tests/nlu*.mjs",
-      "scripts/*nlu*.mjs"
+      "scripts/*nlu*.mjs",
+      "lib/gateway/**",
+      "lib/voice/**",
+      "lib/verification/**",
+      "app/voice/**",
+      "app/api/voice/**",
+      "app/settings/privacy/**",
+      "app/api/privacy/**",
+      "app/api/gateway/**",
+      "components/privacy-controls.tsx",
+      "tests/verification*.mjs",
+      "scripts/gateway-*.mjs",
+      "scripts/verification-*.mjs",
+      "scripts/voice-*.mjs"
     ]
   },
   "formatter": {

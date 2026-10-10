@@ -1,0 +1,117 @@
+{
+  "checkedAt": "2026-10-10T05:04:52.506Z",
+  "mode": "public-catalog-read-only",
+  "sdk": {
+    "ai": "7.0.130",
+    "gateway": "4.0.106"
+  },
+  "accountPreflight": {
+    "ready": false,
+    "pending": [
+      "checkedAt",
+      "teamId",
+      "creditBalanceUsd",
+      "earliestCreditExpiry",
+      "fixtureHash",
+      "runtimeBudget",
+      "evaluationBudget",
+      "s3LedgerEvidence",
+      "canaryBudget",
+      "smallBudgetCompatibilityVerified"
+    ]
+  },
+  "manifest": {
+    "version": "vgw-controls-v2",
+    "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+    "capUsd": 0.1,
+    "maxCalls": 4,
+    "fallback": "disabled",
+    "maximumUsd": 0.002205,
+    "probes": [
+      {
+        "probe": "chat",
+        "role": "nlu",
+        "model": "openai/gpt-6-luna",
+        "providers": ["openai"],
+        "maxInputBytes": 4128,
+        "maxOutputTokens": 32,
+        "controls": {
+          "disallowPromptTraining": true,
+          "only": ["openai"],
+          "store": false
+        },
+        "expected": "success",
+        "reservationUsd": 0.000532
+      },
+      {
+        "probe": "embedding",
+        "role": "embed",
+        "model": "openai/text-embedding-3-small",
+        "providers": ["openai"],
+        "maxInputBytes": 4145,
+        "maxOutputTokens": 0,
+        "controls": {
+          "disallowPromptTraining": true,
+          "only": ["openai"],
+          "store": "unsupported"
+        },
+        "expected": "success",
+        "reservationUsd": 0.000083
+      },
+      {
+        "probe": "negative",
+        "role": "nlu",
+        "model": "arcee-ai/trinity-large-thinking",
+        "providers": ["arcee-ai"],
+        "maxInputBytes": 4128,
+        "maxOutputTokens": 32,
+        "controls": {
+          "disallowPromptTraining": true,
+          "only": ["arcee-ai"],
+          "store": "unsupported"
+        },
+        "expected": "no_providers_available",
+        "reservationUsd": 0.001058
+      },
+      {
+        "probe": "quota",
+        "role": "nlu",
+        "model": "openai/gpt-6-luna",
+        "providers": ["openai"],
+        "maxInputBytes": 4128,
+        "maxOutputTokens": 32,
+        "controls": {
+          "disallowPromptTraining": true,
+          "only": ["openai"],
+          "store": false
+        },
+        "expected": "402 quota_for_entity_exceeded",
+        "reservationUsd": 0.000532
+      }
+    ]
+  },
+  "catalogSource": "https://ai-gateway.vercel.sh/v1/models",
+  "routes": [
+    {
+      "id": "openai/gpt-6-luna",
+      "noTraining": "all",
+      "inputUsdPerToken": "0.0000001",
+      "cacheWriteUsdPerToken": "0.000000125",
+      "outputUsdPerToken": "0.0000005"
+    },
+    {
+      "id": "openai/text-embedding-3-small",
+      "noTraining": "all",
+      "inputUsdPerToken": "0.00000002"
+    },
+    {
+      "id": "arcee-ai/trinity-large-thinking",
+      "noTraining": "none",
+      "inputUsdPerToken": "0.00000025",
+      "outputUsdPerToken": "0.0000008"
+    }
+  ],
+  "modelCalls": 0,
+  "canarySpendUsd": 0,
+  "acceptance": "pending-live-proofs-storage-forwarding-and-shutdown"
+}

@@ -1,0 +1,224 @@
+{
+  "version": "vgw-pilot-deployment-v1",
+  "status": "deployed-and-validated-awaiting-household-acknowledgement",
+  "validatedAt": "2026-10-10T07:40:22.582368Z",
+  "decision": "ADR-052",
+  "evidenceVersion": "s-vgw-adr052-pilot-v1",
+  "origin": "https://staging.nilumi.in",
+  "projectId": "9acde490-30a2-4452-889a-fa5c67a79271",
+  "environmentId": "ab1b8903-8615-484e-9410-04481200abbf",
+  "appDeploymentId": "1d90477e-8690-4e2e-8498-fc46e64aa951",
+  "databaseDeploymentId": "c88a1c94-50e5-4adf-97ab-5fee3e5b2ae8",
+  "databaseVersion": "PostgreSQL 18.6",
+  "databasePublicEndpoint": false,
+  "sourceArchiveSha256": "d074095f0c5bbb4c179e3924002727595b448b69f8131e51cb7949bbd34cf979",
+  "sourceProvenance": "frozen reviewed local spikes/s1 source uploaded by Railway CLI; not a GitHub main commit",
+  "validation": {
+    "lint": "passed",
+    "typecheck": "passed",
+    "tests": 372,
+    "build": "passed",
+    "deployedPostgresCases": 13,
+    "postgresTestLogSha256": "478ecb66e102674ea6d0b825af72616105cfb0122930e5ab3961de90e8c39642",
+    "persistenceProof": "database state retained across client/worker reconnects and app redeployment; no PostgreSQL server restart performed",
+    "http": {
+      "version": "vgw-deployed-http-smoke-v1",
+      "checkedAt": "2026-10-10T07:37:05.433Z",
+      "status": "passed",
+      "origin": "https://staging.nilumi.in",
+      "checks": 15,
+      "results": [
+        {
+          "name": "signed-out notice page",
+          "status": 200,
+          "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "name": "signed-out privacy API",
+          "status": 401,
+          "cacheControl": "no-store",
+          "reason": "sign_in_required"
+        },
+        {
+          "name": "invalid session rejected",
+          "status": 401,
+          "cacheControl": "no-store",
+          "reason": "sign_in_required"
+        },
+        {
+          "name": "adult 1 privacy status",
+          "status": 200,
+          "cacheControl": "no-store",
+          "acknowledgementAbsent": true,
+          "correctMembership": true,
+          "correctOwnerRole": true
+        },
+        {
+          "name": "adult 1 notice page",
+          "status": 200,
+          "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "name": "adult 2 privacy status",
+          "status": 200,
+          "cacheControl": "no-store",
+          "acknowledgementAbsent": true,
+          "correctMembership": true,
+          "correctOwnerRole": true
+        },
+        {
+          "name": "adult 2 notice page",
+          "status": 200,
+          "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+        },
+        {
+          "name": "non-member denied",
+          "status": 403,
+          "cacheControl": "no-store",
+          "reason": "household_member_required"
+        },
+        {
+          "name": "owner acknowledgement without attestation refused",
+          "status": 403,
+          "cacheControl": "no-store",
+          "reason": "privacy_acknowledgement_refused"
+        },
+        {
+          "name": "other adult cannot record household acknowledgement",
+          "status": 403,
+          "cacheControl": "no-store",
+          "reason": "privacy_acknowledgement_refused"
+        },
+        {
+          "name": "cross-origin mutation refused",
+          "status": 403,
+          "cacheControl": "no-store",
+          "reason": "origin_refused"
+        },
+        {
+          "name": "stale notice refused",
+          "status": 400,
+          "cacheControl": "no-store",
+          "reason": "privacy_action_invalid"
+        },
+        {
+          "name": "body identity injection refused",
+          "status": 400,
+          "cacheControl": "no-store",
+          "reason": "privacy_action_invalid"
+        },
+        {
+          "name": "family gateway disabled",
+          "status": 503,
+          "cacheControl": "no-store",
+          "reason": "gateway_pilot_disabled"
+        },
+        {
+          "name": "real household acknowledgement remains absent",
+          "status": 200,
+          "cacheControl": "no-store",
+          "acknowledgementAbsent": true,
+          "correctMembership": true,
+          "correctOwnerRole": true
+        }
+      ],
+      "sessionEvidence": "controlled signed test sessions using existing production auth secret; not proof of both humans completing a new email-code login",
+      "realAcknowledgementRecorded": false,
+      "privacyMutationsCommitted": 0,
+      "providerRequests": 0
+    },
+    "actualRestrictedLogin": {
+      "version": "vgw-deployed-restricted-login-v1",
+      "status": "passed",
+      "checkedAt": "2026-10-10T07:34:29.263Z",
+      "checks": [
+        "restricted login has no administrative privileges",
+        "configured adult member access and missing-ack reservation block",
+        "configured adult member access and missing-ack reservation block",
+        "evidence, owner, membership, cap and schema changes refused",
+        "both adults can withdraw using restricted grants; test changes rolled back"
+      ],
+      "syntheticWithdrawalTransactionsRolledBack": 2,
+      "realAcknowledgementRecorded": false,
+      "realState": {
+        "reservations": 0,
+        "halts": 0,
+        "privacy_events": 0
+      },
+      "providerRequests": 0
+    },
+    "runtimeBoundary": {
+      "version": "vgw-deployed-runtime-block-v1",
+      "status": "passed",
+      "checkedAt": "2026-10-10T07:36:30.285Z",
+      "realPostgresRestrictedLogin": true,
+      "approvedRolesMissingAcknowledgementBlocked": 3,
+      "sensitiveIngressBlocked": 4,
+      "providerRequests": 0,
+      "paidRequests": 0,
+      "realAcknowledgementRecorded": false,
+      "counts": {
+        "reservations": 0,
+        "halts": 0
+      }
+    }
+  },
+  "browserOwnerSession": {
+    "existingSignedInOwnerVerified": true,
+    "status": 200,
+    "adults": 2,
+    "evidenceAccepted": true,
+    "acknowledgementAbsent": true,
+    "withoutAttestationStatus": 403,
+    "withoutAttestationReason": "privacy_acknowledgement_refused",
+    "checkboxUnchecked": true,
+    "recordButtonDisabled": true
+  },
+  "originCorrection": "explicit GATEWAY_PILOT_ORIGIN binds HTTPS staging origin behind Railway proxy; untrusted forwarded headers cannot override it",
+  "existingVerificationVolumePreserved": true,
+  "realHousehold": {
+    "configuredAdults": 2,
+    "ownerConfigured": true,
+    "acceptedEvidenceVersionConfigured": true,
+    "acknowledgementRecorded": false,
+    "privacyEvents": 0,
+    "reservations": 0,
+    "halts": 0
+  },
+  "runtime": {
+    "gatewayEnabled": false,
+    "dedicatedRuntimeKeyConfigured": true,
+    "restrictedDatabaseLoginConfigured": true,
+    "migrationOwnerCredentialConfigured": false,
+    "legacyS3EvaluationEnabled": false
+  },
+  "cleanup": {
+    "status": "completed",
+    "temporaryRegisteredSshKeyRemoved": true,
+    "sshTunnelStopped": true,
+    "temporaryAgentStopped": true,
+    "temporaryCredentialCopiesRemoved": [
+      "ssh-validation",
+      "ssh-validation.pub",
+      "ssh-agent.json",
+      "app-database-private.json",
+      "app-variables-private.json",
+      "db-variables-private.json"
+    ],
+    "runtimeCredentialRemainsInConfiguredApp": true,
+    "originalIgnoredRuntimeKeyPreserved": true,
+    "testSchemasRemaining": 0,
+    "testRolesRemaining": 0,
+    "realAcknowledgementRecorded": false,
+    "realReservations": 0,
+    "realHalts": 0,
+    "realPrivacyEvents": 0
+  },
+  "additionalPaidGatewayRequests": 0,
+  "sVgwConservativeCountedUsd": 1.00428,
+  "sVgwAggregateCapUsd": 1.05,
+  "remaining": [
+    "owner explains current privacy notice to other adult and explicitly records acknowledgement",
+    "after current acknowledgement, enable the bounded pilot route and validate first minimal family call"
+  ]
+}

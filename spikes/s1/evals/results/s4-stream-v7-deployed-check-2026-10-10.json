@@ -1,0 +1,745 @@
+{
+  "date": "2026-10-10",
+  "version": "s4-bulbul-v3-stream-7",
+  "deploymentId": "c330a0df-e5e1-4c25-8462-24e376893d14",
+  "deploymentStatus": "SUCCESS",
+  "sourceFiles": 133,
+  "tests": 328,
+  "lint": "pass",
+  "typecheck": "pass",
+  "build": "pass",
+  "phones": {
+    "pixel": {
+      "standalone": true,
+      "authenticated": true,
+      "controller": "/voice-sw.js?revision=s4-network-1",
+      "rootShellCached": true,
+      "rootPushSubscriptionPresent": true
+    },
+    "iphone": {
+      "standalone": true,
+      "authenticated": true,
+      "controller": "/voice-sw.js?revision=s4-network-1",
+      "rootShellCached": true,
+      "rootPushSubscriptionPresent": true
+    }
+  },
+  "wifiSpeechSmokes": {
+    "pixel": [
+      {
+        "fixture": "short",
+        "status": "ok",
+        "firstAudioMs": 1102.3804353745218,
+        "providerFirstAudioMs": 505.9861590000073,
+        "transferFirstChunkMs": 719,
+        "underruns": 0,
+        "leadingSilenceMs": 334.42176870748295,
+        "workerStartMs": null
+      },
+      {
+        "fixture": "shopping",
+        "status": "ok",
+        "firstAudioMs": 597.7750272108824,
+        "providerFirstAudioMs": 246.068008000002,
+        "transferFirstChunkMs": 502.29999999981374,
+        "underruns": 0,
+        "leadingSilenceMs": 50.06802721088435,
+        "workerStartMs": null
+      }
+    ],
+    "iphone": [
+      {
+        "fixture": "short",
+        "status": "ok",
+        "firstAudioMs": 661.3741496598523,
+        "providerFirstAudioMs": 386.9020540000056,
+        "transferFirstChunkMs": 606,
+        "underruns": 0,
+        "leadingSilenceMs": 35.374149659863946,
+        "workerStartMs": null
+      },
+      {
+        "fixture": "shopping",
+        "status": "ok",
+        "firstAudioMs": 458.2199546485208,
+        "providerFirstAudioMs": 259.165055999998,
+        "transferFirstChunkMs": 410,
+        "underruns": 0,
+        "leadingSilenceMs": 29.88662131519274,
+        "workerStartMs": null
+      }
+    ]
+  },
+  "androidOutputReadinessProbe": {
+    "kind": "free-silent-output-startup-probe-not-benchmark",
+    "attempts": [
+      {
+        "frames": 1,
+        "resumedMs": 34.89999999944121,
+        "firstClockMs": 497.09999999962747,
+        "outputTimestampValid": false
+      },
+      {
+        "frames": 12000,
+        "resumedMs": 2.7000000001862645,
+        "firstClockMs": 151.5,
+        "outputTimestampValid": false
+      },
+      {
+        "frames": 1,
+        "resumedMs": 7,
+        "firstClockMs": 29,
+        "outputTimestampValid": false
+      },
+      {
+        "frames": 12000,
+        "resumedMs": 3.2000000001862645,
+        "firstClockMs": 15.799999999813735,
+        "outputTimestampValid": false
+      }
+    ]
+  },
+  "prefixAnalysis": {
+    "fixture": "short",
+    "leadingSilenceMs": 334.42176870748295,
+    "pcmBytes": 79028,
+    "thresholds": [
+      {
+        "level": 1,
+        "firstMs": 166.9387755102041
+      },
+      {
+        "level": 4,
+        "firstMs": 188.7074829931973
+      },
+      {
+        "level": 16,
+        "firstMs": 304.44444444444446
+      },
+      {
+        "level": 64,
+        "firstMs": 315.87301587301585
+      },
+      {
+        "level": 164,
+        "firstMs": 334.42176870748295
+      }
+    ],
+    "windows": [
+      {
+        "startMs": 0,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 10,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 20,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 30,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 40,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 50,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 60,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 70,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 80,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 90,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 100,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 110,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 120,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 130,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 140,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 150,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 160,
+        "rms": 0.06741998624632421,
+        "max": 1
+      },
+      {
+        "startMs": 170,
+        "rms": 0.32954102182865386,
+        "max": 2
+      },
+      {
+        "startMs": 180,
+        "rms": 1.031327476428493,
+        "max": 6
+      },
+      {
+        "startMs": 190,
+        "rms": 2.644896049587237,
+        "max": 11
+      },
+      {
+        "startMs": 200,
+        "rms": 2.726969680132809,
+        "max": 11
+      },
+      {
+        "startMs": 210,
+        "rms": 2.766967400835266,
+        "max": 8
+      },
+      {
+        "startMs": 220,
+        "rms": 4.528696380758033,
+        "max": 13
+      },
+      {
+        "startMs": 230,
+        "rms": 2.7930100209944766,
+        "max": 10
+      },
+      {
+        "startMs": 240,
+        "rms": 1.3055824196677337,
+        "max": 6
+      },
+      {
+        "startMs": 250,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 260,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 270,
+        "rms": 0,
+        "max": 0
+      },
+      {
+        "startMs": 280,
+        "rms": 0.1651445647689541,
+        "max": 2
+      },
+      {
+        "startMs": 290,
+        "rms": 2.225927027380215,
+        "max": 10
+      },
+      {
+        "startMs": 300,
+        "rms": 11.767250393281424,
+        "max": 40
+      },
+      {
+        "startMs": 310,
+        "rms": 26.796281905926808,
+        "max": 78
+      },
+      {
+        "startMs": 320,
+        "rms": 44.39225976758479,
+        "max": 143
+      },
+      {
+        "startMs": 330,
+        "rms": 149.15821112396515,
+        "max": 441
+      },
+      {
+        "startMs": 340,
+        "rms": 821.3150209489436,
+        "max": 1815
+      },
+      {
+        "startMs": 350,
+        "rms": 1818.09380435883,
+        "max": 3221
+      },
+      {
+        "startMs": 360,
+        "rms": 2706.656014682727,
+        "max": 4430
+      },
+      {
+        "startMs": 370,
+        "rms": 3387.5680741519536,
+        "max": 7155
+      },
+      {
+        "startMs": 380,
+        "rms": 4404.58029989031,
+        "max": 10348
+      },
+      {
+        "startMs": 390,
+        "rms": 7001.939262726722,
+        "max": 14737
+      },
+      {
+        "startMs": 400,
+        "rms": 7709.788463965202,
+        "max": 14265
+      },
+      {
+        "startMs": 410,
+        "rms": 4384.292861044151,
+        "max": 9191
+      },
+      {
+        "startMs": 420,
+        "rms": 4502.066698649734,
+        "max": 8585
+      },
+      {
+        "startMs": 430,
+        "rms": 4596.467652703861,
+        "max": 8857
+      },
+      {
+        "startMs": 440,
+        "rms": 4264.661253200007,
+        "max": 9043
+      }
+    ],
+    "reservationUnchanged": true,
+    "reservedInr": 30.4992
+  },
+  "networkControls": {
+    "pixel/wifi": {
+      "kind": "free-network-probe-not-playback",
+      "standalone": true,
+      "hidden": false,
+      "rows": [
+        {
+          "index": 0,
+          "status": 200,
+          "headersMs": 221.6000000005588,
+          "firstChunkMs": 222.40000000037253,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1.6000000005587935,
+            "fetchStartMs": 1.6000000005587935,
+            "beforeRequestMs": 40.200000000186265,
+            "requestToHeadersMs": 178.5,
+            "afterHeadersMs": 2.900000000372529,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "headersMs": 202.79999999981374,
+          "firstChunkMs": 203.3999999994412,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 0.2999999998137355,
+            "fetchStartMs": 0.2999999998137355,
+            "beforeRequestMs": 5.3999999994412065,
+            "requestToHeadersMs": 193.20000000018626,
+            "afterHeadersMs": 4.2000000001862645,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "headersMs": 102.09999999962747,
+          "firstChunkMs": 104.5,
+          "bytes": 61740,
+          "chunks": 3,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1,
+            "fetchStartMs": 1,
+            "beforeRequestMs": 4.7999999998137355,
+            "requestToHeadersMs": 91.59999999962747,
+            "afterHeadersMs": 5.7000000001862645,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "headersMs": 99.70000000018626,
+          "firstChunkMs": 112.29999999981374,
+          "bytes": 61740,
+          "chunks": 3,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1.3999999994412065,
+            "fetchStartMs": 1.3999999994412065,
+            "beforeRequestMs": 5.7000000001862645,
+            "requestToHeadersMs": 88.09999999962747,
+            "afterHeadersMs": 5.900000000372529,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        }
+      ]
+    },
+    "pixel/mobile": {
+      "kind": "free-network-probe-not-playback",
+      "standalone": true,
+      "hidden": false,
+      "rows": [
+        {
+          "index": 0,
+          "status": 200,
+          "headersMs": 781.2999999998137,
+          "firstChunkMs": 787.0999999996275,
+          "bytes": 61740,
+          "chunks": 15,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 0.6999999992549419,
+            "fetchStartMs": 0.6999999992549419,
+            "beforeRequestMs": 549.6999999992549,
+            "requestToHeadersMs": 223.6000000005588,
+            "afterHeadersMs": 8,
+            "dnsMs": 360.70000000018626,
+            "connectMs": 178.09999999962747,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "headersMs": 185.70000000018626,
+          "firstChunkMs": 189.70000000018626,
+          "bytes": 61740,
+          "chunks": 12,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 0.7999999998137355,
+            "fetchStartMs": 0.7999999998137355,
+            "beforeRequestMs": 17.600000000558794,
+            "requestToHeadersMs": 160.8999999994412,
+            "afterHeadersMs": 7.2000000001862645,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "headersMs": 176.59999999962747,
+          "firstChunkMs": 178.19999999925494,
+          "bytes": 61740,
+          "chunks": 11,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1.2999999998137355,
+            "fetchStartMs": 1.2999999998137355,
+            "beforeRequestMs": 7.7999999998137355,
+            "requestToHeadersMs": 161.79999999981374,
+            "afterHeadersMs": 7,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "headersMs": 160.09999999962747,
+          "firstChunkMs": 164,
+          "bytes": 61740,
+          "chunks": 26,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1.7999999998137355,
+            "fetchStartMs": 1.7999999998137355,
+            "beforeRequestMs": 6.5,
+            "requestToHeadersMs": 148.19999999925494,
+            "afterHeadersMs": 5.400000000372529,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": "",
+            "final": ""
+          }
+        }
+      ]
+    },
+    "iphone/wifi": {
+      "kind": "free-network-probe-not-playback",
+      "standalone": true,
+      "hidden": false,
+      "rows": [
+        {
+          "index": 0,
+          "status": 200,
+          "headersMs": 95.00000000000364,
+          "firstChunkMs": 104,
+          "bytes": 61740,
+          "chunks": 3,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 2.000000000003638,
+            "fetchStartMs": 2.000000000003638,
+            "beforeRequestMs": 5.000000000003638,
+            "requestToHeadersMs": 77.99999999999636,
+            "afterHeadersMs": 12.000000000003638,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "headersMs": 99,
+          "firstChunkMs": 103.99999999999636,
+          "bytes": 61740,
+          "chunks": 4,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1.999999999996362,
+            "fetchStartMs": 1.999999999996362,
+            "beforeRequestMs": 3.999999999996362,
+            "requestToHeadersMs": 84,
+            "afterHeadersMs": 11.000000000003638,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "headersMs": 87,
+          "firstChunkMs": 92,
+          "bytes": 61740,
+          "chunks": 3,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 4,
+            "requestToHeadersMs": 71,
+            "afterHeadersMs": 12,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "headersMs": 92,
+          "firstChunkMs": 106,
+          "bytes": 61740,
+          "chunks": 3,
+          "networkLabel": "wifi",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 4.000000000003638,
+            "requestToHeadersMs": 75.99999999999636,
+            "afterHeadersMs": 12,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        }
+      ]
+    },
+    "iphone/mobile": {
+      "kind": "free-network-probe-not-playback",
+      "standalone": true,
+      "hidden": false,
+      "rows": [
+        {
+          "index": 0,
+          "status": 200,
+          "headersMs": 472,
+          "firstChunkMs": 474,
+          "bytes": 61740,
+          "chunks": 15,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 217.00000000023283,
+            "requestToHeadersMs": 244.99999999976717,
+            "afterHeadersMs": 10,
+            "dnsMs": 67,
+            "connectMs": 138,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 1,
+          "status": 200,
+          "headersMs": 172,
+          "firstChunkMs": 201,
+          "bytes": 61740,
+          "chunks": 16,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 1,
+            "fetchStartMs": 1,
+            "beforeRequestMs": 3,
+            "requestToHeadersMs": 160,
+            "afterHeadersMs": 9,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 2,
+          "status": 200,
+          "headersMs": 120,
+          "firstChunkMs": 120,
+          "bytes": 61740,
+          "chunks": 8,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 3,
+            "requestToHeadersMs": 107,
+            "afterHeadersMs": 10,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        },
+        {
+          "index": 3,
+          "status": 200,
+          "headersMs": 152,
+          "firstChunkMs": 155,
+          "bytes": 61740,
+          "chunks": 8,
+          "networkLabel": "mobile",
+          "resource": {
+            "workerStartMs": null,
+            "startMs": 2,
+            "fetchStartMs": 2,
+            "beforeRequestMs": 4,
+            "requestToHeadersMs": 139,
+            "afterHeadersMs": 9,
+            "dnsMs": 0,
+            "connectMs": 0,
+            "protocol": "h3",
+            "matched": null,
+            "final": null
+          }
+        }
+      ]
+    }
+  },
+  "acceptance": {
+    "accepted": false,
+    "reason": "Limited debugger-attached smokes and free diagnostic controls; no complete 50-trial per-combination benchmark"
+  },
+  "reservedInrAfterSpeech": 30.4992
+}

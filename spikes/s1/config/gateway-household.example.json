@@ -1,0 +1,4 @@
+{
+  "ownerEmail": "owner@example.test",
+  "adults": ["owner@example.test", "adult@example.test"]
+}

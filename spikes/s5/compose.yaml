@@ -1,0 +1,19 @@
+name: nilumi-s5
+services:
+  postgres:
+    image: pgvector/pgvector:pg18@sha256:2358fcba361ed2233a5ed81b5fe4ca779ccb304120ce531a3bf51c0ed7e2bc11
+    environment:
+      POSTGRES_DB: s5_smoke
+      POSTGRES_USER: s5_owner
+      # Disposable synthetic container only, bound to loopback.
+      POSTGRES_PASSWORD: s5-local-synthetic-only
+      POSTGRES_INITDB_ARGS: --locale-provider=icu --icu-locale=en-US --encoding=UTF8
+    ports:
+      - "127.0.0.1:55435:5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U s5_owner -d s5_smoke"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

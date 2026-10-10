@@ -1,0 +1,194 @@
+{
+  "measuredAt": "2026-10-09T04:40:48.748Z",
+  "node": "v24.21.0",
+  "region": "asia-southeast1-eqsg3a",
+  "probe": "unauthenticated-GET-no-synthesis",
+  "network": [
+    {
+      "trial": 1,
+      "status": 405,
+      "headersMs": 308.333,
+      "totalMs": 319.009,
+      "connectMs": 145.664,
+      "responseBytes": 31
+    },
+    {
+      "trial": 2,
+      "status": 405,
+      "headersMs": 64.048,
+      "totalMs": 65.099,
+      "connectMs": null,
+      "responseBytes": 31
+    },
+    {
+      "trial": 3,
+      "status": 405,
+      "headersMs": 66.981,
+      "totalMs": 67.982,
+      "connectMs": null,
+      "responseBytes": 31
+    },
+    {
+      "trial": 4,
+      "status": 405,
+      "headersMs": 64.733,
+      "totalMs": 65.741,
+      "connectMs": null,
+      "responseBytes": 31
+    },
+    {
+      "trial": 5,
+      "status": 405,
+      "headersMs": 62.073,
+      "totalMs": 63.53,
+      "connectMs": null,
+      "responseBytes": 31
+    },
+    {
+      "trial": 6,
+      "status": 405,
+      "headersMs": 64.401,
+      "totalMs": 66.428,
+      "connectMs": null,
+      "responseBytes": 31
+    },
+    {
+      "trial": 7,
+      "status": 405,
+      "headersMs": 63.301,
+      "totalMs": 64.27,
+      "connectMs": null,
+      "responseBytes": 31
+    },
+    {
+      "trial": 8,
+      "status": 405,
+      "headersMs": 62.814,
+      "totalMs": 63.591,
+      "connectMs": null,
+      "responseBytes": 31
+    }
+  ],
+  "connections": 1,
+  "storage": [
+    {
+      "bytes": 1024,
+      "samples": [
+        {
+          "totalMs": 17.47,
+          "fileFsyncMs": 9.901
+        },
+        {
+          "totalMs": 14.477,
+          "fileFsyncMs": 7.614
+        },
+        {
+          "totalMs": 15.264,
+          "fileFsyncMs": 6.103
+        },
+        {
+          "totalMs": 19.481,
+          "fileFsyncMs": 8.915
+        },
+        {
+          "totalMs": 13.416,
+          "fileFsyncMs": 4.274
+        },
+        {
+          "totalMs": 10.231,
+          "fileFsyncMs": 5.156
+        },
+        {
+          "totalMs": 16.963,
+          "fileFsyncMs": 6.624
+        },
+        {
+          "totalMs": 20.31,
+          "fileFsyncMs": 8.422
+        },
+        {
+          "totalMs": 12.959,
+          "fileFsyncMs": 5.977
+        },
+        {
+          "totalMs": 13.858,
+          "fileFsyncMs": 6.486
+        },
+        {
+          "totalMs": 22.494,
+          "fileFsyncMs": 5.798
+        },
+        {
+          "totalMs": 12.769,
+          "fileFsyncMs": 5.703
+        }
+      ]
+    },
+    {
+      "bytes": 109176,
+      "samples": [
+        {
+          "totalMs": 11.297,
+          "fileFsyncMs": 5.919
+        },
+        {
+          "totalMs": 13.074,
+          "fileFsyncMs": 5.107
+        },
+        {
+          "totalMs": 13.181,
+          "fileFsyncMs": 4.829
+        },
+        {
+          "totalMs": 22.367,
+          "fileFsyncMs": 15.036
+        },
+        {
+          "totalMs": 19.236,
+          "fileFsyncMs": 11.659
+        },
+        {
+          "totalMs": 12.241,
+          "fileFsyncMs": 6.445
+        },
+        {
+          "totalMs": 27.242,
+          "fileFsyncMs": 18.913
+        },
+        {
+          "totalMs": 10.66,
+          "fileFsyncMs": 5.232
+        },
+        {
+          "totalMs": 12.343,
+          "fileFsyncMs": 4.664
+        },
+        {
+          "totalMs": 15.993,
+          "fileFsyncMs": 7.865
+        },
+        {
+          "totalMs": 13,
+          "fileFsyncMs": 5.403
+        },
+        {
+          "totalMs": 19.346,
+          "fileFsyncMs": 12.966
+        }
+      ]
+    }
+  ],
+  "ledgerUnchanged": true,
+  "provenance": {
+    "capture": "Node subprocess in the running Railway staging container; durations copied from its JSON output.",
+    "networkMethod": "8 sequential unauthenticated GETs to https://api.sarvam.ai/text-to-speech, full 31-byte response consumed, 50 ms between calls; no subscription key, request text or POST.",
+    "connectionMethod": "Undici diagnostics channels beforeConnect/connected and request:headers, scoped to api.sarvam.ai; separate probe process from the application.",
+    "storageMethod": "12 temporary zero-filled atomic writes per size in /verification/s4: open wx, write, file fsync, close, rename, parent-directory fsync; unlink after measurement.",
+    "limitations": [
+      "405 control response may follow a different edge/backend path from authenticated synthesis; not TTS first-byte latency or a network RTT-only measurement.",
+      "Single process, single short window, no phone-path measurement and no production-inference comparison.",
+      "Storage timings exclude unlink and do not isolate all filesystem phases or measure the actual application transactions."
+    ],
+    "cleanup": "Temporary data files removed, budget ledger SHA-256 identical before/after, temporary remote SSH registration revoked and local identity deleted."
+  }
+}

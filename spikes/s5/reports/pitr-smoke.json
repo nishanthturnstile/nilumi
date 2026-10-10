@@ -1,0 +1,71 @@
+{
+  "at": "2026-10-08T14:50:38.289Z",
+  "syntheticOnly": true,
+  "passed": true,
+  "project": "9acde490-30a2-4452-889a-fa5c67a79271",
+  "environment": "ab1b8903-8615-484e-9410-04481200abbf",
+  "image": "ghcr.io/railwayapp-templates/postgres-ssl:18",
+  "localAuditedAmd64Digest": "sha256:57311072102a147982142c8398deab4c52727a2a474a7230810910a5710ca005",
+  "digestPinRejected": true,
+  "sourceService": "aae0a930-41dd-4116-ba05-7720900e108c",
+  "restoredService": "d3a0a7d6-6a5a-4513-bf7c-052004bebefd",
+  "targetTimestamp": "2026-10-08T14:48:35.116Z",
+  "original": "after-change",
+  "restored": "before-change",
+  "database": {
+    "version": 180006,
+    "datlocprovider": "i",
+    "datlocale": "en-US",
+    "in_recovery": false
+  },
+  "extensions": [
+    {
+      "extname": "pg_trgm",
+      "extversion": "1.6"
+    },
+    {
+      "extname": "vector",
+      "extversion": "0.8.7"
+    }
+  ],
+  "forceRls": {
+    "relrowsecurity": true,
+    "relforcerowsecurity": true
+  },
+  "restoredRestrictedAppPassed": true,
+  "originalServicePreservedDuringRestore": true,
+  "masterKeyOffsiteRecoveryAccepted": false,
+  "productionMigrationMaintenanceSeparation": "pending",
+  "cleanup": {
+    "verifiedAt": "2026-10-08T14:58:13Z",
+    "temporaryServicesRemoved": true,
+    "temporaryVolumesRemoved": true,
+    "temporaryArchiveBucketRemoved": true,
+    "pendingChanges": false,
+    "remainingService": "nilumi-s1",
+    "existingDeploymentUnchanged": "a0ca340e-528a-4881-b645-6e33b85ae7c2"
+  },
+  "cost": {
+    "capturedAt": "2026-10-08T14:51:59.049Z",
+    "reportedServices": [
+      {
+        "id": "aae0a930-41dd-4116-ba05-7720900e108c",
+        "name": "nilumi-s5-pitr",
+        "totalUsd": 0.0005995620347530865
+      },
+      {
+        "id": "d3a0a7d6-6a5a-4513-bf7c-052004bebefd",
+        "name": "nilumi-s5-pitr-restored",
+        "totalUsd": 0.00011565531758024692
+      }
+    ],
+    "reportedServiceTotalUsd": 0.0007152173523333334,
+    "reportingLag": true,
+    "reservedIncrementUsd": 0.1,
+    "cumulativeS5ReserveUsd": 0.2,
+    "railwayAllowanceUsd": 2,
+    "bucketCharges": "covered conservatively by reserve; not separately attributed",
+    "r2Calls": 0,
+    "aiCalls": 0
+  }
+}

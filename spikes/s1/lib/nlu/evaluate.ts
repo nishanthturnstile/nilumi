@@ -34,6 +34,18 @@ import { INTERPRETATION_VERSION, interpretResult } from "./interpret";
 import { buildPrompt, PROMPT_VERSION } from "./prompt";
 import { score } from "./scoring";
 
+export type EvaluationPurpose =
+  | "deadline_reliability"
+  | "synthetic_correctness";
+export function evaluationDeadlineMs(
+  mode: EvaluationMode,
+  purpose: EvaluationPurpose = "deadline_reliability",
+) {
+  if (purpose === "deadline_reliability") return TIMEOUT_MS;
+  if (purpose === "synthetic_correctness" && mode === "synthetic_hobby")
+    return 30_000;
+  throw new Error("invalid_evaluation_purpose");
+}
 export const EvaluationRequest = z
   .strictObject({
     caseIds: z.array(z.string()).min(1).max(60),
@@ -49,6 +61,9 @@ export const EvaluationRequest = z
       .min(1)
       .max(2),
     passes: z.number().int().min(1).max(3),
+    purpose: z
+      .enum(["deadline_reliability", "synthetic_correctness"])
+      .default("deadline_reliability"),
   })
   .refine(
     (x) =>
@@ -111,9 +126,13 @@ export async function evaluateCase(
   adapter: Adapter,
   signal: AbortSignal,
   mode: EvaluationMode = "zdr",
+  purpose: EvaluationPurpose = "deadline_reliability",
 ) {
+  const generationDeadlineMs = evaluationDeadlineMs(mode, purpose);
   const base = {
     ...evaluationDisclosure(mode),
+    evaluationPurpose: purpose,
+    generationDeadlineMs,
     caseId: fixture.id,
     modelId,
     pass,
@@ -143,7 +162,7 @@ export async function evaluateCase(
   }
   const started = performance.now();
   const deadline = new AbortController();
-  const timer = setTimeout(() => deadline.abort(), TIMEOUT_MS);
+  const timer = setTimeout(() => deadline.abort(), generationDeadlineMs);
   timer.unref();
   const timed = AbortSignal.any([signal, deadline.signal]);
   let transportTimings: TransportTimings | undefined;
@@ -172,7 +191,7 @@ export async function evaluateCase(
     // A blocked event loop can postpone timer delivery. Never accept a late
     // completion or trust an adapter's narrower latency measurement.
     const latencyMs = performance.now() - started;
-    if (latencyMs >= TIMEOUT_MS) deadline.abort();
+    if (latencyMs >= generationDeadlineMs) deadline.abort();
     if (timed.aborted) throw new Error("aborted");
     clearTimeout(timer);
     stopWaiting?.();
@@ -370,6 +389,15 @@ export async function handleEvaluation(
   const mode = evaluationMode(env.NLU_EVALUATION_MODE);
   if (!mode)
     return Response.json({ error: "invalid_evaluation_mode" }, { status: 503 });
+  let generationDeadlineMs: number;
+  try {
+    generationDeadlineMs = evaluationDeadlineMs(mode, input.purpose);
+  } catch {
+    return Response.json(
+      { error: "invalid_evaluation_purpose" },
+      { status: 400 },
+    );
+  }
   if (input.caseIds.some((id) => !loaded.fixtures.some((x) => x.id === id)))
     return Response.json({ error: "unknown_case" }, { status: 400 });
   const gateway = gatewayTransport(env.NLU_GATEWAY);
@@ -438,6 +466,8 @@ export async function handleEvaluation(
           runId,
           gateway,
           ...evaluationDisclosure(mode),
+          evaluationPurpose: input.purpose,
+          generationDeadlineMs,
           versions: {
             prompt: PROMPT_VERSION,
             registry: REGISTRY_VERSION,
@@ -464,6 +494,7 @@ export async function handleEvaluation(
             deps.adapter ?? adapter,
             controller.signal,
             mode,
+            input.purpose,
           );
           emit({ type: "result", runId, ...row });
           if (row.status === "routing_error") break;

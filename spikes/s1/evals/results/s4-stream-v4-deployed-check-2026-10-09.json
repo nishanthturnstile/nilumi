@@ -1,0 +1,137 @@
+{
+  "kind": "s4-v4-deployed-validation",
+  "version": "s4-bulbul-v3-stream-4",
+  "profile": "http-pcm-pool15s-ledger-20ms",
+  "deploymentId": "ac8e48b8-3c1b-48a4-b250-476fb020a45a",
+  "deploymentStatus": "SUCCESS",
+  "deploymentCreatedAt": "2026-10-09T09:19:39.352Z",
+  "checkedAt": "2026-10-09T09:24:41Z",
+  "localChecks": {
+    "lint": "pass",
+    "typecheck": "pass",
+    "tests": 291,
+    "build": "pass",
+    "clientAssetsExcludeServerMarkers": true
+  },
+  "localProviderControls": {
+    "realIdleGapsMs": [3000, 6000, 12000],
+    "socketReusedAcrossAllGaps": true,
+    "peerCloseClassified": true,
+    "twoConcurrentStreamsIsolated": true,
+    "abortAndPartialFailureDidNotResendPost": true,
+    "serverHintsRespected": true
+  },
+  "sourceArchiveFiles": 142,
+  "sourceSha256": {
+    "config/voice.ts": "542162182b3a81230b61d02c5e495cd503a8759832b76663a8abd975c338c086",
+    "package.json": "5b0d8fcbca96e1c76de9b53210b47e9061d9830a65cf9e0c16d3ff4011ba9838",
+    "pnpm-lock.yaml": "6fee411654a327f5b9c5d7954bf0a25e7ed9400886eb204bfdc981ca0a64c295",
+    "lib/voice/transport.ts": "650cb36afb3974c049926762aed369955138cd106a4e7a958e1bf18eb768df35",
+    "lib/voice/timing.ts": "7762c8a02eded50b7f88ff1bc573090e938ee578d63e7c20eedc2b87c04299ca",
+    "lib/voice/sarvam.ts": "a1160fcdcdd78f8aad1acbe6cd803247e46b4283ab983e1310a8f9f617250a7c",
+    "lib/voice/service.ts": "ac85eabb17aab3c03fa8a03b4b80686e6e11f8df19bfd24b666b909fa3a18c43",
+    "lib/voice/pause.ts": "e3e382b660d168852e0f0ae163f6f7fe2469ef25a5d32abf15e877f9738d7546",
+    "lib/verification/ledger.ts": "52cc243abe44faaa996946508bc8ab783404b69f987dc234d0c666c7fb97b422",
+    "app/voice/page.tsx": "b3daf802770e6a8a96eb32dca9cee4e9d0e683d9a180442f0c09448ac22468dc",
+    "tests/verification-pool.test.mjs": "b7a37927942187a51444b87c8919807726baf00f52f6097a3cdfbb73bfedea5b",
+    "tests/verification-streaming.test.mjs": "accd1534ee3a306fffc825bedcaf59c2912dcc2f4a64228d867658810e257dba"
+  },
+  "admission": {
+    "budgetAfterInr": 16.0416,
+    "budgetBeforeInr": 16.0416,
+    "checkedAt": "2026-10-09T09:22:35.942Z",
+    "deleteStatus": 200,
+    "headStatus": 405,
+    "metadataBeforeSpeechStatus": 409,
+    "paidSpeechRequests": 0,
+    "preparedId": "76ccb37d-502a-4e23-9b48-35e9472bc0f6",
+    "preparedStatus": 200,
+    "profile": "http-pcm-pool15s-ledger-20ms",
+    "revokedStatus": 404,
+    "selection": "ritu",
+    "traceBeforeSpeechStatus": 409,
+    "uiTwoSentenceCheck": true,
+    "uiVersion": true,
+    "version": "s4-bulbul-v3-stream-4"
+  },
+  "access": {
+    "anonymousBudgetStatus": 401,
+    "anonymousDiagnosticStatus": 401,
+    "anonymousHeadStatus": 405,
+    "buttons": [
+      {
+        "disabled": false,
+        "text": "Listen to six samples"
+      },
+      {
+        "disabled": false,
+        "text": "This is my preferred voice"
+      },
+      {
+        "disabled": false,
+        "text": "Play free audio check"
+      },
+      {
+        "disabled": false,
+        "text": "Check 2 sentences with a pause"
+      },
+      {
+        "disabled": false,
+        "text": "Run 50 uncached trials"
+      },
+      {
+        "disabled": true,
+        "text": "Download results"
+      }
+    ],
+    "extraFieldStatus": 400,
+    "voice": true
+  },
+  "freeHttp": {
+    "bytes": 61740,
+    "checkedAt": "2026-10-09T09:22:37.321Z",
+    "chunks": 7,
+    "contentEncoding": null,
+    "eofMs": 660.7000000029802,
+    "firstChunkMs": 163.29999999701977,
+    "format": "pcm16le",
+    "paidSpeechRequests": 0,
+    "rate": "22050",
+    "status": 200,
+    "version": "s4-bulbul-v3-stream-4"
+  },
+  "freeUi": {
+    "checkedAt": "2026-10-09T09:24:39.960Z",
+    "desktopPhoneAcceptance": false,
+    "freeAudioUiPassed": true,
+    "paidSpeechRequests": 0,
+    "profile": "http-pcm-pool15s-ledger-20ms",
+    "reservedInr": 16.0416,
+    "smokeButton": true,
+    "status": [
+      "Test version: s4-bulbul-v3-stream-4. Previous phone results are kept separately.",
+      "Audio check passed. Estimated onset: 592 ms. No speech credits used."
+    ],
+    "version": "s4-bulbul-v3-stream-4",
+    "voice": "ritu"
+  },
+  "paidProviderCalls": 0,
+  "physicalPhoneAcceptance": false,
+  "actualSarvamIdlePolicyVerified": false,
+  "budget": {
+    "beforeReservedInr": 16.0416,
+    "afterReservedInr": 16.0416,
+    "capInr": 50,
+    "remainingInr": 33.9584,
+    "fourOwnerChecksMaximumInr": 0.936,
+    "full200TrialMaximumInr": 32.832,
+    "remainingAfterBothInr": 0.1904
+  },
+  "existingAudioControl": "s4-v3-date-prefix-control-2026-10-09.json",
+  "limitations": [
+    "Free desktop tone and loopback provider controls do not establish phone p95 or actual Sarvam peer policy.",
+    "Audio frames and the onset estimator are unchanged.",
+    "Ledger substage instrumentation identifies the long stage; it does not claim to remove its delay.",
+    "No paid provider call was made during this implementation; actual provider traces come from the owner phone retest."
+  ]
+}

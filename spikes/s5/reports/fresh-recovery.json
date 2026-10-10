@@ -1,0 +1,49 @@
+{
+  "at": "2026-10-08T14:41:30.504Z",
+  "syntheticOnly": true,
+  "environment": "two_local_docker_clusters",
+  "pitrLiveAccepted": false,
+  "masterKeyRecoveryAccepted": false,
+  "passed": true,
+  "distinctClusters": true,
+  "rolesRecreated": true,
+  "roles": [
+    {
+      "rolname": "s5_app",
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false
+    },
+    {
+      "rolname": "s5_worker",
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolcreatedb": false,
+      "rolcreaterole": false
+    }
+  ],
+  "database": {
+    "version": 180006,
+    "datlocprovider": "i",
+    "datlocale": "en-US"
+  },
+  "extensions": [
+    {
+      "extname": "pg_trgm",
+      "extversion": "1.6"
+    },
+    {
+      "extname": "vector",
+      "extversion": "0.8.7"
+    }
+  ],
+  "checks": {
+    "records": 4,
+    "force_rls": true,
+    "forgotten": 0
+  },
+  "visibilityCanaries": true,
+  "workerQueuePolicyRestored": true,
+  "candidateImage": "ghcr.io/railwayapp-templates/postgres-ssl:18@sha256:57311072102a147982142c8398deab4c52727a2a474a7230810910a5710ca005"
+}

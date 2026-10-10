@@ -1,0 +1,226 @@
+{
+  "version": "vgw-closure-controls-v1",
+  "status": "pending-policy-and-live-quota",
+  "aggregateCapUsd": 1.05,
+  "aggregateCountedUsd": 0.002345,
+  "priorCountedUsd": 0.002126,
+  "negativeProfile": "schematron",
+  "negativeModel": "inference-net/schematron-v2-small",
+  "accountBefore": {
+    "autoReloadCount": 0,
+    "budgets": [
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 10,
+        "refresh": "monthly",
+        "scopeId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+        "scopeType": "team",
+        "spend": 0.00000796
+      },
+      {
+        "active": true,
+        "alerts": [],
+        "limit": 5,
+        "refresh": "none",
+        "scopeId": "1AbQFOoLvbKMyeFZT4TQkcYT1c7oUPbLAqVoEGvKmfzUk1cV",
+        "scopeType": "api-key",
+        "spend": 0.11254246
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 1,
+        "refresh": "none",
+        "scopeId": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+        "scopeType": "api-key",
+        "spend": 0
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 1.72269354,
+        "refresh": "none",
+        "scopeId": "gx84fMm5A5sYVzb6bTDSl5rKNd1dDwTui5FIjrZA5JDBp2J1",
+        "scopeType": "api-key",
+        "spend": 0
+      },
+      {
+        "active": true,
+        "alerts": [50, 75, 100],
+        "limit": 8,
+        "refresh": "monthly",
+        "scopeId": "mN64ZFPdtwHtkuZBRCtuOC50ZRqysDEBGAA6qAhYO4KbgErF",
+        "scopeType": "api-key",
+        "spend": 0
+      }
+    ],
+    "byokCount": 0,
+    "checkedAt": "2026-10-10T06:18:19.090Z",
+    "credit": {
+      "balance": "24.88744958",
+      "hasEverPaid": true
+    },
+    "key": {
+      "id": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+      "metadata": {
+        "spendAttribution": "team"
+      },
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh"
+    },
+    "statuses": [200, 200, 200, 200, 200]
+  },
+  "keyCreation": {
+    "status": 200,
+    "id": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "createdAt": 1791613076049,
+    "capturePrivateKeyRemoved": true
+  },
+  "prior": {
+    "hash": "6c86b83d3fdae85558fbef50e07b3b312df60ddda8c1c8157b01ad8cecda8c2c",
+    "counted": 2126
+  },
+  "probes": [
+    {
+      "id": "chat:c1a14b85-0485-45dd-a2ca-bc421a6e0f8f",
+      "probe": "chat",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/gpt-6-luna",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 0.0000038
+      },
+      "latencyMs": 3559.869847,
+      "countedUsd": 0.000004,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+      "at": "2026-10-10T06:24:31.684Z",
+      "shutdownRequired": true,
+      "aggregateCountedUsd": 0.00213,
+      "aggregateCapUsd": 1.05,
+      "priorHash": "6c86b83d3fdae85558fbef50e07b3b312df60ddda8c1c8157b01ad8cecda8c2c"
+    },
+    {
+      "id": "embedding:b3eeb79c-765b-41b6-8b38-850b491ca15d",
+      "probe": "embedding",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "passed",
+      "receipt": {
+        "model": "openai/text-embedding-3-small",
+        "provider": "openai",
+        "byok": false,
+        "noTraining": true,
+        "attempts": 1,
+        "costUsd": 1.8e-7
+      },
+      "dimensions": 768,
+      "latencyMs": 548.7123829999999,
+      "countedUsd": 0.000005,
+      "providerForwardingVerified": false,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+      "at": "2026-10-10T06:24:40.840Z",
+      "shutdownRequired": true,
+      "aggregateCountedUsd": 0.002131,
+      "aggregateCapUsd": 1.05,
+      "priorHash": "6c86b83d3fdae85558fbef50e07b3b312df60ddda8c1c8157b01ad8cecda8c2c"
+    },
+    {
+      "id": "negative:e34bd1f9-e75d-42b8-a72c-16ef460daf31",
+      "probe": "negative",
+      "fixtureHash": "d2b958062618c88ce7628f253cf405eed375c84b76b5d1f9ee3542a9d21310d5",
+      "status": "failed",
+      "reason": "gateway_request_failed",
+      "failure": {
+        "reason": "gateway_request_failed",
+        "httpStatus": 500
+      },
+      "countedUsd": 0.000219,
+      "version": "vgw-controls-v3",
+      "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+      "keyId": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+      "at": "2026-10-10T06:24:48.458Z",
+      "shutdownRequired": true,
+      "aggregateCountedUsd": 0.002345,
+      "aggregateCapUsd": 1.05,
+      "priorHash": "6c86b83d3fdae85558fbef50e07b3b312df60ddda8c1c8157b01ad8cecda8c2c",
+      "transportFailure": {
+        "reason": "gateway_request_failed",
+        "httpStatus": 500
+      }
+    }
+  ],
+  "gatewayLogs": {
+    "checkedAt": "2026-10-10T06:29:24.167Z",
+    "logs": [
+      {
+        "cost": 0,
+        "gatewayRequestId": "gw_e424525f-8f56-496d-859d-d0b1cc968565",
+        "httpStatus": 500,
+        "isByok": "not-byok",
+        "model": "inference-net/schematron-v2-small",
+        "provider": "inference-net",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:24:48"
+      },
+      {
+        "cost": 1.8e-7,
+        "gatewayRequestId": "gw_3e12c4d4-c436-4c8b-b315-2bb181dbf78f",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "model": "openai/text-embedding-3-small",
+        "provider": "openai",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:24:39"
+      },
+      {
+        "cost": 0.0000038,
+        "gatewayRequestId": "gw_2b09443d-0f09-44eb-9dd5-2a275c962b57",
+        "httpStatus": 200,
+        "isByok": "not-byok",
+        "model": "openai/gpt-6-luna",
+        "provider": "openai",
+        "spendAttribution": "team",
+        "timestamp": "2026-10-10 06:24:31"
+      }
+    ],
+    "status": 200
+  },
+  "meteredSpendUsd": 0.00000398,
+  "totalMeteredSpendUsd": 0.00001194,
+  "deletion": {
+    "deleteStatus": 204,
+    "readbackStatus": 404,
+    "at": "2026-10-10T06:26:49.283Z"
+  },
+  "shutdown": {
+    "version": "vgw-controls-v3",
+    "keyId": "7w5FQHUh3J6z0e4sTyvTMqhOFEpTgdZFE85v2lIyyviDSYzX",
+    "teamId": "team_TC0EXVSeOxkRx1ZQdndcizlh",
+    "at": "2026-10-10T06:26:49.502Z",
+    "httpStatus": 401,
+    "previouslySucceeded": true,
+    "status": "revocation_verified",
+    "countedUsd": 0.000219,
+    "temporaryAccessRemoval": "operator-evidence-required"
+  },
+  "removal": {
+    "at": "2026-10-10T06:27:10.558Z",
+    "canaryEnvironmentRemoved": true,
+    "capturePrivateKeyRemoved": true
+  },
+  "quota": {
+    "dispatched": false,
+    "reason": "negative_policy_failed",
+    "implementation": "complete-local-tests-passed"
+  },
+  "familyCallsEnabled": false
+}

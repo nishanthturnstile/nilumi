@@ -2,9 +2,17 @@
 
 This catalogue owns accepted choices and their rationale. Product owns requirements; Architecture owns implementation design, schemas, contracts and operational procedures; Tech Stack owns technology selections, dependency versions and provider status; Research owns dated evidence, comparisons, sources and review history; Roadmap owns sequencing and pending validations.
 
-All 40 records describe the accepted baseline and scoped exceptions. ADR-001–026 retain their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 adds the Vercel AI Gateway decision from S0 and partly supersedes ADR-022. **Accepted does not mean implemented, approved or benchmarked.** Provider eligibility, model/voice bake-offs, phone/platform proofs and future Vault choices remain in the [pending-validation register](../05-implementation-roadmap.md#5-pending-validations-and-decisions).
+All 52 records describe the accepted baseline and scoped exceptions. ADR-050 records the initial US$1 S-VGW allocation; ADR-051 records the owner's US$1.05 aggregate amendment for a bounded live quota proof; ADR-052 records the validated restricted-pilot acceptance and remaining activation requirements. ADR-001–026 keep their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 added the Vercel AI Gateway decision from S0 and partly superseded ADR-022. ADR-041–049 record the October 8 reference-architecture review:
+- execution paths, policy and approvals, durable runs and the UI catalog
+- read-only Google Calendar
+- staying on Vercel AI Gateway with purchased credits, with ZDR moved to a production privacy gate; this partially supersedes ADR-038
+- the pilot cost allowance
+- multi-household-ready contracts
+- the WhatsApp rejection
 
-Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHub Actions backups and AI Gateway. Revision 2 restored/adopted Railway, graphile-worker, SSE, worker backups and direct in-process routing. The [dated review history](../04-research.md) and [superseded platform analysis](../04-research.md#62-revision-1-analysis-vercel-hobby--neon-kept-for-reference) remain explicit. They are not allocated retrospective IDs. [ADR-020](adr-020.md) refines [ADR-001](adr-001.md) and [ADR-015](adr-015.md); these records remain accepted together, as do [ADR-007](adr-007.md) with [ADR-031](adr-031.md), and [ADR-014](adr-014.md) with [ADR-032](adr-032.md).
+**Accepted does not mean implemented, approved or benchmarked.** Provider eligibility, model/voice bake-offs, phone/platform proofs, the October 8 spikes (S-VGW, S-GCAL, S-AGENT) and future Vault choices remain in the [pending-validation register](../core/05-implementation-roadmap.md#5-pending-validations-and-decisions).
+
+Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHub Actions backups and AI Gateway. Revision 2 restored/adopted Railway, graphile-worker, SSE, worker backups and direct in-process routing. The [dated review history](../research/04-research.md) and [superseded platform analysis](../research/04-research.md#62-revision-1-analysis-vercel-hobby--neon-kept-for-reference) remain explicit. They are not allocated retrospective IDs. [ADR-020](adr-020.md) refines [ADR-001](adr-001.md) and [ADR-015](adr-015.md); these records remain accepted together, as do [ADR-007](adr-007.md) with [ADR-031](adr-031.md), and [ADR-014](adr-014.md) with [ADR-032](adr-032.md).
 
 ## Catalogue
 
@@ -12,7 +20,7 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 |---|---|
 | [ADR-001](adr-001.md) | Channel-agnostic brain; Next.js PWA first; Home Assistant later |
 | [ADR-002](adr-002.md) | TypeScript end-to-end (pnpm monorepo, shared Zod contracts) |
-| [ADR-003](adr-003.md) | "LLM as parser, code as executor"; no agent framework |
+| [ADR-003](adr-003.md) | "LLM as parser, code as executor"; no agent framework — partially superseded by [ADR-041](adr-041.md) (fixed pipeline no longer the only path) |
 | [ADR-004](adr-004.md) | PostgreSQL is the only stateful service |
 | [ADR-005](adr-005.md) | Custom memory layer instead of a memory framework |
 | [ADR-006](adr-006.md) | Predicate registry with typed values and cardinality |
@@ -30,8 +38,8 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-018](adr-018.md) | Turn execution ledger with per-command receipts |
 | [ADR-019](adr-019.md) | Deterministic answers first; sentence-gated LLM synthesis |
 | [ADR-020](adr-020.md) | Next.js (latest, Turbopack) PWA with Hono mounted in route handlers and TanStack Query |
-| [ADR-021](adr-021.md) | Vercel: free open-source libraries only (Next.js, Turbopack, AI SDK); no metered Vercel platform services |
-| [ADR-022](adr-022.md) | LLM routing through the in-process AI SDK provider registry with model-role aliases; no hosted gateway |
+| [ADR-021](adr-021.md) | Vercel: free open-source libraries only (Next.js, Turbopack, AI SDK); no metered Vercel platform services — amended by [ADR-046](adr-046.md) (AI Gateway credits are the one exception) |
+| [ADR-022](adr-022.md) | LLM routing through the in-process AI SDK provider registry with model-role aliases; no hosted gateway — gateway part superseded by [ADR-038](adr-038.md) |
 | [ADR-023](adr-023.md) | Email-code sign-in with optional WebAuthn step-up |
 | [ADR-024](adr-024.md) | Explicit, owner-only memory sharing (`shared` visibility) |
 | [ADR-025](adr-025.md) | No classifier model in the MVP; instrumented experiments and revisit triggers |
@@ -45,11 +53,24 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-033](adr-033.md) | Realtime invalidation and offline client-data boundaries |
 | [ADR-034](adr-034.md) | Defer household-help access to H6 |
 | [ADR-035](adr-035.md) | Web Push, notification previews and delivery-stage measurement |
-| [ADR-036](adr-036.md) | Operating-cost target and AI budget guardrails |
+| [ADR-036](adr-036.md) | Operating-cost target and AI budget guardrails — amended by [ADR-047](adr-047.md) |
 | [ADR-037](adr-037.md) | Confirmed health facts and information-only responses |
-| [ADR-038](adr-038.md) | LLM/embeddings via Vercel AI Gateway with ZDR + no-training enforcement; supersedes ADR-022's no-hosted-gateway part |
+| [ADR-038](adr-038.md) | LLM/embeddings via Vercel AI Gateway with no-training enforcement; supersedes ADR-022's no-hosted-gateway part — partially superseded by [ADR-046](adr-046.md) (ZDR and allowlist move to the production gate) |
 | [ADR-039](adr-039.md) | S1 outcome: PWA kept on both phones; Capacitor fallback not triggered |
-| [ADR-040](adr-040.md) | S3 synthetic-only evaluation on Hobby under a US$0.50 cap; family-data ZDR gate retained |
+| [ADR-040](adr-040.md) | S3 synthetic-only evaluation on Hobby; Oct 8 follow-ups add an explicit Cloudflare adapter, the V10, paid, V11 and deadline rounds, and Luna low synthetic correctness acceptance — amended by [ADR-046](adr-046.md) (purchased credits) and an Oct 8 owner amendment (US$2.00 owner cap with US$1.722693540 remaining; the runner's US$0.50 hard cap has US$0.222693540 remaining until migration) |
+| [ADR-041](adr-041.md) | Two execution paths: constrained commands (≤ 2 LLM calls) and bounded agent runs; partially supersedes ADR-003 |
+| [ADR-042](adr-042.md) | Tool broker, fail-closed policy and immutable, single-use approvals |
+| [ADR-043](adr-043.md) | Durable runs on graphile-worker with leases, compare-and-swap fencing and `outcome_unknown` |
+| [ADR-044](adr-044.md) | Artifacts and the trusted UI catalog `nilumi-ui/1`; no raw HTML |
+| [ADR-045](adr-045.md) | Read-only Google Calendar per adult for the Today brief |
+| [ADR-046](adr-046.md) | Stay on Vercel AI Gateway with purchased credits; no-training, `only` routing and household acknowledgement for the pilot; ZDR at the production privacy gate; amends ADR-021, ADR-038 and ADR-040 |
+| [ADR-047](adr-047.md) | Pilot cost allowance up to ₹5,000/month; ₹3,000 target and ₹800 AI default unchanged; amends ADR-036 |
+| [ADR-048](adr-048.md) | Multi-household-ready contracts while staying family-first; legal gate before any external household |
+| [ADR-049](adr-049.md) | No WhatsApp channel (Meta AI-provider ban); work alongside WhatsApp |
+| [ADR-050](adr-050.md) | US$1 isolated S-VGW canary allocation; exact live quota proof remains pending after backend minimum-budget rejection |
+| [ADR-051](adr-051.md) | US$1.05 total across S-VGW rounds, preserving prior charges; bounded synthetic live quota exhaustion authorized |
+
+| [ADR-052](adr-052.md) | S-VGW restricted founding-pilot acceptance: independent live quota, documentary storage evidence and a primary-only negative-test exception with durable controls |
 
 ## D decision map
 
