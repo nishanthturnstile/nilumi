@@ -70,7 +70,7 @@
     </label>`;
 
   const field = ({ label, placeholder = "", value = "", help = "", error = "", ico = "" }) =>
-    `<div class="grid gap-1.5">
+    `<div class="grid grid-cols-1 gap-1.5">
       <label class="text-subhead text-foreground">${label}</label>
       <div data-focus-ring-within class="flex min-h-(--control-height-lg) items-center gap-3 rounded-full border-[1.5px] ${error ? "border-danger-ink" : "border-input"} bg-background px-5">
         ${ico ? `<span class="text-muted-foreground">${icon(ico, "regular", "size-5")}</span>` : ""}

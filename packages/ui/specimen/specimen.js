@@ -68,13 +68,13 @@
     </div>`;
 
   const components = () => `
-    <div class="grid gap-6 expanded:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 expanded:grid-cols-2">
       <div class="rounded-xl bg-card p-5 shadow-card">${label("Buttons · primary, secondary, tonal, ghost, destructive, voice, disabled, loading")}
         <div class="flex flex-wrap items-center gap-2">${K.button("primary", "Approve")}${K.button("secondary", "Edit")}${K.button("tonal", "Add item", "", "plus")}${K.button("ghost", "Not now")}${K.button("destructive", "Forget", "", "trash")}${K.voiceButton()}
           ${K.button("primary", "Disabled", "disabled")}<button type="button" class="${K.BTN.primary}" aria-busy="true"><span class="size-4 rounded-full border-2 border-current border-t-transparent animate-spin"></span>Saving</button></div>
       </div>
       <div class="rounded-xl bg-card p-5 shadow-card">${label("Inputs and forms")}
-        <div class="grid gap-4">${K.field({ label: "Name", placeholder: "e.g. Plumber Ravi", help: "Shown on cards and in answers." })}${K.field({ label: "Phone", value: "98xxx", error: "Enter all 10 digits, like 98765 43210." })}</div>
+        <div class="grid grid-cols-1 gap-4">${K.field({ label: "Name", placeholder: "e.g. Plumber Ravi", help: "Shown on cards and in answers." })}${K.field({ label: "Phone", value: "98xxx", error: "Enter all 10 digits, like 98765 43210." })}</div>
       </div>
       <div class="space-y-3">${label("Cards · item, result, approval")}
         ${K.itemCard({ room: "memory", ico: "shield-check", title: "Car insurance renews on Sunday", meta: K.evidence("From memory · 2 Sep") + K.badge("household") })}
