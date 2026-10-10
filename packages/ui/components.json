@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "base": "base",
+  "style": "maia",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "iconLibrary": "phosphor",
+  "aliases": {
+    "components": "@nilumi/ui/components",
+    "utils": "@nilumi/ui/lib/utils",
+    "hooks": "@nilumi/ui/hooks",
+    "lib": "@nilumi/ui/lib",
+    "ui": "@nilumi/ui/components/ui"
+  }
+}

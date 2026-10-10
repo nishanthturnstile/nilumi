@@ -73,6 +73,7 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-053](adr-053.md) | Founding household and first admin created by an owner-only script; no in-app household setup; invitation emails without sign-in links |
 | [ADR-054](adr-054.md) | Withdrawing the household acknowledgement stops every AI provider call, including speech-to-text and text-to-speech; amends ADR-046 |
 | [ADR-055](adr-055.md) | App on `app.nilumi.in`, staging on `staging-app.nilumi.in`, marketing site on `nilumi.in`; amends ADR-016 |
+| [ADR-056](adr-056.md) | Design system "Pastel Rooms" (room-coloured tabs, navy ink, coral voice, shape-coded visibility) on shadcn/ui with Base UI primitives, Phosphor icons, Nunito + Noto Sans Tamil and an in-app text scale; refines ADR-020 |
 
 ## D decision map
 

@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# @parcel/watcher's native build is only needed for `tailwindcss --watch`; its prebuilt binary is enough.
+allowBuilds:
+  "@parcel/watcher": false

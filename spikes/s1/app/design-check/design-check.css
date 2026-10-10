@@ -1,0 +1,11 @@
+/* Device check for the Nilumi design system (docs/design/31-device-qa.md).
+   Imports the real tokens from packages/ui; Tailwind's PostCSS plugin inlines the cross-folder import. */
+@import "../../../../packages/ui/src/styles/globals.css";
+
+/* The spike's root stylesheet styles <body> unlayered (Arial on white), which beats the design system's layered
+   base. Restore the design-system body for this route only. */
+body {
+  background-color: var(--room-floor);
+  color: var(--foreground);
+  font-family: var(--font-ui);
+}

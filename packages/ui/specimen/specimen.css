@@ -1,0 +1,58 @@
+/* Specimen entry: the real design system + specimen-only chrome (page layout, device frames).
+   Everything inside a device frame uses only design-system utilities. */
+@import "../src/styles/globals.css";
+
+@source "./index.html";
+@source "./phone.html";
+@source "./specimen.js";
+@source "./phone.js";
+@source "./kit.js";
+
+@layer components {
+  /* Specimen chrome — not part of the design system */
+  .sp-page {
+    max-width: 82rem;
+    margin-inline: auto;
+    padding: 2rem 1.25rem 6rem;
+  }
+  .sp-section {
+    padding-block: 3rem;
+    border-top: 1px solid var(--border);
+  }
+  .sp-device {
+    width: 390px;
+    height: 820px;
+    border-radius: 3.25rem;
+    padding: 0.625rem;
+    background: oklch(0.18 0.01 300);
+    box-shadow: 0 40px 70px -30px oklch(0 0 0 / 0.45);
+    flex: none;
+  }
+  .sp-device iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 2.65rem;
+    display: block;
+    background: transparent;
+  }
+  .sp-device-sm {
+    width: 300px;
+    height: 640px;
+    border-radius: 2.75rem;
+    padding: 0.5rem;
+  }
+  .sp-device-sm iframe {
+    width: 375px;
+    height: 780px;
+    transform: scale(0.7787);
+    transform-origin: 0 0;
+    border-radius: 2.9rem;
+  }
+  .sp-device-sm .sp-clip {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 2.25rem;
+  }
+}

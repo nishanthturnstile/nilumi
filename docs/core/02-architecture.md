@@ -140,6 +140,7 @@ family-assistant/
 │   └── worker/                      # graphile-worker entrypoint, tasks and crontab
 ├── packages/
 │   ├── contracts/                   # Zod schemas: API DTOs, NLU command union, cards, events, nilumi-ui/1 catalog
+│   ├── ui/                          # Design system "Pastel Rooms": globals.css tokens, shadcn/ui (Base UI) primitives, Nilumi composites (ADR-056)
 │   ├── db/                          # Drizzle schema, migrations, RLS policies (SQL), seed
 │   ├── ai/                          # provider registry, role aliases, prompts, adapters
 │   └── domain/                      # pure logic: dates, detectors, normalization, scoring

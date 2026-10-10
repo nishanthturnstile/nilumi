@@ -12,6 +12,7 @@ Nilumi is a private household assistant for remembering, reminding, and followin
 | [Research overview](research/04-research.md) | Dated comparisons, sources, findings, and historical review context |
 | [Implementation roadmap](core/05-implementation-roadmap.md) | Delivery order, phases, prerequisites, outcomes, and pending validations |
 | [Application flows](core/28-application-flows.md) | Screens, sign-in, user workflows, and positive, negative, edge and error scenarios per flow |
+| [Design system](design/29-design-system.md) | Visual language ("Pastel Rooms"), tokens, typography, motion, accessibility, native-feel rules and component strategy |
 | [ADR catalogue](adr/README.md) | Accepted decisions, rationale, consequences, and decision history |
 
 Read the Product Plan for what Nilumi should do, then Architecture and Tech Stack for how it is designed. Use the Roadmap for delivery sequence. ADRs record accepted decisions; research and validation records preserve supporting evidence and outcomes.
@@ -21,6 +22,15 @@ Read the Product Plan for what Nilumi should do, then Architecture and Tech Stac
 - [Research overview](research/04-research.md) — product and platform comparisons, dated findings, sources, and decision links.
 - [Product analysis summary](research/product-analysis-summary.md) — open-source assistant comparisons that informed the October review.
 - [S4 Sarvam latency research](research/19-s4-sarvam-latency-research.md) — provider and playback findings with bounded experiment recommendations.
+- [UI platform research](research/30-ui-platform-research.md) — October 2026 shadcn/ui, Base UI, PWA platform, typography (Latin + Tamil), icon and design-trend findings behind the design system.
+
+## Design
+
+- [Design system](design/29-design-system.md) — "Pastel Rooms" specification; tokens live in [`packages/ui/src/styles/globals.css`](../packages/ui/src/styles/globals.css).
+- [`DESIGN.md`](../DESIGN.md) and [`PRODUCT.md`](../PRODUCT.md) (repo root) — the durable visual summary (DESIGN.md format, with machine-readable tokens) and the product and brand record that design and AI tools read first.
+- [Device QA matrix](design/31-device-qa.md) — real-phone checks for the installed PWA shell, run from the S1 spike's `/design-check` route.
+- [Specimen](../packages/ui/specimen/index.html) — the static catalogue rendered from the real tokens (build with `pnpm ui:specimen`).
+- [Direction explorations](design/explorations/2026-10-10-directions/index.html) — the six rendered directions compared before choosing Pastel Rooms.
 
 ## Plans
 
@@ -62,4 +72,4 @@ Read the Product Plan for what Nilumi should do, then Architecture and Tech Stac
 
 ## Document ownership
 
-Product Plan owns requirements and acceptance criteria. Application Flows owns screen purposes, workflow steps and the scenario catalogue. Architecture owns technical design and contracts. Tech Stack owns technology and provider selections. The Roadmap owns delivery sequence and outcomes. ADRs own accepted decisions. Research owns dated comparison evidence. Validation records own experiment procedures, results, and acceptance status.
+Product Plan owns requirements and acceptance criteria. Application Flows owns screen purposes, workflow steps and the scenario catalogue. The Design System owns the visual language, tokens and component rules. Architecture owns technical design and contracts. Tech Stack owns technology and provider selections. The Roadmap owns delivery sequence and outcomes. ADRs own accepted decisions. Research owns dated comparison evidence. Validation records own experiment procedures, results, and acceptance status.

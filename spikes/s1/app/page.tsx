@@ -29,6 +29,13 @@ export default function Home() {
           Voice selection
         </a>
         <SessionStatus />
+        {/* A new document, so the route's own head (no status-bar meta, theme-color per room) is what iOS reads. */}
+        <a
+          className="flex min-h-11 items-center rounded border px-4"
+          href="/design-check"
+        >
+          Design check
+        </a>
         <Link
           className="flex min-h-11 items-center px-4 underline"
           href="/settings/privacy"

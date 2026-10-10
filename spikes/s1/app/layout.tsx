@@ -27,6 +27,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      // /design-check sets theme, room and font classes on <html> before hydration
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <SwRegister />
