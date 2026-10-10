@@ -633,3 +633,34 @@ updated" values.
 **Platforms:** developers.google.com/identity/protocols/oauth2/production-readiness/overview · developers.google.com/workspace/calendar/api/auth · developers.google.com/workspace/calendar/api/v3/reference/events/list · developers.google.com/workspace/calendar/api/guides/push · developers.google.com/workspace/calendar/api/guides/quota · better-auth.com/docs/concepts/oauth · ai-sdk.dev/docs/agents/loop-control · ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling · ai-sdk.dev/docs/ai-sdk-core/mcp-tools · modelcontextprotocol.io/specification/versioning · modelcontextprotocol.io/specification/2026-07-28/server/tools · a2ui.org · docs.ag-ui.com/introduction · developers.cloudflare.com/ai-gateway (unified-billing, logging, spend-limits, caching, pricing) · vercel.com/docs/ai-gateway (pricing, zdr, disallow-prompt-training, provider-filtering-and-ordering, budgets) · vercel.com/docs/limits/fair-use-guidelines · docs.dbos.dev · worker.graphile.org
 
 **Consumer and policy (secondary unless noted):** aboutamazon.in (Alexa+ India) · heynori.com/membership · fastcompany.com (Ohai) · startups.rip/company/milo · techcrunch.com (WhatsApp AI-provider terms) · dpdprules.org/act/3 · ftc.gov (Alexa children's data, primary) · one.google.com/intl/en_in/about
+
+## October 10 application-flow research
+
+Supports the navigation and Today-placeholder choices in [28 Application Flows](../core/28-application-flows.md#41-navigation) and the domain split in [ADR-055](../adr/adr-055.md). Checked 10 Oct 2026. Findings are design guidance, not usability evidence from the household; the choices are revisited after real use.
+
+### Navigation
+
+- **Apple Human Interface Guidelines, tab bars:** use a tab bar for top-level sections people switch between often; use as few tabs as needed; more tabs than fit become a "More" tab that hides content; a tab bar is for navigation, not actions; don't hide or disable tabs.
+- **Material Design 3, navigation bar:** three to five top-level destinations, always with labels; fewer than three suits in-page tabs instead, more than five suits a rail or menu.
+- **Nielsen Norman Group, menu design and hidden navigation:** options hidden behind a menu are discovered and used less than visible ones; keep core destinations visible and put rarely used ones in a menu.
+- **Consequence for Nilumi:** five visible destinations (Today, Lists, Talk, Tasks, Memory), Talk in the thumb-friendly centre as a destination rather than a bare action, Inbox as a header bell with an unread count, and Settings/Admin in a profile menu. Claims about how specific assistant apps arrange their navigation came from secondary AI-summarized sources and were not used as evidence.
+
+### First-use and placeholder screens
+
+- **Nielsen Norman Group, empty states:** say why a space is empty and that this is expected, explain what will appear there, and give one direct path to the most important next step; don't leave it blank or say only "no data".
+- **Consequence for Nilumi:** the Phase 1 Today placeholder states what Today will show, offers "Say or type something", lists only incomplete getting-started items, and shows real counts as features ship, never sample brief items.
+
+### Domains and origin isolation
+
+- **Google OAuth consent screen:** apps requesting sensitive scopes need an app homepage and a privacy policy on an authorized domain the developer controls, also when published but unverified. A static marketing site on `nilumi.in` can host both, with the app's redirect URIs on `app.nilumi.in`.
+- **Cookies:** a cookie without a `Domain` attribute is host-only, so a session cookie set by `app.nilumi.in` is not sent to `nilumi.in` or `staging-app.nilumi.in`.
+- **WebAuthn relying-party ID:** a credential created with RP ID `app.nilumi.in` is usable only on that host, while RP ID `nilumi.in` would extend it to every subdomain; the narrower ID isolates the app.
+
+### October 10 sources
+
+- Apple Human Interface Guidelines, Tab bars: https://developer.apple.com/design/human-interface-guidelines/tab-bars
+- Material Design 3, Navigation bar guidelines: https://m3.material.io/components/navigation-bar/guidelines
+- Nielsen Norman Group, Menu-Design Checklist: https://www.nngroup.com/articles/menu-design/
+- Nielsen Norman Group, Designing Empty States in Complex Applications: https://www.nngroup.com/articles/empty-state-interface-design/
+- Google Cloud Console Help, App homepage requirements: https://support.google.com/cloud/answer/13807376
+- MDN, PublicKeyCredentialCreationOptions `rp`: https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialCreationOptions

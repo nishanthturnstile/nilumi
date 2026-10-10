@@ -11,6 +11,7 @@ Nilumi is a private household assistant for remembering, reminding, and followin
 | [Tech stack](core/03-tech-stack.md) | Technology choices, provider status, versions, and alternatives |
 | [Research overview](research/04-research.md) | Dated comparisons, sources, findings, and historical review context |
 | [Implementation roadmap](core/05-implementation-roadmap.md) | Delivery order, phases, prerequisites, outcomes, and pending validations |
+| [Application flows](core/28-application-flows.md) | Screens, sign-in, user workflows, and positive, negative, edge and error scenarios per flow |
 | [ADR catalogue](adr/README.md) | Accepted decisions, rationale, consequences, and decision history |
 
 Read the Product Plan for what Nilumi should do, then Architecture and Tech Stack for how it is designed. Use the Roadmap for delivery sequence. ADRs record accepted decisions; research and validation records preserve supporting evidence and outcomes.
@@ -61,4 +62,4 @@ Read the Product Plan for what Nilumi should do, then Architecture and Tech Stac
 
 ## Document ownership
 
-Product Plan owns requirements and acceptance criteria. Architecture owns technical design and contracts. Tech Stack owns technology and provider selections. The Roadmap owns delivery sequence and outcomes. ADRs own accepted decisions. Research owns dated comparison evidence. Validation records own experiment procedures, results, and acceptance status.
+Product Plan owns requirements and acceptance criteria. Application Flows owns screen purposes, workflow steps and the scenario catalogue. Architecture owns technical design and contracts. Tech Stack owns technology and provider selections. The Roadmap owns delivery sequence and outcomes. ADRs own accepted decisions. Research owns dated comparison evidence. Validation records own experiment procedures, results, and acceptance status.

@@ -2,7 +2,7 @@
 
 This catalogue owns accepted choices and their rationale. Product owns requirements; Architecture owns implementation design, schemas, contracts and operational procedures; Tech Stack owns technology selections, dependency versions and provider status; Research owns dated evidence, comparisons, sources and review history; Roadmap owns sequencing and pending validations.
 
-All 52 records describe the accepted baseline and scoped exceptions. ADR-050 records the initial US$1 S-VGW allocation; ADR-051 records the owner's US$1.05 aggregate amendment for a bounded live quota proof; ADR-052 records the validated restricted-pilot acceptance and remaining activation requirements. ADR-001–026 keep their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 added the Vercel AI Gateway decision from S0 and partly superseded ADR-022. ADR-041–049 record the October 8 reference-architecture review:
+All 55 records describe the accepted baseline and scoped exceptions. ADR-050 records the initial US$1 S-VGW allocation; ADR-051 records the owner's US$1.05 aggregate amendment for a bounded live quota proof; ADR-052 records the validated restricted-pilot acceptance and remaining activation requirements; ADR-053–055 record the October 10 application-flow decisions (household bootstrap and invitations, acknowledgement scope, and domains). ADR-001–026 keep their original IDs and meanings; ADR-027–037 consolidate choices already accepted through the D/Q review and applied documents; ADR-038 added the Vercel AI Gateway decision from S0 and partly superseded ADR-022. ADR-041–049 record the October 8 reference-architecture review:
 - execution paths, policy and approvals, durable runs and the UI catalog
 - read-only Google Calendar
 - staying on Vercel AI Gateway with purchased credits, with ZDR moved to a production privacy gate; this partially supersedes ADR-038
@@ -33,7 +33,7 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-013](adr-013.md) | Model roles pinned in config, changed only through the eval gate |
 | [ADR-014](adr-014.md) | Forget = redact everywhere (with a documented backup window); undo = retract |
 | [ADR-015](adr-015.md) | Next.js PWA with a Capacitor escape hatch |
-| [ADR-016](adr-016.md) | Same-origin deployment on `nilumi.in`, bought before installing on the phones |
+| [ADR-016](adr-016.md) | Same-origin deployment on `nilumi.in`, bought before installing on the phones — amended by [ADR-055](adr-055.md) (app origin `app.nilumi.in`) |
 | [ADR-017](adr-017.md) | AI provider eligibility is a release gate; default LLM roles start with OpenAI unless terms force a change |
 | [ADR-018](adr-018.md) | Turn execution ledger with per-command receipts |
 | [ADR-019](adr-019.md) | Deterministic answers first; sentence-gated LLM synthesis |
@@ -63,14 +63,16 @@ Revision 1 briefly considered Vercel Hobby + Neon, Workflow/Cron, polling, GitHu
 | [ADR-043](adr-043.md) | Durable runs on graphile-worker with leases, compare-and-swap fencing and `outcome_unknown` |
 | [ADR-044](adr-044.md) | Artifacts and the trusted UI catalog `nilumi-ui/1`; no raw HTML |
 | [ADR-045](adr-045.md) | Read-only Google Calendar per adult for the Today brief |
-| [ADR-046](adr-046.md) | Stay on Vercel AI Gateway with purchased credits; no-training, `only` routing and household acknowledgement for the pilot; ZDR at the production privacy gate; amends ADR-021, ADR-038 and ADR-040 |
+| [ADR-046](adr-046.md) | Stay on Vercel AI Gateway with purchased credits; no-training, `only` routing and household acknowledgement for the pilot; ZDR at the production privacy gate; amends ADR-021, ADR-038 and ADR-040 — acknowledgement scope widened to every AI provider call by [ADR-054](adr-054.md) |
 | [ADR-047](adr-047.md) | Pilot cost allowance up to ₹5,000/month; ₹3,000 target and ₹800 AI default unchanged; amends ADR-036 |
 | [ADR-048](adr-048.md) | Multi-household-ready contracts while staying family-first; legal gate before any external household |
 | [ADR-049](adr-049.md) | No WhatsApp channel (Meta AI-provider ban); work alongside WhatsApp |
 | [ADR-050](adr-050.md) | US$1 isolated S-VGW canary allocation; exact live quota proof remains pending after backend minimum-budget rejection |
 | [ADR-051](adr-051.md) | US$1.05 total across S-VGW rounds, preserving prior charges; bounded synthetic live quota exhaustion authorized |
-
 | [ADR-052](adr-052.md) | S-VGW restricted founding-pilot acceptance: independent live quota, documentary storage evidence and a primary-only negative-test exception with durable controls |
+| [ADR-053](adr-053.md) | Founding household and first admin created by an owner-only script; no in-app household setup; invitation emails without sign-in links |
+| [ADR-054](adr-054.md) | Withdrawing the household acknowledgement stops every AI provider call, including speech-to-text and text-to-speech; amends ADR-046 |
+| [ADR-055](adr-055.md) | App on `app.nilumi.in`, staging on `staging-app.nilumi.in`, marketing site on `nilumi.in`; amends ADR-016 |
 
 ## D decision map
 
