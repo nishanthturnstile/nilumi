@@ -1,6 +1,9 @@
 # S3 Gateway configuration verification — October 7, 2026
 
-> **October 8 decision ([ADR-046](../../adr/adr-046.md)).** Nilumi stays on Vercel AI Gateway (Hobby) with purchased credits. Cloudflare AI Gateway was evaluated and not chosen for household traffic ([research](../../research/04-research.md#cloudflare-ai-gateway-primary-docs-checked-8-oct-2026)). The S3 spike keeps an explicitly selected, unfunded Cloudflare adapter for synthetic tests only; its preparation and blockers are in [doc 09](09-s3-cloudflare-gateway.md), and no Cloudflare live acceptance is claimed. Founding-household data waits for spike S-VGW and the household acknowledgement, which the owner records for both adults; ZDR moves to the production privacy gate. S3 stays synthetic under [ADR-040](../../adr/adr-040.md). This file preserves the Vercel evidence; later S3 rounds are in docs [10](10-s3-paid-vercel-validation.md), [11](11-s3-v11-validation.md) and [12](12-s3-deadline-reliability.md). See [the October 8 section](#october-8--gateway-decision-and-s-vgw-evidence) for the gateway decision and S-VGW evidence.
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest S3 synthetic correctness selection and its deferred application-latency limits are in [live acceptance](13-s3-live-acceptance.md); current restricted Gateway closure is in [verification](08-s3-gateway-verification.md#vgw-closure). Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
+> **October 8 decision ([ADR-017](../../adr/adr-017.md)).** Nilumi stays on Vercel AI Gateway (Hobby) with purchased credits. Cloudflare AI Gateway was evaluated and not chosen for household traffic ([research](../../research/04-research.md#dated-finding-cloudflare-ai-gateway-primary-docs-checked-8-oct-2026)). The S3 spike keeps an explicitly selected, unfunded Cloudflare adapter for synthetic tests only; its preparation and blockers are in [doc 09](09-s3-cloudflare-gateway.md), and no Cloudflare live acceptance is claimed. Founding-household data waits for spike S-VGW and the household acknowledgement, which the owner records for both adults; ZDR moves to the production privacy gate. S3 stays synthetic under [Historical experiment permission (040)](08-s3-gateway-verification.md#historical-experiment-permissions). This file preserves the Vercel evidence; later S3 rounds are in docs [10](10-s3-paid-vercel-validation.md), [11](11-s3-v11-validation.md) and [12](12-s3-deadline-reliability.md). See [the October 8 section](#october-8--gateway-decision-and-s-vgw-evidence) for the gateway decision and S-VGW evidence.
 
 ## Evidence and provenance
 
@@ -47,7 +50,7 @@ Dashboard evidence:
 ## Gate result
 
 **Failed for family-data ZDR; synthetic-only staging testing approved separately.** The current team cannot meet
-[ADR-038](../../adr/adr-038.md)'s accepted team-wide ZDR baseline. This evidence
+[ADR-022](../../adr/adr-022.md)'s accepted team-wide ZDR baseline. This evidence
 supersedes earlier “green / controls set” statements for the Gateway LLM and
 embedding path. Other processors' S0 evidence is unaffected.
 
@@ -79,10 +82,10 @@ reservations must not be treated as complete accounting for that configuration.
 ## Approved Hobby synthetic-only evaluation exception
 
 The owner explicitly replied “Approve synthetic-only Hobby evaluation” in the
-implementation chat on October 7. [ADR-040](../../adr/adr-040.md) records the exception.
+implementation chat on October 7. [Historical experiment permission (040)](08-s3-gateway-verification.md#historical-experiment-permissions) records the exception.
 The implemented mode follows these bounds:
 
-1. Add an explicit synthetic-only evaluation mode while preserving the strict
+1. The implemented synthetic-only evaluation mode was added while preserving the strict
    ZDR mode and ADR-038 requirement for family-data use.
 2. Accept only the committed, owner-reviewed fixture IDs and exact reviewed
    file hash; never accept uploaded audio, real transcripts, household context
@@ -210,11 +213,7 @@ credentials and billing. It cannot create upstream ZDR agreements. Our existing
 in-process model registry is adequate for the current two-model spike, so an
 extra proxy has little immediate benefit at this budget.
 
-Next provider decision: investigate OpenRouter Standard's exact Azure model
-route, privacy settings and eligibility before proposing an ADR-038 migration.
-Keep current synthetic evaluation on Vercel and preserve the production gate.
-(Superseded October 8 by [ADR-046](../../adr/adr-046.md): no gateway migration; stay
-on Vercel with purchased credits.)
+The October 7 comparison left OpenRouter route/privacy eligibility unverified. The October 8 decision retained Vercel with purchased credits; the proposed gateway migration was retired ([ADR-017](../../adr/adr-017.md)).
 
 
 ## Deployment preflight findings
@@ -297,14 +296,7 @@ POST confirmed HTTP 404 with JSON `{"error":"evaluation_disabled"}`. The
 evaluator allowlist is empty. No production environment, paid plan,
 auto-reload setting, provider account or provider migration was changed.
 
-Next live work must first resolve Luna's eligible-provider failure or validate
-a faster small model against the same corpus and restrictions. A longer timeout
-would change the acceptance conditions and should not hide this failed smoke.
-The existing Vercel Hobby credits remain useful for synthetic testing; a future
-OpenRouter route requires its own eligibility/privacy verification and an ADR
-before family-data use. Family-data ZDR remains blocked under ADR-038.
-(October 8: family-data use now follows [ADR-046](../../adr/adr-046.md); ZDR is a
-production gate.)
+At this point Luna's eligible-provider smoke had failed; the existing conditions did not establish family-data acceptance. The later restricted-pilot exception and current eligibility gates are in [ADR-017](../../adr/adr-017.md).
 
 ## Follow-up investigation — October 7, 2026
 
@@ -327,7 +319,7 @@ dominant wait after dispatch, but does not distinguish Gateway queueing,
 upstream inference or network response time. No deadline extension was made.
 
 The owner explicitly approved GPT-4.1 nano, then GPT-4.1 mini, as additional
-synthetic-only challengers. [ADR-040](../../adr/adr-040.md) records the scope. Both
+synthetic-only challengers. [Historical experiment permission (040)](08-s3-gateway-verification.md#historical-experiment-permissions) records the scope. Both
 models omit the unsupported reasoning-effort option; all other controls and
 the frozen corpus remain unchanged.
 
@@ -505,39 +497,15 @@ to revise the prompt. No failed cases were retried to replace their scores.
 
 The prior development `privacy-05` failure passed in this benchmark, confirming
 variability rather than invalidating the retained failure. The third revision
-remains frozen after this run. The next correctness work should target date
-and reference consistency on development inputs; if held-out evidence is used
-for further tuning, replace and independently review the holdout before
-claiming a fresh held-out result. This run establishes that subscription-based
-local evaluation is usable, not that Luna or another model is deployable.
-No Gateway smoke or 60-case deployment comparison followed this failed gate.
-
-Prompt changes supply computed UTF-16 clause spans without inferring intent,
-clarify ordinary facts versus explicit changes/corrections, preserve temporal
-prepositions, expand reminder adult targets, constrain unsupported optional
-fields, and clarify minimal reference targets and query answer shapes.
-The duplicate schema copy was removed from static prompt prose; the same
-schema is still supplied at the structured-output boundary and included in
-budget accounting. Contracts, validation, approved expected actions and the
-frozen corpus hash are unchanged.
-
-The Gateway ledger remains **US$0.122884725 retained**, leaving
-**US$0.377115275** conservatively under the cumulative US$0.50 cap. A dry run
-of the first revised prompt estimates **US$1.1865508** for the complete Mini
-maximum reservation and **US$0.061342** for its three-case smoke. These are
-conservative maximum allowances, not measured charges. Sequential settlement
-could cost less, but a full maximum-reserved comparison cannot be guaranteed
-within the remaining cap. No further Gateway calls were made, and the
-evaluator stays disabled.
-
-The frozen third revision's Mini dry run updates the complete maximum
-reservation to **US$1.2452932**. The prior smaller figure above belongs to
-the first revision, not the frozen prompt. No spending cap or reservation
-formula was weakened to make a full run appear affordable. The new local
-runner and frozen prompt passed **187 automated tests**, lint, type checking
-and production build. Meaningful new regression checks cover subscription
-credential isolation, held-out selection, tool/turn rejection, bounded
-dispatch, correctness-versus-deployment status, and UTF-16 span boundaries.
+remains frozen after this run. At that point hosted correctness and the two-model comparison remained pending. A larger model's subscription pass did not transfer acceptance to Nano; ordinary preference/correction semantics and failed cases remained preserved.
+Final shutdown verification: deployment
+`1f309d7c-d73f-49cc-a822-077e19c2afb2` reached **SUCCESS**. The previous enabled
+deployment was removed. An authenticated empty-body request now returns HTTP
+**404** with `evaluation_disabled`; service configuration has enabled=false
+and zero allowlisted evaluators. No model call is made by that probe. Shutdown
+is verified, not merely requested. Documentation and content-free evidence were
+checked with the existing pinned Biome tooling; no application source changed
+in this validation increment.
 
 ## Deterministic interpretation increment — October 7–8
 
@@ -551,7 +519,7 @@ repair occurs. Ownership, evidence, ambiguity and privacy validation remain in f
 An omitted adjacent numeric clock invalidates a temporal interpretation.
 
 Research and the implementation sequence are recorded in
-[the S3 plan](../../plans/06-s3-command-understanding-plan.md#next-correctness-increment--deterministic-interpretation).
+the retired S3 plan (historical sequence; current work is in [P4](../../plans/implementation-plan.md#p4)).
 The original approved corpus hash and golden actions are unchanged. Only
 development transcripts and expected actions informed this revision. Repeating
 the original held-out split is regression evidence, with prior aggregate metrics
@@ -686,11 +654,7 @@ contains phase summaries, report hashes, per-case scores, normalization paths,
 the aborted run and runtime-equivalence proof. It contains no held-out transcript,
 expected answer or raw model text. Original reports remain ignored locally.
 
-Next acceptance work is to resolve CLI tool registration/isolation and improve
-blind shopping/memory generalization. Do not deploy or run a paid model selection
-comparison on the basis of this failed synthetic gate. If the failed held-out
-contents are inspected for tuning, retire them as regression cases and obtain
-independent authoring/owner review of a replacement holdout before a fresh claim.
+At this dated point CLI tool registration/isolation and blind shopping/memory generalization remained unresolved. No paid selection comparison or deployment followed the failed gate; observed holdouts could not establish fresh independent acceptance.
 
 ## October 8 — explicit tool controls and passing v8 synthetic regression
 
@@ -760,12 +724,7 @@ Offline configured-price maximum reservations for v8: Nano three-case smoke
 US$0.0167944; Nano full pass US$0.3248431; combined US$0.3416375. Mini smoke
 US$0.0671776; Mini full pass US$1.2993724. These are upper allowances, not fresh
 rate checks or actual spend. A Nano smoke/full pass fits the current allowance;
-a guaranteed full Mini pass does not. The next hosted step is current
-price/routing verification, staging deployment, a passing Nano smoke, then its
-frozen full pass through the durable ledger runner. Stop if smoke fails and
-disable evaluator afterward. That single-model validation does not complete the
-original two-model comparison. **Hosted S3 acceptance remains pending.**
-## October 8 — hosted v8 Nano smoke, stopped at the correctness gate
+a guaranteed full Mini pass did not. Hosted S3 acceptance remained pending at this point; the actual subsequent smoke result follows below. These reservations were not additional spending authorization.
 
 Owner authorized the hosted next step with “ok ple proceed”. All configured
 model rates matched the current public Gateway catalog before deployment and
@@ -825,13 +784,7 @@ Shutdown was initiated by setting `NLU_EVALUATION_ENABLED=false` and clearing
 `1f309d7c-d73f-49cc-a822-077e19c2afb2`. Final runtime shutdown verification is
 recorded below. No Git push, new service, family-data call or purchase occurred.
 
-The next correctness work should target a simpler extraction prompt/input for
-the small hosted model using development cases and fresh separately authored
-examples. Preserve ordinary preference versus explicit correction semantics;
-do not weaken scoring or convert an unsupported model correction into a write.
-Freeze and validate any changed prompt synthetically before another bounded
-hosted smoke. A larger model's subscription pass does not transfer automatically
-to Nano. S3 hosted acceptance and the two-model comparison remain pending.
+At that point hosted correctness and the two-model comparison remained pending. A subscription pass did not transfer acceptance to Nano; failed cases remained recorded.
 Final shutdown verification: deployment
 `1f309d7c-d73f-49cc-a822-077e19c2afb2` reached **SUCCESS**. The previous enabled
 deployment was removed. An authenticated empty-body request now returns HTTP
@@ -900,12 +853,7 @@ Authenticated zero-call preflight still returns **404 evaluation_disabled**;
 configuration remains enabled=false with zero allowlisted evaluators. The
 previous disabled v8 deployment remains in staging.
 
-This closes the v9 simplification experiment, not S3 acceptance. Next work must
-address correctness with development evidence and separately authored examples;
-do not tune from held-out content or repeat a frozen run until a lucky pass.
-Preserve the failed comparison against v8 and obtain a qualifying synthetic
-pipeline before any further paid smoke. Hosted latency, model selection and
-family-data ZDR remain unverified.
+This closes the v9 simplification experiment, not S3 acceptance.
 
 ## October 8 — v10 development fixes and passing frozen regression
 
@@ -1001,12 +949,7 @@ zero allowlisted evaluators. No model was called by shutdown verification.
 
 V10 development and synthetic validation are delivered, but hosted S3 acceptance
 remains pending. Two prompt revisions now retain the same Nano preference-intent
-failure. Next work should assess a stronger eligible model/route against the
-remaining cumulative allowance and deadline before further paid dispatch.
-Recheck worst-case reservations: the current Mini full-pass bound is four times
-Nano's and cannot fit this remaining cap. Do not purchase credits, reset the
-ledger, weaken accuracy/privacy gates or repair wrong model intent to force
-acceptance. Family-data ZDR and the original two-model comparison remain pending.
+failure.
 
 ## October 8 — paid-credit follow-up
 
@@ -1025,14 +968,14 @@ comparison remain pending.
 
 **Decision.** The owner compared Cloudflare AI Gateway with Vercel. Not every
 Cloudflare model is ZDR-enabled, and Unified Billing adds a 5% fee on credit
-purchases. [ADR-046](../../adr/adr-046.md) therefore keeps Vercel AI Gateway on Hobby,
+purchases. [ADR-017](../../adr/adr-017.md) therefore keeps Vercel AI Gateway on Hobby,
 funded by purchased credits, with no paid Vercel plan.
 - **Pilot.** ZDR is not required for the founding-household pilot. Every request
   still sets `disallowPromptTraining`, `only` routing and OpenAI `store: false`.
 - **Production.** ZDR on every call is part of the production privacy gate.
 - **Credits.** Buying credits ends the US$5 monthly free credit. Credits expire one
   year after purchase. Auto top-up stays off.
-- **S3.** Evaluation stays synthetic under [ADR-040](../../adr/adr-040.md), with a separate
+- **S3.** Evaluation stays synthetic under [Historical experiment permission (040)](08-s3-gateway-verification.md#historical-experiment-permissions), with a separate
   evaluation key. The hosted rounds recorded above and in docs 10–12 used the
   existing staging key (“Nilumi's Key”) under the US$0.50 cap the runner enforces;
   US$0.210533395 was counted after the deadline round. The later correctness
@@ -1040,7 +983,7 @@ funded by purchased credits, with no paid Vercel plan.
   owner's October 8 amendment raises the cumulative S3 cap to US$2.00, leaving
   US$1.722693540 under the owner cap. The runner still enforces US$0.50, with
   US$0.222693540 remaining, until its constants and ledger are migrated
-  ([ADR-040 amendment](../../adr/adr-040.md)).
+  ([ADR-040 amendment](08-s3-gateway-verification.md#historical-experiment-permissions)).
 
 No account, purchase, setting or model call was made while this decision was
 recorded. Afterwards, the owner reported buying US$20 of credits on October 8
@@ -1048,7 +991,7 @@ and planning about US$10 a month.
 
 ### S-VGW evidence (restricted pilot accepted)
 
-**Closed October 10 under [ADR-052](../../adr/adr-052.md).** The [final acceptance artifact](../../../spikes/s1/evals/results/vgw-pilot-acceptance-2026-10-10.json) preserves the fifth round and all prior conservative charges.
+**Closed October 10 under [ADR-022](../../adr/adr-022.md).** The [final acceptance artifact](../../../spikes/s1/evals/results/vgw-pilot-acceptance-2026-10-10.json) preserves the fifth round and all prior conservative charges.
 
 | Proof | Accepted evidence and limits |
 | --- | --- |
@@ -1114,7 +1057,7 @@ preflight is incomplete. No family LLM/embedding endpoint is enabled by this wor
 
 ## October 10 — S-VGW completion work started
 
-The [completion plan](../../plans/26-s-vgw-completion-plan.md) records the implementation and
+The [Dated Gateway evidence](08-s3-gateway-verification.md#vgw-closure) records the implementation and
 remaining live steps. Initial authenticated API-key inventory showed only
 **Nilumi's Key**, approximately US$0.11/US$5. Dedicated runtime, evaluation and
 canary budget readbacks remain missing. A Team-attributed US$0.10 Never-refresh
@@ -1167,7 +1110,7 @@ unverified. The signed-in preview is left on API Keys. No model call was made.
 ## October 10 — US$1 canary and live results
 
 The owner authorized US$1 after the signed-in dashboard rejected the original
-US$0.10 limit. [ADR-050](../../adr/adr-050.md) records this narrow allowance amendment;
+US$0.10 limit. [Historical experiment permission (050)](08-s3-gateway-verification.md#historical-experiment-permissions) records this narrow allowance amendment;
 team US$10, runtime US$8 and S3 cumulative allowance remain separate controls.
 The authenticated quota API independently returned HTTP 400 for a limit below
 US$1. Raising the canary ceiling does not resolve the required live quota proof.
@@ -1230,7 +1173,7 @@ reservation, stops progression, and cannot pass negative policy acceptance.
 ## October 10 — approved US$1.05 follow-up and remaining policy failure
 
 The owner approved US$1.05 total, including all prior counted spend, for the
-bounded live quota test ([ADR-051](../../adr/adr-051.md)). The new aggregate runner
+bounded live quota test ([Historical experiment permission (051)](08-s3-gateway-verification.md#historical-experiment-permissions)). The new aggregate runner
 imports the first run's US$0.001063 once, verifies its source-ledger digest before
 every paid step, reserves before dispatch and preserves incomplete attempts.
 The historical ledger remains byte-for-byte unchanged; no halted run was replayed.
@@ -1312,3 +1255,343 @@ Acknowledgement survived redeployment; unauthenticated and sensitive requests we
 refused. This does not claim full app NLU integration or production latency acceptance.
 Total counted validation including the activation is US$1.004284 / US$1.05; the prior
 canary total and ledgers remain unchanged. See [activation evidence](../../../spikes/s1/evals/results/vgw-household-activation-2026-10-10.json).
+
+## Reconciled completed observations from former document 06
+
+Dated historical evidence reconciled on 2026-10-10. These observations describe the existing spike or design reference only. Future work is owned by the [implementation plan](../../plans/implementation-plan.md) (the link is resolved from the validation directory).
+
+The existing spike now contains the Zod contract, deterministic validators,
+sensitive-input guard, 60 manually authored synthetic cases, review document,
+versioned prompt/registry/model options, injectable Gateway adapter, authenticated
+staging evaluation route, scoring, and a durable local comparison budget ledger.
+Parser results can omit unresolved date slots; validated results cannot. The
+schematic TargetRef additionally uses `task_id` for visible synthetic tasks.
+Mock recovery instrumentation remains disconnected from scored calls.
+
+[Expected-action review](07-s3-expected-actions.md) contains all 60 cases with
+concrete dates and outcomes; 48 development / 12 held out, 23 Tamil/Tanglish
+and 10 multi-command cases. These expectations are authored offline, not
+outputs generated by either model being scored.
+
+Offline checks and production build are recorded in the spike README. All 60
+expectations and Railway key identity are owner-approved. The implementation
+has been deployed to Railway staging and live probes have begun under ADR-040.
+Luna returns HTTP 403 (`no_providers_available`) under the approved restrictions.
+Nano initially rejected the generated `oneOf` schema; the provider schema now
+uses `anyOf`, requires all fields and represents optional slots as nullable.
+The SDK normalizes those nulls before the unchanged semantic Zod validation.
+Nano's first probe with this fix exceeded the five-second deadline. The frozen
+corpus comparison and model selection remain gated on a successful live smoke;
+failed probes do not establish accuracy. See [verification evidence](08-s3-gateway-verification.md)
+for final results and accounting. Family-data ZDR, classifier experiments and
+production shadow work remain deferred; this is not S3 acceptance.
+
+Follow-up: Luna's HTTP 403 explicitly identifies free-credit exclusion.
+Owner-approved GPT-4.1 nano and mini challengers omit unsupported reasoning
+effort while preserving all synthetic-only controls. Their staging smoke
+accuracy was 1/3 and 2/3 respectively; no full comparison or selection was
+started after the failed semantic smoke. Inline Gateway response receipts
+now verify managed routing and reported cost despite delayed generation
+lookup. All 181 tests, lint, type checking and build passed. The reviewed
+fixture corpus, expected actions and extraction prompt are unchanged.
+
+Subscription follow-up: the owner approved local synthetic prompt development
+using existing ChatGPT-authenticated Codex access. A separate isolated runner,
+`pnpm nlu:eval:subscription`, keeps expected answers in the parent scorer and
+the paid Gateway ledger untouched. Three development-only prompt revisions
+improved development accuracy from 27/48 to 47/48 without changing contracts,
+validation or approved fixtures. The frozen `s3-extract-v5` benchmark completed
+all 60 cases: 57 correct (95%), 100% schema validity, 11/12 held-out, 11/12 dates
+and 8/8 privacy. It **failed the mandatory all-dates gate**. The earlier
+development privacy failure remains recorded as variability evidence.
+All 187 automated tests, lint, type checking and build passed. No prompt tuning
+used held-out evidence, no Gateway requests were made, no deployment model was
+selected, and S3 acceptance remains pending. See
+[the complete subscription evidence](08-s3-gateway-verification.md) for hashes,
+reports, known failures, scope and remaining budget constraints.
+
+The prior full run's aggregate results and failed IDs were already observed.
+This revision does not use held-out transcripts or expected answers to tune;
+the repeated original holdout will be labeled as regression evidence. A new
+holdout requires independent authoring and owner review.
+
+Research supports this separation: OpenAI's
+[Structured Outputs guide](https://developers.openai.com/api/docs/guides/structured-outputs)
+establishes schema constraints, while semantic checks remain application work.
+[Chrono's documentation](https://github.com/wanasit/chrono) exposes matched
+text/index, ranges, explicit reference instants/timezones and certainty flags;
+these allow complete-phrase validation rather than accepting a partial match.
+[Luxon's calendar math documentation](https://github.com/moment/luxon/blob/master/docs/math.md)
+supports calendar-day arithmetic in an explicit household timezone. The
+upcoming-Saturday convention remains Nilumi's product rule.
+
+This increment delivered deterministic date/reference interpretation and
+**199 passing automated tests** plus lint, type checking and build. The complete
+v7 regression is **57/60**, dates **12/12**, held-out **10/12**, privacy **7/8**.
+Synthetic acceptance still fails: two blind semantic cases and a rejected
+collaboration tool call remain. CLI multi-agent disable settings alone did not
+establish isolation. Resolve that before further subscription benchmarks, then
+improve blind shopping/memory generalization without tuning to held-out answers.
+Inspecting failed held-out content requires replacing and independently reviewing
+the holdout before claiming a fresh test. No paid comparison or deployment
+followed this failed gate; the Gateway ledger remains unchanged.
+
+This failed increment did not establish hosted model selection or family-data authorization. Its subsequent smoke/correctness outcomes follow below; the old proposed work sequence is retired.
+October 8 result: development **48/48**, final smoke **3/3**, frozen complete
+regression **59/60 (98.33%)**, held-out **11/12**, dates **12/12**, privacy **8/8**,
+and schema validity **100% (58/58 model responses)**. Two sensitive cases were
+refused locally with no model call. Raw extraction plus local refusal scoring
+was **57/60**; deterministic interpretation produced **59/60**, with two
+normalization cases. No tool events or execution failures were observed, no
+source changed during the frozen run, and all synthetic thresholds pass.
+`memories-11` remains incorrect; its transcript, expected answer and raw output
+were not used for tuning. This increment is closed with that failure retained.
+It is a repeated-corpus regression, not a newly independent holdout.
+
+All **202 automated tests**, lint, type checking and production build passed.
+The complete content-free score record is
+[subscription-v8.json](../../../spikes/s1/evals/results/subscription-v8.json), and
+[verification notes](08-s3-gateway-verification.md) retain phase hashes and
+limits. No paid Gateway calls, deployment, purchase or model selection occurred.
+At that dated stage hosted S3 acceptance had not passed; later scoped acceptance is recorded separately.
+Hosted follow-up on October 8: deployed reviewed v8 to staging and ran the
+three approved development smoke cases through managed OpenAI GPT-4.1 nano.
+Schema/routing passed and all calls completed within five seconds, but semantic
+correctness was **2/3**. An ordinary preference was misclassified as a correction;
+validation required clarification. The full run and further paid tests stopped.
+No model selection occurred. Three reported charges total US$0.0010442; retained
+ledger US$0.123928925, remaining testing allowance US$0.376071075. Evaluator
+disable/allowlist clearing and tested-artifact redeploy followed the failure.
+See [hosted smoke evidence](08-s3-gateway-verification.md).
+
+The owner approved the dated v9 simplification experiment after the failed v8 Nano smoke. It kept `openai/gpt-4.1-nano`, command/output contracts, corpus/scorer/interpreter/privacy, the five-second hosted deadline and cumulative budget unchanged; development evidence alone informed the changes.
+
+The official [GPT-4.1 prompting guide](https://developers.openai.com/cookbook/examples/gpt4-1_prompting_guide)
+recommends clearly grouped instructions and examples demonstrating desired
+behavior, followed by empirical evaluation. It is an archived model-family
+recipe; no SDK, account access or performance guarantee is inferred from it.
+Prompt v9 consolidates repeated rules into sections and makes intent selection
+precede history lookup. An ordinary preference remains remember even when a
+prior preference differs. Only explicit correction/change wording selects
+correct. Two separate pottery/cycling examples demonstrate this distinction;
+neither copies an approved fixture. Their outputs validate against the same
+prior context, and the unsupported correction of an ordinary statement is
+rejected by the unchanged validator.
+
+Model input now groups the complete visible context as `reference_context` and
+the transcript, UTF-16 length and spans as `current_input`. No visible context
+record was removed. Visibility filtering and whole-input secret scanning still
+run before input construction. Full golden-set leakage and privacy tests pass.
+Static prefix UTF-8 size decreases from 10065 to 9041 bytes (10.2%). The provider
+schema remains complete and unchanged.
+
+
+
+Final v9 outcome: revised development 47/48, dates 10/10 and privacy 6/6;
+frozen original-corpus regression 54/60, held-out 8/12, dates 11/12, privacy 7/8,
+schema 58/58. **Synthetic acceptance failed.** The prompt is an unaccepted local
+candidate and was not deployed. No paid calls followed. All 203 automated tests,
+lint, type checking and build passed. Staging remains disabled and the budget
+ledger is unchanged. See [v9 verification](08-s3-gateway-verification.md) and
+[retained score evidence](../../../spikes/s1/evals/results/subscription-v9.json).
+The simplification experiment is complete; S3 acceptance remains pending a
+qualifying correctness revision, then hosted validation. Do not rerun a frozen
+pipeline to select a favorable score or tune using held-out content.
+
+V10 follow-up uses development evidence to preserve stated unresolved clocks,
+suppress inferred entity types, map shopping completion to its supported command,
+and identify speaker-note share/unshare targets. The first development result
+46/48 informed the latter fixes. Revised development 47/48 retains one note-query
+answer-shape failure. One frozen comparison passed: 59/60 overall, 11/12 held-out,
+12/12 dates, 8/8 privacy, 58/58 valid schemas. The one held-out memory failure
+remains recorded; no held-out content was inspected for tuning. All 205 tests
+and quality checks pass. See [v10 verification](08-s3-gateway-verification.md).
+The subsequent bounded Nano hosted smoke retained routing, privacy, five-second deadline and cumulative budget controls; its actual result follows.
+
+Hosted v10 follow-up: managed OpenAI Nano smoke scored 2/3, schemas valid and all
+calls within five seconds. Ordinary-preference intent failed again; validation
+required clarification. Full hosted comparison and further paid calls stopped.
+Smoke cost US$0.0021051; retained ledger US$0.126034025, remaining cap
+US$0.373965975. Evaluator disable/empty allowlist and tested-artifact redeployment
+were verified with authenticated 404 `evaluation_disabled`. No model selection.
+V10 development is delivered; S3 acceptance still requires a reliable eligible
+model/route that fits the deadline and retained budget. See the verification
+notes and [hosted evidence](../../../spikes/s1/evals/results/gateway-v10-nano-smoke.json).
+
+## Reconciled completed observations from former document 26
+
+Dated historical evidence reconciled on 2026-10-10. These observations describe the existing spike or design reference only. Future work is owned by the [implementation plan](../../plans/implementation-plan.md) (the link is resolved from the validation directory).
+
+**Deployment, acknowledgement and guarded activation closed October 10.** [Deployment evidence](../../../spikes/s1/evals/results/vgw-pilot-deployment-2026-10-10.json) records the live database/app IDs, reviewed source archive hash and content-free checks.
+
+The two supplied adult addresses and Nishanth's owner role are configured in the
+live household row, with evidence version `s-vgw-adr052-pilot-v1`. Actual addresses
+remain in the private configuration; examples and public evidence contain none.
+A separate restricted app login can operate privacy and reservation rows, but
+cannot change accepted evidence, owner, adult membership, monthly cap or schema.
+No migration-owner credential is configured on the app. The dedicated runtime
+key is configured; `GATEWAY_PILOT_ENABLED=true` after verified owner acknowledgement
+and the fixed authenticated smoke. Legacy S3 evaluation stays off.
+
+Live validation passed:
+
+- All **13 PostgreSQL control cases**, including concurrent reservations,
+  withdrawal and stale queued jobs, receipt settlement, unknown-cost halts,
+  client/worker reconnection persistence and restricted-role permissions.
+  These use isolated synthetic schemas; no paid provider requests occur.
+- The actual restricted app login: both adult roles can read state; missing
+  acknowledgement blocks reservations; administrative changes are denied;
+  synthetic withdrawals for both adults work and are rolled back.
+- **15 HTTP checks**: signed-out/invalid/non-member refusal, both adult roles,
+  explicit owner attestation, cross-origin/stale-notice/identity-injection
+  refusal and disabled family routing. Controlled signed test sessions verify
+  role binding; they do not claim both humans completed a new email-code login.
+  The existing real owner browser session was separately verified.
+- Lint, type-check, all **372 tests** and production build pass. Live testing
+  found and fixed the proxy-origin mismatch: production mutations require the
+  explicit canonical HTTPS `GATEWAY_PILOT_ORIGIN=https://staging.nilumi.in`;
+  forwarded headers cannot override it. Use the canonical staging hostname.
+- All temporary test schemas, test SQL roles, SSH access, tunnel and extracted
+  credential copies are removed. Both persistent volumes remain. At the initial deployment validation, the real
+  household had no acknowledgement, privacy events, reservations or halts.
+  Reconnection and app redeployment are tested; no database server restart or
+  recovery rehearsal is claimed. Additional paid Gateway requests: **zero**.
+
+**Household acknowledgement is recorded and verified** at 07:47:14.460 UTC for
+both adults, the current notice and processors, with no withdrawal. It survives
+redeployment. The bounded route is enabled and one fixed authenticated smoke
+passed; unauthenticated and sensitive requests remain refused. See the
+[activation evidence](../../../spikes/s1/evals/results/vgw-household-activation-2026-10-10.json)
+and the closing section below. Total conservative validation including activation
+is **US$1.004284 / US$1.05**; historical canary accounting is unchanged.
+
+The app was deployed from a frozen, tested local source upload, not a GitHub main
+commit. The frozen source archive and privacy-control evidence are retained; this was not a GitHub-main auto-deployment.
+
+The following table records intermediate observations before the later accepted closure.
+
+| Step | Intermediate evidence |
+|---|---|
+|  Account and budgets  |  Authenticated backend: team US$10 monthly; runtime US$8 monthly; evaluation US$1.72269354 cumulative; canary US$1 cumulative. Dedicated keys have Team attribution and 50/75/100% alerts. Auto-reload disabled; no configured BYOK.  |
+|  Positive routing  |  Luna chat and `text-embedding-3-small` succeeded with managed OpenAI, no-training, one provider attempt and cost receipts.  |
+|  Storage and retention  |  Pinned SDK serialization plus the exact Luna model's published forwarding contract; published OpenAI retention recorded in `config/providers.md`.  |
+|  Negative policy  |  Arcee and Schematron no-training-ineligible routes returned HTTP 500 in four isolated rounds; streaming and non-streaming both failed. Logs show zero metered cost. Wrapper stopped and retained the reservation.  |
+|  Live quota  |  Dashboard rejects US$0.10; quota API rejects `limitAmount < 1` with HTTP 400. Local pinned SDK tests verify exact 402 mapping and zero retries/fallbacks.  |
+|  Shutdown  |  DELETE returned 204; key readback 404; the same previously successful credential returned 401 on `GET /v1/credits`. Local canary credential and capture private key removed.  |
+|  Family gate  |  Tests require accepted S-VGW and current acknowledgement, including queued-call rechecks and withdrawal.  |
+
+The [content-free live artifact](../../../spikes/s1/evals/results/vgw-live-controls-2026-10-10.json)
+contains account readbacks, probe reports, spend, deletion, inference log metadata
+and shutdown. It contains no prompt/response content or credentials.
+
+Three model attempts were made: chat, embedding and negative policy. Metered
+spend was **US$0.00000398**. Conservative counted spend remains **US$0.001063**,
+including the failed negative reservation. The balance changed from
+US$24.88745754 to US$24.88745356. The quota probe was not dispatched.
+
+An authenticated quota PATCH using the endpoint employed by the official Vercel
+CLI returned HTTP 400 for a zero limit: `Invalid request: limitAmount should be
+>= 1.` This confirms the backend minimum, not just an HTML input constraint.
+The evaluation API accepted the exact US$1.72269354 remainder; the dashboard's
+create form allows only two decimal places.
+
+[Historical experiment permission (050)](08-s3-gateway-verification.md#historical-experiment-permissions) records the new canary ceiling. The US$10 team ceiling
+still constrains aggregate spend; individual key ceilings are not additive
+allowances. Raising the canary ceiling does not itself establish quota rejection.
+The old method of lowering a tiny canary's limit to its metered spend cannot
+currently be used. Do not deliberately exhaust credits or waive the live proof
+without resolving that method and its bounded allowance.
+
+The verifier uses only `GET /v1/credits`, fences inference and binds to the used
+credential. An unrelated invalid key, HTTP 402/403, active key or network error
+cannot pass. Account deletion and local access removal are separate recorded
+proofs. Credentials are removed after verification; ledgers/reports are retained.
+
+The initial implementation passed lint, type-check, 346 tests and production
+build. The US$1/version-3 amendment adds safe HTTP diagnostics for unclassified
+SDK failures and a pinned SDK regression ensuring HTTP 500 cannot pass a policy
+proof. Final check results are recorded in doc 08. Local mocked proofs remain
+separate from the initial three live attempts above.
+
+Latest quota/profile/streaming implementation: lint, type-check, **357 tests**
+and production build passed; the focused gateway suite has 23 passing tests.
+Four live rounds are recorded separately from these local checks.
+
+Preserve all halted rounds and their US$0.002564 counted spend. The implemented
+versioned follow-up runner carries an aggregate ledger across old and new sessions.
+It binds each predecessor ledger's digest and carries its conservative charges
+forward exactly once. A fresh key does not create a fresh spending allowance. Do not remove the
+old halt, reclassify its HTTP 500 or replay a completed probe.
+
+Four rounds have completed positive controls followed by one negative probe each.
+Arcee and Schematron profiles keep their fixed provider allowlist and
+`disallowPromptTraining: true`; the streaming variation retains the pinned SDK. The diagnostic transport must retain only HTTP
+status, recognized error code and safe request identifiers; discard raw error
+messages and prompt/response bodies. Check the embedding vector's length in
+memory and retain only its dimension count, so the requested 768 dimensions
+also have an observed live result.
+
+The original negative-proof criterion required explicit no_providers_available. Four HTTP500 rounds failed it. The later restricted-pilot closure retained those failures and accepted compensating controls; the prepared reproduction remains local and unsent.
+
+**Approved aggregate reservation ceiling: US$1.05 across all rounds.**
+All US$0.002564 already counted remains inside this allowance. Its envelope is:
+
+| Item | Maximum counted cost / rule |
+| --- | --- |
+| Preserved October 10 rounds | US$0.002564, never refunded from the local allowance |
+| New positive/negative diagnostics | At most US$0.005 reserved in total; stop on any unexpected outcome |
+| Synthetic quota warm-up | Sequential only; at most 400 attempts; at most US$0.01 reserved per request; stop as soon as the authenticated key spend reaches US$1 |
+| Tiny post-exhaustion probe | At most US$0.001 reserved; require the exact quota rejection |
+| Aggregate stop | Reserve before dispatch; all charges, unknown outcomes and outstanding reservations must fit US$1.05 |
+
+The implemented quota-only profile uses managed OpenAI `openai/gpt-5.5`, a
+fixed synthetic number-enumeration fixture, 224 maximum output tokens and at most
+512 UTF-8 bytes for the complete serialized SDK request. `store:false`,
+`reasoningEffort:none`, no-training and `only:[openai]` are required. The refreshed
+base catalog reservation is **US$0.00928** per request, below US$0.01. No cache
+savings are assumed. This profile is never a family runtime role or fallback.
+Prices, catalog eligibility and the actual payload bound are checked before
+transport. Calls are sequential, at most 400 and at most 45 minutes.
+
+Mark S-VGW passed only after the account, privacy/routing, storage, exact policy
+rejection, exact live quota rejection and used-key shutdown rows have accepted
+evidence. The HTTP 500 in the first run remains failed even if a later round
+passes. No challenger fallback becomes eligible merely because the primary
+route passes; keep unvalidated fallbacks disabled.
+
+
+
+At this dated stage credential activation depended on reviewed controls/provider rows and a minimal guarded smoke. The fixed synthetic canary did not require household acknowledgement and did not close application/voice gates. The subsequent actual activation is recorded below.
+
+The owner explicitly recorded acknowledgement on Settings → Privacy at
+**07:47:14.460 UTC**, covering both current adults and processors with no withdrawal.
+Readback verified notice/member/processor match, revision 2, accepted S-VGW evidence
+and no halts. The reviewed build was redeployed with the bounded pilot route enabled;
+acknowledgement survived redeployment. Unauthenticated access returns 401.
+
+One authenticated request using the fixed smoke fixture passed HTTP 200 with managed
+OpenAI Luna, no-training, one attempt, a nonempty result and US$0.0000038 receipt.
+No household facts or response content were retained in this validation artifact.
+Sensitive text was then refused with 403 before provider dispatch; acknowledgement
+remained current and no role halted. The endpoint completes durable receipt settlement
+before returning 200. This is a successful guarded route smoke, not structured NLU
+integration or production latency acceptance. [Activation evidence](../../../spikes/s1/evals/results/vgw-household-activation-2026-10-10.json).
+
+The fixed call reserved US$0.000532 and conservatively settled US$0.000004. Canary
+accounting stays US$1.00428; total counted validation including this activation is
+**US$1.004284 / US$1.05**. The runtime key and PostgreSQL monthly hard cap remain US$8.
+Historical canary ledgers are unchanged.
+
+<a id="historical-experiment-permissions"></a>
+## Historical experiment permissions and limits
+
+October7–10 owner-scoped approvals formerly recorded in ADR-040/050/051 are historical, not reusable permission for new paid calls. Synthetic S3 owner cap moved fromUS$0.50 toUS$2.00 cumulative; the durable runner still enforcedUS$0.50, with countedUS$0.277306460 and remainingUS$0.222693540 at closure (owner remainingUS$1.722693540). The ledger had289 entries and SHA-256 efeea19451ce7dda99191ce15a77877f17fd59d81e29777b827d69aa26850b0e; S3 remains disabled. No ledger reset or new key resets counted spending.
+
+S-VGW originally soughtUS$0.10; dashboard/API rejected limits belowUS$1. The owner then approved an isolatedUS$1 cumulative canary andUS$1.05 aggregate conservative ceiling across rounds. Closing quota work returned exactHTTP402 quota_for_entity_exceeded, DELETE204/readback404 and used-credential401. Conservative closureUS$1.00428, meteredUS$1.0007299; activation addedUS$0.0000038 reported cost and raised conservative total toUS$1.004284/US$1.05. Four negative-policy HTTP500 rounds remain failed; no explicit negative rejection or ZDR proof is implied. Existing restricted-pilot controls are [ADR-022](../../adr/adr-022.md); current acknowledgement is [ADR-017](../../adr/adr-017.md).
+
+<a id="vgw-closure"></a>
+## Latest S-VGW closure scope
+
+Validated within the restricted founding-household spike scope on October10: positive managed OpenAI routing, quota rejection, used-key revocation and documentary forwarding/retention with the recorded negative-test exception. Staging PostgreSQL18.6 controls passed13 live cases/15 HTTP checks; explicit household acknowledgement at07:47:14.460 UTC survived redeploy and fixed-input activation passed. Total conservative validationUS$1.004284/US$1.05. No database server restart or new production-app acceptance is claimed. Earlier pending entries above describe their dated point in the chronology.
+
+The new Home/streaming voice application remains unimplemented. New production policy/media/cost and both-phone gates belong to [P1/P2](../../plans/implementation-plan.md#p1); old spike approval is not copied to production.

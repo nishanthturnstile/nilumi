@@ -1,5 +1,8 @@
 # S3 Cloudflare gateway preparation — October 8, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest S3 synthetic correctness selection and its deferred application-latency limits are in [live acceptance](13-s3-live-acceptance.md); current restricted Gateway closure is in [verification](08-s3-gateway-verification.md#vgw-closure). Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 ## Decision and status
 
 The owner requested Cloudflare AI Gateway for synthetic testing, then clarified
@@ -129,28 +132,6 @@ are refused locally). The combined bound exceeds the remaining allowance.
 Per-call settlement may release unused reservations, but full completion under
 the current cap cannot be promised from these bounds. No cap increase is approved.
 
-## Setup and validation sequence
+## Scope disposition
 
-1. Create a named gateway (suggested ID `nilumi-s3`) with logs, caching and retries
-   disabled, authentication enabled, no provider keys and managed billing allowed.
-   Recheck exact retry behavior and all settings before making paid calls.
-2. Install an account-scoped token privately as `CLOUDFLARE_API_TOKEN`, plus
-   `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_AI_GATEWAY_ID`. Keep secrets in ignored
-   environment files or Railway secrets. Verify permissions through read-only
-   requests. Do not paste credentials into chat, tracked files or CLI arguments.
-3. Verify managed OpenAI no-training policy, approved-model availability, relevant
-   pricing and model-specific ZDR eligibility separately. Record only proven
-   Cloudflare facts in `config/cloudflare-privacy.json`; preserve pending flags.
-4. Fund inference only with owner-authorized payment. Funding does not increase
-   the cumulative test cap. Resolve a defensible reservation/run plan before
-   promising the full comparison.
-5. Deploy the tested artifact disabled; confirm owner session/origin/corpus gates.
-   Enable only for the three original development cases, with matching server
-   `NLU_GATEWAY=cloudflare` and runner `--gateway=cloudflare`.
-6. Stop if smoke fails. If it passes, run the frozen comparison only within the
-   remaining allowance, evaluate every acceptance gate and disable afterward.
-   Production must repeat validation on its actual model and privacy route.
-
-Local checks: 216 tests, Biome/ESLint, type checking and production build.
-Transport tests are mocked and establish request/parser/gate behavior; they do
-not establish live provider accuracy, latency, price or privacy eligibility.
+The proposed Cloudflare provisioning and test sequence was removed. Cloudflare was not chosen for household routing, no managed Cloudflare inference was funded by this record, and the existing unfunded adapter remains experimental. Current routing is [ADR-022](../../adr/adr-022.md); future application work belongs to [P0–P8](../../plans/implementation-plan.md). Published comparisons and actual dry-run bounds above remain evidence, not another deployment plan.

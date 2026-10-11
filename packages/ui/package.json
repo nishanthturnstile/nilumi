@@ -2,7 +2,7 @@
   "name": "@nilumi/ui",
   "version": "0.1.0",
   "private": true,
-  "description": "Nilumi design system: Pastel Rooms tokens, theme and shadcn/ui (Base UI) components.",
+  "description": "Nilumi visual foundation: tokens, fonts, theme helpers and static references; React components are planned.",
   "type": "module",
   "exports": {
     "./globals.css": "./src/styles/globals.css",

@@ -1,7 +1,7 @@
 {
   "name": "nilumi",
   "private": true,
-  "description": "Nilumi monorepo (pnpm workspaces, ADR-002). Phase 1 adds apps/web and apps/worker.",
+  "description": "Nilumi voice-first PWA workspace; production Home/application and isolated Python voice service are planned.",
   "packageManager": "pnpm@12.9.1",
   "engines": {
     "node": ">=24"

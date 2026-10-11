@@ -1,5 +1,8 @@
 # Verification route records
 
+> Existing spike reference, reconciled2026-10-10. Keep these commands, controls and reports for reproducing the stated experiment; this is not the production app or its next build plan. New Home/continuous voice work is **unimplemented** and owned by the [implementation plan](../../../docs/plans/implementation-plan.md). Processor approvals and paid-test limits do not automatically extend to a new Pipecat transport/model/runtime. Preserve ledgers and disabled evaluators.
+
+
 Checked October 10, 2026. Positive synthetic chat/embedding routing and canary
 revocation are verified. Exact live quota rejection passed. S-VGW is accepted for
 the restricted founding pilot under ADR-052: documentary storage evidence and a
@@ -10,7 +13,7 @@ Family traffic remains gated by deployed controls and explicit acknowledgement.
 | --- | --- | --- | --- | --- | --- |
 | NLU / answer: `openai/gpt-6-luna` | Gateway-managed OpenAI only | Public catalog `all`; `disallowPromptTraining:true`; live chat receipt confirms no-training, managed credentials and one OpenAI attempt | OpenAI default abuse-monitoring retention up to 30 days, with published legal/safety exceptions. Generation application state is controlled by `store`; prompt caching can retain encrypted tensors up to 24 hours independently. No pilot ZDR claim. | `providerOptions.openai.store:false`; pinned `ai` 7.0.130 / gateway 4.0.106 serialization verified. Luna's published gateway contract forwards options in the provider namespace; AI SDK documents OpenAI `store`. Documentary chain established; no direct downstream request observation. | Disabled; no live challenger accepted |
 | Embedding: `openai/text-embedding-3-small`, requested 768 dimensions | Gateway-managed OpenAI only | Catalog `all`; live embedding receipt confirms no-training, managed credentials and one OpenAI attempt | Published `/v1/embeddings` baseline: no training, abuse monitoring 30 days, no retained application state. No managed-account ZDR agreement is assumed. | Endpoint has no supported `store` field. Dimension option is serialized locally; live follow-up reports observed 768 dimensions in memory; vectors are not retained. | Disabled; use full-text/trigram if eligibility cannot pass |
-| TTS: Sarvam `bulbul:v3`, en-IN | Direct Sarvam | S0 owner evidence green in Tech Stack §7 | Existing S0 retention/deletion evidence applies | Synthetic fixture text only in S4; no uploaded audio | ElevenLabs remains S0-gated |
+| TTS: Sarvam `bulbul:v3`, en-IN | Direct Sarvam | Existing S0 owner approval for the recorded direct synthetic TTS scope | Existing S0 retention/deletion evidence applies | Synthetic fixture text only in S4; no uploaded audio | ElevenLabs remains S0-gated |
 | Quota-test workload only: `openai/gpt-5.5` | Gateway-managed OpenAI only | October 10 public catalog `all`; every request uses `disallowPromptTraining:true` and `only:[openai]`; require a managed no-training receipt | Same published OpenAI endpoint data controls; synthetic enumerated numbers only. No ZDR claim. | `openai.store:false`, `reasoningEffort:none`; base tier only; fixed 224-output-token limit and complete SDK payload <=512 UTF-8 bytes. Fresh catalog reservation is US$0.00928, limited to US$0.01. | Never enabled as a runtime role or fallback; isolated, revoked canary only |
 
 The alternative negative-policy profile is `inference-net/schematron-v2-small`,

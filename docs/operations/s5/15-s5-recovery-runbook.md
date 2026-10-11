@@ -175,3 +175,18 @@ offline/reconnect replay and no duplicate event IDs. Measure home-network RTT
 separately. The existing endpoint checks prove Railway transport only; this spike
 does not implement the production PWA or its reminder provider. Keep these gates
 pending until the installed application path can be exercised.
+
+
+ ## Production Home recovery requirements — planned P1/P4/P8
+
+ The procedure above is validated within the stated S5 experiment and owner exceptions. It is not acceptance of the unimplemented production Home/database/media deployment. Keep its runnable commands and original measurements; extend the private runbook after actual services exist.
+
+ P1 creates isolated production/staging roles, encrypted backups, journal watermark and human recovery path. P4 includes activity/presentation/source references and derivative redaction. P8 performs the full manual rehearsal (RPO≤24h, RTO≤2h) using actual human key material.
+
+ Before serving a restore: replay all forget tombstones to the verified journal watermark; revalidate current membership/visibility and presentation refs; discard invalid derived layouts/private caches; revoke old sessions/media grants; suppress obsolete audio/notifications/jobs and reconcile receipts before retry. Restore canonical domain data before rebuilding safe Home projections. Persistent activities survive transcript expiry but never override source deletion or visibility. Offline devices clear revoked caches at next contact.
+
+ Record app/worker/Python version, chosen media transport/host, database/extension versions, build/backup hashes, journal watermark, completed checks, exclusions and actual timing in phase evidence. Keep recovery credentials/private age key out of the repo. [Current implementation gates](../../plans/implementation-plan.md#validation-register) own remaining production proof.
+
+### Planned application lifecycle replay
+
+Production P1 establishes versioned content-free deletion/revocation journal watermarks; P2 journals deleted activity/presentation IDs, P4 records unshare/visibility restrictions, and later membership tools extend the same protocol. Before serving a restored snapshot, apply the latest restrictive entries and revalidate references; deleted drafts, withdrawn shares and revoked sessions must not reappear. Never restore active media or executable action grants. Reconcile missing/ambiguous lifecycle evidence before enabling affected access. This extends future application recovery only; the S5 commands and scoped acceptance above remain unchanged.

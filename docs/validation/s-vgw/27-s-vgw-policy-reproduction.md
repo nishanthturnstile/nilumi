@@ -1,5 +1,8 @@
 # S-VGW policy rejection reproduction — October 10, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. The report remains local and unsent. Subsequent [restricted pilot closure](../s3/08-s3-gateway-verification.md#vgw-closure) accepted an exception; the four negative probes remain failed. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status:** Owner requested keeping this report local; not sent to Vercel. No household data,
 credentials, provider responses or raw error messages are included.
 
@@ -86,7 +89,7 @@ Evidence: [first round](../../../spikes/s1/evals/results/vgw-live-controls-2026-
 [second round and aggregate accounting](../../../spikes/s1/evals/results/vgw-followup-controls-2026-10-10.json),
 [Schematron non-streaming](../../../spikes/s1/evals/results/vgw-closure-controls-2026-10-10.json),
 [Schematron streaming](../../../spikes/s1/evals/results/vgw-stream-controls-2026-10-10.json),
-[approved completion sequence](../../plans/26-s-vgw-completion-plan.md).
+[approved completion sequence](../s3/08-s3-gateway-verification.md#vgw-closure).
 
 ## Proposed support message
 

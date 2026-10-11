@@ -1,5 +1,8 @@
 # S4 v3 Android retest — October 9, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Later S4 owner closure and the retained failed timing/phone cases are in [both-phone analysis](25-s4-v4-both-phone-analysis.md). They do not validate the new runtime. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status: partial owner phone evidence; S4 remains unaccepted. The next focused
 experiment is provider connection lifetime, with a separate silence-quality
 investigation and finer ledger timings.**
@@ -94,21 +97,7 @@ resource fields alone do not prove no connection cost.
    open/write/sync, read/parse/validation, cleanup or event-loop/storage delay.
    Removing the durable reservation save would target the wrong measured stage.
 
-## Next experiments, in order
-
-**1. Provider connection lifetime.** Extend the connection diagnostics with
-content-free disconnect reason/time and effective idle policy. Use the actual
-Node 24.21.0 / Undici 7.29.1 behavior as the baseline: its documented idle
-default is four seconds, overridable by server hints. The observed gap/new-socket
-pattern is consistent with that policy, but does not prove client-side closure.
-[Matching Undici Client documentation](https://github.com/nodejs/undici/blob/v7.29.1/docs/docs/api/Client.md).
-
-Trial a process-wide, Sarvam-only pinned dispatcher/pool with two connections,
-`pipelining: 1` and approximately 15-second idle lifetime, subject to provider
-hints. Keep the request-specific dispatcher rather than changing unrelated
-providers' global pool. Retain aborts, TLS verification, redirect rejection,
-bounded deadlines, no automatic retry of uncertain synthesis and one durable
-reservation per utterance. Do not synthesize periodically to keep it warm.
+## Historical limits from this experiment
 
 Local/fake controls must cover body completion versus application persistence,
 3/6/12-second idle gaps, provider-initiated close, Stop before/after headers,
@@ -116,14 +105,6 @@ two simultaneous requests and process restart. Compare cold and reused traces
 in a separately versioned phone candidate; cold first requests remain measured.
 Potential savings apply to avoidable reconnects, not already reused sockets or
 the independent silence/ledger tails.
-
-**2. Ledger substage instrumentation.** Add optional timing around lock acquire,
-lock write/sync, ledger read, parse/validate, callback/save and lock cleanup, plus
-an event-loop-delay indicator if necessary. Use bounded synthetic local
-concurrency/storage controls first. Preserve the current durable-before-dispatch
-contract. Do not cache spending, remove fsync, auto-recover uncertain attempts,
-or move latency outside the clock only in the benchmark. Decide on a smaller
-transaction or storage design only after the long substage is identified.
 
 **3. Conservative prefix investigation.** Inspect already-generated fixture
 audio offline if the durable clips remain available; no new synthesis is needed
@@ -146,6 +127,8 @@ voice-quality variable; they are not a documented silence fix. WebSocket,
 experiments. The raw-body-to-PCM interval needs raw byte-count/parser-state and
 decoder-work marks before treating it as removable parser CPU. Hosting migration
 remains deferred as requested.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ## Tooling validation and budget
 

@@ -1,12 +1,12 @@
 # S4 voice verification — October 9, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Later S4 owner closure and the retained failed timing/phone cases are in [both-phone analysis](25-s4-v4-both-phone-analysis.md). They do not validate the new runtime. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status October 10: wife selected Ritu; owner closed the current optimization pass. The ≤700 ms p95 acceptance remains deferred and unpassed.**
 
 The deployed v8 implementation, both-phone smoke checks and closure decision are
-recorded in [doc 25](25-s4-v4-both-phone-analysis.md). Further tuning and the full
-phone/network benchmark are deferred while work moves to S-VGW and the app
-foundation. The benchmark instructions below remain the acceptance procedure
-when this work resumes.
+recorded in [doc 25](25-s4-v4-both-phone-analysis.md). At closure, further tuning and the full phone/network benchmark remained deferred. The protocol below records the old acceptance scope; it is not the new application work sequence or permission for another paid run.
 
 The separately versioned streaming candidate and its validation are recorded in
 [doc 20](20-s4-streaming-validation.md). This document preserves the v1 baseline.
@@ -16,12 +16,9 @@ PWA. The owner's confirmed sign-in account is the sole allowlisted evaluator;
 one account can be used on both phones. Sign in from Home if access is unavailable,
 then return to Voice selection. Only committed synthetic sentences are sent.
 
-## Home session
+## Historical home-session protocol
 
-Pause further uncached latency runs of `s4-bulbul-v3-1`: the supplied Android
-measurements already exceed the target. Preserve these failed partial runs;
-resume acceptance testing on a separately versioned candidate after tuning.
-The steps below describe the complete acceptance session.
+Uncached latency runs of `s4-bulbul-v3-1` were paused because supplied Android measurements exceeded the target. Failed partial runs remain evidence. The steps below describe the complete historical protocol, including slices not completed; they do not claim the whole protocol was run.
 
 1. On iPhone, listen to the same six samples for candidates A–D. Let the wife
    choose **This is my preferred voice**. Check her choice on Android too.
@@ -159,3 +156,71 @@ The subsequent [Sarvam latency research](../../research/19-s4-sarvam-latency-res
 primary-source recommendations, unbilled Singapore connection/storage probes and a
 prioritized transport/playback experiment plan. It adds no acceptance trial and
 does not change the selected voice or cumulative spending allowance.
+
+## Reconciled completed observations from former document 17
+
+Dated historical evidence reconciled on 2026-10-10. These observations describe the existing spike or design reference only. Future work is owned by the [implementation plan](../../plans/implementation-plan.md) (the link is resolved from the validation directory).
+
+
+
+The spike now includes `/voice` for four Sarvam candidates, persisted wife
+selection, fixed sentence playback and uncached phone benchmarking. A shared
+durable reservation ledger preserves both the ₹50 S4 allowance and the separate
+US$0.10 gateway allowance; failed or uncertain calls retain their reservations.
+Synthetic fixture IDs are the only accepted TTS input. Member-bound, expiring
+clip descriptors and range/replay reuse prevent arbitrary paid synthesis.
+
+The timer starts before the speech fetch and includes synthesis, transfer and
+playback startup. Its `playing` event plus measured leading-silence estimate needs
+real-phone audible-onset verification. Each slice needs all ten frozen benchmark
+sentences at least five times, unique trial IDs, no failed attempts, standalone
+phone playback and p95 ≤700 ms. Phone exports can be combined with `voice:report`.
+The full 24-clip listening set and 200 benchmark attempts reserve ₹37.2096,
+including the 20% billing margin. No chosen voice or measured latency is claimed.
+
+The gateway wrapper enforces S-VGW acceptance and current household acknowledgement
+before family dispatch and rechecks both after reservation. The synthetic capability
+accepts only two frozen fixtures. Routing receipts, missing costs, terminal SDK
+errors and direct-provider import violations fail closed. The four-attempt canary
+manifest includes the documented `arcee-ai/trinity-large-thinking` / `arcee-ai`
+negative route; its current catalog must still report no-training `none` at dispatch.
+No fallback is enabled. Pinned SDK tests capture serialized storage and routing
+controls and inject terminal errors without network or provider charges.
+
+This is verification infrastructure. The new application needs durable reviewed gate
+and household acknowledgement state, structured NLU integration and a family
+endpoint. The shared wrapper's server-side callbacks are not a substitute for
+that persistence. Actual provider forwarding, live routing, quota rejection,
+separate runtime/evaluation key budgets and canary revocation remain required
+S-VGW evidence. The runner stays disabled until its preflight is complete.
+
+Validation: 245 automated tests, Biome/ESLint and gateway guard, TypeScript, and
+production build pass. Mocked report aggregation passes four complete slices;
+that fixture is local tool validation, not real-device performance evidence.
+The historical S3 ledger and evaluator remain unchanged and disabled.
+
+
+Staging handoff: `/voice` is deployed in Singapore as
+`a327c84d-9737-4d23-b992-d3423211ad7a`, with a preserved 500 MB verification volume.
+One synthetic setup clip returned valid WAV and a range-safe replay; the S4
+ledger retains ₹0.1476. Its 1,040.27 ms provider round trip is not a qualifying
+phone latency result. Home instructions and pending acceptance are in
+[doc 18](18-s4-voice-verification.md). Temporary Railway SSH access used for
+initialization and verification was revoked and its local identity removed.
+
+A public-catalog rate check at 2026-10-09T04:16:45Z bounds the four canary
+reservations at US$0.002205 total: chat US$0.000532, embedding US$0.000083,
+negative route US$0.001058, and quota attempt US$0.000532. This fits US$0.10
+without sending a model request. The live runner rechecks rates before reserving;
+account preflight remains incomplete and no canary key was created.
+
+
+At 04:22 UTC the owner supplied the Ritu selection and partial Android export:
+14/15 mobile attempts completed (p95 1,591.02 ms), 15/16 Wi-Fi attempts completed
+(p95 4,500.29 ms), with one retained cancellation in each slice. All completed
+trials exceed 700 ms. The conservative snapshot retains ₹6.408 of ₹50. Preserve
+these partial results and tune a separately versioned candidate before further
+uncached acceptance runs. [Doc 18](18-s4-voice-verification.md#owner-provided-android-results--042244-utc)
+records the selection, provider/remainder diagnostics and unresolved acceptance.
+No new paid request, deployment, provider switch or allowance change was made
+while recording this export.

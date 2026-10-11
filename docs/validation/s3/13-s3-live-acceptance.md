@@ -1,5 +1,8 @@
 # S3 live reliability and acceptance — October 8, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest S3 synthetic correctness selection and its deferred application-latency limits are in [live acceptance](13-s3-live-acceptance.md); current restricted Gateway closure is in [verification](08-s3-gateway-verification.md#vgw-closure). Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Synthetic correctness acceptance passed; select `openai/gpt-6-luna` with low
 reasoning for the spike.** The parser implementation and deadline safeguards
 are delivered. The owner subsequently asked to prioritize
@@ -9,12 +12,12 @@ The owner explicitly approved **30 seconds per synthetic correctness response**,
 while preserving the application's five-second deadline and privacy controls.
 The run stayed under the evaluator's effective USD 0.50 hard cap; the owner
 approved a separate USD 2.00 cumulative cap, but the runner and ledger still need
-migration before spending above USD 0.50 ([ADR-040](../../adr/adr-040.md)). Earlier
+migration before spending above USD 0.50 ([Historical experiment permission (040)](08-s3-gateway-verification.md#historical-experiment-permissions)). Earlier
 five-second results retain their original gates.
 
 ## Regional reliability experiment
 
-Temporarily move the single staging replica from Singapore to US East Virginia,
+The historical regional experiment moved the single staging replica from Singapore to US East Virginia,
 without changing the frozen V11 prompt, wire-v2 schema, models, reasoning settings,
 scoring or privacy controls. There are no attached volumes. This tests whether
 placement reduces time waiting for the remote response. No production traffic,
@@ -45,8 +48,7 @@ evidence of lower provider latency. See [Railway regions](https://docs.railway.c
 
 ## Development-only prompt revisions
 
-Keep all 60 reviewed fixtures, goldens, contracts, interpreter and scorer fixed.
-Inspect only development failures; the repeated original holdout remains
+The historical development protocol kept all 60 reviewed fixtures, goldens, contracts, interpreter and scorer fixed and inspected only development failures; the repeated original holdout remains
 regression evidence, rather than independent acceptance data. Never inspect or
 tune against held-out transcripts, answers or raw outputs.
 
@@ -74,8 +76,7 @@ examples and subscription tests. The restored prompt has previously passed
 regional responses were all correct. The newer candidates are preserved in Git,
 rather than combined into an unvalidated prompt.
 
-Add an explicit `synthetic_correctness` purpose to the staging evaluator and
-runner. It uses a 30-second generation cutoff only with the fixed reviewed
+The staging evaluator and runner gained an explicit `synthetic_correctness` purpose. It uses a 30-second generation cutoff only with the fixed reviewed
 synthetic mode. Other modes reject it before dispatch; default calls retain
 five seconds. Reports label their purpose and deadline, and the client checks
 those labels. Cancellation, monotonic timing enforcement, bounded metadata,
@@ -98,10 +99,7 @@ than proving hosted routing, timing or production privacy. Frozen hashes:
 - Pipeline: `d619433feb86fe6603b48e3484358d65f2fc88a8806a1847ac9f1d2ef2fd0c80`
 - Corpus: `962a1af2ba29d60cf3a16d6df1a2891d0d2c6713a0d852b41731dddfbf8caadd`
 
-The reproducible hosted runner accepts `--purpose=synthetic_correctness` only
-with `--mode=synthetic_hobby`. Run three development cases first; stop if smoke
-fails. A successful smoke permits the frozen full run. Credentials remain in
-ignored environment configuration, never in command arguments or reports:
+Historical runner invocation, preserved for reproduction of this disabled synthetic harness: `--purpose=synthetic_correctness` required `--mode=synthetic_hobby` and a passing three-case smoke before the frozen full run. This command is not authorization for new paid calls; current budget/policy gates apply. Credentials remain in ignored environment configuration, never in command arguments or reports:
 
 ```sh
 pnpm nlu:eval -- --live --gateway=vercel --mode=synthetic_hobby \
@@ -109,14 +107,12 @@ pnpm nlu:eval -- --live --gateway=vercel --mode=synthetic_hobby \
   --cases=shopping-01,memories-01,dates-01 --passes=1
 ```
 
-After passing smoke, use `--cases=all` to select the fixed complete corpus. The
-runner retains reservations and refuses dispatch beyond the cumulative cap.
+The historical full run used `--cases=all` after smoke passed. The runner retained reservations and refused dispatch beyond the cumulative cap.
 
 ## Final live correctness acceptance
 
 Successful deployment `8e052702-01ea-4fc9-9b09-6572b95d4647` contains source commit
-`b7ace59` and the frozen pipeline above. Verify an authenticated non-generative
-preflight, then run three development cases and the full corpus once.
+`b7ace59` and the frozen pipeline above. An authenticated non-generative preflight preceded the three development cases and the single full-corpus run.
 
 | Gate | Full hosted Luna low result |
 | --- | --- |
@@ -163,7 +159,7 @@ remain unchanged; the final ledger has 289 entries. SHA-256:
 All inference used the fixed synthetic corpus, OpenAI-only managed routing,
 no-training and `store:false`. No family data was sent. Cloudflare remains an
 explicit unused spike alternative. Founding-household runtime calls require
-S-VGW and the household acknowledgement under [ADR-046](../../adr/adr-046.md); users
+S-VGW and the household acknowledgement under [ADR-017](../../adr/adr-017.md); users
 outside the founding household require the production ZDR gate. Synthetic model
 selection does not grant runtime approval.
 
@@ -172,10 +168,4 @@ POST verified as HTTP 404 `evaluation_disabled`. Successful disabled deployment
 `a0ca340e-528a-4881-b645-6e33b85ae7c2` runs one replica in Singapore.
 
 [Content-free evidence](../../../spikes/s1/evals/results/live-acceptance-2026-10-08.json)
-records all failures and gates. Core implementation/report delivery can be
-closed with unmet gates stated, as specified in the S3 plan. Synthetic live
-correctness selection is complete. Production deadline reliability, S-VGW and
-the household acknowledgement for founding-household runtime calls, the
-production ZDR gate, independent acceptance data, production shadow validation,
-fallback validation and deferred offline classifier experiments remain pending.
-Do not mark the entire roadmap S3 complete or enable runtime inference yet.
+records all failures and gates. Synthetic live correctness selection is complete within that stated scope; it does not establish production deadline reliability or independent/shadow validation. The later restricted Gateway closure is recorded in [verification](08-s3-gateway-verification.md#vgw-closure). New Home, policy, cost, media and application release gates are owned by the [current plan](../../plans/implementation-plan.md); no historical comparison, fallback or classifier work sequence remains active.

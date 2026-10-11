@@ -1,9 +1,12 @@
 # S4 v4 connection and ledger candidate — October 9, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Later S4 owner closure and the retained failed timing/phone cases are in [both-phone analysis](25-s4-v4-both-phone-analysis.md). They do not validate the new runtime. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status: implemented, reviewed, validated and deployed; ready for the owner phone retest. Phone acceptance remains pending.**
 
 The owner has since supplied both-phone v4 results. See the
-[current phone analysis and next plan](25-s4-v4-both-phone-analysis.md), including
+[dated phone analysis](25-s4-v4-both-phone-analysis.md), including
 the refreshed ₹27.288 cumulative reservation. The deployment checks and original
 test allowance below preserve the earlier handoff, not today's remaining budget.
 
@@ -132,7 +135,8 @@ was unavailable in the preview; DOM evaluation and native click/wait completed
 the UI check. **No paid provider calls were made**, and the live ledger remained
 unchanged. Actual Sarvam pool policy and v4 phone p95 await the owner retest.
 
-## Budget and owner test sequence
+## Historical limits from this experiment
+
 
 The authenticated predeployment ledger read is **₹16.0416 / ₹50**, unchanged
 from the owner's export; remaining allowance is **₹33.9584**. One two-sentence
@@ -141,26 +145,51 @@ check reserves at most **₹0.234**. Four checks reserve **₹0.936**, leaving
 ₹0.1904 remaining. No additional listening, repeated smokes or agent paid probe
 is included in that arithmetic. Read the current balance again before paid work.
 
-1. Reload online and open [staging voice testing](https://staging.nilumi.in/voice).
-   Confirm `s4-bulbul-v3-stream-4` and the saved Ritu selection.
-2. Use the installed app and the same audio output on both phones. Fill in the
-   optional phone/OS/output note. Run the **free audio check** first; verify the
-   tone and Stop without speech charges.
-3. Test one phone at a time. Select home Wi-Fi, leave other speech tests idle
-   for approximately 20 seconds, then press **Check 2 sentences with a pause**
-   once. Let both sentences and the six-second pause finish in the foreground.
-   Repeat once on mobile data after selecting the actual network. Repeat on the
-   other phone. The traces label actual socket reuse; the wait is not proof that
-   a particular request was cold.
-4. Reverify audible onset for this version, then download each phone's JSON after
-   both networks. Each phone should have four smoke rows; eight total across
-   the reports. Keep v3 reports separately and share the v4 exports.
-5. Review first/second connection, idle hint/disconnect classification, ledger
-   substages, raw-to-PCM versus decoder CPU, leading silence and underruns before
-   another full benchmark. Do not tap Stop during these latency checks. Check
-   Stop/app-switch separately with the free audio check.
-
-The four full 50-trial slices and p95 ≤700 ms remain the final gate, including
+The original protocol required four full 50-trial slices and p95 ≤700 ms, including
 uncached corpus coverage, no failed attempts and physical onset verification.
 Hosting migration, codecs/WebSocket, further buffer reduction and audio trimming
-remain separate evidence-dependent work. S-VGW is an independent prerequisite.
+remain separate evidence-dependent work. Later owner closure in doc25 retains incomplete timing coverage and scoped exceptions; P0 owns new continuous-voice acceptance.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
+
+## Reconciled completed observations from former document 21
+
+Dated historical evidence reconciled on 2026-10-10. These observations describe the existing spike or design reference only. Future work is owned by the [implementation plan](../../plans/implementation-plan.md) (the link is resolved from the validation directory).
+
+
+
+The [v2 Android retest](20-s4-streaming-validation.md#owner-provided-android-retest--053055-utc)
+contains ten completed benchmark trials per network and one manual Stop per
+slice, plus six separate exploratory rows. All completed rows report zero
+underruns. iPhone evidence is still absent. These small samples do not establish
+the eventual p95; their nearest-rank p95 is their maximum.
+
+| Observed component, completed benchmarks | Wi-Fi p50 | Mobile p50 | Interpretation |
+| --- | ---: | ---: | --- |
+| Server/provider request to response headers | 90.03 ms | 97.82 ms | Includes request setup, connection/network and provider response wait |
+| Provider headers to first validated PCM, paired durations | 181.38 ms | 179.05 ms | A distinct generation/delivery interval after headers; not a frontend wait |
+| Provider request to first PCM | 277.89 ms | 269.97 ms | Includes the preceding two stages; not inference-only time |
+| Phone first PCM minus provider-first-PCM duration | 283.70 ms | 229.76 ms | Mixed request travel, server pre-dispatch work and return/reader delivery |
+| Estimated audible onset minus phone first PCM | 112.20 ms | 112.28 ms | Startup cushion, leading silence, scheduling and output estimate |
+| End-to-end first audible estimate | 684.15 ms | 638.38 ms | Agreed metric; does not include the preparation POST |
+
+These are separately computed percentiles and must not be added. Derive paired
+durations for each attempt and measure final end-to-end percentiles directly.
+The client and server clocks are not synchronized; the mixed remainder is a
+subtraction of elapsed durations, not subtraction of wall-clock timestamps.
+
+Two different tails require different remedies:
+
+- The mobile `date` benchmark waited 2,433.18 ms for provider headers, reached
+  provider first PCM at 2,612.55 ms and audible onset at 2,983.82 ms. Frontend
+  conversion or buffering changes cannot remove that initial response wait.
+- The mobile exploratory `shopping` row had provider first PCM at 272.00 ms but
+  phone first PCM at 1,069.90 ms. Most of that extra time is outside the measured
+  provider-first-PCM duration. It cannot be labelled pure mobile-network delay
+  without server and browser traces.
+
+Four completed benchmark header waits are around 205–229 ms; many other waits
+are around 82–98 ms. The earlier [Singapore control](../../research/19-s4-sarvam-latency-research.md#2-singapore-and-storage-measurements)
+observed 145.66 ms first connection setup and approximately 64 ms warm headers.
+This makes intermittent connection establishment a worthwhile hypothesis. It is
+not proof: that control used unauthenticated 405 responses in another process.

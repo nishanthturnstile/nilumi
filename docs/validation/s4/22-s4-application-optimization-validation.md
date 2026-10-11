@@ -1,5 +1,8 @@
 # S4 application optimization candidate — October 9, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Later S4 owner closure and the retained failed timing/phone cases are in [both-phone analysis](25-s4-v4-both-phone-analysis.md). They do not validate the new runtime. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status: reviewed, validated and deployed; ready for the owner phone retest. Physical phone acceptance remains pending.**
 
 The owner has supplied a partial Android retest. See [v3 phone analysis](23-s4-v3-phone-retest-analysis.md)
@@ -7,7 +10,7 @@ for the new measurements and updated budget; the live deployment checks below
 preserve their earlier snapshot.
 
 Candidate `s4-bulbul-v3-stream-3` implements the first application/player batch
-from the [low-level plan](../../plans/21-s4-low-level-latency-plan.md). Profile:
+from the [Dated experiment evidence](24-s4-v4-connection-and-ledger-validation.md). Profile:
 `http-pcm-coordinator-20ms`. Ritu, the frozen corpus, Bulbul v3 settings and
 HTTP WAV-to-PCM transport remain the controlled baseline. Hosting migration,
 silence trimming, a longer provider idle timeout, WebSocket, other codecs and
@@ -159,19 +162,7 @@ reservations are **₹12.0636 / ₹50**, leaving **₹37.9364**. The existing Ri
 choice remains unchanged. The fresh full-corpus allowance of ₹32.832 remains
 protected; do not reset the budget or release uncertain reservations.
 
-## Owner retest
-
-1. Reload online in the installed app and open
-   [staging voice testing](https://staging.nilumi.in/voice). Confirm the displayed
-   version is `s4-bulbul-v3-stream-3` and the saved voice is Ritu.
-2. Play the free audio check first on each phone. Verify the complete tone,
-   foreground playback and Stop; this uses no speech credits.
-3. Select home Wi-Fi and run **Try 3 uncached sentences**, letting all three
-   finish. Repeat on mobile data. Use the same audio output as the earlier run,
-   and optionally describe phone/OS/output in the note field.
-4. Download the JSON from each phone after its two networks. Keep v2 exports;
-   send the new reports for stage and connection analysis before another full
-   50-trial run. Reverify audible onset for this candidate.
+## Historical limits from this experiment
 
 Four three-sentence phone/network checks reserve ₹1.6704; with the two bounded
 server smokes they total ₹1.8432 within the proposed ₹2 screening allowance.
@@ -181,3 +172,6 @@ Exploratory checks remain excluded from acceptance. The eventual four slices
 still require full 50-trial coverage, unique uncached successes, zero failed
 attempts, actual onset verification and p95 ≤700 ms. Manual Stops and slow
 provider responses remain in their reports. S-VGW remains an independent gate.
+
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.

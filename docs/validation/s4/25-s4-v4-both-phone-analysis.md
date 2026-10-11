@@ -1,5 +1,8 @@
 # S4 v4 Android and iPhone results — October 9, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Later S4 owner closure and the retained failed timing/phone cases are in [both-phone analysis](25-s4-v4-both-phone-analysis.md). They do not validate the new runtime. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status: partial phone evidence reviewed. The connection experiment works in
 these traces; S4 remains unaccepted. The focused lock-file change is now
 implemented, reviewed, validated and deployed as v5. The subsequent eight v5
@@ -142,73 +145,14 @@ trimming alone does not solve the Android tail. Sarvam's current HTTP streaming
 schema does not document an initial-silence control; settings/model changes must
 be evaluated as separate voice-quality experiments. [Sarvam REST stream schema](https://docs.sarvam.ai/api-reference/text-to-speech/convert-stream).
 
-## Focused next plan
-
-1. **Review S4's temporary lock-file flush first.** The Android mobile clarify
-   transaction took 174.37 ms; `lock.sync()` accounted for 145.98 ms, while its
-   durable reservation save took 20.45 ms. The current PID/timestamp lock contents
-   are diagnostic; repository code does not read them to authorize spending or
-   automatically reclaim a stale lock. The hypothesis is that S4 can retain
-   exclusive `open('wx')` creation and fail-closed stale-lock behavior without
-   flushing these diagnostic contents before every request. Keep the Gateway
-   canary's behavior unchanged. This is a design inference, not a proven safety
-   claim or implemented change. Node distinguishes file flushing from exclusive
-   creation. [Node 24 sync](https://nodejs.org/docs/latest-v24.x/api/fs.html#filehandlesync)
-   and [open flags](https://nodejs.org/docs/latest-v24.x/api/fs.html#file-system-flags).
-2. **Prove spending durability before a new runtime candidate.** Exercise
-   cross-process exclusivity, lock/write failures, missing/invalid ledgers,
-   duplicate IDs, cap exhaustion, process termination around reservation
-   save/dispatch and uncertain prior attempts. Preserve reservation file sync,
-   atomic rename and directory sync before provider access. Do not remove the
-   52–58 ms reservation file-sync tails also observed on iPhone; those are a
-   different operation protecting the spending record. Offline fault injection
-   and ordering checks support, but do not replace, a crash-durability review.
-3. **Investigate prefix quality using the saved clips.** Compare original
-   playback with a bounded exact-zero-only variant and inspect quiet first
-   phonemes. Preserve a guard, strict maximum removal, fail-open unmodified
-   output and byte-identical samples after the prefix if a variant proceeds.
-   Keep original/removed/residual frame counts and freeze a new version.
-   Any treatment of nonzero quiet samples requires listening and physical onset
-   checks on both phones; changing threshold 164 solely to lower the report is
-   not a latency optimization. The Android tail may require a provider-side
-   quality investigation with the existing request ID and clip, not more local
-   frontend rewriting. No provider message was sent during this review.
-4. **Evaluate the newly documented low-latency model separately.** Sarvam's
-   current model guide recommends `bulbul:v4-flash` for new integrations, and
-   its best-practice guide describes it as the interactive low-latency tier.
-   It supports the existing HTTP streaming endpoint; a transport rewrite is
-   not a prerequisite. This is a potentially more relevant provider experiment
-   than further parser optimization, not a measured speedup for our phones.
-   [Current model guide](https://docs.sarvam.ai/api/getting-started/models/bulbul)
-   and [Flash best practices](https://docs.sarvam.ai/api/api-guides-tutorials/text-to-speech/best-practice-guide-for-bulbul-v-4-flash).
-   The persona catalog differs from v3; `ritu` cannot be assumed to be a valid
-   unchanged speaker selection. Review en-IN/Tamil suitability, current billing
-   and adapter parameter compatibility before a bounded comparison; wife voice
-   approval and a new version are required if a different persona proceeds.
-   [Current voice catalog](https://docs.sarvam.ai/api/api-guides-tutorials/text-to-speech/voices).
-   The guide and endpoint schema disagree on some supported controls, so do not
-   add pitch/loudness or alter preprocessing on assumption. No Flash synthesis
-   or additional allowance was used in this review.
-   The [current pricing table](https://docs.sarvam.ai/api/getting-started/pricing)
-   lists v3 at ₹30 per 10,000 characters but does not separately list Flash.
-   Verify its actual rate before enabling paid access; do not reuse the v3
-   reservation formula for a model with unverified billing.
-5. **Keep other variables fixed and use free/offline checks first.** No buffer
-   reduction, AudioWorklet rewrite, codec switch, WebSocket migration, repeated
-   paid smoke or hosting change is justified as the immediate next batch.
-   Benchmark batch isolation is a reporting improvement to design separately;
-   it must not hide failures or retroactively redefine these runs.
-6. **Reconcile funding before fresh acceptance trials.** Refresh the live
-   ledger and calculate the exact planned allowance before dispatch. Keep the
-   cumulative cap intact. If a larger allowance is needed, present a concrete
-   bounded run and cap change for owner authorization rather than resetting
-   retained reservations. After a reviewed new candidate, run only the agreed
-   small phone check before attempting complete acceptance.
+## Historical limits from this experiment
 
 The lock change can remove the measured 146 ms flush in an analogous request,
 but that particular trial already completed at 622 ms. It is a reliability
 margin improvement, not evidence that it resolves the separate 1,197 ms prefix
 outlier. Neither proposed change guarantees the final p95.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ## Budget and validation
 
@@ -313,27 +257,11 @@ v3 pricing without an explicit Flash rate. No Flash adapter or paid model switch
 was enabled. Its actual rate and wife-approved persona must be established
 before a separately funded comparison.
 
-### Exactly what to test now
+### Historical limits from this experiment
 
-1. Reload online in each installed phone app. Confirm
-   `s4-bulbul-v3-stream-5` and selected Ritu. Add phone/OS/audio-output notes.
-2. Run **Play free audio check** first. Use that free check for Stop/phone-lock
-   recovery testing, separately from paid latency trials.
-3. On each phone/network combination, run **Check 2 sentences with a pause**
-   once only. Allow approximately 20 seconds of speech inactivity before each
-   pair, keep the phone unlocked in the foreground, and let both sentences and
-   the six-second pause finish. Do not tap Stop during these checks.
-4. Recheck audible onset for v5, mark the verification checkbox after observing
-   both phones, and download each phone's JSON after Wi-Fi and mobile data.
-   Expect four smoke rows per phone; smoke rows do not populate benchmark p95.
-5. Compare the saved offline original/control audio on both phones, without
-   making additional speech requests, and share the listening observations.
 
-**Do not press Run 50 uncached trials yet.** Four two-sentence checks reserve
-at most ₹0.936, leaving **₹21.776** from the checked balance. A fresh complete
-200-trial benchmark still does not fit the current cap. Review the v5 lock-policy
-trace, retained file/directory sync, socket reuse, prefix timing and underruns
-before allocating another paid batch. No paid agent calls were made.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ## V5 Wi-Fi smoke results — owner exports at 12:00–12:01 UTC
 
@@ -422,38 +350,17 @@ These findings favor targeted browser/audio diagnostics before another model,
 buffer, codec or hosting change. The v4 prefix outliers and v5 client gaps are
 different observed conditions; prefix trimming cannot fix all of them.
 
-### Focused next increment
+### Historical limits from this experiment
 
-1. Record resource `startTime`, `fetchStart`, `workerStart`, `requestStart`,
-   `responseStart` and, when available, `finalResponseHeadersStart`, all relative
-   to the same trial origin as `fetch()` resumption. Preserve missing/unsupported
-   distinctly from zero. This separates time before network dispatch from time
-   after network response. [Resource Timing contract](https://www.w3.org/TR/resource-timing/).
-2. Capture bounded first-chunk/first-source scheduling marks, AudioContext state
-   and clock, the scheduled onset, and the raw output-timestamp mapping at onset
-   capture. Preserve the estimator and playback behavior. These marks should
-   explain the Android 209 ms remainder without assuming conversion CPU is its
-   cause. Do not export audio samples or turn text in timing diagnostics.
-3. Feature-detect long-task observation and retain aggregate timing/counts only;
-   unsupported means unknown, not no blocking. Long Tasks surfaces tasks of at
-   least 50 ms, not every source of browser delay. Avoid names/stack traces and
-   continuous per-frame polling. [Long Tasks contract](https://www.w3.org/TR/longtasks/).
-4. First validate these diagnostics with the existing free tone and saved clips,
-   including deliberate callback delay and output-clock mapping controls.
-   Keep the extra instrumentation bounded and verify that it cannot change
-   synthesis, ledger charging, interruption handling or reported onset.
-5. After diagnostic review, run only one two-sentence pair per phone on mobile
-   data with the page explicitly set to mobile. Retain a cold first request and
-   the paused reused request. Two pairs reserve at most ₹0.468. This would add
-   missing smoke coverage; it would still not establish acceptance.
-
-This section records analysis and the next implementation plan. Runtime and
+This section records dated analysis and acceptance limits. Runtime and
 deployment are unchanged; no paid synthesis was initiated by the agent.
 Independent arithmetic/count checks, local documentation links, lint,
 type-check, all 301 tests and the production build passed. The actual offline
 reporting CLI accepts the extracted trial metadata and returns four empty,
 unaccepted benchmark summaries, matching the supplied exports. Nine runtime,
 configuration and dependency fingerprints still match the deployed v5 record.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ### Budget reconciliation
 
@@ -574,35 +481,19 @@ and trace return 409, HEAD 405, revocation 200 and its subsequent read 404.
 Anonymous budget/diagnostic reads return 401 and extra-field preparation 400.
 No unrevoked paid audio endpoint was opened. The final live balance remained
 **₹28.998 reserved of ₹50**, leaving **₹21.002**, before and after the checks.
-The next four pairs reserve at most ₹0.936, leaving **₹20.066**. No paid agent
+The then-proposed four-pair diagnostic allowance was at most ₹0.936, projected to leave **₹20.066**. This was not a completed additional run. No paid agent
 dispatch, reservation release, cap increase, commit or push occurred.
 
-### Phone handoff after live validation
-
-1. Reload online in both installed apps. Confirm `s4-bulbul-v3-stream-6` and
-   Ritu; keep the phones on their built-in speakers and note model/OS/output.
-   Old report rows are preserved separately; do not re-audition the voices.
-2. Set the correct current connection. Run **Play free audio check** twice on
-   each network, allowing each tone to finish. Free checks now appear in the
-   downloaded JSON's `diagnostics`. Download once on each phone after both
-   networks, even if a free check fails; note any phone lock or external event.
-3. If the tones play normally, run **Check 2 sentences with a pause** once per
-   phone/network combination. Wait roughly 20 seconds without speech before
-   each pair; keep the app foreground/unlocked and let the two sentences and
-   pause finish. Set **Mobile data** in the page after actually switching off
-   Wi-Fi. Four pairs reserve at most ₹0.936.
-4. Verify audible onset again for v6, mark the checkbox after observing both
-   phones, and download both complete reports. Keep deliberate Stop/lock checks
-   separate and use the free tone for them. Do not run 50 paid trials yet.
+### Historical limits from this experiment
 
 These small checks establish diagnostic coverage and playback behavior, not
-50-trial p95 acceptance. If an outlier repeats, use the recorded dispatch,
-callback, scheduling and mapping spans to choose the next actual fix. A browser
+50-trial p95 acceptance. The recorded dispatch, callback, scheduling and mapping spans identified diagnostic questions, without selecting another application work sequence. A browser
 or provider delay must not be discarded merely to make the target pass. Hosting
 migration, Flash pricing/persona approval, offline prefix listening approval and
 funding for a full acceptance run remain separate unresolved items. This
 increment does not claim that all phone latency issues are fixed.
 
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ## V6 physical-phone results — October 10, 2026
 
@@ -695,37 +586,14 @@ First-PCM decoder work is at most 0.803 ms and ledger work 21.67–29.25 ms.
 Those are smaller targets than dispatch/delivery. Cold socket assignment is
 121–149 ms, compared with 1.16–2.55 ms for reused requests.
 
-### Focused next implementation
-
-1. Add **feature-detected static network routing** for exact same-origin
-   `/api/voice` and `/api/voice/*` at worker installation. Use the `network`
-   source, never a race that could duplicate paid dispatch. Preserve the
-   unsupported-browser fallback, shell cache, push, sessions, one-producer rules,
-   durable budgets and audio arithmetic. This removes supported-browser voice
-   fetch-handler dispatch; it does not prove the worker caused all 806 ms.
-   Chrome documents support from version 123; WebKit documents the feature in
-   Safari 27 beta. Detect the API, rather than infer it from "latest OS".
-   [Chrome guide](https://developer.chrome.com/blog/service-worker-static-routing),
-   [WebKit release documentation](https://webkit.org/blog/17967/news-from-wwdc26-webkit-in-safari-27-beta/).
-2. Review path/origin boundaries, supported/unsupported/rejected installation,
-   worker upgrades, offline shell and push. Retain matched/final router source
-   where supported to confirm the actual request path; a new page version alone
-   does not prove worker routing changed.
-   [Resource Timing routing fields](https://www.w3.org/TR/resource-timing/).
-3. Test **free checks first**, cold and warm after launch/idle and network change.
-   Retain slow first checks. If supported bypass lowers pre-request time, use a
-   small speech confirmation. Collect missing iPhone mobile coverage only after
-   its free checks complete, with Wi-Fi actually off and Mobile selected.
-   Do not run 50 trials or repeat paid batches before resolving these tails.
-4. Keep phone-origin DNS/connect, mobile delivery and provider cold connections
-   as separate experiments. Region migration stays separate. Avoid continuous
-   keepalive, speculative paid synthesis or automatic retries/hedging. Do not
-   alter onset arithmetic, trim quiet speech or switch Ritu to obtain a pass.
+### Historical limits from this experiment
 
 This review updates evidence and planning only. **Runtime remains deployed v6;
 static network routing is not implemented or deployed by this review.** These
 reports narrow the next optimization without another broad instrumentation
 cycle. They do not establish that all latency issues are fixed.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ### Budget and review validation
 
@@ -951,7 +819,7 @@ Wi-Fi speech pair used the expected controller. All eight v8 speech smokes now
 cover two sentences per phone/network combination and completed without
 underruns. This closes smoke coverage, not the 50-trial-per-combination p95 gate.
 
-## October 10 owner closure and next work
+## October 10 owner closure and acceptance limits
 
 The owner closed the current S4 optimization effort on October 10 and asked to
 move toward the actual app. Keep the deployed v8 candidate and Ritu as the
@@ -967,11 +835,4 @@ and remaining transport/infrastructure latency stay recorded as follow-up
 work. No further synthesis calls, budget changes or runtime deployment are
 part of this closure. The ₹50 ledger remains at ₹31.4352 reserved.
 
-The next work is to finish S-VGW's outstanding account controls and capped
-synthetic canary proofs, then build the Phase 1 production foundation: adult
-sign-in, household-scoped storage/RLS, voice/text turns, resumable receipts,
-privacy checks and recovery. Foundation work can use synthetic data while
-gateway verification is pending. S-VGW plus household acknowledgement still
-gate family LLM/embedding calls. The first useful product slice after that is
-the Phase 2 shared shopping list: add, tick, correct and undo, with both-phone
-sync and offline receipts. This closure does not mark Phase 1 complete.
+S-VGW subsequently closed within its recorded restricted-pilot scope. The new Home/conversation runtime remains unimplemented; P0 owns its validation and P1 owns production foundations.

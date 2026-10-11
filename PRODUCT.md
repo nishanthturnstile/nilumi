@@ -1,72 +1,23 @@
-# Product
+# Nilumi
 
-<!-- impeccable:product-schema 1 -->
+Nilumi is a voice-first household assistant delivered as an installed PWA on iPhone and Android, with responsive desktop support. While cooking, preparing children for school or shopping, an adult can speak once to start a continuing foreground conversation. Nilumi responds aloud and leaves a useful, interactive result on Home.
 
-## Platform
+Home is the main canvas: a brief when resting, conversation controls throughout, and one focused activity when doing something. A shopping checklist, school routine, schedule, comparison table, explanation or simple diagram can appear there. Switching topics focuses another activity; Recent preserves previous activities and their state. Speech can finish, be muted or interrupted without losing the visible result.
 
-web
+Voice, text and touch operate on the same activity. Users can check and uncheck items, correct a quantity, ask a follow-up, change a presentation or reopen a saved activity. The model composes trusted Nilumi components; backend services authorize actions and return receipts before the interface or speech reports success. A generated draft is not automatically a household fact or an approved change.
 
-Installed PWA (Home Screen web app) on iPhone and Android is the primary surface; desktop browser (Admin, traces, occasional use) and iPad are secondary. One Nilumi identity on every device, with native *behaviours* per OS (sheet physics, gestures, safe areas, keyboard handling, OS text size). It does not mimic iOS or Material skins.
+The planned MVP retains household memory, evidence, correction, forgetting, sharing, shopping lists, tasks, reminders, privacy and recovery. Briefs and approved suggestions follow those capabilities. Read-only Google Calendar is optional. English, Tamil and Tanglish speech are evaluated from the first prototype; full Tamil UI localization is deferred.
 
-## Users
+## Current status
 
-- **Two adults of one Chennai household** (the owner, Nishanth, and his wife), each on their own phone. Her voluntary, unprompted use is the primary success signal; the design is judged first through a mom's eyes, with children often looking at the screen alongside her.
-- They use Nilumi in short, interrupted moments: at 7:30 am over coffee checking Today, while cooking, in a shop with poor signal ticking the list, in the car, and at night before bed.
-- Children are subjects of facts and reminders (school, allergies, vaccinations), not users, in the MVP. Grandparents and household help are possible later users and may need Tamil.
-- The owner also operates the system (Admin: traces, evals, costs, backups), mostly from a desktop browser.
+The application is **unimplemented**. Existing work consists of spike code, scoped validation records, design tokens, fonts, helpers and static design references. The existing UI package has no reusable React component library yet. Earlier phone and provider tests establish only the behavior recorded in their evidence; they do not validate the new continuous voice or Home renderer.
 
-## Product Purpose
+Next.js/React, AI SDK and json-render are **selected for prototype**. Pipecat with Sarvam streaming, Saaras v4 realtime and Bulbul v3 Ritu are **selected for prototype**, subject to integration, multilingual, phone, hosting and cost gates. Production suitability is unvalidated.
 
-Nilumi is a private household assistant: say or type what matters, see exactly what it understood, and trust that it will remember, remind, and admit when it doesn't know. Each morning, Today shows what needs attention, with the evidence behind every item. Success is a habit: each adult opens Today on most days, and the wife starts interactions without being asked to test.
+## Delivery
 
-## Positioning
+[Product Plan](docs/core/01-product-plan.md) owns requirements and journeys. [Decisions](docs/adr/README.md) state the current baseline. The [Roadmap](docs/core/05-implementation-roadmap.md) and the single [detailed implementation plan](docs/plans/implementation-plan.md) prescribe P0–P8. Start with P0.1: define synthetic household scenarios and the activity/response contracts before building the Home prototype.
 
-Evidence-backed household follow-through. Briefs and answers come from the household's own corrected memory, every claim links to its source, privacy between members is enforced by the database (existence included), and Nilumi changes nothing it wasn't asked to change without approval. General assistants already ship daily briefs; the brief is not the advantage — the evidence, correction loop, per-member privacy and Indian household workflows are.
+Target total operating cost remains at most ₹3,000/month, with a ₹5,000 ceiling and review above the target. Continuous conversation requires new measured cost projections; short-clip spike costs are not a monthly forecast. Existing provider and spending restrictions remain in force.
 
-## Operating Context
-
-- Tabs: Today (landing), Lists, Talk (centre, voice-first), Tasks, Memory; Inbox as a header bell; Settings and Admin in a profile menu. Tabs appear only as their phase ships, never disabled.
-- Talk: hold-to-talk or tap-to-start/stop on one mic button (400 ms split), text box always available, transcript bubble, one result card per command, answers with evidence chips, optional spoken reply, a visible "Play reply" fallback when autoplay is blocked.
-- Cards carry Undo/Edit (undo-first), Confirm (health facts, forget, revealing shares), Approve/Edit/Not now (suggestions), and Clarify (deterministic ambiguity only).
-- Every memory card shows exactly one visibility badge: Household, Shared, or Private.
-- Lists, Tasks and Inbox work offline with queued changes ("N changes waiting"); Today, Talk, Memory, Settings and Admin show an offline state. Realtime sync by SSE; "Reconnecting…" when stale.
-- Degraded AI states are first-class: soft cap, hard cap ("AI features are paused"), acknowledgement inactive ("Voice is paused"), model outage (fixed command set, words saved to Inbox).
-- Time is Asia/Kolkata; dates are day-first; vague times resolve to household defaults and the resolved time is always shown.
-- One brief push per day; private items use generic lock-screen text.
-
-## Capabilities and Constraints
-
-- Stack (decided): Next.js 16 App Router + Turbopack, React 19, Tailwind CSS v4, shadcn/ui, TanStack Query v5, Serwist, Zod 4, pnpm monorepo (`apps/web`, `packages/*`). Free OSS libraries only.
-- Server-composed UI uses the trusted catalog `nilumi-ui/1` (`card`, `list`, `form`, `table`, `progress`, `approval`, `artifact`, `evidence-chip`); no raw HTML, model text fills text fields only.
-- iPhone PWA capability is set by WebKit; S1 validated mic, push, offline shell and playback on both phones. "Relaunch to update" is accepted behaviour.
-- Typography must be Tamil-ready from day one (Tamil names and words appear in transcripts and memory now; Tamil UI strings are a later "Could").
-- Undecided: final assistant voice; Tamil UI timing; kid mode; Vault (documents) UI.
-
-## Brand Commitments
-
-- Name **Nilumi** (நிலுமி), coined from Tamil *nila* (moon) plus light; chosen to be warm, calm, easy for Indian-English and Tamil speakers and children.
-- Voice of the product: plain, honest, short. Says "I don't know" rather than inventing; never describes something as done unless it was saved; "That sounds sensitive, so I won't store it."
-- Anti-reference (owner): must not feel like a corporate SaaS dashboard — grey, dense, enterprise, or "complicated".
-- Feel (owner, binding): built for a mom and her children. Spacious and uncongested; colourful; a little playful; subtle animation here and there, never overboard; professional and attractive, but not childish.
-
-## Evidence on Hand
-
-- Product plan, architecture, application flows (screens, scenarios, degraded modes) and 55 ADRs in `docs/`.
-- S1 spike (`spikes/s1`) proves PWA mechanics on both phones; it has no visual identity (default create-next-app styling) and is not a visual authority.
-- No logo, icon set, photography, illustrations or brand palette exist yet. Do not fabricate testimonials, metrics or household data; use clearly synthetic examples in specimens.
-
-## Product Principles
-
-1. Show, don't just say: the screen is the trust mechanism — what I heard, what I did, where it came from.
-2. Undo beats asking; suggestions wait for approval; nothing is described as done unless it was saved.
-3. Private stays private, including existence; visibility is always visible.
-4. Faster than opening a notes app: capture must beat typing a note.
-5. Calm by default: one push a day, no nagging, honest degraded states.
-
-## Accessibility & Inclusion
-
-- WCAG 2.2 AA baseline across light and dark themes.
-- Support text up to 200% without loss of content or function, via an in-app Text size setting (OS text-size settings don't reach installed web apps today); never block browser zoom.
-- Never rely on colour alone for state or visibility (badges carry icon + label).
-- Respect reduced motion and reduced transparency.
-- Tamil script legibility is a requirement, not an afterthought.
+[Documentation reading order](docs/README.md) · [Design foundation](DESIGN.md) · [Evidence and disposition audit](docs/validation/documentation-baseline.md)

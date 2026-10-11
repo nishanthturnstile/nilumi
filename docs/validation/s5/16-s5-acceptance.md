@@ -1,5 +1,8 @@
 # S5 acceptance — October 8, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest scoped S5 acceptance and owner recovery exception are in [acceptance](16-s5-acceptance.md); new production recovery is still gated. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status: CLOSED — owner accepted the synthetic platform spike.** The owner
 confirmed their validation is complete and explicitly chose one recovery operator:
 "we no need to valdiate again for my wife, we will go with one mine".
@@ -36,19 +39,17 @@ does not turn unmeasured items into passing tests or accept production readiness
 
 - Second-adult independent recovery: **waived for S5**; do not reopen it as an S5
   blocker without a new owner decision. The founding household uses one operator.
-- Full human RPO/RTO rehearsal and 2FA confirmation: carry into Phase 1 operations.
+- Full human RPO/RTO rehearsal and 2FA confirmation: mapped to P1 staging foundations and P8 human recovery rehearsal.
   The measured ~1.6 s automated restore and ~27-minute backup age are not full
   human recovery timing or production RPO/RTO guarantees.
 - S5-specific installed-PWA resume/home-network RTT: deferred to implemented-app
   validation. Earlier S1 phone acceptance remains separate evidence.
 - Production migration/maintenance role separation, image update policy,
   backup scheduling/retention enforcement, derived-content redaction, queue
-  reconstruction and recurrence/provider-send behavior: implement and validate in
-  their Phase 1/Phase 5 work. This offsite archive restores `s5`; Graphile runtime
+  reconstruction and recurrence/provider-send behavior: mapped to P1/P4 recovery foundations and P5 reminder work in the current plan. This offsite archive restores `s5`; Graphile runtime
   is reinstalled and queue contents are not recovered.
 - Test R2 token expires October 15, 2026. Establish production credentials and
-  recovery configuration during Phase 1; the private master identity stays off
+  recovery configuration belongs to P1; the private master identity stays off
   Railway and GitHub.
 
-S5 is closed. Other Phase 0 spikes and provider gates retain their existing status;
-this decision does not close Phase 0 as a whole.
+S5 is closed. Other historical spike/provider gates retain their stated scope. This decision closes no gate of the new P0–P8 application plan.

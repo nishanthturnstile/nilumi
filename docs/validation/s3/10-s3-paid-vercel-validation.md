@@ -1,5 +1,8 @@
 # S3 paid Vercel validation — October 8, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest S3 synthetic correctness selection and its deferred application-latency limits are in [live acceptance](13-s3-live-acceptance.md); current restricted Gateway closure is in [verification](08-s3-gateway-verification.md#vgw-closure). Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 The [V11 follow-up](11-s3-v11-validation.md) records development corrections,
 improved privacy correctness, retained deadline failures and verified shutdown.
 S3 acceptance remains pending.
@@ -63,18 +66,17 @@ for version fingerprints, aggregate scores, routing gates, cost and shutdown
 verification. Raw outputs and session credentials remain in ignored local files;
 held-out transcripts, answers and outputs were not inspected for prompt tuning.
 
-## Remaining acceptance work
+## Historical limits from this experiment
+
 
 Evaluator shutdown is verified: deployment
 `6380e7b4-e601-4565-be83-bf0a276fb060` succeeded, configured enablement is false,
 the caller allowlist is empty, and an authenticated endpoint check returned
 HTTP 404 `evaluation_disabled` without dispatching inference.
 
-Investigate development-only semantic failures, revise and freeze a new prompt
-candidate, then repeat an authorized smoke and frozen regression within the
-remaining cap. Original held-out scores are regression evidence rather than a
-new independent holdout. Preserve the privacy/date/held-out gates and report the
-latency target separately. Production must repeat acceptance on its actual model
-and verified privacy route.
+
 
 Local validation: 216 tests, Biome/ESLint, type checking and production build passed.
+
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.

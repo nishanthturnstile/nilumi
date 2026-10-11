@@ -1,5 +1,8 @@
 # S4 streaming candidate — October 9, 2026
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Later S4 owner closure and the retained failed timing/phone cases are in [both-phone analysis](25-s4-v4-both-phone-analysis.md). They do not validate the new runtime. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 **Status: deployed; partial Android retest shows lower typical onset, but p95 remains above target. S4 remains unaccepted.**
 
 This document preserves v2 evidence. The current testing candidate is
@@ -76,11 +79,7 @@ run of this unchanged corpus reserves ₹32.832, leaving ₹10.6736 for tuning a
 listening. Read the live ledger before further spending. A three-sentence smoke
 reserves ₹0.4176 per run; it never qualifies as an acceptance slice.
 
-## Deployment and next home checks
-
-Railway deployment `d37b6bdd-fb4a-4ef7-a554-3314b9912400` reached **SUCCESS**
-at 05:25:18 UTC in the existing Singapore service. The persistent volume, original
-₹50 ledger and wife's original Ritu selection survived deployment unchanged.
+## Historical limits from this experiment
 
 [Post-deploy public HTTP checks](../../../spikes/s1/evals/results/s4-stream-v2-deployed-check-2026-10-09.json)
 returned 200 for the owner, 401 anonymously, 400 for an invalid fixture, 405 for
@@ -92,23 +91,11 @@ The collaborative browser confirms the new version and no horizontal overflow
 at phone width. Its unauthenticated session correctly cannot run paid tests.
 Temporary SSH access was revoked and the local identity removed after validation.
 
-1. Refresh [the installed staging voice page](https://staging.nilumi.in/voice)
-   and confirm `s4-bulbul-v3-stream-2`. Keep Ritu; repeat voice comparison only
-   if its quality has changed.
-2. Play the free audio check, then try three uncached sentences on both phones,
-   on home Wi-Fi and mobile data. Download the exploratory results before
-   deciding whether to fund the complete benchmark.
-3. Verify audible onset again for the new player, including the last word,
-   ordering, Stop, app-switch interruption and continuation. The estimate uses
-   the scheduled first non-silent sample and output timestamps/latency; browser
-   clocks cannot independently prove physical sound onset.
-4. If the exploratory results justify it, run the unchanged 50-trial benchmark
-   per phone/network slice. Retain cold starts, slow results, cancellations and
-   failures. Do not combine v1 and v2 or selectively replace failed trials.
-
 Acceptance still requires all four slices, full fixture coverage, zero failures,
 actual onset verification and p95 ≤700 ms. S-VGW remains a separate unchanged
-Phase 2 gate; this staging voice harness does not authorize family LLM calls.
+historical Phase 2 gate; this staging voice harness did not authorize family LLM calls. Current gates are in the P0–P8 plan.
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.
 
 ## Owner-provided Android retest — 05:30:55 UTC
 
@@ -170,20 +157,4 @@ every ledger entry. Treat the cumulative snapshot as authoritative for planning
 and do not release reservations. A fresh 200-trial run would reserve ₹32.832,
 leaving ₹5.6084 at this snapshot, before further tuning or listening.
 
-Preserve this partial run and defer another full paid run while diagnosing the
-remaining path. The next useful implementation experiment would measure request
-arrival, authorization/reservation duration, provider dispatch and first-chunk
-forwarding, plus client scheduling/leading-silence/output latency separately.
-Only then choose a bounded buffer, connection or transport experiment. A smaller
-player buffer alone cannot resolve the 2.43 s provider-header outlier; no automatic
-retry, warmed-only selection or discarded outlier may manufacture acceptance.
-
-[Content-free retest evidence](../../../spikes/s1/evals/results/s4-android-stream-v2-2026-10-09.json)
-preserves all supplied IDs, purpose/status fields, timing pairs and audio sizes.
-It is derived from the pasted export, not a byte-identical original file. This
-analysis made no provider request and changed no budget, voice or runtime code.
-
-The follow-on [low-level analysis and experiment plan](../../plans/21-s4-low-level-latency-plan.md)
-separates the remaining backend, connection, payload and player work, with local
-CPU controls and a bounded implementation sequence. It leaves hosting migration
-for later and does not change this deployed v2 evidence or acceptance status.
+The partial run remained failed. Its unresolved diagnostic questions were request arrival, authorization/reservation duration, provider dispatch, chunk forwarding and client scheduling/leading-silence/output latency. A smaller player buffer alone could not resolve the 2.43 s provider-header outlier. No retry, warm-only selection or discarded outlier established acceptance. The former experiment sequence is retired; [P0](../../plans/implementation-plan.md#p0) measures the new connected path under current gates.

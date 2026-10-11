@@ -1,5 +1,8 @@
 # S3 V11 development corrections and frozen validation
 
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest S3 synthetic correctness selection and its deferred application-latency limits are in [live acceptance](13-s3-live-acceptance.md); current restricted Gateway closure is in [verification](08-s3-gateway-verification.md#vgw-closure). Earlier pending labels describe the dated state at that point, not a competing current plan.
+
+
 V11 fixes were derived solely from inspected development cases: negated
 preferences must preserve their literal predicate; note contents must not become
 extra shopping actions; known entity types and default visibility must not become
@@ -64,12 +67,11 @@ the evaluator allowlist is empty, and the authenticated endpoint returns HTTP
 contains aggregate scores, version metadata, retained costs and shutdown checks.
 Local validation passed: 217 tests, Biome/ESLint, type checking and production build.
 
-## Remaining work
+## Historical limits from this experiment
+
 
 Development corrections are implemented and validated, but **S3 acceptance and
-model selection remain pending**. Investigate deadline variability and prompt
-size/latency without loosening the five-second limit. Use only development evidence
-for further intent changes; retain the failed V11 runs. Any future paid evaluation
-must start with a passing smoke, preserve privacy/date/held-out gates and fit the
-remaining cap. Do not silently select a later successful retry or treat a
-subscription score as hosted acceptance.
+model selection remain pending**.
+
+
+Further application work belongs to the [current implementation plan](../../plans/implementation-plan.md#p0); no historical retest sequence remains active.

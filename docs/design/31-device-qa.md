@@ -1,57 +1,54 @@
-# 31 — Device QA matrix: installed-PWA shell
+# Device QA
 
-> **Status:** Ready to run · **Date:** 10 October 2026
-> **Related:** [29 Design System §5](29-design-system.md#5-native-app-feel-installed-pwa) · [ADR-056](../adr/adr-056.md) · [30 UI platform research §8](../research/30-ui-platform-research.md#8-ios-26--android-2026-installed-pwa-specifics) · Route: `spikes/s1/app/design-check`
+ New Home/runtime installed-phone results are **unverified**. Existing S1/S4 acceptance covers only the builds and harness paths in those records. Static design-check room screens remain references; they cannot prove continuous conversation or generated Home.
 
-The static specimen can't exercise gestures, the keyboard or iOS 26's standalone quirks. This matrix runs the real shell on both household phones. It uses the S1 spike, which is already installed as a PWA on both:
+ Owner: builder records build/version/device/network/language/date, exact steps, expected/actual outcome and failures; both adults assess usefulness/correction effort. Record iPhone and Android separately. Each pending row below is phase-owned and blocks the applicable release gate, not this documentation revision.
 
-- the **Pastel Rooms tokens** (`@nilumi/ui/globals.css`);
-- a header and the phased tab tray;
-- the Talk composer with the `visualViewport` hook;
-- a **Base UI Drawer** with snap points and history-back;
-- a **Base UI Toast** with Undo;
-- the text-size and theme controls;
-- Tamil text.
-
-## How to run
-
-1. Deploy the spike to its staging URL (as for earlier S1/S4 runs).
-2. On each phone, open the installed app and tap **Design check** on the home screen. It is a full page load, so the route's own head metadata applies. Use the in-page controls to switch theme, text size and tray phase; the tabs switch rooms.
-3. Record **Pass / Fail / Note** per row, the device, the OS version and a screenshot for every Fail.
-
-Devices: the iPhone on the current iOS 26.x, and the Android phone with current Chrome. Run in **portrait**, plus landscape where marked.
-
-> **Status-bar caveat (row 1).** The route emits no `apple-mobile-web-app-status-bar-style` tag, but the spike's start page (`/`) still does (`statusBarStyle: "default"` in `spikes/s1/app/layout.tsx`), and iOS may keep the launch document's setting. If row 1 fails, remove `statusBarStyle` there too (`appleWebApp: null` plus `other: { "apple-mobile-web-app-title": "Nilumi" }`), reinstall the app, and re-run row 1. Record which configuration you tested.
-
-## Matrix
-
-| # | Area | Steps | Expected |
+| Check| Phase| Installed iPhone| Installed Android|
 |---|---|---|---|
-| 1 | Status bar (iOS) | Switch rooms in light, then dark | The bar matches each room floor; no dark scrim; text stays legible (WebKit #301994) |
-| 2 | Status bar (Android) | Switch rooms in light and dark | The status bar takes the room colour (`theme-color`); the nav bar may stay default (known Chrome gap) |
-| 3 | Viewport height (iOS) | Scroll to the bottom; rotate; return | No gap or overflow under the tray; no whole-page rubber-band drag (WebKit #316008) |
-| 4 | Safe areas | Portrait and landscape | The tray clears the home indicator; content clears the notch; landscape gutters clear the camera |
-| 5 | Overscroll | Pull down at the top and up at the bottom; scroll inside the open sheet to its end | No browser pull-to-refresh; the sheet's inner scroll doesn't drag the page |
-| 6 | Keyboard: composer | In Talk, focus "Say or type something"; type; dismiss | The composer sits directly above the keyboard (no tray-sized gap); after dismissal it returns above the tray and the raised Talk tab without a reload |
-| 7 | Keyboard: sheet | Open the sheet, focus its input | The pinned Save button stays visible above the keyboard |
-| 8 | Sheet gestures | Open; drag between 50% and 92%; flick down | Snaps feel native (no jank at 120Hz on iPhone); a flick dismisses it |
-| 9 | Android back | Open the sheet, press system back | The sheet closes; the page stays. Back again leaves the route |
-| 10 | Toast | Tap "Remove rice" at P5, then at P1 | The toast rises above the tray and clears the raised Talk tab (P5); Undo works; it pauses while touched; a swipe dismisses it |
-| 11 | Hold-to-talk surface | Long-press the mic for 2s | No iOS callout, text selection or context menu; the listening ring and label show |
-| 12 | Room change | Tap through the tabs | The floor glides; the header and tray don't flash |
-| 13 | Text size 200% | Set 200%; visit every block | No clipped or overlapping text; tab labels wrap to at most two lines; controls grow |
-| 14 | Tamil | Read the Tamil rows at 100% and 200% | Vowel signs aren't clipped; Noto Sans Tamil renders, not a fallback |
-| 15 | Fonts offline | Load once online; enable airplane mode; relaunch | Nunito and Tamil still render (after the Phase 1 service worker precaches them) |
-| 16 | Reduced motion | Turn on OS Reduce Motion; repeat 8, 10, 11, 12 | Movement is near-instant; the listening state stays visible as a static ring and label |
-| 17 | Dark mode | System dark; then the in-app override | No flash of light theme on launch; all rooms are dusky; focus rings are visible |
-| 18 | Contrast in sunlight | Outdoors, Lists room, light theme | Item text and checkboxes are clearly readable |
-| 19 | System theme, live | Theme = System; with the app open, switch the OS between light and dark | The rooms, status bar and `theme-color` follow without a reload |
+| Foreground tap/session and permission| P0/P2| Pending| Pending|
+| English/Tamil/Tanglish names, quantities and noise| P0/P8| Pending| Pending|
+| Complete-turn visible/audio p50/p95 and failures| P0/P8| Pending| Pending|
+| Barge-in, stop/mute/replay and late audio fencing| P0/P2| Pending| Pending|
+| Topic switch/Recent and app reopen restoration| P0/P2| Pending| Pending|
+| Check/uncheck and renderer view changes| P0/P3| Pending| Pending|
+| Keyboard/composer/safe areas at 200%| P2/P8| Pending| Pending|
+| Dark mode/contrast/Tamil/reduced motion| P2/P8| Pending| Pending|
+| Screen reader/keyboard focus stable on patches| P2/P8| Pending| Pending|
+| Tables/timelines/diagram text alternative| P0/P2| Pending| Pending|
+| Background/lock/call media release/resume| P0/P2| Pending| Pending|
+| Autoplay block and gesture replay| P0/P2| Pending| Pending|
+| Session loss/device revoke/account switch| P1/P2| Pending| Pending|
+| Offline Home approved projection/privacy| P3/P4| Pending| Pending|
+| Queued opposing edits/conflicts across phones| P3| Pending| Pending|
+| Fonts/shell precache and offline launch| P2| Pending| Pending|
+| PWA update while pending operations| P2/P3| Pending| Pending|
+| Web Push receipt/deep link/quiet hours| P5/P8| Pending| Pending|
+| AI paused and provider outage| P1/P8| Pending| Pending|
+| Forget/unshare invalidates visuals/audio/cache| P4/P8| Pending| Pending|
 
-## Results
+ Desktop responsive/keyboard preview is supplementary. Each failing row records scope and follow-up in its phase evidence; never fill a phone cell from desktop/mobile-width simulation. Gates and acceptance floors are in the [implementation plan](../plans/implementation-plan.md#validation-register).
 
-| Device | OS / browser | Date | Fails | Notes |
-|---|---|---|---|---|
-| iPhone | | | | |
-| Android | | | | |
+## Reconciled completed observations from former document 32
 
-Fails feed back into [29 Design System](29-design-system.md) and, where a platform behaviour changes, into [ADR-056](../adr/adr-056.md).
+Dated historical evidence reconciled on 2026-10-10. These observations describe the existing spike or design reference only. Future work is owned by the [implementation plan](../plans/implementation-plan.md).
+
+
+
+| Area| Evidence and limit|
+|---|---|
+| Tokens and styling| `pnpm ui:check` passes: all 1,656 contrast checks, existing class lint and TypeScript. This is not an accessibility audit of the finished application.|
+| Reference build| `pnpm ui:specimen` passes. The catalogue loads in the desktop preview with six room frames, typography, components and compact Admin.|
+| Reusable components| Theme/font helpers exist. There are no reusable React primitives or Nilumi composites in `packages/ui` yet. The HTML/JS specimens are reference examples, not the production component library.|
+| shadcn setup| **Resolved.** The pinned `4.21.4` CLI rejected the separate `base` key. Configuration now uses `style: "base-maia"`; `shadcn info --json` confirms Base UI and the package aliases, and the Button dry run/view resolves to `src/components/ui/button.tsx` using `@base-ui/react/button`. No component or dependency was installed and the token stylesheet was not changed.|
+| Phone validation| The results in [31 Device QA](../design/31-device-qa.md) are blank. Keyboard, safe areas, Android Back, sheet gestures and installed-app rendering remain unverified for this design. Font-offline QA explicitly depends on Phase 1 precaching.|
+| Application| `apps/web`, `apps/worker`, production contracts and CI do not exist yet. Root scripts currently validate/build the UI package only.|
+
+The review-access change also passes the S1 lint/gateway guard, TypeScript,
+all 372 existing tests and production build. Lint reports five existing warnings
+in ignored local validation files. TypeScript initially encountered stale
+`.next/dev/types` from before the design-check layout existed; removing that
+generated cache allowed the unchanged type-check command to pass. The production
+homepage → catalogue → full-screen path was verified in the shared browser;
+mobile-width catalogue and a dark/200% Today spot check had no page overflow.
+These checks do not replace owner review or the installed-phone matrix.

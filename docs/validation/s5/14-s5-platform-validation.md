@@ -1,4 +1,7 @@
-# S5 — Platform validation plan and initial implementation
+# S5 — Platform experiment and initial implementation evidence
+
+> Historical evidence: existing spike scope and chronology, reconciled 2026-10-10. Original dates, measurements, failures, exceptions and acceptance limits remain authoritative for that experiment. This is not the new application implementation plan. The [single current plan](../../plans/implementation-plan.md) owns future work; prior acceptance does not validate Pipecat, streaming conversational STT or dynamic Home. Latest scoped S5 acceptance and owner recovery exception are in [acceptance](16-s5-acceptance.md); new production recovery is still gated. Earlier pending labels describe the dated state at that point, not a competing current plan.
+
 
 **Status: CLOSED — owner accepted October 8, 2026.** See the authoritative
 [S5 acceptance and follow-ups](16-s5-acceptance.md). The owner completed private
@@ -143,10 +146,7 @@ credentials and complete production recurrence/provider-send behavior remain
 outside the runtime app/worker proof. The schema-only scratch restore on the same
 cluster does not prove recovery of cluster roles on a fresh provider.
 
-Before encrypted recovery, create the shared OneDrive document, confirm both
-accounts' access/2FA, generate/store the real master key there, and configure only
-its public recipient on the worker. R2 credentials must be entered privately.
-The user has requested the runbook before this document setup.
+At this dated point encrypted recovery still depended on shared OneDrive access/2FA, a privately stored real master key, worker public-recipient configuration and private R2 credentials. Later results below record what was actually completed; the [runbook](../../operations/s5/15-s5-recovery-runbook.md) retains valid recovery commands and [current gates](../../plans/implementation-plan.md#validation-register) own production obligations.
 
 ## Recovery increment — October 8, 2026
 
@@ -181,10 +181,7 @@ identified bucket `nilumi` and requested guided OneDrive/key setup later.
 Prefix `s5-synthetic/recovery-drill/` is prepared, but no R2 call or real-key
 encryption occurred. The endpoint is not proof of authenticated bucket access.
 
-Next: complete the runbook's guided key/document setup, privately configure scoped
-R2 credentials, run the real synthetic encrypted offsite drill, and record both
-adults' independent recovery and RPO/RTO. Installed-PWA/home-network evidence
-remains separate. **S5 and Phase 0 remain open.**
+
 
 ## Real-recipient encryption increment — October 8, 2026
 

@@ -1,27 +1,20 @@
-# ADR-NNN — Title
+# ADR-NNN — Decision title
 
-> **Status:** Proposed / Accepted / Superseded
-> **Baseline:** Applicable review/revision; decision date if known, otherwise “not recorded”
-> **Origin:** Review, requirement or issue
-> **Legacy references:** D/Q IDs if applicable, otherwise “None”
-> **Supersedes / superseded by:** Specific ADR links if applicable
+> Decision status: proposed or accepted, with date.
+> Delivery status: implemented, validated within a stated scope, selected for prototype, planned for MVP or deferred; name phase and evidence scope.
 
 ## Context
 
-Problem, constraints and evidence; link detailed research comparisons.
+Describe the concrete problem and constraints.
 
 ## Decision
 
-The accepted choice and its scope.
+State the complete current choice, authority boundary and exceptions. A reader must not need an amendment chain. Preserve identifiers when consolidating and repair references to removed predecessors.
 
-## Alternatives
+## Consequences and validation scope
 
-Options considered and why they were rejected or deferred.
-
-## Consequences
-
-Benefits, costs, limitations and pending validation gates.
+Explain tradeoffs, actual evidence, pending phase-owned gate and prerequisites. Distinguish proposed configuration from deployed behavior.
 
 ## References
 
-Link specific research headings, applied product requirements, architecture contracts, technology/provider status and roadmap validation ownership. Use paths relative to this directory.
+Link requirements, architecture contracts, implementation packages and scoped evidence. Git preserves prior decisions; do not leave superseded stubs in the active catalogue.

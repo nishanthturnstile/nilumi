@@ -1,5 +1,8 @@
 # S5: Railway platform smoke
 
+> Existing spike reference, reconciled2026-10-10. Keep these commands, controls and reports for reproducing the stated experiment; this is not the production app or its next build plan. New Home/continuous voice work is **unimplemented** and owned by the [implementation plan](../../docs/plans/implementation-plan.md). Processor approvals and paid-test limits do not automatically extend to a new Pipecat transport/model/runtime. Preserve ledgers and disabled evaluators.
+
+
 **Closed with owner acceptance October 8, 2026.** The owner completed private
 master-key decryption; real offsite scratch restore and late-forget replay passed.
 One recovery operator is accepted; the second-adult drill is waived for S5.

@@ -1,5 +1,8 @@
 # S1: Nilumi PWA spike
 
+> Existing spike reference, reconciled2026-10-10. Keep these commands, controls and reports for reproducing the stated experiment; this is not the production app or its next build plan. New Home/continuous voice work is **unimplemented** and owned by the [implementation plan](../../docs/plans/implementation-plan.md). Processor approvals and paid-test limits do not automatically extend to a new Pipecat transport/model/runtime. Preserve ledgers and disabled evaluators.
+
+
 M1/M2 cover installability, email-code sessions, a ten-minute step-up window,
 and microphone capture. Uploads currently return `spike-noop`; they do not
 transcribe or store audio. M3 adds a canned SSE turn and two synthetic audio
@@ -10,7 +13,7 @@ Use Node.js 24 and pnpm 12.9.1 (pinned in `package.json`).
 
 ## S-VGW pilot closure and privacy controls
 
-S-VGW is accepted for the restricted founding household under [ADR-052](../../docs/adr/adr-052.md).
+S-VGW is accepted for the restricted founding household under [ADR-022](../../docs/adr/adr-022.md).
 Privacy controls and PostgreSQL 18.6 are deployed and validated at
 [staging Settings → Privacy](https://staging.nilumi.in/settings/privacy).
 Both supplied adults are configured; the owner recorded the current notice,
@@ -35,7 +38,7 @@ Lint, type-check, all 372 tests and production build pass. Fourteen control case
 use embedded PostgreSQL and proxy-origin checks. Thirteen control cases also pass
 on deployed PostgreSQL 18.6, including real concurrent reservations, client/worker
 reconnection and restricted SQL roles. The actual deployed app login cannot change
-accepted evidence, membership, cap or schema; synthetic withdrawal tests roll back. See the [activation checklist](../../docs/plans/26-s-vgw-completion-plan.md#current-activation-work).
+accepted evidence, membership, cap or schema; synthetic withdrawal tests roll back. See the [activation checklist](../../docs/validation/s3/08-s3-gateway-verification.md#vgw-closure).
 
 ## Local smoke test
 
@@ -55,7 +58,7 @@ owner review and do not yet cover every application flow.
 For a clean Railway build, install both dependency sets before building:
 `pnpm --dir ../.. install --frozen-lockfile` and
 `pnpm install --frozen-lockfile`, then `pnpm build` from `spikes/s1`.
-This remains the review spike; Phase 1 application workspaces are not created by it.
+This remains the review spike; Production application workspaces are not created by it.
 
 ```sh
 pnpm install --frozen-lockfile
@@ -303,12 +306,7 @@ claiming a measured 40-clip-per-adult benchmark or an ElevenLabs comparison.
 ElevenLabs still requires its green S0 row and server approval flag before use.
 Later real-turn latency and regression gates remain as defined in the roadmap.
 
-**Next: S3, NLU bake-off.** Build the command schema and a 60-case golden set,
-then evaluate structured command extraction, dates, evidence spans, privacy,
-clarifications and multi-command handling through the approved AI Gateway path.
-The spike evaluates interpretations; persistent memory/list/reminder execution
-belongs to the later implementation phases. S4 voice selection and S5 platform
-checks follow before the Phase 1 walking skeleton.
+The subsequent S3/S4/S-VGW experiments are recorded below. They are historical harness work; the new application starts at P0 in the current implementation plan.
 
 ## S3: command understanding (October 7, 2026)
 
@@ -358,7 +356,7 @@ accounting and shutdown verification.
 The owner's October 7, 19:51 IST dashboard report confirms **Hobby**, with ZDR
 and provider/model allowlists unavailable. The family-data gate fails; the
 US$5 monthly allowance remains the spending ceiling. The owner-approved
-[synthetic-only exception](../../docs/adr/adr-040.md) is implemented as a separate
+[synthetic-only exception](../../docs/validation/s3/08-s3-gateway-verification.md#historical-experiment-permissions) is implemented as a separate
 server mode. The owner approved all 60 expected actions and confirmed that
 Railway uses the inspected “Nilumi's Key”. Live probe results are recorded below.
 
@@ -366,7 +364,7 @@ Vercel is the default gateway. The owner added paid Vercel credits on October 8
 and requested live synthetic validation within the unchanged USD 0.50 cap.
 An October 8 owner amendment raises the cumulative cap to USD 2.00; it takes
 effect only after a reviewed change to `config/models.ts`, `lib/nlu/budget.ts` and
-the ledger that keeps every counted entry ([ADR-040](../../docs/adr/adr-040.md)).
+the ledger that keeps every counted entry ([Historical experiment permission (040)](../../docs/validation/s3/08-s3-gateway-verification.md#historical-experiment-permissions)).
 Until then the runner enforces USD 0.50.
 The [paid validation report](../../docs/validation/s3/10-s3-paid-vercel-validation.md) records
 Luna's complete 60-case run (54/60), failed privacy/held-out gates and mini's
@@ -547,7 +545,7 @@ inform prompt revisions; replacing an exposed holdout requires new owner
 review. Subscription results establish synthetic correctness only. They do
 not verify Gateway routing, prices, latency, no-training or ZDR, and cannot
 select a deployment model. Subscription rate limits stop new dispatch without
-an API-key fallback. See [ADR-040](../../docs/adr/adr-040.md) for scope and
+an API-key fallback. See [Historical experiment permission (040)](../../docs/validation/s3/08-s3-gateway-verification.md#historical-experiment-permissions) for scope and
 [validation evidence](../../docs/validation/s3/08-s3-gateway-verification.md) for outcomes.
 
 Completed subscription benchmark: frozen `s3-extract-v5` reached **57/60 correct
@@ -673,7 +671,7 @@ benchmark acceptance. Use the current network selector for these checks too.
 The latest owner reports are partial: all eight v5 Wi-Fi smoke replies completed,
 five within 700 ms. Cold connections and unexplained client/output tails remain;
 v4 also had two mobile replies with long quiet prefixes. See the
-[phone analysis and next implementation](../../docs/validation/s4/25-s4-v4-both-phone-analysis.md).
+[dated phone analysis](../../docs/validation/s4/25-s4-v4-both-phone-analysis.md).
 The latest export's ₹21.002 remaining cannot cover a fresh 200-trial acceptance run;
 hold full paid benchmarks until the exact allowance is reconciled.
 
@@ -803,9 +801,9 @@ model's published provider-option contract documents forwarding. This is
 documentary evidence, not direct provider observation. The October 10 live run
 passed chat, embedding and used-key revocation; negative policy returned HTTP
 500 and quota was not dispatched. Its state is closed and must not be reset.
-See [the implementation plan](../../docs/plans/17-phase-1-gateway-and-voice-plan.md)
+See [Dated experiment evidence](../../docs/validation/s4/18-s4-voice-verification.md)
 and [gateway evidence](../../docs/validation/s3/08-s3-gateway-verification.md) before live work.
-The [S-VGW completion plan](../../docs/plans/26-s-vgw-completion-plan.md) has the complete
+The [Dated Gateway evidence](../../docs/validation/s3/08-s3-gateway-verification.md#vgw-closure) has the complete
 readback, live-probe, shutdown and remaining-evidence workflow.
 
 October 10 follow-up: ADR-051 authorizes **US$1.05 total across all rounds**.
@@ -906,3 +904,7 @@ changing its URL through the client router can retain the root worker even when
 scope before speech. No automatic page reload, repeated registration, changed
 speech timing, new sign-in flow or report migration is introduced by this entry
 fix. Direct `/voice` visits continue to work.
+
+## Preserved S1 phone acceptance scope
+
+October2026 acceptance formerly recorded in ADR-039: installed HTTPS PWA email-code sign-in/step-up, offline shell launch, second-cold-open update pickup, both hold-to-talk and tap-to-start/stop after the gesture fix, SSE playback dedupe/resume across background/lock, iOS Play reply fallback and closed-app Web Push including delayed iOS delivery. The harness used a400ms press-duration split and byte-range audio support on iOS/iPad. Those are existing tested harness behaviors, not the new continuous voice specification. No Pipecat/Home renderer was tested. Current PWA-only decision is [ADR-001](../../docs/adr/adr-001.md).
